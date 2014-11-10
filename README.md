@@ -1,7 +1,7 @@
 contentful-management.java
 ===============
 
-[![Build Status](https://travis-ci.org/contentful/contentful-management.java.svg)](https://travis-ci.org/contentful/contentful-management.java/builds#)
+[![Coverage Status](https://coveralls.io/repos/contentful/contentful-management.java/badge.png?branch=master)](https://coveralls.io/r/contentful/contentful-management.java?branch=master)
 
 Java SDK for [Contentful's][1] Content Management API.
 
