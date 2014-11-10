@@ -1,0 +1,45 @@
+{
+  "name": "Blog Post",
+  "fields": [
+    {
+      "id": "titleid",
+      "name": "titlename",
+      "type": "Text"
+    },
+    {
+      "id": "bodyid",
+      "name": "bodyname",
+      "type": "Text"
+    }
+  ],
+  "sys": {
+    "id": "contenttypeid",
+    "type": "ContentType",
+    "createdAt": "2014-11-05T09:19:49.489Z",
+    "createdBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "cuid"
+      }
+    },
+    "space": {
+      "sys": {
+        "type": "Link",
+        "linkType": "Space",
+        "id": "spaceid"
+      }
+    },
+    "firstPublishedAt": "2014-11-05T09:20:41.770Z",
+    "publishedCounter": 1,
+    "version": 3,
+    "updatedAt": "2014-11-05T09:44:09.857Z",
+    "updatedBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "uuid"
+      }
+    }
+  }
+}

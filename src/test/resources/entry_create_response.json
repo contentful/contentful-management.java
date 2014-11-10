@@ -1,0 +1,45 @@
+{
+  "fields": {
+    "id1": {
+      "en-US": "value1"
+    },
+    "id2": {
+      "en-US": "value2"
+    }
+  },
+  "sys": {
+    "id": "entryid",
+    "type": "Entry",
+    "version": 1,
+    "createdAt": "2014-11-06T14:18:27.081Z",
+    "createdBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "userid"
+      }
+    },
+    "space": {
+      "sys": {
+        "type": "Link",
+        "linkType": "Space",
+        "id": "spaceid"
+      }
+    },
+    "contentType": {
+      "sys": {
+        "type": "Link",
+        "linkType": "ContentType",
+        "id": "ct"
+      }
+    },
+    "updatedAt": "2014-11-06T14:18:27.081Z",
+    "updatedBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "userid"
+      }
+    }
+  }
+}

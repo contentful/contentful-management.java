@@ -1,0 +1,99 @@
+{
+  "sys": {
+    "type": "Array"
+  },
+  "total": 2,
+  "skip": 0,
+  "limit": 100,
+  "items": [
+    {
+      "name": "Blog Post",
+      "fields": [
+        {
+          "id": "titleid",
+          "name": "titlename",
+          "type": "Text",
+          "uiid": "4o1p9hkj9q8",
+          "localized": false
+        },
+        {
+          "id": "bodyid",
+          "name": "bodyname",
+          "type": "Text",
+          "uiid": "3qfg69lne2o"
+        }
+      ],
+      "sys": {
+        "id": "blog-post",
+        "type": "ContentType",
+        "createdAt": "2014-11-04T09:20:38.666Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "47ucx8wPpr1JvqcUCzLeAK"
+          }
+        },
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "ajlz3tpv4hl9"
+          }
+        },
+        "version": 4,
+        "updatedAt": "2014-11-04T09:23:18.834Z",
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "47ucx8wPpr1JvqcUCzLeAK"
+          }
+        }
+      }
+    },
+    {
+      "name": "Blog Post",
+      "fields": [
+        {
+          "id": "title",
+          "name": "Title",
+          "type": "Text"
+        },
+        {
+          "id": "body",
+          "name": "Body",
+          "type": "Text"
+        }
+      ],
+      "sys": {
+        "id": "blog-post2",
+        "type": "ContentType",
+        "createdAt": "2014-11-04T09:40:04.967Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "47ucx8wPpr1JvqcUCzLeAK"
+          }
+        },
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "ajlz3tpv4hl9"
+          }
+        },
+        "version": 1,
+        "updatedAt": "2014-11-04T09:40:05.007Z",
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "47ucx8wPpr1JvqcUCzLeAK"
+          }
+        }
+      }
+    }
+  ]
+}
