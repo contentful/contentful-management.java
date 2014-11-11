@@ -8,11 +8,11 @@ import kotlin.test.assertEquals
  * Created by tomxor on 10/11/14.
  */
 class ModuleTests : BaseTest() {
-    var module: AbsModule? = null
+    var module: AbsModule<Any>? = null
 
     before fun setup() {
         super<BaseTest>.setUp()
-        module = object : AbsModule(null) {}
+        module = object : AbsModule<Any>(null) {}
     }
 
     test(expected = javaClass<IllegalArgumentException>())

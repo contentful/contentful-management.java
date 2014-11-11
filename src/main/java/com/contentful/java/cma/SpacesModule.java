@@ -5,9 +5,9 @@ import retrofit.client.Response;
 /**
  * Spaces Module.
  */
-class SpacesModule extends AbsModule {
-  SpacesModule(CMAClient client) {
-    super(client);
+class SpacesModule extends AbsModule<ServiceSpaces> {
+  SpacesModule(ServiceSpaces retrofitService) {
+    super(retrofitService);
   }
 
   /**
@@ -18,7 +18,7 @@ class SpacesModule extends AbsModule {
    */
   public CMASpace create(String spaceName) {
     assertNotNull(spaceName, "spaceName");
-    return client.service.spacesCreate(new CMASpace().setName(spaceName));
+    return service.spacesCreate(new CMASpace().setName(spaceName));
   }
 
   /**
@@ -31,7 +31,7 @@ class SpacesModule extends AbsModule {
   public CMASpace create(String spaceName, String organizationId) {
     assertNotNull(spaceName, "spaceName");
     assertNotNull(organizationId, "organizationId");
-    return client.service.spacesCreate(organizationId, new CMASpace().setName(spaceName));
+    return service.spacesCreate(organizationId, new CMASpace().setName(spaceName));
   }
 
   /**
@@ -42,7 +42,7 @@ class SpacesModule extends AbsModule {
    */
   public Response delete(String spaceId) {
     assertNotNull(spaceId, "spaceId");
-    return client.service.spacesDelete(spaceId);
+    return service.spacesDelete(spaceId);
   }
 
   /**
@@ -51,7 +51,7 @@ class SpacesModule extends AbsModule {
    * @return {@link CMAArray} result instance
    */
   public CMAArray<CMASpace> fetchAll() {
-    return client.service.spacesFetchAll();
+    return service.spacesFetchAll();
   }
 
   /**
@@ -62,7 +62,7 @@ class SpacesModule extends AbsModule {
    */
   public CMASpace fetchOne(String spaceId) {
     assertNotNull(spaceId, "spaceId");
-    return client.service.spacesFetchOne(spaceId);
+    return service.spacesFetchOne(spaceId);
   }
 
   /**
@@ -78,6 +78,6 @@ class SpacesModule extends AbsModule {
 
     CMASpace update = new CMASpace();
     update.name = space.name;
-    return client.service.spacesUpdate(space.getVersion(), spaceId, update);
+    return service.spacesUpdate(space.getVersion(), spaceId, update);
   }
 }
