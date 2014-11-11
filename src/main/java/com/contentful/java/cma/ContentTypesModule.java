@@ -1,5 +1,6 @@
 package com.contentful.java.cma;
 
+import com.contentful.java.cma.RxExtensions.DefFunc;
 import java.util.HashMap;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -8,8 +9,11 @@ import retrofit.client.Response;
  * Content Types Module.
  */
 class ContentTypesModule extends AbsModule<ServiceContentTypes> {
+  final Async async;
+
   ContentTypesModule(ServiceContentTypes retrofitService) {
     super(retrofitService);
+    this.async = new Async();
   }
 
   /**
@@ -22,8 +26,8 @@ class ContentTypesModule extends AbsModule<ServiceContentTypes> {
    * @param contentType Content Type
    * @return {@link CMAContentType} result instance
    */
-  @SuppressWarnings("unchecked")
-  public CMAContentType create(String spaceId, CMAContentType contentType) {
+  @SuppressWarnings("unchecked") public CMAContentType create(String spaceId,
+      CMAContentType contentType) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(contentType, "contentType");
 
@@ -42,7 +46,7 @@ class ContentTypesModule extends AbsModule<ServiceContentTypes> {
       return result;
     } catch (RetrofitError e) {
       contentType.sys = sys;
-      throw(e);
+      throw (e);
     }
   }
 
@@ -122,5 +126,74 @@ class ContentTypesModule extends AbsModule<ServiceContentTypes> {
     String spaceId = getSpaceIdOrThrow(contentType, "contentType");
     return service.contentTypesUpdate(contentType.getVersion(), spaceId, contentTypeId,
         contentType);
+  }
+
+  public Async async() {
+    return async;
+  }
+
+  final class Async {
+    public CMACallback<CMAContentType> create(final String spaceId,
+        final CMAContentType contentType, CMACallback<CMAContentType> callback) {
+      return defer(new DefFunc<CMAContentType>() {
+        @Override CMAContentType method() {
+          return ContentTypesModule.this.create(spaceId, contentType);
+        }
+      }, callback);
+    }
+
+    public CMACallback<Response> delete(final String spaceId, final String contentTypeId,
+        CMACallback<Response> callback) {
+      return defer(new DefFunc<Response>() {
+        @Override Response method() {
+          return ContentTypesModule.this.delete(spaceId, contentTypeId);
+        }
+      }, callback);
+    }
+
+    public CMACallback<CMAArray<CMAContentType>> fetchAll(final String spaceId,
+        CMACallback<CMAArray<CMAContentType>> callback) {
+      return defer(new DefFunc<CMAArray<CMAContentType>>() {
+        @Override CMAArray<CMAContentType> method() {
+          return ContentTypesModule.this.fetchAll(spaceId);
+        }
+      }, callback);
+    }
+
+    public CMACallback<CMAContentType> fetchOne(final String spaceId, final String contentTypeId,
+        CMACallback<CMAContentType> callback) {
+      return defer(new DefFunc<CMAContentType>() {
+        @Override CMAContentType method() {
+          return ContentTypesModule.this.fetchOne(spaceId, contentTypeId);
+        }
+      }, callback);
+    }
+
+    public CMACallback<CMAContentType> publish(final CMAContentType contentType,
+        CMACallback<CMAContentType> callback) {
+      return defer(new DefFunc<CMAContentType>() {
+        @Override CMAContentType method() {
+          return ContentTypesModule.this.publish(contentType);
+        }
+      }, callback);
+    }
+
+    public CMACallback<CMAContentType> unPublish(final CMAContentType contentType,
+        CMACallback<CMAContentType> callback) {
+      return defer(new DefFunc<CMAContentType>() {
+        @Override CMAContentType method() {
+          return ContentTypesModule.this.unPublish(contentType);
+        }
+      }, callback);
+    }
+
+    public CMACallback<CMAContentType> update(final CMAContentType contentType,
+        CMACallback<CMAContentType> callback) {
+      return defer(new DefFunc<CMAContentType>() {
+        @Override CMAContentType method() {
+          return ContentTypesModule.this.update(contentType);
+        }
+      }, callback);
+    }
   }
 }

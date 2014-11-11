@@ -1,5 +1,9 @@
 package com.contentful.java.cma;
 
+import com.contentful.java.cma.RxExtensions.DefFunc;
+import rx.Observable;
+import rx.schedulers.Schedulers;
+
 /**
  * Base Module.
  */
@@ -33,5 +37,15 @@ abstract class AbsModule<T> {
           "%s must have a space associated.", param));
     }
     return spaceId;
+  }
+
+  <R> CMACallback<R> defer(DefFunc<R> func, CMACallback<R> callback) {
+    assertNotNull(callback, "callback");
+    Observable.defer(func)
+        .observeOn(Schedulers.io())
+        .subscribe(
+            new RxExtensions.ActionSuccess<R>(callback),
+            new RxExtensions.ActionError(callback));
+    return callback;
   }
 }

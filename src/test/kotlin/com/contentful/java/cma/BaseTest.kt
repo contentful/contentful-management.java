@@ -5,6 +5,9 @@ import com.google.gson.Gson
 import org.junit.Before as before
 import org.junit.After as after
 import com.google.gson.GsonBuilder
+import com.contentful.java.cma.lib.TestCallback
+import kotlin.test.assertNull
+import kotlin.test.assertNotNull
 
 /**
  * BaseTest.
@@ -30,6 +33,16 @@ open class BaseTest {
 
     after fun tearDown() {
         server!!.shutdown()
+    }
+
+    fun <T> assertTestCallback(cb: TestCallback<T>): T {
+        cb.await()
+        assertNull(cb.error)
+        if (cb.allowEmpty) {
+            return null
+        }
+        assertNotNull(cb.value)
+        return cb.value!!
     }
 }
 

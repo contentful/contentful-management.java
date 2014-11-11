@@ -1,5 +1,6 @@
 package com.contentful.java.cma;
 
+import com.contentful.java.cma.RxExtensions.DefFunc;
 import java.util.HashMap;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -8,8 +9,11 @@ import retrofit.client.Response;
  * Entries Module.
  */
 class EntriesModule extends AbsModule<ServiceEntries> {
+  final Async async;
+
   EntriesModule(ServiceEntries retrofitService) {
     super(retrofitService);
+    this.async = new Async();
   }
 
   /**
@@ -35,8 +39,7 @@ class EntriesModule extends AbsModule<ServiceEntries> {
    * @param entry Entry
    * @return {@link CMAEntry} result instance
    */
-  @SuppressWarnings("unchecked")
-  public CMAEntry create(String spaceId, CMAEntry entry) {
+  @SuppressWarnings("unchecked") public CMAEntry create(String spaceId, CMAEntry entry) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(entry, "entry");
 
@@ -55,7 +58,7 @@ class EntriesModule extends AbsModule<ServiceEntries> {
       return result;
     } catch (RetrofitError e) {
       entry.sys = sys;
-      throw(e);
+      throw (e);
     }
   }
 
@@ -149,5 +152,87 @@ class EntriesModule extends AbsModule<ServiceEntries> {
     CMAEntry update = new CMAEntry();
     update.fields = entry.fields;
     return service.entriesUpdate(entry.getVersion(), spaceId, entryId, update);
+  }
+
+  public Async async() {
+    return async;
+  }
+
+  final class Async {
+    public CMACallback<CMAEntry> archive(final CMAEntry entry, CMACallback<CMAEntry> callback) {
+      return defer(new DefFunc<CMAEntry>() {
+        @Override CMAEntry method() {
+          return EntriesModule.this.archive(entry);
+        }
+      }, callback);
+    }
+
+    public CMACallback<CMAEntry> create(final String spaceId, final CMAEntry entry,
+        CMACallback<CMAEntry> callback) {
+      return defer(new DefFunc<CMAEntry>() {
+        @Override CMAEntry method() {
+          return EntriesModule.this.create(spaceId, entry);
+        }
+      }, callback);
+    }
+
+    public CMACallback<Response> delete(final String spaceId, final String entryId,
+        CMACallback<Response> callback) {
+      return defer(new DefFunc<Response>() {
+        @Override Response method() {
+          return EntriesModule.this.delete(spaceId, entryId);
+        }
+      }, callback);
+    }
+
+    public CMACallback<CMAArray<CMAEntry>> fetchAll(final String spaceId,
+        CMACallback<CMAArray<CMAEntry>> callback) {
+      return defer(new DefFunc<CMAArray<CMAEntry>>() {
+        @Override CMAArray<CMAEntry> method() {
+          return EntriesModule.this.fetchAll(spaceId);
+        }
+      }, callback);
+    }
+
+    public CMACallback<CMAEntry> fetchOne(final String spaceId, final String entryId,
+        CMACallback<CMAEntry> callback) {
+      return defer(new DefFunc<CMAEntry>() {
+        @Override CMAEntry method() {
+          return EntriesModule.this.fetchOne(spaceId, entryId);
+        }
+      }, callback);
+    }
+
+    public CMACallback<CMAEntry> publish(final CMAEntry entry, CMACallback<CMAEntry> callback) {
+      return defer(new DefFunc<CMAEntry>() {
+        @Override CMAEntry method() {
+          return EntriesModule.this.publish(entry);
+        }
+      }, callback);
+    }
+
+    public CMACallback<CMAEntry> unArchive(final CMAEntry entry, CMACallback<CMAEntry> callback) {
+      return defer(new DefFunc<CMAEntry>() {
+        @Override CMAEntry method() {
+          return EntriesModule.this.unArchive(entry);
+        }
+      }, callback);
+    }
+
+    public CMACallback<CMAEntry> unPublish(final CMAEntry entry, CMACallback<CMAEntry> callback) {
+      return defer(new DefFunc<CMAEntry>() {
+        @Override CMAEntry method() {
+          return EntriesModule.this.unPublish(entry);
+        }
+      }, callback);
+    }
+
+    public CMACallback<CMAEntry> update(final CMAEntry entry, CMACallback<CMAEntry> callback) {
+      return defer(new DefFunc<CMAEntry>() {
+        @Override CMAEntry method() {
+          return EntriesModule.this.update(entry);
+        }
+      }, callback);
+    }
   }
 }

@@ -1,5 +1,6 @@
 package com.contentful.java.cma;
 
+import com.contentful.java.cma.RxExtensions.DefFunc;
 import java.util.HashMap;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -8,8 +9,11 @@ import retrofit.client.Response;
  * Assets Module.
  */
 class AssetsModule extends AbsModule<ServiceAssets> {
+  final Async async;
+
   AssetsModule(ServiceAssets service) {
     super(service);
+    this.async = new Async();
   }
 
   /**
@@ -35,8 +39,7 @@ class AssetsModule extends AbsModule<ServiceAssets> {
    * @param asset Asset
    * @return {@link CMAAsset} result instance
    */
-  @SuppressWarnings("unchecked")
-  public CMAAsset create(String spaceId, CMAAsset asset) {
+  @SuppressWarnings("unchecked") public CMAAsset create(String spaceId, CMAAsset asset) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(asset, "asset");
 
@@ -55,7 +58,7 @@ class AssetsModule extends AbsModule<ServiceAssets> {
       return result;
     } catch (RetrofitError e) {
       asset.sys = sys;
-      throw(e);
+      throw (e);
     }
   }
 
@@ -162,5 +165,96 @@ class AssetsModule extends AbsModule<ServiceAssets> {
     CMAAsset update = new CMAAsset();
     update.fields = asset.fields;
     return service.assetsUpdate(asset.getVersion(), spaceId, assetId, update);
+  }
+
+  public Async async() {
+    return async;
+  }
+
+  final class Async {
+    public CMACallback<CMAAsset> archive(final CMAAsset asset, CMACallback<CMAAsset> callback) {
+      return defer(new DefFunc<CMAAsset>() {
+        @Override CMAAsset method() {
+          return AssetsModule.this.archive(asset);
+        }
+      }, callback);
+    }
+
+    public CMACallback<CMAAsset> create(final String spaceId, final CMAAsset asset,
+        CMACallback<CMAAsset> callback) {
+      return defer(new DefFunc<CMAAsset>() {
+        @Override CMAAsset method() {
+          return AssetsModule.this.create(spaceId, asset);
+        }
+      }, callback);
+    }
+
+    public CMACallback<Response> delete(final String spaceId, final String assetId,
+        CMACallback<Response> callback) {
+      return defer(new DefFunc<Response>() {
+        @Override Response method() {
+          return AssetsModule.this.delete(spaceId, assetId);
+        }
+      }, callback);
+    }
+
+    public CMACallback<CMAArray<CMAAsset>> fetchAll(final String spaceId,
+        CMACallback<CMAArray<CMAAsset>> callback) {
+      return defer(new DefFunc<CMAArray<CMAAsset>>() {
+        @Override CMAArray<CMAAsset> method() {
+          return AssetsModule.this.fetchAll(spaceId);
+        }
+      }, callback);
+    }
+
+    public CMACallback<CMAAsset> fetchOne(final String spaceId, final String assetId,
+        CMACallback<CMAAsset> callback) {
+      return defer(new DefFunc<CMAAsset>() {
+        @Override CMAAsset method() {
+          return AssetsModule.this.fetchOne(spaceId, assetId);
+        }
+      }, callback);
+    }
+
+    public CMACallback<Response> process(final CMAAsset asset, final String locale,
+        CMACallback<Response> callback) {
+      return defer(new DefFunc<Response>() {
+        @Override Response method() {
+          return AssetsModule.this.process(asset, locale);
+        }
+      }, callback);
+    }
+
+    public CMACallback<CMAAsset> publish(final CMAAsset asset, CMACallback<CMAAsset> callback) {
+      return defer(new DefFunc<CMAAsset>() {
+        @Override CMAAsset method() {
+          return AssetsModule.this.publish(asset);
+        }
+      }, callback);
+    }
+
+    public CMACallback<CMAAsset> unArchive(final CMAAsset asset, CMACallback<CMAAsset> callback) {
+      return defer(new DefFunc<CMAAsset>() {
+        @Override CMAAsset method() {
+          return AssetsModule.this.unArchive(asset);
+        }
+      }, callback);
+    }
+
+    public CMACallback<CMAAsset> unPublish(final CMAAsset asset, CMACallback<CMAAsset> callback) {
+      return defer(new DefFunc<CMAAsset>() {
+        @Override CMAAsset method() {
+          return AssetsModule.this.unPublish(asset);
+        }
+      }, callback);
+    }
+
+    public CMACallback<CMAAsset> update(final CMAAsset asset, CMACallback<CMAAsset> callback) {
+      return defer(new DefFunc<CMAAsset>() {
+        @Override CMAAsset method() {
+          return AssetsModule.this.update(asset);
+        }
+      }, callback);
+    }
   }
 }

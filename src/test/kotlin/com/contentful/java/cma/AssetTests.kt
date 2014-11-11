@@ -7,6 +7,8 @@ import com.contentful.java.cma.lib.getBodyAsString
 import kotlin.test.*
 import retrofit.RetrofitError
 import java.io.IOException
+import com.contentful.java.cma.lib.TestCallback
+import org.junit.Test
 
 /**
  * Asset Tests.
@@ -17,7 +19,9 @@ class AssetTests : BaseTest() {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
         val asset = CMAAsset().setId("assetid").setSpaceId("spaceid")
         assertFalse(asset.isArchived())
-        val result = client!!.assets().archive(asset)
+
+        val result = assertTestCallback(client!!.assets().async().archive(
+                asset, TestCallback()) as TestCallback)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -35,7 +39,8 @@ class AssetTests : BaseTest() {
                 .addField("title", "title", "en-US")
                 .addField("description", "description", "en-US")
 
-        client!!.assets().create("spaceid", asset)
+        assertTestCallback(client!!.assets().async().create(
+                "spaceid", asset, TestCallback()) as TestCallback)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -54,7 +59,8 @@ class AssetTests : BaseTest() {
                 .addField("title", "title", "en-US")
                 .addField("description", "description", "en-US")
 
-        client!!.assets().create("spaceid", asset)
+        assertTestCallback(client!!.assets().async().create(
+                "spaceid", asset, TestCallback()) as TestCallback)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -65,7 +71,8 @@ class AssetTests : BaseTest() {
 
     test fun testDelete() {
         server!!.enqueue(MockResponse().setResponseCode(200))
-        client!!.assets().delete("spaceid", "assetid")
+        assertTestCallback(client!!.assets().async().delete(
+                "spaceid", "assetid", TestCallback()) as TestCallback)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -77,7 +84,9 @@ class AssetTests : BaseTest() {
         val responseBody = Utils.fileToString("asset_fetch_all_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
-        val result = client!!.assets().fetchAll("spaceid")
+        val result = assertTestCallback(client!!.assets().async().fetchAll(
+                "spaceid", TestCallback()) as TestCallback)
+
         assertEquals("Array", result.sys["type"])
         assertEquals(1, result.total)
         assertEquals(1, result.items.size)
@@ -94,7 +103,9 @@ class AssetTests : BaseTest() {
     test fun testFetchWithId() {
         server!!.enqueue(MockResponse().setResponseCode(200))
 
-        client!!.assets().fetchOne("spaceid", "assetid")
+        assertTestCallback(client!!.assets().async().fetchOne(
+                "spaceid", "assetid",
+                TestCallback(true)) as TestCallback)
 
         // Request
         val request = server!!.takeRequest()
@@ -105,9 +116,9 @@ class AssetTests : BaseTest() {
     test fun testProcess() {
         server!!.enqueue(MockResponse().setResponseCode(200))
 
-        client!!.assets().process(CMAAsset()
+        assertTestCallback(client!!.assets().async().process(CMAAsset()
                 .setId("assetid")
-                .setSpaceId("spaceid"), "locale")
+                .setSpaceId("spaceid"), "locale", TestCallback()) as TestCallback)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -121,7 +132,9 @@ class AssetTests : BaseTest() {
 
         val asset = CMAAsset().setId("assetid").setSpaceId("spaceid").setVersion(1.0)
         assertFalse(asset.isPublished())
-        val result = client!!.assets().publish(asset)
+
+        val result = assertTestCallback(client!!.assets().async().publish(
+                asset, TestCallback()) as TestCallback)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -133,7 +146,10 @@ class AssetTests : BaseTest() {
 
     test fun testUnArchive() {
         server!!.enqueue(MockResponse().setResponseCode(200))
-        client!!.assets().unArchive(CMAAsset().setId("assetid").setSpaceId("spaceid"))
+
+        assertTestCallback(client!!.assets().async().unArchive(
+                CMAAsset().setId("assetid").setSpaceId("spaceid"),
+                TestCallback(true)) as TestCallback)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -143,7 +159,10 @@ class AssetTests : BaseTest() {
 
     test fun testUnPublish() {
         server!!.enqueue(MockResponse().setResponseCode(200))
-        client!!.assets().unPublish(CMAAsset().setId("assetid").setSpaceId("spaceid"))
+
+        assertTestCallback(client!!.assets().async().unPublish(
+                CMAAsset().setId("assetid").setSpaceId("spaceid"),
+                TestCallback(true)) as TestCallback)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -155,7 +174,7 @@ class AssetTests : BaseTest() {
         val requestBody = Utils.fileToString("asset_update_request.json")
         server!!.enqueue(MockResponse().setResponseCode(200))
 
-        client!!.assets().update(CMAAsset()
+        assertTestCallback(client!!.assets().async().update(CMAAsset()
                 .setId("assetid")
                 .setSpaceId("spaceid")
                 .setVersion(1.0)
@@ -163,7 +182,7 @@ class AssetTests : BaseTest() {
                         Pair("content_type", "image/jpeg"),
                         Pair("upload", "https://www.nowhere.com/image.jpg"),
                         Pair("fileName", "example.jpg")
-                ), "en-US"))
+                ), "en-US"), TestCallback(true)) as TestCallback)
 
         // Request
         val recordedRequest = server!!.takeRequest()
