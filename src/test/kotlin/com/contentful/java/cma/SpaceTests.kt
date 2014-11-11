@@ -15,7 +15,9 @@ class SpaceTests : BaseTest() {
         val responseBody = Utils.fileToString("space_create_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
-        val result = client!!.spaces().create("xxx")
+        val result = assertTestCallback(client!!.spaces().async().create(
+                "xxx", TestCallback()) as TestCallback)
+
         assertEquals("spaceid", result.sys["id"])
         assertEquals("xxx", result.name)
 
@@ -28,7 +30,9 @@ class SpaceTests : BaseTest() {
 
     test fun testCreateInOrg() {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody("{}"))
-        client!!.spaces().create("whatever", "org")
+
+        assertTestCallback(client!!.spaces().async().create(
+                "whatever", "org", TestCallback()) as TestCallback)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -39,7 +43,9 @@ class SpaceTests : BaseTest() {
 
     test fun testDelete() {
         server!!.enqueue(MockResponse().setResponseCode(200))
-        client!!.spaces().delete("spaceid")
+
+        assertTestCallback(client!!.spaces().async().delete(
+                "spaceid", TestCallback()) as TestCallback)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -51,7 +57,9 @@ class SpaceTests : BaseTest() {
         val responseBody = Utils.fileToString("space_fetch_all_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
-        val result = client!!.spaces().fetchAll()
+        val result = assertTestCallback(client!!.spaces().async()
+                .fetchAll(TestCallback()) as TestCallback)
+
         assertEquals("Array", result.sys["type"])
         assertEquals(2, result.items.size)
         assertEquals(2, result.total)
@@ -108,7 +116,9 @@ class SpaceTests : BaseTest() {
         val responseBody = Utils.fileToString("space_fetch_one_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
-        val result = client!!.spaces().fetchOne("spaceid")
+        val result = assertTestCallback(client!!.spaces().async().fetchOne(
+                "spaceid", TestCallback()) as TestCallback)
+
         assertEquals("Space", result.sys["type"])
         assertEquals("id1", result.sys["id"])
         assertEquals(1.toDouble(), result.sys["version"])
@@ -144,7 +154,10 @@ class SpaceTests : BaseTest() {
                 javaClass<CMASpace>())
 
         space.name = "newname"
-        space = client!!.spaces().update(space)
+
+        space = assertTestCallback(client!!.spaces().async().update(
+                space, TestCallback()) as TestCallback)
+
         assertEquals(2.toDouble(), space.sys["version"])
         assertEquals("newname", space.name)
 

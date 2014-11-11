@@ -16,12 +16,13 @@ class ContentTypeTests : BaseTest() {
         val responseBody = Utils.fileToString("content_type_create_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
-        val result = client!!.contentTypes().create(
+        val result = assertTestCallback(client!!.contentTypes().async().create(
                 "spaceid",
                 CMAContentType()
                         .setName("whatever1")
                         .addField(CMAField().setId("f1").setName("field1").setType("Text"))
-                        .addField(CMAField().setId("f2").setName("field2").setType("Number")))
+                        .addField(CMAField().setId("f2").setName("field2").setType("Number")),
+                TestCallback()) as TestCallback)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -36,13 +37,14 @@ class ContentTypeTests : BaseTest() {
         val responseBody = Utils.fileToString("content_type_create_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
-        val result = client!!.contentTypes().create(
+        val result = assertTestCallback(client!!.contentTypes().async().create(
                 "spaceid",
                 CMAContentType()
                         .setId("contenttypeid")
                         .setName("whatever1")
                         .addField(CMAField().setId("f1").setName("field1").setType("Text"))
-                        .addField(CMAField().setId("f2").setName("field2").setType("Number")))
+                        .addField(CMAField().setId("f2").setName("field2").setType("Number")),
+                TestCallback()) as TestCallback)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -83,7 +85,10 @@ class ContentTypeTests : BaseTest() {
         assertEquals(1.toDouble(), contentType.sys["version"])
 
         contentType.addField(CMAField().setId("f3").setName("field3").setType("Text"))
-        contentType = client!!.contentTypes().update(contentType)
+
+        contentType = assertTestCallback(client!!.contentTypes().async().update(
+                contentType, TestCallback()) as TestCallback)
+
         assertEquals(3, contentType.fields.size)
 
         // Request
@@ -97,7 +102,9 @@ class ContentTypeTests : BaseTest() {
 
     test fun testDelete() {
         server!!.enqueue(MockResponse().setResponseCode(200))
-        client!!.contentTypes().delete("spaceid", "contenttypeid")
+
+        assertTestCallback(client!!.contentTypes().async().delete(
+                "spaceid", "contenttypeid", TestCallback()) as TestCallback)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -109,7 +116,9 @@ class ContentTypeTests : BaseTest() {
         val responseBody = Utils.fileToString("content_type_fetch_all_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
-        val result = client!!.contentTypes().fetchAll("spaceid")
+        val result = assertTestCallback(client!!.contentTypes().async().fetchAll(
+                "spaceid", TestCallback()) as TestCallback)
+
         assertEquals(2, result.items.size)
         assertEquals("Array", result.sys["type"])
         assertEquals("Blog Post", result.items[0].name)
@@ -146,7 +155,9 @@ class ContentTypeTests : BaseTest() {
         val responseBody = Utils.fileToString("content_type_fetch_one_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
-        val result = client!!.contentTypes().fetchOne("spaceid", "contenttypeid")
+        val result = assertTestCallback(client!!.contentTypes().async().fetchOne(
+                "spaceid", "contenttypeid", TestCallback()) as TestCallback)
+
         assertEquals("Blog Post", result.name)
 
         // Fields
@@ -195,13 +206,14 @@ class ContentTypeTests : BaseTest() {
 
     test fun testPublish() {
         val responseBody = Utils.fileToString("content_type_publish_response.json")
-
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
-        val result = client!!.contentTypes().publish(
+
+        val result = assertTestCallback(client!!.contentTypes().async().publish(
                 CMAContentType()
                         .setId("ctid")
                         .setSpaceId("spaceid")
-                        .setVersion(1.0))
+                        .setVersion(1.0),
+                TestCallback()) as TestCallback)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -214,11 +226,13 @@ class ContentTypeTests : BaseTest() {
     test fun testUnPublish() {
         val responseBody = Utils.fileToString("content_type_unpublish_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
-        val result = client!!.contentTypes().unPublish(
+
+        val result = assertTestCallback(client!!.contentTypes().async().unPublish(
                 CMAContentType()
                         .setId("contenttypeid")
-                        .setSpaceId("spaceid"))
-                        .setName("whatever")
+                        .setSpaceId("spaceid")
+                        .setName("whatever"),
+                TestCallback()) as TestCallback)
 
         // Request
         val recordedRequest = server!!.takeRequest()

@@ -1,13 +1,17 @@
 package com.contentful.java.cma;
 
+import com.contentful.java.cma.RxExtensions.DefFunc;
 import retrofit.client.Response;
 
 /**
  * Spaces Module.
  */
 class SpacesModule extends AbsModule<ServiceSpaces> {
+  final Async async;
+
   SpacesModule(ServiceSpaces retrofitService) {
     super(retrofitService);
+    this.async = new Async();
   }
 
   /**
@@ -79,5 +83,60 @@ class SpacesModule extends AbsModule<ServiceSpaces> {
     CMASpace update = new CMASpace();
     update.name = space.name;
     return service.spacesUpdate(space.getVersion(), spaceId, update);
+  }
+
+  public Async async() {
+    return async;
+  }
+
+  final class Async {
+    public CMACallback<CMASpace> create(final String spaceName, CMACallback<CMASpace> callback) {
+      return defer(new DefFunc<CMASpace>() {
+        @Override CMASpace method() {
+          return SpacesModule.this.create(spaceName);
+        }
+      }, callback);
+    }
+
+    public CMACallback<CMASpace> create(final String spaceName, final String organizationId,
+        CMACallback<CMASpace> callback) {
+      return defer(new DefFunc<CMASpace>() {
+        @Override CMASpace method() {
+          return SpacesModule.this.create(spaceName, organizationId);
+        }
+      }, callback);
+    }
+
+    public CMACallback<Response> delete(final String spaceId, CMACallback<Response> callback) {
+      return defer(new DefFunc<Response>() {
+        @Override Response method() {
+          return SpacesModule.this.delete(spaceId);
+        }
+      }, callback);
+    }
+
+    public CMACallback<CMAArray<CMASpace>> fetchAll(CMACallback<CMAArray<CMASpace>> callback) {
+      return defer(new DefFunc<CMAArray<CMASpace>>() {
+        @Override CMAArray<CMASpace> method() {
+          return SpacesModule.this.fetchAll();
+        }
+      }, callback);
+    }
+
+    public CMACallback<CMASpace> fetchOne(final String spaceId, CMACallback<CMASpace> callback) {
+      return defer(new DefFunc<CMASpace>() {
+        @Override CMASpace method() {
+          return SpacesModule.this.fetchOne(spaceId);
+        }
+      }, callback);
+    }
+
+    public CMACallback<CMASpace> update(final CMASpace space, CMACallback<CMASpace> callback) {
+      return defer(new DefFunc<CMASpace>() {
+        @Override CMASpace method() {
+          return SpacesModule.this.update(space);
+        }
+      }, callback);
+    }
   }
 }
