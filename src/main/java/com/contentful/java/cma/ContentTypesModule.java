@@ -7,9 +7,9 @@ import retrofit.client.Response;
 /**
  * Content Types Module.
  */
-class ContentTypesModule extends AbsModule {
-  ContentTypesModule(CMAClient client) {
-    super(client);
+class ContentTypesModule extends AbsModule<ServiceContentTypes> {
+  ContentTypesModule(ServiceContentTypes retrofitService) {
+    super(retrofitService);
   }
 
   /**
@@ -34,9 +34,9 @@ class ContentTypesModule extends AbsModule {
     try {
       CMAContentType result;
       if (contentTypeId == null) {
-        result = client.service.contentTypesCreate(spaceId, contentType);
+        result = service.contentTypesCreate(spaceId, contentType);
       } else {
-        result = client.service.contentTypesCreate(spaceId, contentTypeId, contentType);
+        result = service.contentTypesCreate(spaceId, contentTypeId, contentType);
       }
       contentType.sys = sys;
       return result;
@@ -56,7 +56,7 @@ class ContentTypesModule extends AbsModule {
   public Response delete(String spaceId, String contentTypeId) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(contentTypeId, "contentTypeId");
-    return client.service.contentTypesDelete(spaceId, contentTypeId);
+    return service.contentTypesDelete(spaceId, contentTypeId);
   }
 
   /**
@@ -67,7 +67,7 @@ class ContentTypesModule extends AbsModule {
    */
   public CMAArray<CMAContentType> fetchAll(String spaceId) {
     assertNotNull(spaceId, "spaceId");
-    return client.service.contentTypesFetchOne(spaceId);
+    return service.contentTypesFetchOne(spaceId);
   }
 
   /**
@@ -80,7 +80,7 @@ class ContentTypesModule extends AbsModule {
   public CMAContentType fetchOne(String spaceId, String contentTypeId) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(contentTypeId, "contentTypeId");
-    return client.service.contentTypesFetchOne(spaceId, contentTypeId);
+    return service.contentTypesFetchOne(spaceId, contentTypeId);
   }
 
   /**
@@ -93,7 +93,7 @@ class ContentTypesModule extends AbsModule {
     assertNotNull(contentType, "contentType");
     String contentTypeId = getResourceIdOrThrow(contentType, "contentType");
     String spaceId = getSpaceIdOrThrow(contentType, "contentType");
-    return client.service.contentTypesPublish(contentType.getVersion(), spaceId, contentTypeId);
+    return service.contentTypesPublish(contentType.getVersion(), spaceId, contentTypeId);
   }
 
   /**
@@ -106,7 +106,7 @@ class ContentTypesModule extends AbsModule {
     assertNotNull(contentType, "contentType");
     String contentTypeId = getResourceIdOrThrow(contentType, "contentType");
     String spaceId = getSpaceIdOrThrow(contentType, "contentType");
-    return client.service.contentTypesUnPublish(spaceId, contentTypeId);
+    return service.contentTypesUnPublish(spaceId, contentTypeId);
   }
 
   /**
@@ -120,7 +120,7 @@ class ContentTypesModule extends AbsModule {
     assertNotNull(contentType.name, "contentType.name");
     String contentTypeId = getResourceIdOrThrow(contentType, "contentType");
     String spaceId = getSpaceIdOrThrow(contentType, "contentType");
-    return client.service.contentTypesUpdate(contentType.getVersion(), spaceId, contentTypeId,
+    return service.contentTypesUpdate(contentType.getVersion(), spaceId, contentTypeId,
         contentType);
   }
 }

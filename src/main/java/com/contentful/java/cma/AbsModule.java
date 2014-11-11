@@ -3,11 +3,11 @@ package com.contentful.java.cma;
 /**
  * Base Module.
  */
-abstract class AbsModule {
-  final CMAClient client;
+abstract class AbsModule<T> {
+  final T service;
 
-  AbsModule(CMAClient client) {
-    this.client = client;
+  AbsModule(T retrofitService) {
+    this.service = retrofitService;
   }
 
   void assertNotNull(Object object, String param) {

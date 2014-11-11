@@ -13,12 +13,10 @@ import retrofit.converter.GsonConverter;
  * CMAClient.
  */
 public class CMAClient {
-  final CMAService service;
-
-  private final AssetsModule assetsModule;
-  private final ContentTypesModule contentTypesModule;
-  private final EntriesModule entriesModule;
-  private final SpacesModule spacesModule;
+  final AssetsModule assetsModule;
+  final ContentTypesModule contentTypesModule;
+  final EntriesModule entriesModule;
+  final SpacesModule spacesModule;
 
   private CMAClient(Builder builder) {
     if (builder.accessToken == null) {
@@ -37,7 +35,7 @@ public class CMAClient {
     }).create();
 
     // Retrofit RestAdapter
-    RestAdapter.Builder adapter =
+    RestAdapter.Builder restBuilder =
         new RestAdapter.Builder().setEndpoint("https://api.contentful.com")
             .setRequestInterceptor(createInterceptor(builder))
             .setConverter(new GsonConverter(gson))
@@ -45,22 +43,21 @@ public class CMAClient {
 
     // Endpoint
     if (builder.endpoint != null) {
-      adapter.setEndpoint(builder.endpoint);
+      restBuilder.setEndpoint(builder.endpoint);
     }
 
     // Client
     if (builder.client != null) {
-      adapter.setClient(builder.client);
+      restBuilder.setClient(builder.client);
     }
 
-    // Retrofit Service
-    service = adapter.build().create(CMAService.class);
+    RestAdapter adapter = restBuilder.build();
 
     // Modules
-    this.assetsModule = new AssetsModule(this);
-    this.contentTypesModule = new ContentTypesModule(this);
-    this.entriesModule = new EntriesModule(this);
-    this.spacesModule = new SpacesModule(this);
+    this.assetsModule = new AssetsModule(adapter.create(ServiceAssets.class));
+    this.contentTypesModule = new ContentTypesModule(adapter.create(ServiceContentTypes.class));
+    this.entriesModule = new EntriesModule(adapter.create(ServiceEntries.class));
+    this.spacesModule = new SpacesModule(adapter.create(ServiceSpaces.class));
   }
 
   private RequestInterceptor createInterceptor(Builder builder) {

@@ -7,9 +7,9 @@ import retrofit.client.Response;
 /**
  * Assets Module.
  */
-class AssetsModule extends AbsModule {
-  public AssetsModule(CMAClient client) {
-    super(client);
+class AssetsModule extends AbsModule<ServiceAssets> {
+  AssetsModule(ServiceAssets service) {
+    super(service);
   }
 
   /**
@@ -22,7 +22,7 @@ class AssetsModule extends AbsModule {
     assertNotNull(asset, "asset");
     String assetId = getResourceIdOrThrow(asset, "asset");
     String spaceId = getSpaceIdOrThrow(asset, "asset");
-    return client.service.assetsArchive(spaceId, assetId);
+    return service.assetsArchive(spaceId, assetId);
   }
 
   /**
@@ -47,9 +47,9 @@ class AssetsModule extends AbsModule {
     try {
       CMAAsset result;
       if (assetId == null) {
-        result = client.service.assetsCreate(spaceId, asset);
+        result = service.assetsCreate(spaceId, asset);
       } else {
-        result = client.service.assetsCreate(spaceId, assetId, asset);
+        result = service.assetsCreate(spaceId, assetId, asset);
       }
       asset.sys = sys;
       return result;
@@ -69,7 +69,7 @@ class AssetsModule extends AbsModule {
   public Response delete(String spaceId, String assetId) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(assetId, "assetId");
-    return client.service.assetsDelete(spaceId, assetId);
+    return service.assetsDelete(spaceId, assetId);
   }
 
   /**
@@ -80,7 +80,7 @@ class AssetsModule extends AbsModule {
    */
   public CMAArray<CMAAsset> fetchAll(String spaceId) {
     assertNotNull(spaceId, "spaceId");
-    return client.service.assetsFetchAll(spaceId);
+    return service.assetsFetchAll(spaceId);
   }
 
   /**
@@ -93,7 +93,7 @@ class AssetsModule extends AbsModule {
   public CMAAsset fetchOne(String spaceId, String assetId) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(assetId, "entryId");
-    return client.service.assetsFetchOne(spaceId, assetId);
+    return service.assetsFetchOne(spaceId, assetId);
   }
 
   /**
@@ -106,7 +106,7 @@ class AssetsModule extends AbsModule {
     assertNotNull(asset, "asset");
     String assetId = getResourceIdOrThrow(asset, "asset");
     String spaceId = getSpaceIdOrThrow(asset, "asset");
-    return client.service.assetsProcess(spaceId, assetId, locale);
+    return service.assetsProcess(spaceId, assetId, locale);
   }
 
   /**
@@ -119,7 +119,7 @@ class AssetsModule extends AbsModule {
     assertNotNull(asset, "asset");
     String assetId = getResourceIdOrThrow(asset, "asset");
     String spaceId = getSpaceIdOrThrow(asset, "asset");
-    return client.service.assetsPublish(asset.getVersion(), spaceId, assetId);
+    return service.assetsPublish(asset.getVersion(), spaceId, assetId);
   }
 
   /**
@@ -132,7 +132,7 @@ class AssetsModule extends AbsModule {
     assertNotNull(asset, "asset");
     String assetId = getResourceIdOrThrow(asset, "asset");
     String spaceId = getSpaceIdOrThrow(asset, "asset");
-    return client.service.assetsUnArchive(spaceId, assetId);
+    return service.assetsUnArchive(spaceId, assetId);
   }
 
   /**
@@ -145,7 +145,7 @@ class AssetsModule extends AbsModule {
     assertNotNull(asset, "asset");
     String assetId = getResourceIdOrThrow(asset, "asset");
     String spaceId = getSpaceIdOrThrow(asset, "asset");
-    return client.service.assetsUnPublish(spaceId, assetId);
+    return service.assetsUnPublish(spaceId, assetId);
   }
 
   /**
@@ -161,6 +161,6 @@ class AssetsModule extends AbsModule {
 
     CMAAsset update = new CMAAsset();
     update.fields = asset.fields;
-    return client.service.assetsUpdate(asset.getVersion(), spaceId, assetId, update);
+    return service.assetsUpdate(asset.getVersion(), spaceId, assetId, update);
   }
 }
