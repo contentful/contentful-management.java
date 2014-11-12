@@ -14,4 +14,4 @@ Copyright (c) 2014 Contentful GmbH. See [LICENSE.txt][2] for further details.
 
 
  [1]: https://www.contentful.com
- [2]: https://todo-license.com
+ [2]: LICENSE.txt

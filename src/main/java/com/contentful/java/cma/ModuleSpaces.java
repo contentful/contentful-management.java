@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2014 Contentful GmbH
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.contentful.java.cma;
 
 import com.contentful.java.cma.RxExtensions.DefFunc;
@@ -6,10 +22,10 @@ import retrofit.client.Response;
 /**
  * Spaces Module.
  */
-class SpacesModule extends AbsModule<ServiceSpaces> {
+class ModuleSpaces extends AbsModule<ServiceSpaces> {
   final Async async;
 
-  SpacesModule(ServiceSpaces retrofitService) {
+  ModuleSpaces(ServiceSpaces retrofitService) {
     super(retrofitService);
     this.async = new Async();
   }
@@ -29,7 +45,7 @@ class SpacesModule extends AbsModule<ServiceSpaces> {
    * Create a Space in an Organization.
    *
    * @param spaceName Space name
-   * @param organizationId Organization ID
+   * @param organizationId organization ID
    * @return {@link CMASpace} result instance
    */
   public CMASpace create(String spaceName, String organizationId) {
@@ -85,56 +101,104 @@ class SpacesModule extends AbsModule<ServiceSpaces> {
     return service.spacesUpdate(space.getVersion(), spaceId, update);
   }
 
+  /**
+   * Returns a module with a set of asynchronous methods.
+   */
   public Async async() {
     return async;
   }
 
+  /**
+   * Async module.
+   */
   final class Async {
+    /**
+     * Create a Space.
+     *
+     * @param spaceName Space name
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<CMASpace> create(final String spaceName, CMACallback<CMASpace> callback) {
       return defer(new DefFunc<CMASpace>() {
         @Override CMASpace method() {
-          return SpacesModule.this.create(spaceName);
+          return ModuleSpaces.this.create(spaceName);
         }
       }, callback);
     }
 
+    /**
+     * Create a Space in an Organization.
+     *
+     * @param spaceName Space name
+     * @param organizationId organization ID
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<CMASpace> create(final String spaceName, final String organizationId,
         CMACallback<CMASpace> callback) {
       return defer(new DefFunc<CMASpace>() {
         @Override CMASpace method() {
-          return SpacesModule.this.create(spaceName, organizationId);
+          return ModuleSpaces.this.create(spaceName, organizationId);
         }
       }, callback);
     }
 
+    /**
+     * Delete a Space.
+     *
+     * @param spaceId Space ID
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<Response> delete(final String spaceId, CMACallback<Response> callback) {
       return defer(new DefFunc<Response>() {
         @Override Response method() {
-          return SpacesModule.this.delete(spaceId);
+          return ModuleSpaces.this.delete(spaceId);
         }
       }, callback);
     }
 
+    /**
+     * Fetch all Spaces.
+     *
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<CMAArray<CMASpace>> fetchAll(CMACallback<CMAArray<CMASpace>> callback) {
       return defer(new DefFunc<CMAArray<CMASpace>>() {
         @Override CMAArray<CMASpace> method() {
-          return SpacesModule.this.fetchAll();
+          return ModuleSpaces.this.fetchAll();
         }
       }, callback);
     }
 
+    /**
+     * Fetch a Space with a given {@code spaceId}.
+     *
+     * @param spaceId Space ID
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<CMASpace> fetchOne(final String spaceId, CMACallback<CMASpace> callback) {
       return defer(new DefFunc<CMASpace>() {
         @Override CMASpace method() {
-          return SpacesModule.this.fetchOne(spaceId);
+          return ModuleSpaces.this.fetchOne(spaceId);
         }
       }, callback);
     }
 
+    /**
+     * Update a Space.
+     *
+     * @param space Space
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<CMASpace> update(final CMASpace space, CMACallback<CMASpace> callback) {
       return defer(new DefFunc<CMASpace>() {
         @Override CMASpace method() {
-          return SpacesModule.this.update(space);
+          return ModuleSpaces.this.update(space);
         }
       }, callback);
     }

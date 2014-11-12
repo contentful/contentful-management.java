@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2014 Contentful GmbH
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.contentful.java.cma
 
 import org.junit.Test as test
@@ -37,8 +53,8 @@ class EntryTests : BaseTest() {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val entry = CMAEntry()
-                .addField("fid1", "value1", "en-US")
-                .addField("fid2", "value2", "en-US")
+                .setField("fid1", "value1", "en-US")
+                .setField("fid2", "value2", "en-US")
 
         val result = assertTestCallback(client!!.entries()
                 .async()
@@ -67,8 +83,8 @@ class EntryTests : BaseTest() {
 
         val entry = CMAEntry()
                 .setId("entryid")
-                .addField("fid1", "value1", "en-US")
-                .addField("fid2", "value2", "en-US")
+                .setField("fid1", "value1", "en-US")
+                .setField("fid2", "value2", "en-US")
 
         assertTestCallback(client!!.entries().async().create(
                 "spaceid", entry, TestCallback()) as TestCallback)
@@ -139,8 +155,8 @@ class EntryTests : BaseTest() {
                 .setId("entryid")
                 .setSpaceId("spaceid")
                 .setVersion(1.0)
-                .addField("fid1", "newvalue1", "en-US")
-                .addField("fid2", "newvalue2", "en-US"), TestCallback()) as TestCallback)
+                .setField("fid1", "newvalue1", "en-US")
+                .setField("fid2", "newvalue2", "en-US"), TestCallback()) as TestCallback)
 
         val fields = result.fields.entrySet().toList()
 

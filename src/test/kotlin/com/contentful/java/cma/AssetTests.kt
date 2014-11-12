@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2014 Contentful GmbH
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.contentful.java.cma
 
 import org.junit.Test as test
@@ -36,8 +52,8 @@ class AssetTests : BaseTest() {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val asset = CMAAsset()
-                .addField("title", "title", "en-US")
-                .addField("description", "description", "en-US")
+                .setField("title", "title", "en-US")
+                .setField("description", "description", "en-US")
 
         assertTestCallback(client!!.assets().async().create(
                 "spaceid", asset, TestCallback()) as TestCallback)
@@ -56,8 +72,8 @@ class AssetTests : BaseTest() {
 
         val asset = CMAAsset()
                 .setId("assetid")
-                .addField("title", "title", "en-US")
-                .addField("description", "description", "en-US")
+                .setField("title", "title", "en-US")
+                .setField("description", "description", "en-US")
 
         assertTestCallback(client!!.assets().async().create(
                 "spaceid", asset, TestCallback()) as TestCallback)
@@ -178,7 +194,7 @@ class AssetTests : BaseTest() {
                 .setId("assetid")
                 .setSpaceId("spaceid")
                 .setVersion(1.0)
-                .addField("file", linkedMapOf(
+                .setField("file", linkedMapOf(
                         Pair("content_type", "image/jpeg"),
                         Pair("upload", "https://www.nowhere.com/image.jpg"),
                         Pair("fileName", "example.jpg")
