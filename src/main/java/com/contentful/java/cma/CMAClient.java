@@ -20,6 +20,7 @@ import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import java.io.IOException;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.client.Client;
@@ -30,6 +31,9 @@ import retrofit.converter.GsonConverter;
  * API, a client is not associated with one Space, but with one user.
  */
 public class CMAClient {
+  // User Agent
+  String sUserAgent;
+
   // Modules
   final ModuleAssets modAssets;
   final ModuleContentTypes modContentTypes;
@@ -87,6 +91,7 @@ public class CMAClient {
       @Override public void intercept(RequestFacade requestFacade) {
         requestFacade.addHeader("Authorization", "Bearer " + accessToken);
         requestFacade.addHeader("Content-Type", "application/vnd.contentful.management.v1+json");
+        requestFacade.addHeader("User-Agent", getUserAgent());
       }
     };
   }
@@ -117,6 +122,21 @@ public class CMAClient {
    */
   public ModuleSpaces spaces() {
     return modSpaces;
+  }
+
+  /**
+   * Sets the value for {@code sUserAgent} from properties (if needed) and returns it.
+   */
+  String getUserAgent() {
+    if (sUserAgent == null) {
+      try {
+        String versionName = Utils.getFromProperties(Utils.PROP_VERSION_NAME);
+        sUserAgent = String.format("contentful-management.java/%s", versionName);
+      } catch (IOException e) {
+        throw new RuntimeException("Unable to retrieve version name.", e);
+      }
+    }
+    return sUserAgent;
   }
 
   /**

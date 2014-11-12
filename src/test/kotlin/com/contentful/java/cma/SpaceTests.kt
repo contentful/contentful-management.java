@@ -27,8 +27,8 @@ import kotlin.test.assertNotNull
  */
 class SpaceTests : BaseTest() {
     test fun testCreate() {
-        val requestBody = Utils.fileToString("space_create_request.json")
-        val responseBody = Utils.fileToString("space_create_response.json")
+        val requestBody = TestUtils.fileToString("space_create_request.json")
+        val responseBody = TestUtils.fileToString("space_create_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val result = assertTestCallback(client!!.spaces().async().create(
@@ -70,7 +70,7 @@ class SpaceTests : BaseTest() {
     }
 
     test fun testFetchAll() {
-        val responseBody = Utils.fileToString("space_fetch_all_response.json")
+        val responseBody = TestUtils.fileToString("space_fetch_all_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val result = assertTestCallback(client!!.spaces().async()
@@ -129,7 +129,7 @@ class SpaceTests : BaseTest() {
     }
 
     test fun testFetchWithIdentifier() {
-        val responseBody = Utils.fileToString("space_fetch_one_response.json")
+        val responseBody = TestUtils.fileToString("space_fetch_one_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val result = assertTestCallback(client!!.spaces().async().fetchOne(
@@ -161,12 +161,12 @@ class SpaceTests : BaseTest() {
     }
 
     test fun testUpdate() {
-        val requestBody = Utils.fileToString("space_update_request.json")
-        val responseBody = Utils.fileToString("space_update_response.json")
+        val requestBody = TestUtils.fileToString("space_update_request.json")
+        val responseBody = TestUtils.fileToString("space_update_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         var space = gson!!.fromJson(
-                Utils.fileToString("space_update_object.json"),
+                TestUtils.fileToString("space_update_object.json"),
                 javaClass<CMASpace>())
 
         space.name = "newname"

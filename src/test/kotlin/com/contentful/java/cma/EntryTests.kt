@@ -17,7 +17,7 @@
 package com.contentful.java.cma
 
 import org.junit.Test as test
-import com.contentful.java.cma.lib.Utils
+import com.contentful.java.cma.lib.TestUtils
 import com.squareup.okhttp.mockwebserver.MockResponse
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -33,7 +33,7 @@ import com.contentful.java.cma.lib.TestCallback
  */
 class EntryTests : BaseTest() {
     test fun testArchive() {
-        val responseBody = Utils.fileToString("entry_archive_response.json")
+        val responseBody = TestUtils.fileToString("entry_archive_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
         val entry = CMAEntry().setId("entryid").setSpaceId("spaceid")
         assertFalse(entry.isArchived())
@@ -48,8 +48,8 @@ class EntryTests : BaseTest() {
     }
 
     test fun testCreate() {
-        val requestBody = Utils.fileToString("entry_create_request.json")
-        val responseBody = Utils.fileToString("entry_create_response.json")
+        val requestBody = TestUtils.fileToString("entry_create_request.json")
+        val responseBody = TestUtils.fileToString("entry_create_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val entry = CMAEntry()
@@ -77,8 +77,8 @@ class EntryTests : BaseTest() {
     }
 
     test fun testCreateWithId() {
-        val requestBody = Utils.fileToString("entry_create_request.json")
-        val responseBody = Utils.fileToString("entry_create_response.json")
+        val requestBody = TestUtils.fileToString("entry_create_request.json")
+        val responseBody = TestUtils.fileToString("entry_create_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val entry = CMAEntry()
@@ -108,7 +108,7 @@ class EntryTests : BaseTest() {
     }
 
     test fun testFetchAll() {
-        val responseBody = Utils.fileToString("entry_fetch_all_response.json")
+        val responseBody = TestUtils.fileToString("entry_fetch_all_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val result = assertTestCallback(client!!.entries().async().fetchAll(
@@ -128,7 +128,7 @@ class EntryTests : BaseTest() {
     }
 
     test fun testFetchWithId() {
-        val responseBody = Utils.fileToString("entry_fetch_one_response.json")
+        val responseBody = TestUtils.fileToString("entry_fetch_one_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val result = assertTestCallback(client!!.entries().async().fetchOne(
@@ -147,8 +147,8 @@ class EntryTests : BaseTest() {
     }
 
     test fun testUpdate() {
-        val requestBody = Utils.fileToString("entry_update_request.json")
-        val responseBody = Utils.fileToString("entry_update_response.json")
+        val requestBody = TestUtils.fileToString("entry_update_request.json")
+        val responseBody = TestUtils.fileToString("entry_update_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val result = assertTestCallback(client!!.entries().async().update(CMAEntry()

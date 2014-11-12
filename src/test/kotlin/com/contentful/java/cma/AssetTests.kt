@@ -17,7 +17,7 @@
 package com.contentful.java.cma
 
 import org.junit.Test as test
-import com.contentful.java.cma.lib.Utils
+import com.contentful.java.cma.lib.TestUtils
 import com.squareup.okhttp.mockwebserver.MockResponse
 import com.contentful.java.cma.lib.getBodyAsString
 import kotlin.test.*
@@ -31,7 +31,7 @@ import org.junit.Test
  */
 class AssetTests : BaseTest() {
     test fun testArchive() {
-        val responseBody = Utils.fileToString("asset_archive_response.json")
+        val responseBody = TestUtils.fileToString("asset_archive_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
         val asset = CMAAsset().setId("assetid").setSpaceId("spaceid")
         assertFalse(asset.isArchived())
@@ -47,8 +47,8 @@ class AssetTests : BaseTest() {
     }
 
     test fun testCreate() {
-        val requestBody = Utils.fileToString("asset_create_request.json")
-        val responseBody = Utils.fileToString("asset_create_response.json")
+        val requestBody = TestUtils.fileToString("asset_create_request.json")
+        val responseBody = TestUtils.fileToString("asset_create_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val asset = CMAAsset()
@@ -66,8 +66,8 @@ class AssetTests : BaseTest() {
     }
 
     test fun testCreateWithId() {
-        val requestBody = Utils.fileToString("asset_create_request.json")
-        val responseBody = Utils.fileToString("asset_create_response.json")
+        val requestBody = TestUtils.fileToString("asset_create_request.json")
+        val responseBody = TestUtils.fileToString("asset_create_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val asset = CMAAsset()
@@ -97,7 +97,7 @@ class AssetTests : BaseTest() {
     }
 
     test fun testFetchAll() {
-        val responseBody = Utils.fileToString("asset_fetch_all_response.json")
+        val responseBody = TestUtils.fileToString("asset_fetch_all_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val result = assertTestCallback(client!!.assets().async().fetchAll(
@@ -143,7 +143,7 @@ class AssetTests : BaseTest() {
     }
 
     test fun testPublish() {
-        val responseBody = Utils.fileToString("asset_publish_response.json")
+        val responseBody = TestUtils.fileToString("asset_publish_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val asset = CMAAsset().setId("assetid").setSpaceId("spaceid").setVersion(1.0)
@@ -187,7 +187,7 @@ class AssetTests : BaseTest() {
     }
 
     test fun testUpdate() {
-        val requestBody = Utils.fileToString("asset_update_request.json")
+        val requestBody = TestUtils.fileToString("asset_update_request.json")
         server!!.enqueue(MockResponse().setResponseCode(200))
 
         assertTestCallback(client!!.assets().async().update(CMAAsset()

@@ -28,8 +28,8 @@ import java.io.IOException
  */
 class ContentTypeTests : BaseTest() {
     test fun testCreate() {
-        val requestBody = Utils.fileToString("content_type_create_request.json")
-        val responseBody = Utils.fileToString("content_type_create_response.json")
+        val requestBody = TestUtils.fileToString("content_type_create_request.json")
+        val responseBody = TestUtils.fileToString("content_type_create_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val result = assertTestCallback(client!!.contentTypes().async().create(
@@ -49,8 +49,8 @@ class ContentTypeTests : BaseTest() {
     }
 
     test fun testCreateWithId() {
-        val requestBody = Utils.fileToString("content_type_create_request.json")
-        val responseBody = Utils.fileToString("content_type_create_response.json")
+        val requestBody = TestUtils.fileToString("content_type_create_request.json")
+        val responseBody = TestUtils.fileToString("content_type_create_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val result = assertTestCallback(client!!.contentTypes().async().create(
@@ -71,7 +71,7 @@ class ContentTypeTests : BaseTest() {
     }
 
     test fun testCreateWithLink() {
-        val requestBody = Utils.fileToString("content_type_create_with_link.json")
+        val requestBody = TestUtils.fileToString("content_type_create_with_link.json")
         server!!.enqueue(MockResponse().setResponseCode(200))
 
         client!!.contentTypes().create("spaceid", CMAContentType()
@@ -90,12 +90,12 @@ class ContentTypeTests : BaseTest() {
     }
 
     test fun testUpdate() {
-        val requestBody = Utils.fileToString("content_type_update_request.json")
-        val responseBody = Utils.fileToString("content_type_update_response.json")
+        val requestBody = TestUtils.fileToString("content_type_update_request.json")
+        val responseBody = TestUtils.fileToString("content_type_update_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         var contentType = gson!!.fromJson(
-                Utils.fileToString("content_type_update_object.json"),
+                TestUtils.fileToString("content_type_update_object.json"),
                 javaClass<CMAContentType>())
 
         assertEquals(1.toDouble(), contentType.sys["version"])
@@ -129,7 +129,7 @@ class ContentTypeTests : BaseTest() {
     }
 
     test fun testFetchAll() {
-        val responseBody = Utils.fileToString("content_type_fetch_all_response.json")
+        val responseBody = TestUtils.fileToString("content_type_fetch_all_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val result = assertTestCallback(client!!.contentTypes().async().fetchAll(
@@ -168,7 +168,7 @@ class ContentTypeTests : BaseTest() {
     }
 
     test fun testFetchWithId() {
-        val responseBody = Utils.fileToString("content_type_fetch_one_response.json")
+        val responseBody = TestUtils.fileToString("content_type_fetch_one_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val result = assertTestCallback(client!!.contentTypes().async().fetchOne(
@@ -221,7 +221,7 @@ class ContentTypeTests : BaseTest() {
     }
 
     test fun testPublish() {
-        val responseBody = Utils.fileToString("content_type_publish_response.json")
+        val responseBody = TestUtils.fileToString("content_type_publish_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val result = assertTestCallback(client!!.contentTypes().async().publish(
@@ -240,7 +240,7 @@ class ContentTypeTests : BaseTest() {
     }
 
     test fun testUnPublish() {
-        val responseBody = Utils.fileToString("content_type_unpublish_response.json")
+        val responseBody = TestUtils.fileToString("content_type_unpublish_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val result = assertTestCallback(client!!.contentTypes().async().unPublish(

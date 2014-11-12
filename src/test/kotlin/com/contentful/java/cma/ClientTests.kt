@@ -22,7 +22,7 @@ import com.contentful.java.cma.lib.TestCallback
 import retrofit.RetrofitError
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
-import com.contentful.java.cma.lib.Utils
+import com.contentful.java.cma.lib.TestUtils
 import com.squareup.okhttp.mockwebserver.MockResponse
 import kotlin.test.assertFalse
 import java.io.IOException
@@ -34,38 +34,8 @@ import rx.Observable
  * Client Tests.
  */
 class ClientTests : BaseTest() {
-    test(expected = javaClass<IllegalArgumentException>())
-    fun failsNoAccessToken() {
-        try {
-            CMAClient.Builder().build()
-        } catch (e: IllegalArgumentException) {
-            assertEquals("No access token was set.", e.getMessage())
-            throw e
-        }
-    }
-
-    test(expected = javaClass<IllegalArgumentException>())
-    fun failsSetNullAccessToken() {
-        try {
-            CMAClient.Builder().setAccessToken(null)
-        } catch (e: IllegalArgumentException) {
-            assertEquals("Cannot call setAccessToken() with null value.", e.getMessage())
-            throw e
-        }
-    }
-
-    test(expected = javaClass<IllegalArgumentException>())
-    fun failsSetNullClient() {
-        try {
-            CMAClient.Builder().setClient(null)
-        } catch (e: IllegalArgumentException) {
-            assertEquals("Cannot call setClient() with null value.", e.getMessage())
-            throw e
-        }
-    }
-
     test fun testCancelledCallback() {
-        val responseBody = Utils.fileToString("space_fetch_one_response.json")
+        val responseBody = TestUtils.fileToString("space_fetch_one_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val cdl = CountDownLatch(1)
@@ -124,5 +94,48 @@ class ClientTests : BaseTest() {
                 RxExtensions.ActionError(cb))
 
         assertTrue(error is RetrofitError)
+    }
+
+    test fun testUserAgent() {
+        server!!.enqueue(MockResponse().setResponseCode(200))
+        client!!.spaces().fetchAll()
+
+        val prefix = "contentful-management.java/"
+        val versionName = Utils.getFromProperties(Utils.PROP_VERSION_NAME)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+
+        assertEquals("${prefix}${versionName}", recordedRequest.getHeader("User-Agent"))
+    }
+
+    test(expected = javaClass<IllegalArgumentException>())
+    fun failsNoAccessToken() {
+        try {
+            CMAClient.Builder().build()
+        } catch (e: IllegalArgumentException) {
+            assertEquals("No access token was set.", e.getMessage())
+            throw e
+        }
+    }
+
+    test(expected = javaClass<IllegalArgumentException>())
+    fun failsSetNullAccessToken() {
+        try {
+            CMAClient.Builder().setAccessToken(null)
+        } catch (e: IllegalArgumentException) {
+            assertEquals("Cannot call setAccessToken() with null value.", e.getMessage())
+            throw e
+        }
+    }
+
+    test(expected = javaClass<IllegalArgumentException>())
+    fun failsSetNullClient() {
+        try {
+            CMAClient.Builder().setClient(null)
+        } catch (e: IllegalArgumentException) {
+            assertEquals("Cannot call setClient() with null value.", e.getMessage())
+            throw e
+        }
     }
 }

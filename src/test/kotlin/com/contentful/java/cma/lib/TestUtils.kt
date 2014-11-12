@@ -27,7 +27,7 @@ import kotlin.test.assertTrue
  * Utils.
  */
 
-class Utils {
+class TestUtils {
     class object {
         fun fileToString(fileName: String): String =
                 FileUtils.readFileToString(File("src/test/resources/${fileName}"), "UTF-8")
