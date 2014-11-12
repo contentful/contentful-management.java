@@ -228,7 +228,7 @@ contentType.addField(
 Deleting a field from the content type:
 
 ```java
-contentType.deleteField("field-id")
+contentType.deleteField("field-id");
 ```
 
 Creating a content type:
