@@ -20,16 +20,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * CMAContentType.
+ * Represents a resource of type Content Type.
  */
 public class CMAContentType extends StatefulResource {
+  // Name
   String name;
+
+  // List of fields
   List<CMAField> fields;
 
+  /**
+   * Sets the ID for this Content Type.
+   * Returns this {@code CMAContentType} instance
+   */
   @Override public CMAContentType setId(String id) {
     return (CMAContentType) super.setId(id);
   }
 
+  /**
+   * Adds a new field.
+   *
+   * @param field CMAField instance
+   * @return this {@code CMAContentType}
+   */
   public CMAContentType addField(CMAField field) {
     if (fields == null) {
       fields = new ArrayList<CMAField>();
@@ -39,6 +52,12 @@ public class CMAContentType extends StatefulResource {
     return this;
   }
 
+  /**
+   * Sets the name for this Content Type.
+   *
+   * @param name name
+   * @return this {@code CMAContentType}
+   */
   public CMAContentType setName(String name) {
     this.name = name;
     return this;

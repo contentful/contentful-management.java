@@ -26,7 +26,7 @@ import retrofit.http.PUT;
 import retrofit.http.Path;
 
 /**
- * ServiceAssets.
+ * Assets Service.
  */
 interface ServiceAssets {
   @PUT("/spaces/{space}/assets/{asset}/archived")

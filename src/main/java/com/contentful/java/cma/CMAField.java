@@ -20,26 +20,49 @@ package com.contentful.java.cma;
  * CMAField.
  */
 public class CMAField {
+  // ID
   String id;
+
+  // Name
   String name;
+
+  // Type
   String type;
+
+  // Link Type
   String linkType;
 
+  /**
+   * Sets the ID for this field.
+   * Returns this {@code CMAField} instance
+   */
   public CMAField setId(String id) {
     this.id = id;
     return this;
   }
 
+  /**
+   * Sets the name for this field.
+   * Returns this {@code CMAField} instance
+   */
   public CMAField setName(String name) {
     this.name = name;
     return this;
   }
 
+  /**
+   * Sets the type for this field.
+   * Returns this {@code CMAField} instance
+   */
   public CMAField setType(String type) {
     this.type = type;
     return this;
   }
 
+  /**
+   * Sets the link type for this field.
+   * Returns this {@code CMAField} instance
+   */
   public CMAField setLinkType(String linkType) {
     this.linkType = linkType;
     return this;

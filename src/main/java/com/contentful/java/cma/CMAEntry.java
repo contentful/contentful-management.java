@@ -20,17 +20,30 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * CMAEntry.
+ * Represents a resource of type Entry.
  */
 public class CMAEntry extends StatefulResource {
+  // Map of fields
   LinkedHashMap<String, Map<String, String>> fields;
 
+  /**
+   * Sets the ID for this Entry.
+   * Returns this {@code CMAEntry} instance
+   */
   @Override public CMAEntry setId(String id) {
     return (CMAEntry) super.setId(id);
   }
 
+  /**
+   * Creates a new field. If a field with the given key already exists it will be replaced.
+   *
+   * @param key field key
+   * @param value value
+   * @param locale locale
+   * @return this {@code CMAEntry}
+   */
   @SuppressWarnings("unchecked")
-  public CMAEntry addField(String key, String value, String locale) {
+  public CMAEntry setField(String key, String value, String locale) {
     if (fields == null) {
       fields = new LinkedHashMap<String, Map<String, String>>();
     }

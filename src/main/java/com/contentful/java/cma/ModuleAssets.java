@@ -55,7 +55,8 @@ class ModuleAssets extends AbsModule<ServiceAssets> {
    * @param asset Asset
    * @return {@link CMAAsset} result instance
    */
-  @SuppressWarnings("unchecked") public CMAAsset create(String spaceId, CMAAsset asset) {
+  @SuppressWarnings("unchecked")
+  public CMAAsset create(String spaceId, CMAAsset asset) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(asset, "asset");
 
@@ -119,6 +120,7 @@ class ModuleAssets extends AbsModule<ServiceAssets> {
    * Process an Asset.
    *
    * @param asset Asset
+   * @param locale Locale
    * @return Retrofit {@link Response} instance
    */
   public Response process(CMAAsset asset, String locale) {
@@ -183,11 +185,24 @@ class ModuleAssets extends AbsModule<ServiceAssets> {
     return service.assetsUpdate(asset.getVersion(), spaceId, assetId, update);
   }
 
+  /**
+   * Returns a module with a set of asynchronous methods.
+   */
   public Async async() {
     return async;
   }
 
+  /**
+   * Async module.
+   */
   final class Async {
+    /**
+     * Archive an Asset.
+     *
+     * @param asset Asset
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<CMAAsset> archive(final CMAAsset asset, CMACallback<CMAAsset> callback) {
       return defer(new DefFunc<CMAAsset>() {
         @Override CMAAsset method() {
@@ -196,6 +211,17 @@ class ModuleAssets extends AbsModule<ServiceAssets> {
       }, callback);
     }
 
+    /**
+     * Create a new Asset.
+     * In case the given {@code asset} has an ID associated with it, that ID will be used,
+     * otherwise the server will auto-generate an ID that will be contained in the response upon
+     * success.
+     *
+     * @param spaceId Space ID
+     * @param asset Asset
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<CMAAsset> create(final String spaceId, final CMAAsset asset,
         CMACallback<CMAAsset> callback) {
       return defer(new DefFunc<CMAAsset>() {
@@ -205,6 +231,14 @@ class ModuleAssets extends AbsModule<ServiceAssets> {
       }, callback);
     }
 
+    /**
+     * Delete an Asset.
+     *
+     * @param spaceId Space ID
+     * @param assetId Asset ID
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<Response> delete(final String spaceId, final String assetId,
         CMACallback<Response> callback) {
       return defer(new DefFunc<Response>() {
@@ -214,6 +248,13 @@ class ModuleAssets extends AbsModule<ServiceAssets> {
       }, callback);
     }
 
+    /**
+     * Fetch all Assets from a Space.
+     *
+     * @param spaceId Space ID
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<CMAArray<CMAAsset>> fetchAll(final String spaceId,
         CMACallback<CMAArray<CMAAsset>> callback) {
       return defer(new DefFunc<CMAArray<CMAAsset>>() {
@@ -223,6 +264,14 @@ class ModuleAssets extends AbsModule<ServiceAssets> {
       }, callback);
     }
 
+    /**
+     * Fetch an Asset with the given {@code assetId} from a Space.
+     *
+     * @param spaceId Space ID
+     * @param assetId Asset ID
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<CMAAsset> fetchOne(final String spaceId, final String assetId,
         CMACallback<CMAAsset> callback) {
       return defer(new DefFunc<CMAAsset>() {
@@ -232,6 +281,14 @@ class ModuleAssets extends AbsModule<ServiceAssets> {
       }, callback);
     }
 
+    /**
+     * Process an Asset.
+     *
+     * @param asset Asset
+     * @param locale Locale
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<Response> process(final CMAAsset asset, final String locale,
         CMACallback<Response> callback) {
       return defer(new DefFunc<Response>() {
@@ -241,6 +298,13 @@ class ModuleAssets extends AbsModule<ServiceAssets> {
       }, callback);
     }
 
+    /**
+     * Publish an Asset.
+     *
+     * @param asset Asset
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<CMAAsset> publish(final CMAAsset asset, CMACallback<CMAAsset> callback) {
       return defer(new DefFunc<CMAAsset>() {
         @Override CMAAsset method() {
@@ -249,6 +313,13 @@ class ModuleAssets extends AbsModule<ServiceAssets> {
       }, callback);
     }
 
+    /**
+     * Un-Archive an Asset.
+     *
+     * @param asset Asset
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<CMAAsset> unArchive(final CMAAsset asset, CMACallback<CMAAsset> callback) {
       return defer(new DefFunc<CMAAsset>() {
         @Override CMAAsset method() {
@@ -257,6 +328,13 @@ class ModuleAssets extends AbsModule<ServiceAssets> {
       }, callback);
     }
 
+    /**
+     * Un-Publish an Asset.
+     *
+     * @param asset Asset
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<CMAAsset> unPublish(final CMAAsset asset, CMACallback<CMAAsset> callback) {
       return defer(new DefFunc<CMAAsset>() {
         @Override CMAAsset method() {
@@ -265,6 +343,13 @@ class ModuleAssets extends AbsModule<ServiceAssets> {
       }, callback);
     }
 
+    /**
+     * Update an Asset.
+     *
+     * @param asset Asset
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<CMAAsset> update(final CMAAsset asset, CMACallback<CMAAsset> callback) {
       return defer(new DefFunc<CMAAsset>() {
         @Override CMAAsset method() {

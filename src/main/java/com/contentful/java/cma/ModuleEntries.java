@@ -55,7 +55,8 @@ class ModuleEntries extends AbsModule<ServiceEntries> {
    * @param entry Entry
    * @return {@link CMAEntry} result instance
    */
-  @SuppressWarnings("unchecked") public CMAEntry create(String spaceId, CMAEntry entry) {
+  @SuppressWarnings("unchecked")
+  public CMAEntry create(String spaceId, CMAEntry entry) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(entry, "entry");
 
@@ -170,11 +171,24 @@ class ModuleEntries extends AbsModule<ServiceEntries> {
     return service.entriesUpdate(entry.getVersion(), spaceId, entryId, update);
   }
 
+  /**
+   * Returns a module with a set of asynchronous methods.
+   */
   public Async async() {
     return async;
   }
 
+  /**
+   * Async module.
+   */
   final class Async {
+    /**
+     * Archive an Entry.
+     *
+     * @param entry Entry
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<CMAEntry> archive(final CMAEntry entry, CMACallback<CMAEntry> callback) {
       return defer(new DefFunc<CMAEntry>() {
         @Override CMAEntry method() {
@@ -183,6 +197,17 @@ class ModuleEntries extends AbsModule<ServiceEntries> {
       }, callback);
     }
 
+    /**
+     * Create a new Entry.
+     * In case the given {@code entry} has an ID associated with it, that ID will be used,
+     * otherwise the server will auto-generate an ID that will be contained in the response upon
+     * success.
+     *
+     * @param spaceId Space ID
+     * @param entry Entry
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<CMAEntry> create(final String spaceId, final CMAEntry entry,
         CMACallback<CMAEntry> callback) {
       return defer(new DefFunc<CMAEntry>() {
@@ -192,6 +217,14 @@ class ModuleEntries extends AbsModule<ServiceEntries> {
       }, callback);
     }
 
+    /**
+     * Delete an Entry.
+     *
+     * @param spaceId Space ID
+     * @param entryId Entry ID
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<Response> delete(final String spaceId, final String entryId,
         CMACallback<Response> callback) {
       return defer(new DefFunc<Response>() {
@@ -201,6 +234,13 @@ class ModuleEntries extends AbsModule<ServiceEntries> {
       }, callback);
     }
 
+    /**
+     * Fetch all Entries from a Space.
+     *
+     * @param spaceId Space ID
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<CMAArray<CMAEntry>> fetchAll(final String spaceId,
         CMACallback<CMAArray<CMAEntry>> callback) {
       return defer(new DefFunc<CMAArray<CMAEntry>>() {
@@ -210,6 +250,14 @@ class ModuleEntries extends AbsModule<ServiceEntries> {
       }, callback);
     }
 
+    /**
+     * Fetch an Entry with the given {@code entryId} from a Space.
+     *
+     * @param spaceId Space ID
+     * @param entryId Entry ID
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<CMAEntry> fetchOne(final String spaceId, final String entryId,
         CMACallback<CMAEntry> callback) {
       return defer(new DefFunc<CMAEntry>() {
@@ -219,6 +267,13 @@ class ModuleEntries extends AbsModule<ServiceEntries> {
       }, callback);
     }
 
+    /**
+     * Publish an Entry.
+     *
+     * @param entry Entry
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<CMAEntry> publish(final CMAEntry entry, CMACallback<CMAEntry> callback) {
       return defer(new DefFunc<CMAEntry>() {
         @Override CMAEntry method() {
@@ -227,6 +282,13 @@ class ModuleEntries extends AbsModule<ServiceEntries> {
       }, callback);
     }
 
+    /**
+     * Un-Archive an Entry.
+     *
+     * @param entry Entry
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<CMAEntry> unArchive(final CMAEntry entry, CMACallback<CMAEntry> callback) {
       return defer(new DefFunc<CMAEntry>() {
         @Override CMAEntry method() {
@@ -235,6 +297,13 @@ class ModuleEntries extends AbsModule<ServiceEntries> {
       }, callback);
     }
 
+    /**
+     * Un-Publish an Entry.
+     *
+     * @param entry Entry
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<CMAEntry> unPublish(final CMAEntry entry, CMACallback<CMAEntry> callback) {
       return defer(new DefFunc<CMAEntry>() {
         @Override CMAEntry method() {
@@ -243,6 +312,13 @@ class ModuleEntries extends AbsModule<ServiceEntries> {
       }, callback);
     }
 
+    /**
+     * Update an Entry.
+     *
+     * @param entry Entry
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<CMAEntry> update(final CMAEntry entry, CMACallback<CMAEntry> callback) {
       return defer(new DefFunc<CMAEntry>() {
         @Override CMAEntry method() {

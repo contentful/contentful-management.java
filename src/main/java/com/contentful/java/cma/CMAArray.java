@@ -19,11 +19,18 @@ package com.contentful.java.cma;
 import java.util.List;
 
 /**
- * CMAArray.
+ * Represents a collection of CMA resources.
  */
 public class CMAArray<T extends CMAResource> extends CMAResource {
+  // List of resources
   List<T> items;
+
+  // Total number of items
   int total;
+
+  // Skip
   int skip;
+
+  // Limit
   int limit;
 }

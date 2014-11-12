@@ -20,17 +20,30 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * CMAAsset.
+ * Represents a resource of type Asset.
  */
 public class CMAAsset extends StatefulResource {
+  // Map of fields
   LinkedHashMap<String, Map<String, Object>> fields;
 
+  /**
+   * Sets the ID for this Asset.
+   * Returns this {@code CMAAsset} instance
+   */
   @Override public CMAAsset setId(String id) {
     return (CMAAsset) super.setId(id);
   }
 
+  /**
+   * Creates a new field. If a field with the given key already exists it will be replaced.
+   *
+   * @param key field key
+   * @param value value
+   * @param locale locale
+   * @return this {@code CMAAsset} instance
+   */
   @SuppressWarnings("unchecked")
-  public CMAAsset addField(String key, Object value, String locale) {
+  public CMAAsset setField(String key, Object value, String locale) {
     if (fields == null) {
       fields = new LinkedHashMap<String, Map<String, Object>>();
     }

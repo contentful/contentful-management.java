@@ -22,9 +22,12 @@ import rx.functions.Action1;
 import rx.functions.Func0;
 
 /**
- * RxExtensions.
+ * RxJava Extensions.
  */
 class RxExtensions {
+  /**
+   * Base Action.
+   */
   abstract static class AbsAction<T> implements Action1<T> {
     final CMACallback<T> callback;
 
@@ -33,6 +36,9 @@ class RxExtensions {
     }
   }
 
+  /**
+   * Success Action.
+   */
   static class ActionSuccess<T> extends AbsAction<T> {
     public ActionSuccess(CMACallback<T> callback) {
       super(callback);
@@ -45,6 +51,9 @@ class RxExtensions {
     }
   }
 
+  /**
+   * Error Action.
+   */
   static class ActionError extends AbsAction<Throwable> {
     @SuppressWarnings("unchecked")
     public ActionError(CMACallback callback) {
@@ -62,6 +71,9 @@ class RxExtensions {
     }
   }
 
+  /**
+   * DefFunc.
+   */
   abstract static class DefFunc<R> implements Func0<Observable<R>> {
     @Override public final Observable<R> call() {
       return Observable.just(method());

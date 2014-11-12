@@ -22,7 +22,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * GsonExclude.
+ * Custom annotation for identifying fields to exclude with a Gson exclusion strategy.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

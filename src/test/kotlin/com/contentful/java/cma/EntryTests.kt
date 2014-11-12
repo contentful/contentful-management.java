@@ -53,8 +53,8 @@ class EntryTests : BaseTest() {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val entry = CMAEntry()
-                .addField("fid1", "value1", "en-US")
-                .addField("fid2", "value2", "en-US")
+                .setField("fid1", "value1", "en-US")
+                .setField("fid2", "value2", "en-US")
 
         val result = assertTestCallback(client!!.entries()
                 .async()
@@ -83,8 +83,8 @@ class EntryTests : BaseTest() {
 
         val entry = CMAEntry()
                 .setId("entryid")
-                .addField("fid1", "value1", "en-US")
-                .addField("fid2", "value2", "en-US")
+                .setField("fid1", "value1", "en-US")
+                .setField("fid2", "value2", "en-US")
 
         assertTestCallback(client!!.entries().async().create(
                 "spaceid", entry, TestCallback()) as TestCallback)
@@ -155,8 +155,8 @@ class EntryTests : BaseTest() {
                 .setId("entryid")
                 .setSpaceId("spaceid")
                 .setVersion(1.0)
-                .addField("fid1", "newvalue1", "en-US")
-                .addField("fid2", "newvalue2", "en-US"), TestCallback()) as TestCallback)
+                .setField("fid1", "newvalue1", "en-US")
+                .setField("fid2", "newvalue2", "en-US"), TestCallback()) as TestCallback)
 
         val fields = result.fields.entrySet().toList()
 

@@ -42,7 +42,8 @@ class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
    * @param contentType Content Type
    * @return {@link CMAContentType} result instance
    */
-  @SuppressWarnings("unchecked") public CMAContentType create(String spaceId,
+  @SuppressWarnings("unchecked")
+  public CMAContentType create(String spaceId,
       CMAContentType contentType) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(contentType, "contentType");
@@ -144,11 +145,28 @@ class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
         contentType);
   }
 
+  /**
+   * Returns a module with a set of asynchronous methods.
+   */
   public Async async() {
     return async;
   }
 
+  /**
+   * Async module.
+   */
   final class Async {
+    /**
+     * Create a new Content Type.
+     * In case the given {@code contentType} has an ID associated with it, that ID will be used,
+     * otherwise the server will auto-generate an ID that will be contained in the response upon
+     * success.
+     *
+     * @param spaceId Space ID
+     * @param contentType Content Type
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<CMAContentType> create(final String spaceId,
         final CMAContentType contentType, CMACallback<CMAContentType> callback) {
       return defer(new DefFunc<CMAContentType>() {
@@ -158,6 +176,14 @@ class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
       }, callback);
     }
 
+    /**
+     * Delete a Content Type.
+     *
+     * @param spaceId Space ID
+     * @param contentTypeId Content Type ID
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<Response> delete(final String spaceId, final String contentTypeId,
         CMACallback<Response> callback) {
       return defer(new DefFunc<Response>() {
@@ -167,6 +193,13 @@ class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
       }, callback);
     }
 
+    /**
+     * Fetch all Content Types from a Space.
+     *
+     * @param spaceId Space ID
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<CMAArray<CMAContentType>> fetchAll(final String spaceId,
         CMACallback<CMAArray<CMAContentType>> callback) {
       return defer(new DefFunc<CMAArray<CMAContentType>>() {
@@ -176,6 +209,14 @@ class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
       }, callback);
     }
 
+    /**
+     * Fetch a Content Type with the given {@code contentTypeId} from a Space.
+     *
+     * @param spaceId Space ID
+     * @param contentTypeId Content Type ID
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<CMAContentType> fetchOne(final String spaceId, final String contentTypeId,
         CMACallback<CMAContentType> callback) {
       return defer(new DefFunc<CMAContentType>() {
@@ -185,6 +226,13 @@ class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
       }, callback);
     }
 
+    /**
+     * Publish a Content Type.
+     *
+     * @param contentType Content Type
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<CMAContentType> publish(final CMAContentType contentType,
         CMACallback<CMAContentType> callback) {
       return defer(new DefFunc<CMAContentType>() {
@@ -194,6 +242,13 @@ class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
       }, callback);
     }
 
+    /**
+     * Un-Publish a Content Type.
+     *
+     * @param contentType Content Type
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<CMAContentType> unPublish(final CMAContentType contentType,
         CMACallback<CMAContentType> callback) {
       return defer(new DefFunc<CMAContentType>() {
@@ -203,6 +258,13 @@ class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
       }, callback);
     }
 
+    /**
+     * Update a Content Type.
+     *
+     * @param contentType Content Type
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<CMAContentType> update(final CMAContentType contentType,
         CMACallback<CMAContentType> callback) {
       return defer(new DefFunc<CMAContentType>() {

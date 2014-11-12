@@ -30,6 +30,10 @@ abstract class AbsModule<T> {
     this.service = retrofitService;
   }
 
+  /**
+   * Asserts that the given {@code object} with name {@param} is not null, throws
+   * {@link IllegalArgumentException} otherwise.
+   */
   void assertNotNull(Object object, String param) {
     if (object == null) {
       throw new IllegalArgumentException(String.format(
@@ -37,6 +41,10 @@ abstract class AbsModule<T> {
     }
   }
 
+  /**
+   * Extracts the resource ID from the given {@code resource} of name {@code param}.
+   * Throws {@link IllegalArgumentException} if the value is not present.
+   */
   String getResourceIdOrThrow(CMAResource resource, String param) {
     String resourceId = resource.getResourceId();
     if (resourceId == null) {
@@ -46,6 +54,10 @@ abstract class AbsModule<T> {
     return resourceId;
   }
 
+  /**
+   * Extracts the Space ID from the given {@code resource} of name {@code param}.
+   * Throws {@link IllegalArgumentException} if the value is not present.
+   */
   String getSpaceIdOrThrow(CMAResource resource, String param) {
     String spaceId = resource.getSpaceId();
     if (spaceId == null) {
@@ -55,6 +67,11 @@ abstract class AbsModule<T> {
     return spaceId;
   }
 
+  /**
+   * Creates an Observable with the given {@code func} function and subscribes to it
+   * with a set of pre-defined actions. The provided {@code callback} will be passed to these
+   * actions in order to populate the events.
+   */
   <R> CMACallback<R> defer(DefFunc<R> func, CMACallback<R> callback) {
     assertNotNull(callback, "callback");
     Observable.defer(func)

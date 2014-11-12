@@ -52,8 +52,8 @@ class AssetTests : BaseTest() {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val asset = CMAAsset()
-                .addField("title", "title", "en-US")
-                .addField("description", "description", "en-US")
+                .setField("title", "title", "en-US")
+                .setField("description", "description", "en-US")
 
         assertTestCallback(client!!.assets().async().create(
                 "spaceid", asset, TestCallback()) as TestCallback)
@@ -72,8 +72,8 @@ class AssetTests : BaseTest() {
 
         val asset = CMAAsset()
                 .setId("assetid")
-                .addField("title", "title", "en-US")
-                .addField("description", "description", "en-US")
+                .setField("title", "title", "en-US")
+                .setField("description", "description", "en-US")
 
         assertTestCallback(client!!.assets().async().create(
                 "spaceid", asset, TestCallback()) as TestCallback)
@@ -194,7 +194,7 @@ class AssetTests : BaseTest() {
                 .setId("assetid")
                 .setSpaceId("spaceid")
                 .setVersion(1.0)
-                .addField("file", linkedMapOf(
+                .setField("file", linkedMapOf(
                         Pair("content_type", "image/jpeg"),
                         Pair("upload", "https://www.nowhere.com/image.jpg"),
                         Pair("fileName", "example.jpg")

@@ -20,10 +20,16 @@ package com.contentful.java.cma;
  * StatefulResource.
  */
 abstract class StatefulResource extends CMAResource {
+  /**
+   * Returns true if this resource is archived.
+   */
   public Boolean isArchived() {
     return sys != null && sys.get("archivedVersion") != null;
   }
 
+  /**
+   * Returns true if this resource is published.
+   */
   public Boolean isPublished() {
     return sys != null && sys.get("publishedVersion") != null;
   }

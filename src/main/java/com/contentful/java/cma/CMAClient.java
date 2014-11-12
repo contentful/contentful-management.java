@@ -26,9 +26,11 @@ import retrofit.client.Client;
 import retrofit.converter.GsonConverter;
 
 /**
- * CMAClient.
+ * The CMAClient is used to request information from the server. Contrary to the delivery
+ * API, a client is not associated with one Space, but with one user.
  */
 public class CMAClient {
+  // Modules
   final ModuleAssets modAssets;
   final ModuleContentTypes modContentTypes;
   final ModuleEntries modEntries;
@@ -76,6 +78,9 @@ public class CMAClient {
     this.modSpaces = new ModuleSpaces(adapter.create(ServiceSpaces.class));
   }
 
+  /**
+   * Creates and returns a {@code RequestInterceptor} from the given {@code builder}.
+   */
   private RequestInterceptor createInterceptor(Builder builder) {
     final String accessToken = builder.accessToken;
     return new RequestInterceptor() {
@@ -130,7 +135,7 @@ public class CMAClient {
     /**
      * Sets the access token for this client.
      *
-     * @param accessToken Access token
+     * @param accessToken access token
      * @return this {@link Builder} instance
      */
     public Builder setAccessToken(String accessToken) {

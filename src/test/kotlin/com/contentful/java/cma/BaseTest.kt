@@ -24,6 +24,8 @@ import com.google.gson.GsonBuilder
 import com.contentful.java.cma.lib.TestCallback
 import kotlin.test.assertNull
 import kotlin.test.assertNotNull
+import com.google.gson.JsonParser
+import kotlin.test.assertTrue
 
 /**
  * BaseTest.
@@ -59,6 +61,12 @@ open class BaseTest {
         }
         assertNotNull(cb.value)
         return cb.value!!
+    }
+
+    fun assertJsonEquals(json1: String, json2: String) {
+        val parser = JsonParser()
+        assertTrue(parser.parse(json1).equals(parser.parse(json2)),
+                "Expected:\n${json1}\nActual:\n${json2}\n")
     }
 }
 

@@ -17,11 +17,16 @@
 package com.contentful.java.cma;
 
 /**
- * CMASpace.
+ * Represents a resource of type Space.
  */
 public class CMASpace extends CMAResource {
+  // Name
   String name;
 
+  /**
+   * Sets the name for this Space.
+   * Returns this {@code CMASpace} instance.
+   */
   public CMASpace setName(String name) {
     this.name = name;
     return this;

@@ -45,7 +45,7 @@ class ModuleSpaces extends AbsModule<ServiceSpaces> {
    * Create a Space in an Organization.
    *
    * @param spaceName Space name
-   * @param organizationId Organization ID
+   * @param organizationId organization ID
    * @return {@link CMASpace} result instance
    */
   public CMASpace create(String spaceName, String organizationId) {
@@ -101,11 +101,24 @@ class ModuleSpaces extends AbsModule<ServiceSpaces> {
     return service.spacesUpdate(space.getVersion(), spaceId, update);
   }
 
+  /**
+   * Returns a module with a set of asynchronous methods.
+   */
   public Async async() {
     return async;
   }
 
+  /**
+   * Async module.
+   */
   final class Async {
+    /**
+     * Create a Space.
+     *
+     * @param spaceName Space name
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<CMASpace> create(final String spaceName, CMACallback<CMASpace> callback) {
       return defer(new DefFunc<CMASpace>() {
         @Override CMASpace method() {
@@ -114,6 +127,14 @@ class ModuleSpaces extends AbsModule<ServiceSpaces> {
       }, callback);
     }
 
+    /**
+     * Create a Space in an Organization.
+     *
+     * @param spaceName Space name
+     * @param organizationId organization ID
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<CMASpace> create(final String spaceName, final String organizationId,
         CMACallback<CMASpace> callback) {
       return defer(new DefFunc<CMASpace>() {
@@ -123,6 +144,13 @@ class ModuleSpaces extends AbsModule<ServiceSpaces> {
       }, callback);
     }
 
+    /**
+     * Delete a Space.
+     *
+     * @param spaceId Space ID
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<Response> delete(final String spaceId, CMACallback<Response> callback) {
       return defer(new DefFunc<Response>() {
         @Override Response method() {
@@ -131,6 +159,12 @@ class ModuleSpaces extends AbsModule<ServiceSpaces> {
       }, callback);
     }
 
+    /**
+     * Fetch all Spaces.
+     *
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<CMAArray<CMASpace>> fetchAll(CMACallback<CMAArray<CMASpace>> callback) {
       return defer(new DefFunc<CMAArray<CMASpace>>() {
         @Override CMAArray<CMASpace> method() {
@@ -139,6 +173,13 @@ class ModuleSpaces extends AbsModule<ServiceSpaces> {
       }, callback);
     }
 
+    /**
+     * Fetch a Space with a given {@code spaceId}.
+     *
+     * @param spaceId Space ID
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<CMASpace> fetchOne(final String spaceId, CMACallback<CMASpace> callback) {
       return defer(new DefFunc<CMASpace>() {
         @Override CMASpace method() {
@@ -147,6 +188,13 @@ class ModuleSpaces extends AbsModule<ServiceSpaces> {
       }, callback);
     }
 
+    /**
+     * Update a Space.
+     *
+     * @param space Space
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
     public CMACallback<CMASpace> update(final CMASpace space, CMACallback<CMASpace> callback) {
       return defer(new DefFunc<CMASpace>() {
         @Override CMASpace method() {

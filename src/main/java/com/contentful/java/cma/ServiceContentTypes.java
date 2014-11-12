@@ -26,7 +26,7 @@ import retrofit.http.PUT;
 import retrofit.http.Path;
 
 /**
- * ServiceContentTypes.
+ * ContentTypes Service.
  */
 interface ServiceContentTypes {
   @POST("/spaces/{space}/content_types")

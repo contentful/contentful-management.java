@@ -26,7 +26,7 @@ import retrofit.http.PUT;
 import retrofit.http.Path;
 
 /**
- * ServiceSpaces.
+ * Spaces Service.
  */
 interface ServiceSpaces {
   @POST("/spaces")

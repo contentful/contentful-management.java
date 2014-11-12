@@ -26,7 +26,7 @@ import retrofit.http.PUT;
 import retrofit.http.Path;
 
 /**
- * ServiceEntries.
+ * Entries Service.
  */
 interface ServiceEntries {
   @PUT("/spaces/{space}/entries/{entry}/archived")
