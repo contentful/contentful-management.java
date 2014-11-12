@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2014 Contentful GmbH
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.contentful.java.cma;
 
 import com.contentful.java.cma.RxExtensions.DefFunc;
@@ -8,10 +24,10 @@ import retrofit.client.Response;
 /**
  * Content Types Module.
  */
-class ContentTypesModule extends AbsModule<ServiceContentTypes> {
+class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
   final Async async;
 
-  ContentTypesModule(ServiceContentTypes retrofitService) {
+  ModuleContentTypes(ServiceContentTypes retrofitService) {
     super(retrofitService);
     this.async = new Async();
   }
@@ -137,7 +153,7 @@ class ContentTypesModule extends AbsModule<ServiceContentTypes> {
         final CMAContentType contentType, CMACallback<CMAContentType> callback) {
       return defer(new DefFunc<CMAContentType>() {
         @Override CMAContentType method() {
-          return ContentTypesModule.this.create(spaceId, contentType);
+          return ModuleContentTypes.this.create(spaceId, contentType);
         }
       }, callback);
     }
@@ -146,7 +162,7 @@ class ContentTypesModule extends AbsModule<ServiceContentTypes> {
         CMACallback<Response> callback) {
       return defer(new DefFunc<Response>() {
         @Override Response method() {
-          return ContentTypesModule.this.delete(spaceId, contentTypeId);
+          return ModuleContentTypes.this.delete(spaceId, contentTypeId);
         }
       }, callback);
     }
@@ -155,7 +171,7 @@ class ContentTypesModule extends AbsModule<ServiceContentTypes> {
         CMACallback<CMAArray<CMAContentType>> callback) {
       return defer(new DefFunc<CMAArray<CMAContentType>>() {
         @Override CMAArray<CMAContentType> method() {
-          return ContentTypesModule.this.fetchAll(spaceId);
+          return ModuleContentTypes.this.fetchAll(spaceId);
         }
       }, callback);
     }
@@ -164,7 +180,7 @@ class ContentTypesModule extends AbsModule<ServiceContentTypes> {
         CMACallback<CMAContentType> callback) {
       return defer(new DefFunc<CMAContentType>() {
         @Override CMAContentType method() {
-          return ContentTypesModule.this.fetchOne(spaceId, contentTypeId);
+          return ModuleContentTypes.this.fetchOne(spaceId, contentTypeId);
         }
       }, callback);
     }
@@ -173,7 +189,7 @@ class ContentTypesModule extends AbsModule<ServiceContentTypes> {
         CMACallback<CMAContentType> callback) {
       return defer(new DefFunc<CMAContentType>() {
         @Override CMAContentType method() {
-          return ContentTypesModule.this.publish(contentType);
+          return ModuleContentTypes.this.publish(contentType);
         }
       }, callback);
     }
@@ -182,7 +198,7 @@ class ContentTypesModule extends AbsModule<ServiceContentTypes> {
         CMACallback<CMAContentType> callback) {
       return defer(new DefFunc<CMAContentType>() {
         @Override CMAContentType method() {
-          return ContentTypesModule.this.unPublish(contentType);
+          return ModuleContentTypes.this.unPublish(contentType);
         }
       }, callback);
     }
@@ -191,7 +207,7 @@ class ContentTypesModule extends AbsModule<ServiceContentTypes> {
         CMACallback<CMAContentType> callback) {
       return defer(new DefFunc<CMAContentType>() {
         @Override CMAContentType method() {
-          return ContentTypesModule.this.update(contentType);
+          return ModuleContentTypes.this.update(contentType);
         }
       }, callback);
     }

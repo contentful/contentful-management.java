@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2014 Contentful GmbH
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.contentful.java.cma;
 
 import com.contentful.java.cma.RxExtensions.DefFunc;
@@ -8,10 +24,10 @@ import retrofit.client.Response;
 /**
  * Assets Module.
  */
-class AssetsModule extends AbsModule<ServiceAssets> {
+class ModuleAssets extends AbsModule<ServiceAssets> {
   final Async async;
 
-  AssetsModule(ServiceAssets service) {
+  ModuleAssets(ServiceAssets service) {
     super(service);
     this.async = new Async();
   }
@@ -175,7 +191,7 @@ class AssetsModule extends AbsModule<ServiceAssets> {
     public CMACallback<CMAAsset> archive(final CMAAsset asset, CMACallback<CMAAsset> callback) {
       return defer(new DefFunc<CMAAsset>() {
         @Override CMAAsset method() {
-          return AssetsModule.this.archive(asset);
+          return ModuleAssets.this.archive(asset);
         }
       }, callback);
     }
@@ -184,7 +200,7 @@ class AssetsModule extends AbsModule<ServiceAssets> {
         CMACallback<CMAAsset> callback) {
       return defer(new DefFunc<CMAAsset>() {
         @Override CMAAsset method() {
-          return AssetsModule.this.create(spaceId, asset);
+          return ModuleAssets.this.create(spaceId, asset);
         }
       }, callback);
     }
@@ -193,7 +209,7 @@ class AssetsModule extends AbsModule<ServiceAssets> {
         CMACallback<Response> callback) {
       return defer(new DefFunc<Response>() {
         @Override Response method() {
-          return AssetsModule.this.delete(spaceId, assetId);
+          return ModuleAssets.this.delete(spaceId, assetId);
         }
       }, callback);
     }
@@ -202,7 +218,7 @@ class AssetsModule extends AbsModule<ServiceAssets> {
         CMACallback<CMAArray<CMAAsset>> callback) {
       return defer(new DefFunc<CMAArray<CMAAsset>>() {
         @Override CMAArray<CMAAsset> method() {
-          return AssetsModule.this.fetchAll(spaceId);
+          return ModuleAssets.this.fetchAll(spaceId);
         }
       }, callback);
     }
@@ -211,7 +227,7 @@ class AssetsModule extends AbsModule<ServiceAssets> {
         CMACallback<CMAAsset> callback) {
       return defer(new DefFunc<CMAAsset>() {
         @Override CMAAsset method() {
-          return AssetsModule.this.fetchOne(spaceId, assetId);
+          return ModuleAssets.this.fetchOne(spaceId, assetId);
         }
       }, callback);
     }
@@ -220,7 +236,7 @@ class AssetsModule extends AbsModule<ServiceAssets> {
         CMACallback<Response> callback) {
       return defer(new DefFunc<Response>() {
         @Override Response method() {
-          return AssetsModule.this.process(asset, locale);
+          return ModuleAssets.this.process(asset, locale);
         }
       }, callback);
     }
@@ -228,7 +244,7 @@ class AssetsModule extends AbsModule<ServiceAssets> {
     public CMACallback<CMAAsset> publish(final CMAAsset asset, CMACallback<CMAAsset> callback) {
       return defer(new DefFunc<CMAAsset>() {
         @Override CMAAsset method() {
-          return AssetsModule.this.publish(asset);
+          return ModuleAssets.this.publish(asset);
         }
       }, callback);
     }
@@ -236,7 +252,7 @@ class AssetsModule extends AbsModule<ServiceAssets> {
     public CMACallback<CMAAsset> unArchive(final CMAAsset asset, CMACallback<CMAAsset> callback) {
       return defer(new DefFunc<CMAAsset>() {
         @Override CMAAsset method() {
-          return AssetsModule.this.unArchive(asset);
+          return ModuleAssets.this.unArchive(asset);
         }
       }, callback);
     }
@@ -244,7 +260,7 @@ class AssetsModule extends AbsModule<ServiceAssets> {
     public CMACallback<CMAAsset> unPublish(final CMAAsset asset, CMACallback<CMAAsset> callback) {
       return defer(new DefFunc<CMAAsset>() {
         @Override CMAAsset method() {
-          return AssetsModule.this.unPublish(asset);
+          return ModuleAssets.this.unPublish(asset);
         }
       }, callback);
     }
@@ -252,7 +268,7 @@ class AssetsModule extends AbsModule<ServiceAssets> {
     public CMACallback<CMAAsset> update(final CMAAsset asset, CMACallback<CMAAsset> callback) {
       return defer(new DefFunc<CMAAsset>() {
         @Override CMAAsset method() {
-          return AssetsModule.this.update(asset);
+          return ModuleAssets.this.update(asset);
         }
       }, callback);
     }

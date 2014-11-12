@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2014 Contentful GmbH
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.contentful.java.cma;
 
 import com.contentful.java.cma.RxExtensions.DefFunc;
@@ -8,10 +24,10 @@ import retrofit.client.Response;
 /**
  * Entries Module.
  */
-class EntriesModule extends AbsModule<ServiceEntries> {
+class ModuleEntries extends AbsModule<ServiceEntries> {
   final Async async;
 
-  EntriesModule(ServiceEntries retrofitService) {
+  ModuleEntries(ServiceEntries retrofitService) {
     super(retrofitService);
     this.async = new Async();
   }
@@ -162,7 +178,7 @@ class EntriesModule extends AbsModule<ServiceEntries> {
     public CMACallback<CMAEntry> archive(final CMAEntry entry, CMACallback<CMAEntry> callback) {
       return defer(new DefFunc<CMAEntry>() {
         @Override CMAEntry method() {
-          return EntriesModule.this.archive(entry);
+          return ModuleEntries.this.archive(entry);
         }
       }, callback);
     }
@@ -171,7 +187,7 @@ class EntriesModule extends AbsModule<ServiceEntries> {
         CMACallback<CMAEntry> callback) {
       return defer(new DefFunc<CMAEntry>() {
         @Override CMAEntry method() {
-          return EntriesModule.this.create(spaceId, entry);
+          return ModuleEntries.this.create(spaceId, entry);
         }
       }, callback);
     }
@@ -180,7 +196,7 @@ class EntriesModule extends AbsModule<ServiceEntries> {
         CMACallback<Response> callback) {
       return defer(new DefFunc<Response>() {
         @Override Response method() {
-          return EntriesModule.this.delete(spaceId, entryId);
+          return ModuleEntries.this.delete(spaceId, entryId);
         }
       }, callback);
     }
@@ -189,7 +205,7 @@ class EntriesModule extends AbsModule<ServiceEntries> {
         CMACallback<CMAArray<CMAEntry>> callback) {
       return defer(new DefFunc<CMAArray<CMAEntry>>() {
         @Override CMAArray<CMAEntry> method() {
-          return EntriesModule.this.fetchAll(spaceId);
+          return ModuleEntries.this.fetchAll(spaceId);
         }
       }, callback);
     }
@@ -198,7 +214,7 @@ class EntriesModule extends AbsModule<ServiceEntries> {
         CMACallback<CMAEntry> callback) {
       return defer(new DefFunc<CMAEntry>() {
         @Override CMAEntry method() {
-          return EntriesModule.this.fetchOne(spaceId, entryId);
+          return ModuleEntries.this.fetchOne(spaceId, entryId);
         }
       }, callback);
     }
@@ -206,7 +222,7 @@ class EntriesModule extends AbsModule<ServiceEntries> {
     public CMACallback<CMAEntry> publish(final CMAEntry entry, CMACallback<CMAEntry> callback) {
       return defer(new DefFunc<CMAEntry>() {
         @Override CMAEntry method() {
-          return EntriesModule.this.publish(entry);
+          return ModuleEntries.this.publish(entry);
         }
       }, callback);
     }
@@ -214,7 +230,7 @@ class EntriesModule extends AbsModule<ServiceEntries> {
     public CMACallback<CMAEntry> unArchive(final CMAEntry entry, CMACallback<CMAEntry> callback) {
       return defer(new DefFunc<CMAEntry>() {
         @Override CMAEntry method() {
-          return EntriesModule.this.unArchive(entry);
+          return ModuleEntries.this.unArchive(entry);
         }
       }, callback);
     }
@@ -222,7 +238,7 @@ class EntriesModule extends AbsModule<ServiceEntries> {
     public CMACallback<CMAEntry> unPublish(final CMAEntry entry, CMACallback<CMAEntry> callback) {
       return defer(new DefFunc<CMAEntry>() {
         @Override CMAEntry method() {
-          return EntriesModule.this.unPublish(entry);
+          return ModuleEntries.this.unPublish(entry);
         }
       }, callback);
     }
@@ -230,7 +246,7 @@ class EntriesModule extends AbsModule<ServiceEntries> {
     public CMACallback<CMAEntry> update(final CMAEntry entry, CMACallback<CMAEntry> callback) {
       return defer(new DefFunc<CMAEntry>() {
         @Override CMAEntry method() {
-          return EntriesModule.this.update(entry);
+          return ModuleEntries.this.update(entry);
         }
       }, callback);
     }

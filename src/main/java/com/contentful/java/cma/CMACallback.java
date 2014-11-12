@@ -1,8 +1,3 @@
-package com.contentful.java.cma;
-
-/**
- * Created by tomxor on 11/11/14.
- */
 /*
  * Copyright (C) 2014 Contentful GmbH
  *
@@ -19,19 +14,12 @@ package com.contentful.java.cma;
  * limitations under the License.
  */
 
+package com.contentful.java.cma;
+
 import retrofit.RetrofitError;
 
 /**
- * Callback to be used when making asynchronous requests by a {@code CDAClient}.
- *
- * Implement the {@link #onSuccess} method for cases where the request was successful, the result
- * object should be delivered as a parameter.
- *
- * It is also possible, but not mandatory to override {@link #onFailure} and provide an
- * implementation for handling errors.
- *
- * @param <T> The type of object to be expected as a result. For methods that return a collection
- * of CDA resources it is required to use {@code CDAArray} as the type
+ * CMACallback.
  */
 @SuppressWarnings("UnusedDeclaration")
 public abstract class CMACallback<T> {
@@ -43,19 +31,10 @@ public abstract class CMACallback<T> {
     // Do nothing.
   }
 
-  /**
-   * Cancels the callback. Calling this method will result in any of the callbacks methods ({@link
-   * #onSuccess} / {@link #onFailure} not being called, this action cannot be reversed.
-   */
   public synchronized void cancel() {
     this.cancelled = true;
   }
 
-  /**
-   * Check if this callback instance was cancelled using the {@link #cancel} method.
-   *
-   * @return boolean indicating whether or not the callback is cancelled
-   */
   public synchronized boolean isCancelled() {
     return cancelled;
   }

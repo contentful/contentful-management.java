@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2014 Contentful GmbH
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.contentful.java.cma;
 
 import com.google.gson.ExclusionStrategy;
@@ -13,10 +29,10 @@ import retrofit.converter.GsonConverter;
  * CMAClient.
  */
 public class CMAClient {
-  final AssetsModule assetsModule;
-  final ContentTypesModule contentTypesModule;
-  final EntriesModule entriesModule;
-  final SpacesModule spacesModule;
+  final ModuleAssets modAssets;
+  final ModuleContentTypes modContentTypes;
+  final ModuleEntries modEntries;
+  final ModuleSpaces modSpaces;
 
   private CMAClient(Builder builder) {
     if (builder.accessToken == null) {
@@ -54,10 +70,10 @@ public class CMAClient {
     RestAdapter adapter = restBuilder.build();
 
     // Modules
-    this.assetsModule = new AssetsModule(adapter.create(ServiceAssets.class));
-    this.contentTypesModule = new ContentTypesModule(adapter.create(ServiceContentTypes.class));
-    this.entriesModule = new EntriesModule(adapter.create(ServiceEntries.class));
-    this.spacesModule = new SpacesModule(adapter.create(ServiceSpaces.class));
+    this.modAssets = new ModuleAssets(adapter.create(ServiceAssets.class));
+    this.modContentTypes = new ModuleContentTypes(adapter.create(ServiceContentTypes.class));
+    this.modEntries = new ModuleEntries(adapter.create(ServiceEntries.class));
+    this.modSpaces = new ModuleSpaces(adapter.create(ServiceSpaces.class));
   }
 
   private RequestInterceptor createInterceptor(Builder builder) {
@@ -73,29 +89,29 @@ public class CMAClient {
   /**
    * Returns the Assets module.
    */
-  public AssetsModule assets() {
-    return assetsModule;
+  public ModuleAssets assets() {
+    return modAssets;
   }
 
   /**
    * Returns the Content Types module.
    */
-  public ContentTypesModule contentTypes() {
-    return contentTypesModule;
+  public ModuleContentTypes contentTypes() {
+    return modContentTypes;
   }
 
   /**
    * Returns the Entries module.
    */
-  public EntriesModule entries() {
-    return entriesModule;
+  public ModuleEntries entries() {
+    return modEntries;
   }
 
   /**
    * Returns the Spaces module.
    */
-  public SpacesModule spaces() {
-    return spacesModule;
+  public ModuleSpaces spaces() {
+    return modSpaces;
   }
 
   /**
