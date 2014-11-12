@@ -1,0 +1,54 @@
+{
+  "fields": {
+    "title": {
+      "en-US": "Hello, World!"
+    },
+    "body": {
+      "en-US": "Bacon is healthy!"
+    }
+  },
+  "sys": {
+    "id": "entryid",
+    "type": "Entry",
+    "createdAt": "2014-11-10T14:36:42.316Z",
+    "createdBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "uid"
+      }
+    },
+    "space": {
+      "sys": {
+        "type": "Link",
+        "linkType": "Space",
+        "id": "spaceid"
+      }
+    },
+    "contentType": {
+      "sys": {
+        "type": "Link",
+        "linkType": "ContentType",
+        "id": "ctid"
+      }
+    },
+    "version": 2,
+    "updatedAt": "2014-11-10T14:37:25.133Z",
+    "updatedBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "uid"
+      }
+    },
+    "archivedAt": "2014-11-10T14:37:25.133Z",
+    "archivedBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "uid"
+      }
+    },
+    "archivedVersion": 1
+  }
+}

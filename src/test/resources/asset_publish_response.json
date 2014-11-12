@@ -1,0 +1,60 @@
+{
+  "fields": {
+    "title": {
+      "en-US": "Bacon Pancakes"
+    },
+    "file": {
+      "en-US": {
+        "contentType": "image/jpeg",
+        "fileName": "example.jpg",
+        "details": {
+          "image": {
+            "width": 1680,
+            "height": 1050
+          },
+          "size": 327054
+        },
+        "url": "//images.contentful.com/yecu8kbi7r6b/bacon-pancakes/f92060e13c91fb2f5cfb9971a50b1bf6/example.jpg"
+      }
+    }
+  },
+  "sys": {
+    "id": "bacon-pancakes",
+    "type": "Asset",
+    "createdAt": "2014-11-10T15:25:15.850Z",
+    "createdBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "uid"
+      }
+    },
+    "space": {
+      "sys": {
+        "type": "Link",
+        "linkType": "Space",
+        "id": "spaceid"
+      }
+    },
+    "version": 5,
+    "updatedAt": "2014-11-10T15:28:51.090Z",
+    "updatedBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "uid"
+      }
+    },
+    "firstPublishedAt": "2014-11-10T15:28:51.089Z",
+    "publishedCounter": 1,
+    "publishedAt": "2014-11-10T15:28:51.090Z",
+    "publishedBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "uid"
+      }
+    },
+    "publishedVersion": 4
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "name": "whatever1",
+  "fields": [
+    {
+      "id": "f1",
+      "name": "field1",
+      "type": "Text"
+    },
+    {
+      "id": "f2",
+      "name": "field2",
+      "type": "Number"
+    }
+  ],
+  "sys": {
+    "id": "whatever1",
+    "type": "ContentType",
+    "version": 1,
+    "createdAt": "2014-11-04T14:01:20.483Z",
+    "createdBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "47ucx8wPpr1JvqcUCzLeAK"
+      }
+    },
+    "space": {
+      "sys": {
+        "type": "Link",
+        "linkType": "Space",
+        "id": "ajlz3tpv4hl9"
+      }
+    },
+    "updatedAt": "2014-11-04T14:01:20.483Z",
+    "updatedBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "47ucx8wPpr1JvqcUCzLeAK"
+      }
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "sys": {
+    "type": "Array"
+  },
+  "total": 1,
+  "skip": 0,
+  "limit": 100,
+  "items": [
+    {
+      "sys": {
+        "id": "1BW0xmr34cKEQcOym80yci",
+        "type": "Entry",
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "nhkrrfkqkvcv"
+          }
+        },
+        "createdAt": "2014-03-21T09:03:04.276Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "2u3AlPOpmEvvt47kzdCclj"
+          }
+        },
+        "contentType": {
+          "sys": {
+            "type": "Link",
+            "linkType": "ContentType",
+            "id": "3hEsRfcKgMGSaiocGQaqCo"
+          }
+        },
+        "firstPublishedAt": "2014-03-21T09:13:12.941Z",
+        "publishedCounter": 1,
+        "publishedAt": "2014-03-21T09:13:12.941Z",
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "2u3AlPOpmEvvt47kzdCclj"
+          }
+        },
+        "publishedVersion": 41,
+        "updatedAt": "2014-03-21T09:13:12.945Z",
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "2u3AlPOpmEvvt47kzdCclj"
+          }
+        },
+        "version": 42
+      },
+      "fields": {
+        "name": {
+          "en-US": "Five Elephant"
+        },
+        "type": {
+          "en-US": "Both"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "name": "Blog Post",
+  "fields": [
+    {
+      "id": "title",
+      "name": "Title",
+      "type": "Text"
+    },
+    {
+      "id": "body",
+      "name": "Body",
+      "type": "Text"
+    }
+  ],
+  "sys": {
+    "id": "blog-xost",
+    "type": "ContentType",
+    "createdAt": "2014-11-05T09:19:49.489Z",
+    "createdBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "47ucx8wPpr1JvqcUCzLeAK"
+      }
+    },
+    "space": {
+      "sys": {
+        "type": "Link",
+        "linkType": "Space",
+        "id": "ajlz3tpv4hl9"
+      }
+    },
+    "firstPublishedAt": "2014-11-05T09:20:41.770Z",
+    "publishedCounter": 1,
+    "version": 3,
+    "updatedAt": "2014-11-05T09:44:09.853Z",
+    "updatedBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "47ucx8wPpr1JvqcUCzLeAK"
+      }
+    }
+  }
+}
