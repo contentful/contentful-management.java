@@ -55,9 +55,9 @@ class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
     try {
       CMAContentType result;
       if (contentTypeId == null) {
-        result = service.contentTypesCreate(spaceId, contentType);
+        result = service.create(spaceId, contentType);
       } else {
-        result = service.contentTypesCreate(spaceId, contentTypeId, contentType);
+        result = service.create(spaceId, contentTypeId, contentType);
       }
       contentType.sys = sys;
       return result;
@@ -77,7 +77,7 @@ class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
   public Response delete(String spaceId, String contentTypeId) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(contentTypeId, "contentTypeId");
-    return service.contentTypesDelete(spaceId, contentTypeId);
+    return service.delete(spaceId, contentTypeId);
   }
 
   /**
@@ -88,7 +88,7 @@ class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
    */
   public CMAArray<CMAContentType> fetchAll(String spaceId) {
     assertNotNull(spaceId, "spaceId");
-    return service.contentTypesFetchOne(spaceId);
+    return service.fetchAll(spaceId);
   }
 
   /**
@@ -101,7 +101,7 @@ class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
   public CMAContentType fetchOne(String spaceId, String contentTypeId) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(contentTypeId, "contentTypeId");
-    return service.contentTypesFetchOne(spaceId, contentTypeId);
+    return service.fetchOne(spaceId, contentTypeId);
   }
 
   /**
@@ -114,7 +114,7 @@ class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
     assertNotNull(contentType, "contentType");
     String contentTypeId = getResourceIdOrThrow(contentType, "contentType");
     String spaceId = getSpaceIdOrThrow(contentType, "contentType");
-    return service.contentTypesPublish(contentType.getVersion(), spaceId, contentTypeId);
+    return service.publish(contentType.getVersion(), spaceId, contentTypeId);
   }
 
   /**
@@ -127,7 +127,7 @@ class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
     assertNotNull(contentType, "contentType");
     String contentTypeId = getResourceIdOrThrow(contentType, "contentType");
     String spaceId = getSpaceIdOrThrow(contentType, "contentType");
-    return service.contentTypesUnPublish(spaceId, contentTypeId);
+    return service.unPublish(spaceId, contentTypeId);
   }
 
   /**
@@ -141,8 +141,7 @@ class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
     assertNotNull(contentType.name, "contentType.name");
     String contentTypeId = getResourceIdOrThrow(contentType, "contentType");
     String spaceId = getSpaceIdOrThrow(contentType, "contentType");
-    return service.contentTypesUpdate(contentType.getVersion(), spaceId, contentTypeId,
-        contentType);
+    return service.update(contentType.getVersion(), spaceId, contentTypeId, contentType);
   }
 
   /**

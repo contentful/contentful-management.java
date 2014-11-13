@@ -30,43 +30,43 @@ import retrofit.http.Path;
  */
 interface ServiceContentTypes {
   @POST("/spaces/{space}/content_types")
-  CMAContentType contentTypesCreate(
+  CMAContentType create(
       @Path("space") String spaceId,
       @Body CMAContentType contentType);
 
   @PUT("/spaces/{space}/content_types/{content_type}")
-  CMAContentType contentTypesCreate(
+  CMAContentType create(
       @Path("space") String spaceId,
       @Path("content_type") String contentTypeId,
       @Body CMAContentType contentType);
 
   @DELETE("/spaces/{space}/content_types/{content_type}")
-  Response contentTypesDelete(
-      @Path("space") String spaceId,
-      @Path("content_type") String contentTypeId);
-
-  @GET("/spaces/{space}/content_types/{content_type}")
-  CMAContentType contentTypesFetchOne(
+  Response delete(
       @Path("space") String spaceId,
       @Path("content_type") String contentTypeId);
 
   @GET("/spaces/{space}/content_types")
-  CMAArray<CMAContentType> contentTypesFetchOne(
+  CMAArray<CMAContentType> fetchAll(
       @Path("space") String spaceId);
 
+  @GET("/spaces/{space}/content_types/{content_type}")
+  CMAContentType fetchOne(
+      @Path("space") String spaceId,
+      @Path("content_type") String contentTypeId);
+
   @PUT("/spaces/{space}/content_types/{content_type}/published")
-  CMAContentType contentTypesPublish(
+  CMAContentType publish(
       @Header("X-Contentful-Version") Integer version,
       @Path("space") String spaceId,
       @Path("content_type") String contentTypeId);
 
   @DELETE("/spaces/{space}/content_types/{content_type}/published")
-  CMAContentType contentTypesUnPublish(
+  CMAContentType unPublish(
       @Path("space") String spaceId,
       @Path("content_type") String contentTypeId);
 
   @PUT("/spaces/{space}/content_types/{content_type}")
-  CMAContentType contentTypesUpdate(
+  CMAContentType update(
       @Header("X-Contentful-Version") Integer version,
       @Path("space") String spaceId,
       @Path("content_type") String contentTypeId,

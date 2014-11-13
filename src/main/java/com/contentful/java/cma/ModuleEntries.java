@@ -42,7 +42,7 @@ class ModuleEntries extends AbsModule<ServiceEntries> {
     assertNotNull(entry, "entry");
     String entryId = getResourceIdOrThrow(entry, "entry");
     String spaceId = getSpaceIdOrThrow(entry, "entry");
-    return service.entriesArchive(spaceId, entryId);
+    return service.archive(spaceId, entryId);
   }
 
   /**
@@ -67,9 +67,9 @@ class ModuleEntries extends AbsModule<ServiceEntries> {
     try {
       CMAEntry result;
       if (entryId == null) {
-        result = service.entriesCreate(spaceId, entry);
+        result = service.create(spaceId, entry);
       } else {
-        result = service.entriesCreate(spaceId, entryId, entry);
+        result = service.create(spaceId, entryId, entry);
       }
       entry.sys = sys;
       return result;
@@ -89,7 +89,7 @@ class ModuleEntries extends AbsModule<ServiceEntries> {
   public Response delete(String spaceId, String entryId) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(entryId, "entryId");
-    return service.entriesDelete(spaceId, entryId);
+    return service.delete(spaceId, entryId);
   }
 
   /**
@@ -100,7 +100,7 @@ class ModuleEntries extends AbsModule<ServiceEntries> {
    */
   public CMAArray<CMAEntry> fetchAll(String spaceId) {
     assertNotNull(spaceId, "spaceId");
-    return service.entriesFetchAll(spaceId);
+    return service.fetchAll(spaceId);
   }
 
   /**
@@ -113,7 +113,7 @@ class ModuleEntries extends AbsModule<ServiceEntries> {
   public CMAEntry fetchOne(String spaceId, String entryId) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(entryId, "entryId");
-    return service.entriesFetchOne(spaceId, entryId);
+    return service.fetchOne(spaceId, entryId);
   }
 
   /**
@@ -126,7 +126,7 @@ class ModuleEntries extends AbsModule<ServiceEntries> {
     assertNotNull(entry, "entry");
     String entryId = getResourceIdOrThrow(entry, "entry");
     String spaceId = getSpaceIdOrThrow(entry, "entry");
-    return service.entriesPublish(entry.getVersion(), spaceId, entryId);
+    return service.publish(entry.getVersion(), spaceId, entryId);
   }
 
   /**
@@ -139,7 +139,7 @@ class ModuleEntries extends AbsModule<ServiceEntries> {
     assertNotNull(entry, "entry");
     String entryId = getResourceIdOrThrow(entry, "entry");
     String spaceId = getSpaceIdOrThrow(entry, "entry");
-    return service.entriesUnArchive(spaceId, entryId);
+    return service.unArchive(spaceId, entryId);
   }
 
   /**
@@ -168,7 +168,7 @@ class ModuleEntries extends AbsModule<ServiceEntries> {
 
     CMAEntry update = new CMAEntry();
     update.fields = entry.fields;
-    return service.entriesUpdate(entry.getVersion(), spaceId, entryId, update);
+    return service.update(entry.getVersion(), spaceId, entryId, update);
   }
 
   /**

@@ -30,27 +30,27 @@ import retrofit.http.Path;
  */
 interface ServiceSpaces {
   @POST("/spaces")
-  CMASpace spacesCreate(
+  CMASpace create(
       @Body CMASpace space);
 
   @POST("/spaces")
-  CMASpace spacesCreate(
+  CMASpace create(
       @Header("X-Contentful-Organization") String organization,
       @Body CMASpace space);
 
   @DELETE("/spaces/{space}")
-  Response spacesDelete(
+  Response delete(
       @Path("space") String spaceId);
 
   @GET("/spaces/{space}")
-  CMASpace spacesFetchOne(
+  CMASpace fetchOne(
       @Path("space") String spaceId);
 
   @GET("/spaces")
-  CMAArray<CMASpace> spacesFetchAll();
+  CMAArray<CMASpace> fetchAll();
 
   @PUT("/spaces/{space}")
-  CMASpace spacesUpdate(
+  CMASpace update(
       @Header("X-Contentful-Version") Integer version,
       @Path("space") String spaceId,
       @Body CMASpace space);

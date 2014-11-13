@@ -30,43 +30,43 @@ import retrofit.http.Path;
  */
 interface ServiceEntries {
   @PUT("/spaces/{space}/entries/{entry}/archived")
-  CMAEntry entriesArchive(
+  CMAEntry archive(
       @Path("space") String spaceId,
       @Path("entry") String entryId);
 
   @POST("/spaces/{space}/entries")
-  CMAEntry entriesCreate(
+  CMAEntry create(
       @Path("space") String spaceId,
       @Body CMAEntry entry);
 
   @PUT("/spaces/{space}/entries/{entry}")
-  CMAEntry entriesCreate(
+  CMAEntry create(
       @Path("space") String spaceId,
       @Path("entry") String entryId,
       @Body CMAEntry entry);
 
   @DELETE("/spaces/{space}/entries/{entry}")
-  Response entriesDelete(
+  Response delete(
       @Path("space") String spaceId,
       @Path("entry") String entryId);
 
   @GET("/spaces/{space}/entries/{entry}")
-  CMAEntry entriesFetchOne(
+  CMAEntry fetchOne(
       @Path("space") String spaceId,
       @Path("entry") String entryId);
 
   @GET("/spaces/{space}/entries")
-  CMAArray<CMAEntry> entriesFetchAll(
+  CMAArray<CMAEntry> fetchAll(
       @Path("space") String spaceId);
 
   @PUT("/spaces/{space}/entries/{entry}/published")
-  CMAEntry entriesPublish(
+  CMAEntry publish(
       @Header("X-Contentful-Version") Integer version,
       @Path("space") String spaceId,
       @Path("entry") String entryId);
 
   @DELETE("/spaces/{space}/entries/{entry}/archived")
-  CMAEntry entriesUnArchive(
+  CMAEntry unArchive(
       @Path("space") String spaceId,
       @Path("entry") String entryId);
 
@@ -76,7 +76,7 @@ interface ServiceEntries {
       @Path("entry") String entryId);
 
   @PUT("/spaces/{space}/entries/{entry}")
-  CMAEntry entriesUpdate(
+  CMAEntry update(
       @Header("X-Contentful-Version") Integer version,
       @Path("space") String spaceId,
       @Path("entry") String entryId,
