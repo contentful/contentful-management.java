@@ -30,59 +30,59 @@ import retrofit.http.Path;
  */
 interface ServiceAssets {
   @PUT("/spaces/{space}/assets/{asset}/archived")
-  CMAAsset assetsArchive(
+  CMAAsset archive(
       @Path("space") String spaceId,
       @Path("asset") String assetId);
 
   @POST("/spaces/{space}/assets")
-  CMAAsset assetsCreate(
+  CMAAsset create(
       @Path("space") String spaceId,
       @Body CMAAsset asset);
 
   @PUT("/spaces/{space}/assets/{asset}")
-  CMAAsset assetsCreate(
+  CMAAsset create(
       @Path("space") String spaceId,
       @Path("asset") String assetId,
       @Body CMAAsset asset);
 
   @DELETE("/spaces/{space}/assets/{asset}")
-  Response assetsDelete(
+  Response delete(
       @Path("space") String spaceId,
       @Path("asset") String assetId);
 
   @GET("/spaces/{space}/assets")
-  CMAArray<CMAAsset> assetsFetchAll(
+  CMAArray<CMAAsset> fetchAll(
       @Path("space") String spaceId);
 
   @GET("/spaces/{space}/assets/{asset}")
-  CMAAsset assetsFetchOne(
+  CMAAsset fetchOne(
       @Path("space") String spaceId,
       @Path("asset") String assetId);
 
   @PUT("/spaces/{space}/assets/{asset}/files/{locale}/process")
-  Response assetsProcess(
+  Response process(
       @Path("space") String spaceId,
       @Path("asset") String assetId,
       @Path("locale") String locale);
 
   @PUT("/spaces/{space}/assets/{asset}/published")
-  CMAAsset assetsPublish(
+  CMAAsset publish(
       @Header("X-Contentful-Version") Integer version,
       @Path("space") String spaceId,
       @Path("asset") String assetId);
 
   @DELETE("/spaces/{space}/assets/{asset}/archived")
-  CMAAsset assetsUnArchive(
+  CMAAsset unArchive(
       @Path("space") String spaceId,
       @Path("asset") String assetId);
 
   @DELETE("/spaces/{space}/assets/{asset}/published")
-  CMAAsset assetsUnPublish(
+  CMAAsset unPublish(
       @Path("space") String spaceId,
       @Path("asset") String assetId);
 
   @PUT("/spaces/{space}/assets/{asset}")
-  CMAAsset assetsUpdate(
+  CMAAsset update(
       @Header("X-Contentful-Version") Integer version,
       @Path("space") String spaceId,
       @Path("asset") String assetId,

@@ -38,7 +38,7 @@ class ModuleSpaces extends AbsModule<ServiceSpaces> {
    */
   public CMASpace create(String spaceName) {
     assertNotNull(spaceName, "spaceName");
-    return service.spacesCreate(new CMASpace().setName(spaceName));
+    return service.create(new CMASpace().setName(spaceName));
   }
 
   /**
@@ -51,7 +51,7 @@ class ModuleSpaces extends AbsModule<ServiceSpaces> {
   public CMASpace create(String spaceName, String organizationId) {
     assertNotNull(spaceName, "spaceName");
     assertNotNull(organizationId, "organizationId");
-    return service.spacesCreate(organizationId, new CMASpace().setName(spaceName));
+    return service.create(organizationId, new CMASpace().setName(spaceName));
   }
 
   /**
@@ -62,7 +62,7 @@ class ModuleSpaces extends AbsModule<ServiceSpaces> {
    */
   public Response delete(String spaceId) {
     assertNotNull(spaceId, "spaceId");
-    return service.spacesDelete(spaceId);
+    return service.delete(spaceId);
   }
 
   /**
@@ -71,7 +71,7 @@ class ModuleSpaces extends AbsModule<ServiceSpaces> {
    * @return {@link CMAArray} result instance
    */
   public CMAArray<CMASpace> fetchAll() {
-    return service.spacesFetchAll();
+    return service.fetchAll();
   }
 
   /**
@@ -82,7 +82,7 @@ class ModuleSpaces extends AbsModule<ServiceSpaces> {
    */
   public CMASpace fetchOne(String spaceId) {
     assertNotNull(spaceId, "spaceId");
-    return service.spacesFetchOne(spaceId);
+    return service.fetchOne(spaceId);
   }
 
   /**
@@ -98,7 +98,7 @@ class ModuleSpaces extends AbsModule<ServiceSpaces> {
 
     CMASpace update = new CMASpace();
     update.name = space.name;
-    return service.spacesUpdate(space.getVersion(), spaceId, update);
+    return service.update(space.getVersion(), spaceId, update);
   }
 
   /**
