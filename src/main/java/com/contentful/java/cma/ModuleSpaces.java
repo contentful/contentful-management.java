@@ -86,6 +86,17 @@ class ModuleSpaces extends AbsModule<ServiceSpaces> {
   }
 
   /**
+   * Fetch Locales for a Space.
+   *
+   * @param spaceId Space ID
+   * @return {@link CMAArray} result instance
+   */
+  public CMAArray<CMALocale> fetchLocales(String spaceId) {
+    assertNotNull(spaceId, "spaceId");
+    return service.fetchLocales(spaceId);
+  }
+
+  /**
    * Update a Space.
    *
    * @param space Space
@@ -169,6 +180,22 @@ class ModuleSpaces extends AbsModule<ServiceSpaces> {
       return defer(new DefFunc<CMAArray<CMASpace>>() {
         @Override CMAArray<CMASpace> method() {
           return ModuleSpaces.this.fetchAll();
+        }
+      }, callback);
+    }
+
+    /**
+     * Fetch Locales for a Space.
+     *
+     * @param spaceId Space ID
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
+    public CMACallback<CMAArray<CMALocale>> fetchLocales(final String spaceId,
+        CMACallback<CMAArray<CMALocale>> callback) {
+      return defer(new DefFunc<CMAArray<CMALocale>>() {
+        @Override CMAArray<CMALocale> method() {
+          return ModuleSpaces.this.fetchLocales(spaceId);
         }
       }, callback);
     }

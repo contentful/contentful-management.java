@@ -42,12 +42,16 @@ interface ServiceSpaces {
   Response delete(
       @Path("space") String spaceId);
 
+  @GET("/spaces")
+  CMAArray<CMASpace> fetchAll();
+
   @GET("/spaces/{space}")
   CMASpace fetchOne(
       @Path("space") String spaceId);
 
-  @GET("/spaces")
-  CMAArray<CMASpace> fetchAll();
+  @GET("/spaces/{space}/locales")
+  CMAArray<CMALocale> fetchLocales(
+      @Path("space") String spaceId);
 
   @PUT("/spaces/{space}")
   CMASpace update(

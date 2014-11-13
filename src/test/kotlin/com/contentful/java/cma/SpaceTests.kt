@@ -21,6 +21,7 @@ import com.squareup.okhttp.mockwebserver.MockResponse
 import org.junit.Test as test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 
 /**
  * Space Tests.
@@ -128,7 +129,7 @@ class SpaceTests : BaseTest() {
         assertEquals("/spaces", request.getPath())
     }
 
-    test fun testFetchWithIdentifier() {
+    test fun testFetchWithId() {
         val responseBody = TestUtils.fileToString("space_fetch_one_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -158,6 +159,24 @@ class SpaceTests : BaseTest() {
         val request = server!!.takeRequest()
         assertEquals("GET", request.getMethod())
         assertEquals("/spaces/spaceid", request.getPath())
+    }
+
+    test fun testFetchLocales() {
+        val responseBody = TestUtils.fileToString("space_fetch_locales_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val result = assertTestCallback(client!!.spaces().async().fetchLocales(
+                "spaceid", TestCallback()) as TestCallback)
+
+        assertEquals("U.S. English", result.items[0].getName())
+        assertEquals("en-US", result.items[0].getCode())
+        assertTrue(result.items[0].isDefault())
+        assertTrue(result.items[0].isPublished())
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.getMethod())
+        assertEquals("/spaces/spaceid/locales", recordedRequest.getPath())
     }
 
     test fun testUpdate() {
