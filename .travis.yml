@@ -1,0 +1,13 @@
+language: java
+install: mvn install -DskipTests=true -Dgpg.skip=true
+
+jdk:
+  - oraclejdk7
+  - oraclejdk8
+
+branches:
+  except:
+    - gh-pages
+
+after_success:
+  - mvn clean cobertura:cobertura coveralls:report -DserviceName=travis-pro
