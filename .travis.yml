@@ -10,4 +10,4 @@ branches:
     - gh-pages
 
 after_success:
-  - mvn clean cobertura:cobertura coveralls:report -DserviceName=travis-pro
+  - mvn clean cobertura:cobertura coveralls:report
