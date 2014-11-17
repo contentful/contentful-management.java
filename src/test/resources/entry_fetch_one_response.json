@@ -1,0 +1,14 @@
+{
+  "sys": {
+    "id": "entryid",
+    "type": "Entry"
+  },
+  "fields": {
+    "url": {
+      "en-US": "http://www.url.com"
+    },
+    "key": {
+      "en-US": "value"
+    }
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "sys": {
+    "type": "Array"
+  },
+  "total": 1,
+  "skip": 0,
+  "limit": 100,
+  "items": [
+    {
+      "sys": {
+        "id": "assetid",
+        "type": "Asset",
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "spaceid"
+          }
+        },
+        "createdAt": "2014-03-21T09:02:02.912Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "uid"
+          }
+        },
+        "firstPublishedAt": "2014-03-21T09:02:47.429Z",
+        "publishedCounter": 1,
+        "publishedAt": "2014-03-21T09:02:47.429Z",
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "uid"
+          }
+        },
+        "publishedVersion": 33,
+        "updatedAt": "2014-03-21T09:02:47.435Z",
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "uid"
+          }
+        },
+        "version": 34
+      },
+      "fields": {
+        "file": {
+          "en-US": {
+            "fileName": "hash.jpg",
+            "contentType": "image/jpeg",
+            "details": {
+              "image": {
+                "width": 960,
+                "height": 720
+              },
+              "size": 101905
+            },
+            "url": "//images.contentful.com/spaceid/a/b/c.jpg"
+          }
+        },
+        "title": {
+          "en-US": "Bonanza Coffee Heroes"
+        }
+      }
+    }
+  ]
+}

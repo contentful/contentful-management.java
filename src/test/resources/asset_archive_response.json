@@ -1,0 +1,60 @@
+{
+  "fields": {
+    "title": {
+      "en-US": "Bacon Pancakes"
+    },
+    "file": {
+      "en-US": {
+        "contentType": "image/jpeg",
+        "fileName": "example.jpg",
+        "details": {
+          "image": {
+            "width": 250,
+            "height": 250
+          },
+          "size": 12273
+        },
+        "url": "//images.contentful.com/274214qi376d/bacon-pancakes/4d43f2d7fc098f57a110b09d9dfc68c1/example.jpg"
+      }
+    }
+  },
+  "sys": {
+    "id": "bacon-pancakes",
+    "type": "Asset",
+    "createdAt": "2014-11-10T09:13:14.586Z",
+    "createdBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "47ucx8wPpr1JvqcUCzLeAK"
+      }
+    },
+    "space": {
+      "sys": {
+        "type": "Link",
+        "linkType": "Space",
+        "id": "274214qi376d"
+      }
+    },
+    "firstPublishedAt": "2014-11-10T13:03:50.321Z",
+    "publishedCounter": 2,
+    "version": 10,
+    "updatedAt": "2014-11-10T14:17:03.726Z",
+    "updatedBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "47ucx8wPpr1JvqcUCzLeAK"
+      }
+    },
+    "archivedAt": "2014-11-10T14:17:03.726Z",
+    "archivedBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "47ucx8wPpr1JvqcUCzLeAK"
+      }
+    },
+    "archivedVersion": 9
+  }
+}

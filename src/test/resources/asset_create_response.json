@@ -1,0 +1,38 @@
+{
+  "fields": {
+    "title": {
+      "en-US": "title"
+    },
+    "description": {
+      "en-US": "description"
+    }
+  },
+  "sys": {
+    "id": "assetid",
+    "type": "Asset",
+    "version": 1,
+    "createdAt": "2014-11-10T09:13:14.586Z",
+    "createdBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "uid"
+      }
+    },
+    "space": {
+      "sys": {
+        "type": "Link",
+        "linkType": "Space",
+        "id": "spaceid"
+      }
+    },
+    "updatedAt": "2014-11-10T09:13:14.586Z",
+    "updatedBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "uid"
+      }
+    }
+  }
+}
