@@ -14,13 +14,13 @@ Grab via Maven:
 ```xml
 <dependency>
   <groupId>com.contentful.java</groupId>
-  <artifactId>java-sdk</artifactId>
+  <artifactId>cma-sdk</artifactId>
   <version>0.9.0</version>
 </dependency>
 ```
 or Gradle:
 ```groovy
-compile 'com.contentful.java:java-sdk:0.9.0'
+compile 'com.contentful.java:cma-sdk:0.9.0'
 ```
 
 The SDK requires at minimum Java 6 or Android 2.3.
