@@ -154,6 +154,12 @@ class EntryTests : BaseTest() {
         assertEquals("/spaces/space/entries/entry", request.getPath())
     }
 
+    test fun testParseEntryWithList() {
+        gson!!.fromJson(
+                TestUtils.fileToString("entry_with_list_object.json"),
+                javaClass<CMAEntry>())
+    }
+
     test fun testUpdate() {
         val requestBody = TestUtils.fileToString("entry_update_request.json")
         val responseBody = TestUtils.fileToString("entry_update_response.json")

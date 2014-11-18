@@ -22,7 +22,7 @@ import java.util.Properties;
 /**
  * PropertiesReader.
  */
-final class PropertiesReader {
+class PropertiesReader {
   PropertiesReader() {
   }
 

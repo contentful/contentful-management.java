@@ -1,0 +1,18 @@
+{
+  "fields": {
+    "title": {
+      "en-US": "whatever"
+    },
+    "list": {
+      "en-US": [
+        {
+          "sys": {
+            "type": "Link",
+            "linkType": "Entry",
+            "id": "..."
+          }
+        }
+      ]
+    }
+  }
+}

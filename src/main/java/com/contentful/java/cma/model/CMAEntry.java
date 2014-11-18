@@ -17,14 +17,13 @@
 package com.contentful.java.cma.model;
 
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * Represents a resource of type Entry.
  */
 public class CMAEntry extends StatefulResource {
   // Map of fields
-  LinkedHashMap<String, Map<String, String>> fields;
+  LinkedHashMap<String, LinkedHashMap<String, Object>> fields;
 
   /**
    * Sets the ID for this Entry.
@@ -35,22 +34,22 @@ public class CMAEntry extends StatefulResource {
   }
 
   /**
-   * Creates a new field. If a field with the given key already exists it will be replaced.
+   * Creates a new field with the given {@code value}.
+   * If a field named {@code key} already exists it will be replaced.
    *
    * @param key field key
    * @param value value
    * @param locale locale
    * @return this {@code CMAEntry}
    */
-  @SuppressWarnings("unchecked")
-  public CMAEntry setField(String key, String value, String locale) {
+  public CMAEntry setField(String key, Object value, String locale) {
     if (fields == null) {
-      fields = new LinkedHashMap<String, Map<String, String>>();
+      fields = new LinkedHashMap<String, LinkedHashMap<String, Object>>();
     }
 
-    Map<String, String> field = fields.get(key);
+    LinkedHashMap<String, Object> field = fields.get(key);
     if (field == null) {
-      field = new LinkedHashMap<String, String>();
+      field = new LinkedHashMap<String, Object>();
     }
 
     field.put(locale, value);
@@ -61,7 +60,7 @@ public class CMAEntry extends StatefulResource {
   /**
    * Returns a map of fields for this Entry.
    */
-  public LinkedHashMap<String, Map<String, String>> getFields() {
+  public LinkedHashMap<String, LinkedHashMap<String, Object>> getFields() {
     return fields;
   }
 
@@ -71,7 +70,7 @@ public class CMAEntry extends StatefulResource {
    * @param fields
    * @return this {@code CMAEntry} instance
    */
-  public CMAEntry setFields(LinkedHashMap<String, Map<String, String>> fields) {
+  public CMAEntry setFields(LinkedHashMap<String, LinkedHashMap<String, Object>> fields) {
     this.fields = fields;
     return this;
   }
