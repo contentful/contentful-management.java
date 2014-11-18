@@ -1,0 +1,46 @@
+{
+  "sys":{
+    "type":"Array"
+  },
+  "items":[
+    {
+      "sys":{
+        "type":"Locale",
+        "id":"64vLBYZcoOKnDi9UGspKnr",
+        "version":0,
+        "space":{
+          "sys":{
+            "type":"Link",
+            "linkType":"Space",
+            "id":"256tjdsmm689"
+          }
+        },
+        "createdBy":{
+          "sys":{
+            "type":"Link",
+            "linkType":"User",
+            "id":"4VwE8Z1aLx6gPr2BqY0bBQ"
+          }
+        },
+        "createdAt":"2014-08-26T12:23:59Z",
+        "updatedBy":{
+          "sys":{
+            "type":"Link",
+            "linkType":"User",
+            "id":"4VwE8Z1aLx6gPr2BqY0bBQ"
+          }
+        },
+        "updatedAt":"2014-08-26T12:23:59Z"
+      },
+      "name":"U.S. English",
+      "code":"en-US",
+      "default":true,
+      "contentManagementApi":true,
+      "publish":true,
+      "contentDeliveryApi":true
+    }
+  ],
+  "total":1,
+  "limit":25,
+  "skip":0
+}

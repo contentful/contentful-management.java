@@ -1,0 +1,14 @@
+{
+  "fields": {
+    "fid1": {
+      "en-US": "newvalue1"
+    },
+    "fid2": {
+      "en-US": "newvalue2"
+    }
+  },
+  "sys": {
+    "id": "entryid",
+    "type": "Entry"
+  }
+}
