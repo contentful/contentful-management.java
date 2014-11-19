@@ -41,6 +41,6 @@ public final class Constants {
   }
 
   // Properties
-  static final String SDK_PROPERTIES = "sdk.properties";
+  static final String SDK_PROPERTIES = "contentful_cma.properties";
   static final String PROP_VERSION_NAME = "version.name";
 }
