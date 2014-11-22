@@ -332,7 +332,7 @@ client.entries().async().fetchOne("space-id", "entry-id", new CMACallback<CMAEnt
 Creating an entry:
 
 ```java
-client.entries().async().create("space-id", 
+client.entries().async().create("space-id", "content-type-id", 
     new CMAEntry().setField("title", "Mr. President", "en-US"),
     new CMACallback<CMAEntry>() {
       @Override protected void onSuccess(CMAEntry result) {
