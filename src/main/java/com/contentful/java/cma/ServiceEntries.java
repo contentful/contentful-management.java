@@ -39,11 +39,13 @@ interface ServiceEntries {
   @POST("/spaces/{space}/entries")
   CMAEntry create(
       @Path("space") String spaceId,
+      @Header("X-Contentful-Content-Type") String contentType,
       @Body CMAEntry entry);
 
   @PUT("/spaces/{space}/entries/{entry}")
   CMAEntry create(
       @Path("space") String spaceId,
+      @Header("X-Contentful-Content-Type") String contentType,
       @Path("entry") String entryId,
       @Body CMAEntry entry);
 

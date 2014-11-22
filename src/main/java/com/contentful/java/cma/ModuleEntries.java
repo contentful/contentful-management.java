@@ -58,11 +58,12 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
    * success.
    *
    * @param spaceId Space ID
+   * @param contentTypeId Content Type ID
    * @param entry Entry
    * @return {@link CMAEntry} result instance
    */
   @SuppressWarnings("unchecked")
-  public CMAEntry create(String spaceId, CMAEntry entry) {
+  public CMAEntry create(String spaceId, String contentTypeId, CMAEntry entry) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(entry, "entry");
 
@@ -73,9 +74,9 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     try {
       CMAEntry result;
       if (entryId == null) {
-        result = service.create(spaceId, entry);
+        result = service.create(spaceId, contentTypeId, entry);
       } else {
-        result = service.create(spaceId, entryId, entry);
+        result = service.create(spaceId, contentTypeId, entryId, entry);
       }
       entry.setSys(sys);
       return result;
@@ -210,15 +211,16 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
      * success.
      *
      * @param spaceId Space ID
+     * @param contentTypeId Content Type ID
      * @param entry Entry
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
-    public CMACallback<CMAEntry> create(final String spaceId, final CMAEntry entry,
-        CMACallback<CMAEntry> callback) {
+    public CMACallback<CMAEntry> create(final String spaceId, final String contentTypeId,
+        final CMAEntry entry, CMACallback<CMAEntry> callback) {
       return defer(new RxExtensions.DefFunc<CMAEntry>() {
         @Override CMAEntry method() {
-          return ModuleEntries.this.create(spaceId, entry);
+          return ModuleEntries.this.create(spaceId, contentTypeId, entry);
         }
       }, callback);
     }
