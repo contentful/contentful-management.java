@@ -60,7 +60,7 @@ class EntryTests : BaseTest() {
 
         val result = assertTestCallback(client!!.entries()
                 .async()
-                .create("spaceid", entry, TestCallback()) as TestCallback)
+                .create("spaceid", "ctid", entry, TestCallback()) as TestCallback)
 
         assertEquals(2, result.getFields().size)
 
@@ -76,6 +76,7 @@ class EntryTests : BaseTest() {
         assertEquals("POST", recordedRequest.getMethod())
         assertEquals("/spaces/spaceid/entries", recordedRequest.getPath())
         assertEquals(requestBody, recordedRequest.getBodyAsString())
+        assertEquals("ctid", recordedRequest.getHeader("X-Contentful-Content-Type"))
     }
 
     test fun testCreateWithId() {
@@ -89,13 +90,14 @@ class EntryTests : BaseTest() {
                 .setField("fid2", "value2", "en-US")
 
         assertTestCallback(client!!.entries().async().create(
-                "spaceid", entry, TestCallback()) as TestCallback)
+                "spaceid", "ctid", entry, TestCallback()) as TestCallback)
 
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("PUT", recordedRequest.getMethod())
         assertEquals("/spaces/spaceid/entries/entryid", recordedRequest.getPath())
         assertEquals(requestBody, recordedRequest.getBodyAsString())
+        assertEquals("ctid", recordedRequest.getHeader("X-Contentful-Content-Type"))
     }
 
     test fun testDelete() {
@@ -240,7 +242,7 @@ class EntryTests : BaseTest() {
 
         val entry = CMAEntry().setVersion(31337.0)
         try {
-            badClient.entries().create("spaceid", entry)
+            badClient.entries().create("spaceid", "ctid", entry)
         } catch (e: RetrofitError) {
             assertEquals(31337, entry.getVersion())
             throw e
