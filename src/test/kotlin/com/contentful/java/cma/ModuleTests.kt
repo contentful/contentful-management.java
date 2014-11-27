@@ -21,6 +21,9 @@ import org.junit.Before as before
 import kotlin.test.assertEquals
 import com.contentful.java.cma.model.CMAResource
 import retrofit.RestAdapter
+import org.mockito.Mockito
+import java.util.concurrent.CountDownLatch
+import kotlin.test.assertNotEquals
 
 /**
  * Module Tests.
@@ -65,5 +68,36 @@ class ModuleTests : BaseTest() {
             assertEquals("parameter must have a space associated.", e.getMessage())
             throw e
         }
+    }
+
+    test fun testDefersToBackgroundThread() {
+        val currentThreadId = Thread.currentThread().getId()
+        var workerThreadId: Long? = null
+
+        val module = object : AbsModule<Any>(null) {
+            override fun createService(restAdapter: RestAdapter?): Any? = null
+
+            fun work() {
+                val cdl = CountDownLatch(1)
+
+                defer(
+                        object : RxExtensions.DefFunc<Long>() {
+                            override fun method(): Long? {
+                                workerThreadId = Thread.currentThread().getId()
+                                return workerThreadId
+                            }
+                        },
+                        object : CMACallback<Long>() {
+                            override fun onSuccess(result: Long?) {
+                                cdl.countDown()
+                            }
+                        })
+
+                cdl.await()
+            }
+        }
+
+        module.work()
+        assertNotEquals(currentThreadId, workerThreadId)
     }
 }

@@ -10,7 +10,6 @@ import java.lang.reflect.InvocationTargetException
 /**
  * General Tests.
  */
-
 class GeneralTests : BaseTest() {
     test fun testConstantsThrowsUnsupportedException() {
         assertPrivateConstructor(javaClass<Constants>())

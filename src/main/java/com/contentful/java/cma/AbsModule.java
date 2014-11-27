@@ -81,7 +81,7 @@ abstract class AbsModule<T> {
   <R> CMACallback<R> defer(DefFunc<R> func, CMACallback<R> callback) {
     assertNotNull(callback, "callback");
     Observable.defer(func)
-        .observeOn(Schedulers.io())
+        .subscribeOn(Schedulers.io())
         .subscribe(
             new ActionSuccess<R>(callback),
             new ActionError(callback));
