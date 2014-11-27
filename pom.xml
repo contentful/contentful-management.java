@@ -58,9 +58,19 @@
     <okhttp-urlconnection.version>2.0.0</okhttp-urlconnection.version>
     <rxjava.version>1.0.0</rxjava.version>
     <mockito.version>1.10.8</mockito.version>
+    <android.version>4.1.1.4</android.version>
+    <android.platform>16</android.platform>
+    <robolectric.version>2.4</robolectric.version>
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>com.google.android</groupId>
+      <artifactId>android</artifactId>
+      <version>${android.version}</version>
+      <optional>true</optional>
+    </dependency>
+
     <dependency>
       <groupId>com.squareup.retrofit</groupId>
       <artifactId>retrofit</artifactId>
@@ -121,6 +131,13 @@
       <version>${mockito.version}</version>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>org.robolectric</groupId>
+      <artifactId>robolectric</artifactId>
+      <version>${robolectric.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -176,7 +193,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>cobertura-maven-plugin</artifactId>
-        <version>2.6</version>
+        <version>2.5.2</version>
         <configuration>
           <format>xml</format>
           <maxmem>256m</maxmem>

@@ -48,9 +48,13 @@ final class RxExtensions {
       super(callback);
     }
 
-    @Override public void call(T t) {
+    @Override public void call(final T t) {
       if (!callback.isCancelled()) {
-        callback.onSuccess(t);
+        Platform.get().callbackExecutor().execute(new Runnable() {
+          @Override public void run() {
+            callback.onSuccess(t);
+          }
+        });
       }
     }
   }
@@ -64,13 +68,21 @@ final class RxExtensions {
       super(callback);
     }
 
-    @Override public void call(Throwable t) {
+    @Override public void call(final Throwable t) {
+      final RetrofitError retrofitError;
+
+      if (t instanceof RetrofitError) {
+        retrofitError = (RetrofitError) t;
+      } else {
+        retrofitError = RetrofitError.unexpectedError(null, t);
+      }
+
       if (!callback.isCancelled()) {
-        if (t instanceof RetrofitError) {
-          callback.onFailure((RetrofitError) t);
-        } else {
-          callback.onFailure(RetrofitError.unexpectedError(null, t));
-        }
+        Platform.get().callbackExecutor().execute(new Runnable() {
+          @Override public void run() {
+            callback.onFailure(retrofitError);
+          }
+        });
       }
     }
   }
