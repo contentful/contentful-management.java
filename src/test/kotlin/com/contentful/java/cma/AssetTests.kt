@@ -26,18 +26,26 @@ import java.io.IOException
 import com.contentful.java.cma.lib.TestCallback
 import org.junit.Test
 import com.contentful.java.cma.model.CMAAsset
+import retrofit.RestAdapter
 
 /**
  * Asset Tests.
  */
 class AssetTests : BaseTest() {
     test fun testArchive() {
+        val cli = CMAClient.Builder()
+                .setAccessToken("token")
+                .setEndpoint(server!!.getUrl("/").toString())
+                .setCallbackExecutor { it.run() }
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .build()
+
         val responseBody = TestUtils.fileToString("asset_archive_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
         val asset = CMAAsset().setId("assetid").setSpaceId("spaceid")
         assertFalse(asset.isArchived())
 
-        val result = assertTestCallback(client!!.assets().async().archive(
+        val result = assertTestCallback(cli.assets().async().archive(
                 asset, TestCallback()) as TestCallback)
 
         // Request
