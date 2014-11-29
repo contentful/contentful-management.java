@@ -33,7 +33,7 @@ class ModuleTests : BaseTest() {
 
     before fun setup() {
         super<BaseTest>.setUp()
-        module = object : AbsModule<Any>(null) {
+        module = object : AbsModule<Any>(null, SynchronousExecutor()) {
             override fun createService(restAdapter: RestAdapter?): Any? {
                 return null
             }
@@ -74,7 +74,7 @@ class ModuleTests : BaseTest() {
         val currentThreadId = Thread.currentThread().getId()
         var workerThreadId: Long? = null
 
-        val module = object : AbsModule<Any>(null) {
+        val module = object : AbsModule<Any>(null, SynchronousExecutor()) {
             override fun createService(restAdapter: RestAdapter?): Any? = null
 
             fun work() {

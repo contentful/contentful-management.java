@@ -19,6 +19,7 @@ package com.contentful.java.cma;
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAEntry;
 import java.util.HashMap;
+import java.util.concurrent.Executor;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -29,8 +30,8 @@ import retrofit.client.Response;
 public final class ModuleEntries extends AbsModule<ServiceEntries> {
   final Async async;
 
-  public ModuleEntries(RestAdapter restAdapter) {
-    super(restAdapter);
+  public ModuleEntries(RestAdapter restAdapter, Executor callbackExecutor) {
+    super(restAdapter, callbackExecutor);
     this.async = new Async();
   }
 
