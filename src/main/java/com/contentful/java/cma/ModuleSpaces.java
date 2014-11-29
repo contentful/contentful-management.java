@@ -20,6 +20,7 @@ import com.contentful.java.cma.RxExtensions.DefFunc;
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMALocale;
 import com.contentful.java.cma.model.CMASpace;
+import java.util.concurrent.Executor;
 import retrofit.RestAdapter;
 import retrofit.client.Response;
 
@@ -29,8 +30,8 @@ import retrofit.client.Response;
 public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
   final Async async;
 
-  public ModuleSpaces(RestAdapter restAdapter) {
-    super(restAdapter);
+  public ModuleSpaces(RestAdapter restAdapter, Executor callbackExecutor) {
+    super(restAdapter, callbackExecutor);
     this.async = new Async();
   }
 

@@ -17,6 +17,7 @@
 package com.contentful.java.cma;
 
 import java.io.IOException;
+import java.util.concurrent.Executor;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.client.Client;
@@ -38,6 +39,9 @@ public class CMAClient {
   // PropertiesReader
   final PropertiesReader propertiesReader;
 
+  // Executors
+  Executor callbackExecutor;
+
   private CMAClient(Builder builder) {
     if (builder.accessToken == null) {
       throw new IllegalArgumentException("No access token was set.");
@@ -51,16 +55,28 @@ public class CMAClient {
     setEndpoint(builder, restBuilder);
     setClient(builder, restBuilder);
     setLogLevel(builder, restBuilder);
+    setCallbackExecutor(builder);
     RestAdapter adapter = restBuilder.build();
 
     // Modules
-    this.modAssets = new ModuleAssets(adapter);
-    this.modContentTypes = new ModuleContentTypes(adapter);
-    this.modEntries = new ModuleEntries(adapter);
-    this.modSpaces = new ModuleSpaces(adapter);
+    this.modAssets = new ModuleAssets(adapter, callbackExecutor);
+    this.modContentTypes = new ModuleContentTypes(adapter, callbackExecutor);
+    this.modEntries = new ModuleEntries(adapter, callbackExecutor);
+    this.modSpaces = new ModuleSpaces(adapter, callbackExecutor);
 
     // PropertiesReader
     this.propertiesReader = new PropertiesReader();
+  }
+
+  /**
+   * Sets the callback executor.
+   */
+  private void setCallbackExecutor(Builder clientBuilder) {
+    if (clientBuilder.callbackExecutor == null) {
+      callbackExecutor = Platform.get().callbackExecutor();
+    } else {
+      callbackExecutor = clientBuilder.callbackExecutor;
+    }
   }
 
   /**
@@ -155,6 +171,7 @@ public class CMAClient {
     Client.Provider clientProvider;
     RestAdapter.LogLevel logLevel;
     String endpoint;
+    Executor callbackExecutor;
 
     /**
      * Overrides the default remote URL.
@@ -214,6 +231,23 @@ public class CMAClient {
       }
 
       this.clientProvider = clientProvider;
+      return this;
+    }
+
+    /**
+     * Sets the executor to use when invoking asynchronous callbacks.
+     *
+     * @param executor Executor on which any {@link CMACallback} methods will be invoked. This
+     * defaults to execute on the main thread for Android projects. For non-Android
+     * projects this defaults to the same thread of the HTTP client.
+     * @return this {@code Builder} instance
+     */
+    public Builder setCallbackExecutor(Executor executor) {
+      if (executor == null) {
+        throw new IllegalArgumentException("Cannot call setCallbackExecutor() with null.");
+      }
+
+      this.callbackExecutor = executor;
       return this;
     }
 

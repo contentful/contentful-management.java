@@ -94,8 +94,8 @@ class ClientTests : BaseTest() {
         }.doOnEach {
             throw RuntimeException()
         }.subscribe(
-                RxExtensions.ActionSuccess<CMASpace>(cb),
-                RxExtensions.ActionError(cb))
+                RxExtensions.ActionSuccess<CMASpace>(client!!.callbackExecutor, cb),
+                RxExtensions.ActionError(client!!.callbackExecutor, cb))
 
         assertTrue(error is RetrofitError)
     }
@@ -178,6 +178,16 @@ class ClientTests : BaseTest() {
             CMAClient.Builder().setEndpoint(null)
         } catch (e: IllegalArgumentException) {
             assertEquals("Cannot call setEndpoint() with null.", e.getMessage())
+            throw e
+        }
+    }
+
+    test(expected = javaClass<IllegalArgumentException>())
+    fun failsSetCallbackExecutor() {
+        try {
+            CMAClient.Builder().setCallbackExecutor(null)
+        } catch (e: IllegalArgumentException) {
+            assertEquals("Cannot call setCallbackExecutor() with null.", e.getMessage())
             throw e
         }
     }

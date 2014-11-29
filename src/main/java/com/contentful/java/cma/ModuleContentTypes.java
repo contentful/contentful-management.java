@@ -20,6 +20,7 @@ import com.contentful.java.cma.RxExtensions.DefFunc;
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAContentType;
 import java.util.HashMap;
+import java.util.concurrent.Executor;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -30,8 +31,8 @@ import retrofit.client.Response;
 public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
   final Async async;
 
-  public ModuleContentTypes(RestAdapter restAdapter) {
-    super(restAdapter);
+  public ModuleContentTypes(RestAdapter restAdapter, Executor callbackExecutor) {
+    super(restAdapter, callbackExecutor);
     this.async = new Async();
   }
 

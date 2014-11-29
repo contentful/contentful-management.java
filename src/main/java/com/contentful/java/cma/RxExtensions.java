@@ -16,6 +16,7 @@
 
 package com.contentful.java.cma;
 
+import java.util.concurrent.Executor;
 import retrofit.RetrofitError;
 import rx.Observable;
 import rx.functions.Action1;
@@ -33,9 +34,11 @@ final class RxExtensions {
    * Base Action.
    */
   abstract static class AbsAction<T> implements Action1<T> {
+    final Executor executor;
     final CMACallback<T> callback;
 
-    public AbsAction(CMACallback<T> callback) {
+    public AbsAction(Executor executor, CMACallback<T> callback) {
+      this.executor = executor;
       this.callback = callback;
     }
   }
@@ -44,13 +47,13 @@ final class RxExtensions {
    * Success Action.
    */
   static class ActionSuccess<T> extends AbsAction<T> {
-    public ActionSuccess(CMACallback<T> callback) {
-      super(callback);
+    public ActionSuccess(Executor executor, CMACallback<T> callback) {
+      super(executor, callback);
     }
 
     @Override public void call(final T t) {
       if (!callback.isCancelled()) {
-        Platform.get().callbackExecutor().execute(new Runnable() {
+        executor.execute(new Runnable() {
           @Override public void run() {
             callback.onSuccess(t);
           }
@@ -64,8 +67,8 @@ final class RxExtensions {
    */
   static class ActionError extends AbsAction<Throwable> {
     @SuppressWarnings("unchecked")
-    public ActionError(CMACallback callback) {
-      super(callback);
+    public ActionError(Executor executor, CMACallback callback) {
+      super(executor, callback);
     }
 
     @Override public void call(final Throwable t) {
@@ -78,7 +81,7 @@ final class RxExtensions {
       }
 
       if (!callback.isCancelled()) {
-        Platform.get().callbackExecutor().execute(new Runnable() {
+        executor.execute(new Runnable() {
           @Override public void run() {
             callback.onFailure(retrofitError);
           }

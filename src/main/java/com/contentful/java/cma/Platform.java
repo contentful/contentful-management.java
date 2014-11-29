@@ -57,10 +57,4 @@ abstract class Platform {
       return new MainThreadExecutor();
     }
   }
-
-  static class SynchronousExecutor implements Executor {
-    @Override public void execute(Runnable runnable) {
-      runnable.run();
-    }
-  }
 }
