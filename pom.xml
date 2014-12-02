@@ -7,7 +7,8 @@
   <packaging>jar</packaging>
 
   <name>cma-sdk</name>
-  <url>http://maven.apache.org</url>
+  <description>Java SDK for Contentful's Content Management API.</description>
+  <url>http://github.com/contentful/contentful-management.java</url>
 
   <parent>
     <groupId>org.sonatype.oss</groupId>
