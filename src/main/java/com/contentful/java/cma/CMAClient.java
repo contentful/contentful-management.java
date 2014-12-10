@@ -211,12 +211,11 @@ public class CMAClient {
       if (client == null) {
         throw new IllegalArgumentException("Cannot call setClient() with null.");
       }
-      setClientProvider(new Client.Provider() {
+      return setClientProvider(new Client.Provider() {
         @Override public Client get() {
           return client;
         }
       });
-      return this;
     }
 
     /**
