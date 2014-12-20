@@ -4,7 +4,15 @@
     {
       "id": "f1",
       "name": "field1",
-      "type": "Text"
+      "type": "Text",
+      "validations": [
+        {
+          "size": {
+            "min": 1,
+            "max": 5
+          }
+        }
+      ]
     },
     {
       "id": "f2",
