@@ -42,7 +42,8 @@ class ContentTypeTests : BaseTest() {
                         .setDisplayField("df")
                         .addField(CMAField().setId("f1")
                                 .setName("field1")
-                                .setType(CMAFieldType.Text))
+                                .setType(CMAFieldType.Text)
+                                .setRequired(true))
                         .addField(CMAField().setId("f2")
                                 .setName("field2")
                                 .setType(CMAFieldType.Number)),
@@ -54,6 +55,7 @@ class ContentTypeTests : BaseTest() {
         assertEquals("/spaces/spaceid/content_types", recordedRequest.getPath())
         assertJsonEquals(requestBody, recordedRequest.getBodyAsString())
         assertEquals(2, result.getFields().size)
+        assertTrue(result.getFields()[0].isRequired())
     }
 
     test fun testCreateWithId() {
@@ -70,7 +72,8 @@ class ContentTypeTests : BaseTest() {
                         .setFields(listOf(
                                 CMAField().setId("f1")
                                         .setName("field1")
-                                        .setType(CMAFieldType.Text),
+                                        .setType(CMAFieldType.Text)
+                                        .setRequired(true),
                                 CMAField().setId("f2")
                                         .setName("field2")
                                         .setType(CMAFieldType.Number))
@@ -83,6 +86,7 @@ class ContentTypeTests : BaseTest() {
         assertJsonEquals(requestBody, recordedRequest.getBodyAsString())
         assertEquals(2, result.getFields().size)
         assertEquals("df", result.getDisplayField())
+        assertTrue(result.getFields()[0].isRequired())
     }
 
     test fun testCreateWithLink() {
@@ -126,7 +130,7 @@ class ContentTypeTests : BaseTest() {
                 contentType, TestCallback()) as TestCallback)
 
         assertEquals(3, contentType.getFields().size)
-        assertNotNull(contentType.getFields().get(0).getValidations())
+        assertNotNull(contentType.getFields()[0].getValidations())
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -312,4 +316,11 @@ class ContentTypeTests : BaseTest() {
             throw e
         }
     }
+
+    test fun testContentTypeSetRequiredFalse() {
+        val contentType = CMAContentType().addField(CMAField().setId("id").setRequired(false))
+        assertFalse(contentType.getFields()[0].isRequired())
+        assertJsonEquals("""{"fields":[{"id":"id"}]}""",
+                gson!!.toJson(contentType, javaClass<CMAContentType>()))
+   }
 }

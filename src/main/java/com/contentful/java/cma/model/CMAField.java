@@ -39,6 +39,9 @@ public class CMAField {
   // Validations
   List<Map> validations;
 
+  // Required
+  Boolean required;
+
   /**
    * Sets the ID for this field.
    * Returns this {@code CMAField} instance
@@ -86,6 +89,20 @@ public class CMAField {
   }
 
   /**
+   * Sets the {@code required} attribute of this field.
+   * @param required boolean indicating whether or not this field is required
+   * Returns this {@code CMAField} instance
+   */
+  public CMAField setRequired(boolean required) {
+    if (required) {
+      this.required = true;
+    } else {
+      this.required = null;
+    }
+    return this;
+  }
+
+  /**
    * Returns the {@code id} attribute of this field.
    */
   public String getId() {
@@ -118,5 +135,15 @@ public class CMAField {
    */
   public List<Map> getValidations() {
     return validations;
+  }
+
+  /**
+   * Returns the {@code required} attribute of this field.
+   */
+  public boolean isRequired() {
+    if (required == null) {
+      return false;
+    }
+    return required;
   }
 }
