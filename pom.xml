@@ -53,7 +53,7 @@
     <!-- Test Dependencies -->
     <commonsio.version>2.4</commonsio.version>
     <junit.version>4.11</junit.version>
-    <kotlin-stdlib.version>0.9.206</kotlin-stdlib.version>
+    <kotlin-stdlib.version>0.9.976</kotlin-stdlib.version>
     <mockwebserver.version>2.0.0</mockwebserver.version>
     <okhttp.version>2.0.0</okhttp.version>
     <okhttp-urlconnection.version>2.0.0</okhttp-urlconnection.version>
@@ -153,7 +153,7 @@
       <plugin>
         <artifactId>kotlin-maven-plugin</artifactId>
         <groupId>org.jetbrains.kotlin</groupId>
-        <version>0.9.206</version>
+        <version>0.9.976</version>
 
         <executions>
           <execution>
