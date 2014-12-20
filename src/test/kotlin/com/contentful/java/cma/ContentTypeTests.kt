@@ -115,12 +115,18 @@ class ContentTypeTests : BaseTest() {
 
         assertEquals(1.toDouble(), contentType.getSys()["version"])
 
-        contentType.addField(CMAField().setId("f3").setName("field3").setType(CMAFieldType.Text))
+        contentType.addField(CMAField().setId("f3")
+                .setName("field3")
+                .setType(CMAFieldType.Text)
+                .setValidations(listOf(mapOf(Pair("size", mapOf(
+                        Pair("min", 1),
+                        Pair("max", 5)))))))
 
         contentType = assertTestCallback(client!!.contentTypes().async().update(
                 contentType, TestCallback()) as TestCallback)
 
         assertEquals(3, contentType.getFields().size)
+        assertNotNull(contentType.getFields().get(0).getValidations())
 
         // Request
         val recordedRequest = server!!.takeRequest()

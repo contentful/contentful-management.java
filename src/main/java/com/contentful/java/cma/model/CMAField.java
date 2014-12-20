@@ -17,6 +17,8 @@
 package com.contentful.java.cma.model;
 
 import com.contentful.java.cma.Constants.CMAFieldType;
+import java.util.List;
+import java.util.Map;
 
 /**
  * CMAField.
@@ -33,6 +35,9 @@ public class CMAField {
 
   // Link Type
   String linkType;
+
+  // Validations
+  List<Map> validations;
 
   /**
    * Sets the ID for this field.
@@ -71,6 +76,16 @@ public class CMAField {
   }
 
   /**
+   * Sets a {@code List} of validation rules for this field.
+   * @param validations validations list
+   * Returns this {@code CMAField} instance
+   */
+  public CMAField setValidations(List<Map> validations) {
+    this.validations = validations;
+    return this;
+  }
+
+  /**
    * Returns the {@code id} attribute of this field.
    */
   public String getId() {
@@ -96,5 +111,12 @@ public class CMAField {
    */
   public String getLinkType() {
     return linkType;
+  }
+
+  /**
+   * Returns a {@code List} of validation rules for this field.
+   */
+  public List<Map> getValidations() {
+    return validations;
   }
 }
