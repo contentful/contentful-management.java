@@ -5,7 +5,8 @@
     {
       "id": "f1",
       "name": "field1",
-      "type": "Text"
+      "type": "Text",
+      "required": true
     },
     {
       "id": "f2",
