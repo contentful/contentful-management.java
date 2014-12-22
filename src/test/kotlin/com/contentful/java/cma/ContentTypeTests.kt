@@ -316,11 +316,4 @@ class ContentTypeTests : BaseTest() {
             throw e
         }
     }
-
-    test fun testContentTypeSetRequiredFalse() {
-        val contentType = CMAContentType().addField(CMAField().setId("id").setRequired(false))
-        assertFalse(contentType.getFields()[0].isRequired())
-        assertJsonEquals("""{"fields":[{"id":"id"}]}""",
-                gson!!.toJson(contentType, javaClass<CMAContentType>()))
-   }
 }
