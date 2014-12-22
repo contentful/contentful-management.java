@@ -16,11 +16,15 @@
 
 package com.contentful.java.cma;
 
+import com.contentful.java.cma.model.CMAField;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.util.concurrent.Executor;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.client.Client;
+import retrofit.converter.GsonConverter;
 
 /**
  * The CMAClient is used to request information from the server. Contrary to the delivery
@@ -50,6 +54,7 @@ public class CMAClient {
     // Retrofit RestAdapter
     RestAdapter.Builder restBuilder =
         new RestAdapter.Builder().setEndpoint(Constants.ENDPOINT_CMA)
+            .setConverter(new GsonConverter(createGson()))
             .setRequestInterceptor(createInterceptor(builder));
 
     setEndpoint(builder, restBuilder);
@@ -104,6 +109,14 @@ public class CMAClient {
     if (clientBuilder.endpoint != null) {
       restBuilder.setEndpoint(clientBuilder.endpoint);
     }
+  }
+
+  /**
+   * Creates and returns a custom {@code Gson} instance.
+   */
+  static Gson createGson() {
+    return new GsonBuilder().registerTypeAdapter(
+        CMAField.class, new FieldTypeAdapter()).create();
   }
 
   /**

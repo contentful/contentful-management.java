@@ -50,7 +50,7 @@ open class BaseTest {
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build()
 
-        gson = GsonBuilder().create()
+        gson = CMAClient.createGson()
     }
 
     after fun tearDown() {

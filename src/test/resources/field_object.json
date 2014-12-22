@@ -1,0 +1,15 @@
+{
+  "name": "fieldname",
+  "id": "fieldid",
+  "type": "Text",
+  "required": true,
+  "disabled": true,
+  "validations": [
+    {
+      "size": {
+        "min": 1,
+        "max": 5
+      }
+    }
+  ]
+}

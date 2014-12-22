@@ -17,6 +17,8 @@
 package com.contentful.java.cma.model;
 
 import com.contentful.java.cma.Constants.CMAFieldType;
+import com.google.gson.annotations.SerializedName;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,8 +41,15 @@ public class CMAField {
   // Validations
   List<Map> validations;
 
+  // Array Items
+  @SerializedName("items")
+  HashMap arrayItems;
+
   // Required
-  Boolean required;
+  boolean required;
+
+  // Disabled
+  boolean disabled;
 
   /**
    * Sets the ID for this field.
@@ -89,16 +98,32 @@ public class CMAField {
   }
 
   /**
-   * Sets the {@code required} attribute of this field.
+   * Sets the {@code items} attribute value.
+   * @param arrayItems Map instance
+   * @return this {@code CMAField} instance
+   */
+  public CMAField setArrayItems(HashMap arrayItems) {
+    this.arrayItems = arrayItems;
+    return this;
+  }
+
+  /**
+   * Sets the {@code required} attribute value.
    * @param required boolean indicating whether or not this field is required
    * Returns this {@code CMAField} instance
    */
   public CMAField setRequired(boolean required) {
-    if (required) {
-      this.required = true;
-    } else {
-      this.required = null;
-    }
+    this.required = required;
+    return this;
+  }
+
+  /**
+   * Sets the {@code disabled} attribute value.
+   * @param disabled boolean indicating whether or not this field is disabled
+   * Returns this {@code CMAField} instance
+   */
+  public CMAField setDisabled(boolean disabled) {
+    this.disabled = disabled;
     return this;
   }
 
@@ -138,12 +163,23 @@ public class CMAField {
   }
 
   /**
+   * Returns the {@code items} attribute value as a {@code Map}.
+   */
+  public HashMap getArrayItems() {
+    return arrayItems;
+  }
+
+  /**
    * Returns the {@code required} attribute of this field.
    */
   public boolean isRequired() {
-    if (required == null) {
-      return false;
-    }
     return required;
+  }
+
+  /**
+   * Returns the {@code disabled} attribute of this field.
+   */
+  public Boolean isDisabled() {
+    return disabled;
   }
 }
