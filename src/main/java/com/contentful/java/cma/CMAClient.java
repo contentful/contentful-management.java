@@ -34,6 +34,9 @@ public class CMAClient {
   // User Agent
   static String sUserAgent;
 
+  // Gson
+  private static Gson gson;
+
   // Modules
   final ModuleAssets modAssets;
   final ModuleContentTypes modContentTypes;
@@ -115,8 +118,12 @@ public class CMAClient {
    * Creates and returns a custom {@code Gson} instance.
    */
   static Gson createGson() {
-    return new GsonBuilder().registerTypeAdapter(
-        CMAField.class, new FieldTypeAdapter()).create();
+    if (gson == null) {
+      gson = new GsonBuilder().registerTypeAdapter(
+          CMAField.class, new FieldTypeAdapter()).create();
+    }
+
+    return gson;
   }
 
   /**
