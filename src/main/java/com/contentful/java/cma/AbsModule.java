@@ -78,7 +78,7 @@ abstract class AbsModule<T> {
 
   /**
    * Extracts the version number for the given {@code resource}.
-   * Throws {@link IllegalAccessException} if the value is not present.
+   * Throws {@link IllegalArgumentException} if the value is not present.
    */
   Integer getVersionOrThrow(CMAResource resource, String action) {
     Integer version = resource.getVersion();
