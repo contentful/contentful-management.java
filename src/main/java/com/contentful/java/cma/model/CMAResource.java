@@ -31,12 +31,12 @@ public class CMAResource {
    * Returns this {@code CMAResource} instance
    */
   @SuppressWarnings("unchecked")
-  public CMAResource setId(String id) {
+  public <T extends CMAResource> T setId(String id) {
     if (sys == null) {
       sys = new HashMap();
     }
     sys.put("id", id);
-    return this;
+    return (T) this;
   }
 
   /**

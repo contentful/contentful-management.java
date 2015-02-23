@@ -23,6 +23,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 import com.contentful.java.cma.model.CMASpace
+import com.contentful.java.cma.model.CMAEntry
 
 /**
  * Space Tests.
@@ -208,5 +209,13 @@ class SpaceTests : BaseTest() {
         assertEquals("/spaces/spaceid", recordedRequest.getPath())
         assertNotNull(recordedRequest.getHeader("X-Contentful-Version"))
         assertEquals(requestBody, recordedRequest.getBodyAsString())
+    }
+
+    test(expected = javaClass<Exception>())
+    fun testUpdateFailsWithoutVersion() {
+        ModuleTestUtils.assertUpdateWithoutVersion {
+            val space: CMASpace = CMASpace().setName("name").setId("id")
+            client!!.spaces().update(space)
+        }
     }
 }

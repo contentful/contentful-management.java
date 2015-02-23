@@ -29,6 +29,7 @@ import java.io.IOException
 import com.contentful.java.cma.lib.TestCallback
 import kotlin.test.assertNull
 import com.contentful.java.cma.model.CMAEntry
+import com.contentful.java.cma.lib.ModuleTestUtils
 
 /**
  * Entry Tests.
@@ -246,6 +247,13 @@ class EntryTests : BaseTest() {
         } catch (e: RetrofitError) {
             assertEquals(31337, entry.getVersion())
             throw e
+        }
+    }
+
+    test(expected = javaClass<Exception>())
+    fun testUpdateFailsWithoutVersion() {
+        ModuleTestUtils.assertUpdateWithoutVersion {
+            client!!.entries().update(CMAEntry().setId("eid").setSpaceId("spaceid"))
         }
     }
 }

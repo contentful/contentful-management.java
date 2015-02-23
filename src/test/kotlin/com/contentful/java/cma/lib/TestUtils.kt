@@ -22,6 +22,7 @@ import org.apache.commons.io.IOUtils
 import com.squareup.okhttp.mockwebserver.RecordedRequest
 import com.google.gson.JsonParser
 import kotlin.test.assertTrue
+import kotlin.test.assertEquals
 
 /**
  * Utils.
@@ -31,6 +32,22 @@ class TestUtils {
     class object {
         fun fileToString(fileName: String): String =
                 FileUtils.readFileToString(File("src/test/resources/${fileName}"), "UTF-8")
+    }
+}
+
+class ModuleTestUtils {
+    class object {
+        fun assertUpdateWithoutVersion(method: () -> Unit) {
+            try {
+                method()
+            } catch (e: IllegalArgumentException) {
+                val msg = "Cannot perform update action on a " +
+                        "resource that has no version associated."
+
+                assertEquals(msg, e.getMessage())
+                throw e
+            }
+        }
     }
 }
 

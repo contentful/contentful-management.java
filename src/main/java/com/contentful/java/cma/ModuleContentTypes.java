@@ -149,7 +149,8 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
     assertNotNull(contentType.getName(), "contentType.name");
     String contentTypeId = getResourceIdOrThrow(contentType, "contentType");
     String spaceId = getSpaceIdOrThrow(contentType, "contentType");
-    return service.update(contentType.getVersion(), spaceId, contentTypeId, contentType);
+    Integer version = getVersionOrThrow(contentType, "update");
+    return service.update(version, spaceId, contentTypeId, contentType);
   }
 
   /**

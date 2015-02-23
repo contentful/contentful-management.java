@@ -25,6 +25,7 @@ import retrofit.RetrofitError
 import java.io.IOException
 import com.contentful.java.cma.model.CMAContentType
 import com.contentful.java.cma.model.CMAField
+import com.contentful.java.cma.model.CMAEntry
 
 /**
  * Content Type Tests.
@@ -314,6 +315,15 @@ class ContentTypeTests : BaseTest() {
         } catch (e: RetrofitError) {
             assertEquals(31337, contentType.getVersion())
             throw e
+        }
+    }
+
+    test(expected = javaClass<Exception>())
+    fun testUpdateFailsWithoutVersion() {
+        ModuleTestUtils.assertUpdateWithoutVersion {
+            client!!.contentTypes().update(CMAContentType().setId("ctid")
+                    .setName("name")
+                    .setSpaceId("spaceid"))
         }
     }
 }

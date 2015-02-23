@@ -77,6 +77,20 @@ abstract class AbsModule<T> {
   }
 
   /**
+   * Extracts the version number for the given {@code resource}.
+   * Throws {@link IllegalArgumentException} if the value is not present.
+   */
+  Integer getVersionOrThrow(CMAResource resource, String action) {
+    Integer version = resource.getVersion();
+    if (version == null) {
+      throw new IllegalArgumentException(String.format(
+          "Cannot perform %s action on a resource that has no version associated.",
+          action));
+    }
+    return version;
+  }
+
+  /**
    * Creates an Observable with the given {@code func} function and subscribes to it
    * with a set of pre-defined actions. The provided {@code callback} will be passed to these
    * actions in order to populate the events.
