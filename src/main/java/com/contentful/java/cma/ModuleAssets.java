@@ -187,10 +187,11 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     assertNotNull(asset, "asset");
     String assetId = getResourceIdOrThrow(asset, "asset");
     String spaceId = getSpaceIdOrThrow(asset, "asset");
+    Integer version = getVersionOrThrow(asset, "update");
 
     CMAAsset update = new CMAAsset();
     update.setFields(asset.getFields());
-    return service.update(asset.getVersion(), spaceId, assetId, update);
+    return service.update(version, spaceId, assetId, update);
   }
 
   /**

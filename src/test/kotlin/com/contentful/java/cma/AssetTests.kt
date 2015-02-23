@@ -27,6 +27,8 @@ import com.contentful.java.cma.lib.TestCallback
 import org.junit.Test
 import com.contentful.java.cma.model.CMAAsset
 import retrofit.RestAdapter
+import com.contentful.java.cma.lib.ModuleTestUtils
+import com.contentful.java.cma.model.CMAEntry
 
 /**
  * Asset Tests.
@@ -236,5 +238,12 @@ class AssetTests : BaseTest() {
 
     test fun testNullVersionDoesNotThrow() {
         assertNull(CMAAsset().getVersion())
+    }
+
+    test(expected = javaClass<Exception>())
+    fun testUpdateFailsWithoutVersion() {
+        ModuleTestUtils.assertUpdateWithoutVersion {
+            client!!.assets().update(CMAAsset().setId("aid").setSpaceId("spaceid"))
+        }
     }
 }

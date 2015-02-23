@@ -115,10 +115,11 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
     assertNotNull(space, "space");
     assertNotNull(space.getName(), "space.name");
     String spaceId = getResourceIdOrThrow(space, "space");
+    Integer version = getVersionOrThrow(space, "update");
 
     CMASpace update = new CMASpace();
     update.setName(space.getName());
-    return service.update(space.getVersion(), spaceId, update);
+    return service.update(version, spaceId, update);
   }
 
   /**

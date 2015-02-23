@@ -173,10 +173,11 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     assertNotNull(entry, "entry");
     String entryId = getResourceIdOrThrow(entry, "entry");
     String spaceId = getSpaceIdOrThrow(entry, "entry");
+    Integer version = getVersionOrThrow(entry, "update");
 
     CMAEntry update = new CMAEntry();
     update.setFields(entry.getFields());
-    return service.update(entry.getVersion(), spaceId, entryId, update);
+    return service.update(version, spaceId, entryId, update);
   }
 
   /**
