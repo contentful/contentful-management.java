@@ -13,9 +13,6 @@ import com.contentful.java.cma.model.CMAField
 import kotlin.test.assertEquals
 import com.contentful.java.cma.Constants.CMAFieldType
 
-/**
- * General Tests.
- */
 class GeneralTests : BaseTest() {
     test fun testGsonInstanceRetained() {
         assertTrue(CMAClient.createGson().identityEquals(CMAClient.createGson()))

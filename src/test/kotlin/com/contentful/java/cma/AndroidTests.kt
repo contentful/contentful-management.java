@@ -18,9 +18,6 @@ import org.robolectric.annotation.Config
 import java.util.concurrent.CountDownLatch
 import kotlin.test.assertNotNull
 
-/**
- * Android Tests.
- */
 [RunWith(javaClass<RobolectricTestRunner>())]
 [Config(manifest=Config.NONE)]
 class AndroidTests : BaseTest() {

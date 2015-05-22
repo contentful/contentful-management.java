@@ -31,9 +31,6 @@ import kotlin.test.assertNull
 import com.contentful.java.cma.model.CMAEntry
 import com.contentful.java.cma.lib.ModuleTestUtils
 
-/**
- * Entry Tests.
- */
 class EntryTests : BaseTest() {
     test fun testArchive() {
         val responseBody = TestUtils.fileToString("entry_archive_response.json")
@@ -63,7 +60,7 @@ class EntryTests : BaseTest() {
                 .async()
                 .create("spaceid", "ctid", entry, TestCallback()) as TestCallback)
 
-        assertEquals(2, result.getFields().size)
+        assertEquals(2, result.getFields().size())
 
         val entries = result.getFields().entrySet().toList()
         assertEquals("id1", entries[0].key)
@@ -121,10 +118,10 @@ class EntryTests : BaseTest() {
 
         assertEquals("Array", result.getSys()["type"])
         assertEquals(1, result.getTotal())
-        assertEquals(1, result.getItems().size)
+        assertEquals(1, result.getItems().size())
 
         val item = result.getItems()[0]
-        assertEquals(2, item.getFields().size)
+        assertEquals(2, item.getFields().size())
         assertNotNull(item.getFields()["name"])
         assertNotNull(item.getFields()["type"])
         assertNull(result.getIncludes())
@@ -147,7 +144,7 @@ class EntryTests : BaseTest() {
 
         assertEquals("Entry", sys["type"])
         assertEquals("entryid", sys["id"])
-        assertEquals(2, fields.size)
+        assertEquals(2, fields.size())
         assertEquals("http://www.url.com", fields["url"]["en-US"])
         assertEquals("value", fields["key"]["en-US"])
 
@@ -179,7 +176,7 @@ class EntryTests : BaseTest() {
 
         assertEquals("entryid", result.getSys()["id"])
         assertEquals("Entry", result.getSys()["type"])
-        assertEquals(2, fields.size)
+        assertEquals(2, fields.size())
         assertEquals("fid1", fields[0].key)
         assertEquals("newvalue1", fields[0].value["en-US"])
         assertEquals("fid2", fields[1].key)

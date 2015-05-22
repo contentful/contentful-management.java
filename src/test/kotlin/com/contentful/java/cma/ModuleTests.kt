@@ -25,9 +25,6 @@ import org.mockito.Mockito
 import java.util.concurrent.CountDownLatch
 import kotlin.test.assertNotEquals
 
-/**
- * Module Tests.
- */
 class ModuleTests : BaseTest() {
     var module: AbsModule<Any>? = null
 

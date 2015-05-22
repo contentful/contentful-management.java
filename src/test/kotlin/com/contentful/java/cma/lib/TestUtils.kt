@@ -24,19 +24,15 @@ import com.google.gson.JsonParser
 import kotlin.test.assertTrue
 import kotlin.test.assertEquals
 
-/**
- * Utils.
- */
-
 class TestUtils {
-    class object {
+    companion object {
         fun fileToString(fileName: String): String =
                 FileUtils.readFileToString(File("src/test/resources/${fileName}"), "UTF-8")
     }
 }
 
 class ModuleTestUtils {
-    class object {
+    companion object {
         fun assertUpdateWithoutVersion(method: () -> Unit) {
             try {
                 method()

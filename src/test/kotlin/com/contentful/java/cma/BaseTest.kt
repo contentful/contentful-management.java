@@ -30,9 +30,6 @@ import retrofit.RestAdapter
 import com.contentful.java.cma.model.CMAResource
 import java.util.HashMap
 
-/**
- * BaseTest.
- */
 open class BaseTest {
     var server: MockWebServer? = null
     var client: CMAClient? = null
