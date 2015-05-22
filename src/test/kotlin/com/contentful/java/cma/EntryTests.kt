@@ -21,7 +21,6 @@ import com.contentful.java.cma.lib.TestUtils
 import com.squareup.okhttp.mockwebserver.MockResponse
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
-import com.contentful.java.cma.lib.getBodyAsString
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 import retrofit.RetrofitError
@@ -73,7 +72,7 @@ class EntryTests : BaseTest() {
         val recordedRequest = server!!.takeRequest()
         assertEquals("POST", recordedRequest.getMethod())
         assertEquals("/spaces/spaceid/entries", recordedRequest.getPath())
-        assertEquals(requestBody, recordedRequest.getBodyAsString())
+        assertEquals(requestBody, recordedRequest.getUtf8Body())
         assertEquals("ctid", recordedRequest.getHeader("X-Contentful-Content-Type"))
     }
 
@@ -94,7 +93,7 @@ class EntryTests : BaseTest() {
         val recordedRequest = server!!.takeRequest()
         assertEquals("PUT", recordedRequest.getMethod())
         assertEquals("/spaces/spaceid/entries/entryid", recordedRequest.getPath())
-        assertEquals(requestBody, recordedRequest.getBodyAsString())
+        assertEquals(requestBody, recordedRequest.getUtf8Body())
         assertEquals("ctid", recordedRequest.getHeader("X-Contentful-Content-Type"))
     }
 
@@ -187,7 +186,7 @@ class EntryTests : BaseTest() {
         assertEquals("PUT", recordedRequest.getMethod())
         assertEquals("/spaces/spaceid/entries/entryid", recordedRequest.getPath())
         assertNotNull(recordedRequest.getHeader("X-Contentful-Version"))
-        assertEquals(requestBody, recordedRequest.getBodyAsString())
+        assertEquals(requestBody, recordedRequest.getUtf8Body())
     }
 
     test fun testPublish() {

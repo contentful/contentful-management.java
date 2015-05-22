@@ -51,7 +51,7 @@ class ContentTypeTests : BaseTest() {
         val recordedRequest = server!!.takeRequest()
         assertEquals("POST", recordedRequest.getMethod())
         assertEquals("/spaces/spaceid/content_types", recordedRequest.getPath())
-        assertJsonEquals(requestBody, recordedRequest.getBodyAsString())
+        assertJsonEquals(requestBody, recordedRequest.getUtf8Body())
         assertEquals(2, result.getFields().size())
         assertTrue(result.getFields()[0].isRequired())
     }
@@ -81,7 +81,7 @@ class ContentTypeTests : BaseTest() {
         val recordedRequest = server!!.takeRequest()
         assertEquals("PUT", recordedRequest.getMethod())
         assertEquals("/spaces/spaceid/content_types/contenttypeid", recordedRequest.getPath())
-        assertJsonEquals(requestBody, recordedRequest.getBodyAsString())
+        assertJsonEquals(requestBody, recordedRequest.getUtf8Body())
         assertEquals(2, result.getFields().size())
         assertEquals("df", result.getDisplayField())
         assertTrue(result.getFields()[0].isRequired())
@@ -103,7 +103,7 @@ class ContentTypeTests : BaseTest() {
         val recordedRequest = server!!.takeRequest()
         assertEquals("POST", recordedRequest.getMethod())
         assertEquals("/spaces/spaceid/content_types", recordedRequest.getPath())
-        assertJsonEquals(requestBody, recordedRequest.getBodyAsString())
+        assertJsonEquals(requestBody, recordedRequest.getUtf8Body())
     }
 
     test fun testUpdate() {
@@ -134,7 +134,7 @@ class ContentTypeTests : BaseTest() {
         val recordedRequest = server!!.takeRequest()
         assertEquals("PUT", recordedRequest.getMethod())
         assertEquals("/spaces/spaceid/content_types/contenttypeid", recordedRequest.getPath())
-        assertJsonEquals(requestBody, recordedRequest.getBodyAsString())
+        assertJsonEquals(requestBody, recordedRequest.getUtf8Body())
         assertNotNull(recordedRequest.getHeader("X-Contentful-Version"))
         assertEquals(2.toDouble(), contentType.getSys()["version"])
     }

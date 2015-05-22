@@ -54,10 +54,8 @@
     <commonsio.version>2.4</commonsio.version>
     <junit.version>4.11</junit.version>
     <kotlin.version>0.11.91.4</kotlin.version>
-    <mockwebserver.version>2.0.0</mockwebserver.version>
-    <okhttp.version>2.0.0</okhttp.version>
-    <okhttp-urlconnection.version>2.0.0</okhttp-urlconnection.version>
-    <rxjava.version>1.0.5</rxjava.version>
+    <okhttp.version>2.3.0</okhttp.version>
+    <rxjava.version>1.0.11</rxjava.version>
     <mockito.version>1.10.8</mockito.version>
     <android.version>4.1.1.4</android.version>
     <android.platform>16</android.platform>
@@ -108,7 +106,7 @@
     <dependency>
       <groupId>com.squareup.okhttp</groupId>
       <artifactId>mockwebserver</artifactId>
-      <version>${mockwebserver.version}</version>
+      <version>${okhttp.version}</version>
       <scope>test</scope>
     </dependency>
 
@@ -122,7 +120,7 @@
     <dependency>
       <groupId>com.squareup.okhttp</groupId>
       <artifactId>okhttp-urlconnection</artifactId>
-      <version>${okhttp-urlconnection.version}</version>
+      <version>${okhttp.version}</version>
       <scope>test</scope>
     </dependency>
 

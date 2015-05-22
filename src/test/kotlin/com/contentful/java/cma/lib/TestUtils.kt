@@ -46,5 +46,3 @@ class ModuleTestUtils {
         }
     }
 }
-
-fun RecordedRequest.getBodyAsString() = IOUtils.toString(getBody(), "UTF-8")

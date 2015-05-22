@@ -19,7 +19,6 @@ package com.contentful.java.cma
 import org.junit.Test as test
 import com.contentful.java.cma.lib.TestUtils
 import com.squareup.okhttp.mockwebserver.MockResponse
-import com.contentful.java.cma.lib.getBodyAsString
 import kotlin.test.*
 import retrofit.RetrofitError
 import java.io.IOException
@@ -69,7 +68,7 @@ class AssetTests : BaseTest() {
         val recordedRequest = server!!.takeRequest()
         assertEquals("POST", recordedRequest.getMethod())
         assertEquals("/spaces/spaceid/assets", recordedRequest.getPath())
-        assertEquals(requestBody, recordedRequest.getBodyAsString())
+        assertEquals(requestBody, recordedRequest.getUtf8Body())
     }
 
     test fun testCreateWithId() {
@@ -89,7 +88,7 @@ class AssetTests : BaseTest() {
         val recordedRequest = server!!.takeRequest()
         assertEquals("PUT", recordedRequest.getMethod())
         assertEquals("/spaces/spaceid/assets/assetid", recordedRequest.getPath())
-        assertEquals(requestBody, recordedRequest.getBodyAsString())
+        assertEquals(requestBody, recordedRequest.getUtf8Body())
     }
 
     test fun testDelete() {
@@ -213,7 +212,7 @@ class AssetTests : BaseTest() {
         assertEquals("PUT", recordedRequest.getMethod())
         assertEquals("/spaces/spaceid/assets/assetid", recordedRequest.getPath())
         assertNotNull(recordedRequest.getHeader("X-Contentful-Version"))
-        assertEquals(requestBody, recordedRequest.getBodyAsString())
+        assertEquals(requestBody, recordedRequest.getUtf8Body())
     }
 
     test(expected = javaClass<RetrofitError>())
