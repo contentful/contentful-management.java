@@ -30,9 +30,6 @@ import retrofit.RestAdapter
 import com.contentful.java.cma.lib.ModuleTestUtils
 import com.contentful.java.cma.model.CMAEntry
 
-/**
- * Asset Tests.
- */
 class AssetTests : BaseTest() {
     test fun testArchive() {
         val cli = CMAClient.Builder()
@@ -117,8 +114,8 @@ class AssetTests : BaseTest() {
         assertEquals("Array", result.getSys()["type"])
         assertEquals(1, result.getTotal())
         val items = result.getItems()
-        assertEquals(1, items.size)
-        assertEquals(2, items[0].getFields().size)
+        assertEquals(1, items.size())
+        assertEquals(2, items[0].getFields().size())
         assertNotNull(items[0].getFields()["file"])
         assertNotNull(items[0].getFields()["title"])
 

@@ -34,9 +34,6 @@ import com.contentful.java.cma.model.CMASpace
 import com.contentful.java.cma.model.CMAArray
 import com.contentful.java.cma.CMACallback
 
-/**
- * Client Tests.
- */
 class ClientTests : BaseTest() {
     test fun testCancelledCallback() {
         val responseBody = TestUtils.fileToString("space_fetch_one_response.json")

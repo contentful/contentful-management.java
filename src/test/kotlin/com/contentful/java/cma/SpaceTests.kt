@@ -25,9 +25,6 @@ import kotlin.test.assertTrue
 import com.contentful.java.cma.model.CMASpace
 import com.contentful.java.cma.model.CMAEntry
 
-/**
- * Space Tests.
- */
 class SpaceTests : BaseTest() {
     test fun testCreate() {
         val requestBody = TestUtils.fileToString("space_create_request.json")
@@ -81,7 +78,7 @@ class SpaceTests : BaseTest() {
 
         val items = result.getItems()
         assertEquals("Array", result.getSys()["type"])
-        assertEquals(2, items.size)
+        assertEquals(2, items.size())
         assertEquals(2, result.getTotal())
         assertEquals(0, result.getSkip())
         assertEquals(25, result.getLimit())

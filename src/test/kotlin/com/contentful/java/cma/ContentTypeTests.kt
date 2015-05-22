@@ -27,9 +27,6 @@ import com.contentful.java.cma.model.CMAContentType
 import com.contentful.java.cma.model.CMAField
 import com.contentful.java.cma.model.CMAEntry
 
-/**
- * Content Type Tests.
- */
 class ContentTypeTests : BaseTest() {
     test fun testCreate() {
         val requestBody = TestUtils.fileToString("content_type_create_request.json")
@@ -55,7 +52,7 @@ class ContentTypeTests : BaseTest() {
         assertEquals("POST", recordedRequest.getMethod())
         assertEquals("/spaces/spaceid/content_types", recordedRequest.getPath())
         assertJsonEquals(requestBody, recordedRequest.getBodyAsString())
-        assertEquals(2, result.getFields().size)
+        assertEquals(2, result.getFields().size())
         assertTrue(result.getFields()[0].isRequired())
     }
 
@@ -85,7 +82,7 @@ class ContentTypeTests : BaseTest() {
         assertEquals("PUT", recordedRequest.getMethod())
         assertEquals("/spaces/spaceid/content_types/contenttypeid", recordedRequest.getPath())
         assertJsonEquals(requestBody, recordedRequest.getBodyAsString())
-        assertEquals(2, result.getFields().size)
+        assertEquals(2, result.getFields().size())
         assertEquals("df", result.getDisplayField())
         assertTrue(result.getFields()[0].isRequired())
     }
@@ -130,7 +127,7 @@ class ContentTypeTests : BaseTest() {
         contentType = assertTestCallback(client!!.contentTypes().async().update(
                 contentType, TestCallback()) as TestCallback)
 
-        assertEquals(3, contentType.getFields().size)
+        assertEquals(3, contentType.getFields().size())
         assertNotNull(contentType.getFields()[0].getValidations())
 
         // Request
@@ -162,10 +159,10 @@ class ContentTypeTests : BaseTest() {
                 "spaceid", TestCallback()) as TestCallback)
 
         val items = result.getItems()
-        assertEquals(2, items.size)
+        assertEquals(2, items.size())
         assertEquals("Array", result.getSys()["type"])
         assertEquals("Blog Post", items[0].getName())
-        assertEquals(2, items[0].getFields().size)
+        assertEquals(2, items[0].getFields().size())
         assertEquals(2, result.getTotal())
         assertEquals(0, result.getSkip())
         assertEquals(100, result.getLimit())
@@ -209,7 +206,7 @@ class ContentTypeTests : BaseTest() {
 
         // Fields
         val fields = result.getFields()
-        assertEquals(2, fields.size)
+        assertEquals(2, fields.size())
 
         assertEquals("titleid", fields[0].getId())
         assertEquals("titlename", fields[0].getName())
