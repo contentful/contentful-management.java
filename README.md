@@ -25,6 +25,8 @@ compile 'com.contentful.java:cma-sdk:0.9.7'
 
 The SDK requires at minimum Java 6 or Android 2.3.
 
+Snapshots of the development version are available in [Sonatype's `snapshots` repository][snap].
+
 ### Default Client
 
 The SDK uses [Retrofit][2] under the hood as a REST client, which detects [OkHttp][3] in your classpath and uses it if it's available, otherwise falls back to the default `HttpURLConnection`.
@@ -483,3 +485,4 @@ Copyright (c) 2015 Contentful GmbH. See [LICENSE.txt][5] for further details.
  [3]: https://square.github.io/okhttp
  [4]: https://contentful.github.io/contentful-management.java
  [5]: LICENSE.txt
+ [snap]: https://oss.sonatype.org/content/repositories/snapshots/
