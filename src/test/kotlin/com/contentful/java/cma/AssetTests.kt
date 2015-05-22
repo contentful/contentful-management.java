@@ -39,7 +39,6 @@ class AssetTests : BaseTest() {
                 .setAccessToken("token")
                 .setEndpoint(server!!.getUrl("/").toString())
                 .setCallbackExecutor { it.run() }
-                .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build()
 
         val responseBody = TestUtils.fileToString("asset_archive_response.json")

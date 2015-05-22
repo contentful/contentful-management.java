@@ -47,7 +47,6 @@ open class BaseTest {
         client = CMAClient.Builder()
                 .setAccessToken("token")
                 .setEndpoint(server!!.getUrl("/").toString())
-                .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build()
 
         gson = CMAClient.createGson()
