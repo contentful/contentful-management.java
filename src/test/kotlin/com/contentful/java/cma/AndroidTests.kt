@@ -52,7 +52,6 @@ class AndroidTests : BaseTest() {
             val androidClient = CMAClient.Builder()
                     .setAccessToken("token")
                     .setEndpoint(getIntent().getStringExtra("EXTRA_URL"))
-                    .setLogLevel(RestAdapter.LogLevel.FULL)
                     .build()
 
             androidClient.assets().async().fetchAll("space-id", cb)
