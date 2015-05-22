@@ -55,7 +55,7 @@
     <junit.version>4.11</junit.version>
     <kotlin.version>0.11.91.4</kotlin.version>
     <okhttp.version>2.3.0</okhttp.version>
-    <rxjava.version>1.0.5</rxjava.version>
+    <rxjava.version>1.0.11</rxjava.version>
     <mockito.version>1.10.8</mockito.version>
     <android.version>4.1.1.4</android.version>
     <android.platform>16</android.platform>
