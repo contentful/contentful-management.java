@@ -41,7 +41,7 @@ class SpaceTests : BaseTest() {
         val recordedRequest = server!!.takeRequest()
         assertEquals("POST", recordedRequest.getMethod())
         assertEquals("/spaces", recordedRequest.getPath())
-        assertEquals(requestBody, recordedRequest.getBodyAsString())
+        assertEquals(requestBody, recordedRequest.getUtf8Body())
     }
 
     test fun testCreateInOrg() {
@@ -205,7 +205,7 @@ class SpaceTests : BaseTest() {
         assertEquals("PUT", recordedRequest.getMethod())
         assertEquals("/spaces/spaceid", recordedRequest.getPath())
         assertNotNull(recordedRequest.getHeader("X-Contentful-Version"))
-        assertEquals(requestBody, recordedRequest.getBodyAsString())
+        assertEquals(requestBody, recordedRequest.getUtf8Body())
     }
 
     test(expected = javaClass<Exception>())
