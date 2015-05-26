@@ -26,6 +26,9 @@ public class CMAContentType extends StatefulResource {
   // Name
   String name;
 
+  // Description Field
+  String description;
+
   // Display Field
   String displayField;
 
@@ -104,6 +107,22 @@ public class CMAContentType extends StatefulResource {
    */
   public CMAContentType setDisplayField(String displayField) {
     this.displayField = displayField;
+    return this;
+  }
+
+  /**
+   * Returns the description of this Content Type.
+   */
+  public String getDescription() {
+    return description;
+  }
+
+  /**
+   * Sets the description field for this Content Type.
+   * @return this {@code CMAContentType} instance
+   */
+  public CMAContentType setDescription(String description) {
+    this.description = description;
     return this;
   }
 }
