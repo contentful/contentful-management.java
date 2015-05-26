@@ -37,6 +37,7 @@ class ContentTypeTests : BaseTest() {
                 "spaceid",
                 CMAContentType()
                         .setName("whatever1")
+                        .setDescription("desc1")
                         .setDisplayField("df")
                         .addField(CMAField().setId("f1")
                                 .setName("field1")
@@ -66,6 +67,7 @@ class ContentTypeTests : BaseTest() {
                 CMAContentType()
                         .setId("contenttypeid")
                         .setName("whatever1")
+                        .setDescription("desc1")
                         .setDisplayField("df")
                         .setFields(listOf(
                                 CMAField().setId("f1")
@@ -203,6 +205,7 @@ class ContentTypeTests : BaseTest() {
                 "spaceid", "contenttypeid", TestCallback()) as TestCallback)
 
         assertEquals("Blog Post", result.getName())
+        assertEquals("desc1", result.getDescription())
 
         // Fields
         val fields = result.getFields()

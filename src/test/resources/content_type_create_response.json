@@ -1,5 +1,6 @@
 {
   "name": "whatever1",
+  "description": "desc1",
   "displayField": "df",
   "fields": [
     {
