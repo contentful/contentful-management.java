@@ -18,3 +18,7 @@ sudo: false
 branches:
   except:
     - gh-pages
+
+notifications:
+  slack:
+    - secure: JlFWDMtaUhwF8i+jgWdgdmhw4VE7OvIcq1ugkqF2ti4iLkOMhQm2/I0GjwkJdNsLPiA81Z/hJsKVQ478tR22isEKX5WhQLvrP3Fjb5cCWqBmk/sCaUrAlCQDd03QYS3A9EoRwIcGU0WjFQLANY3lRnDzcpGeoaj8+zJtuOzMc00=
