@@ -16,14 +16,13 @@
 
 package com.contentful.java.cma
 
-import org.junit.Test as test
-import org.junit.Before as before
-import kotlin.test.assertEquals
 import com.contentful.java.cma.model.CMAResource
 import retrofit.RestAdapter
-import org.mockito.Mockito
 import java.util.concurrent.CountDownLatch
+import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
+import org.junit.Before as before
+import org.junit.Test as test
 
 class ModuleTests : BaseTest() {
     var module: AbsModule<Any>? = null

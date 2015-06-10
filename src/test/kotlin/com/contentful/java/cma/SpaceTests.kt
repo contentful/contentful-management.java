@@ -16,14 +16,15 @@
 
 package com.contentful.java.cma
 
-import com.contentful.java.cma.lib.*
+import com.contentful.java.cma.lib.ModuleTestUtils
+import com.contentful.java.cma.lib.TestCallback
+import com.contentful.java.cma.lib.TestUtils
+import com.contentful.java.cma.model.CMASpace
 import com.squareup.okhttp.mockwebserver.MockResponse
-import org.junit.Test as test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
-import com.contentful.java.cma.model.CMASpace
-import com.contentful.java.cma.model.CMAEntry
+import org.junit.Test as test
 
 class SpaceTests : BaseTest() {
     test fun testCreate() {

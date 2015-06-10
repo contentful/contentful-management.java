@@ -18,10 +18,6 @@ package com.contentful.java.cma.lib
 
 import org.apache.commons.io.FileUtils
 import java.io.File
-import org.apache.commons.io.IOUtils
-import com.squareup.okhttp.mockwebserver.RecordedRequest
-import com.google.gson.JsonParser
-import kotlin.test.assertTrue
 import kotlin.test.assertEquals
 
 class TestUtils {

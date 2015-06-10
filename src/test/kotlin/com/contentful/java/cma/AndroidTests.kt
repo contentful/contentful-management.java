@@ -1,22 +1,19 @@
 package com.contentful.java.cma
 
-import org.robolectric.RobolectricTestRunner
-import org.junit.runner.RunWith
-import org.junit.Test as test
 import android.app.Activity
-import org.robolectric.Robolectric
-import android.os.Bundle
-import com.contentful.java.cma.lib.TestUtils
-import com.squareup.okhttp.mockwebserver.MockResponse
 import android.content.Intent
+import android.os.Bundle
 import android.os.Looper
-import kotlin.test.assertEquals
-import com.contentful.java.cma.model.CMAAsset
+import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAArray
-import retrofit.RestAdapter
+import com.contentful.java.cma.model.CMAAsset
+import com.squareup.okhttp.mockwebserver.MockResponse
+import org.junit.runner.RunWith
+import org.robolectric.Robolectric
+import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import java.util.concurrent.CountDownLatch
-import kotlin.test.assertNotNull
+import kotlin.test.assertEquals
+import org.junit.Test as test
 
 [RunWith(javaClass<RobolectricTestRunner>())]
 [Config(manifest=Config.NONE)]

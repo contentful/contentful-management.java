@@ -16,19 +16,16 @@
 
 package com.contentful.java.cma
 
-import com.squareup.okhttp.mockwebserver.MockWebServer
-import com.google.gson.Gson
-import org.junit.Before as before
-import org.junit.After as after
-import com.google.gson.GsonBuilder
 import com.contentful.java.cma.lib.TestCallback
-import kotlin.test.assertNull
-import kotlin.test.assertNotNull
-import com.google.gson.JsonParser
-import kotlin.test.assertTrue
-import retrofit.RestAdapter
 import com.contentful.java.cma.model.CMAResource
-import java.util.HashMap
+import com.google.gson.Gson
+import com.google.gson.JsonParser
+import com.squareup.okhttp.mockwebserver.MockWebServer
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
+import org.junit.After as after
+import org.junit.Before as before
 
 open class BaseTest {
     var server: MockWebServer? = null

@@ -19,6 +19,7 @@ package com.contentful.java.cma;
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAEntry;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Executor;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -49,7 +50,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     assertNotNull(entry, "entry");
     String entryId = getResourceIdOrThrow(entry, "entry");
     String spaceId = getSpaceIdOrThrow(entry, "entry");
-    return service.archive(spaceId, entryId);
+    return service.archive(spaceId, entryId, new Byte[0]);
   }
 
   /**
@@ -107,8 +108,19 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
    * @return {@link CMAArray} result instance
    */
   public CMAArray<CMAEntry> fetchAll(String spaceId) {
+    return fetchAll(spaceId, null);
+  }
+
+  /**
+   * Fetch all Entries from a Space with a query.
+   *
+   * @param spaceId Space ID
+   * @param query Query
+   * @return {@link CMAArray} result instance
+   */
+  public CMAArray<CMAEntry> fetchAll(String spaceId, Map<String, String> query) {
     assertNotNull(spaceId, "spaceId");
-    return service.fetchAll(spaceId);
+    return service.fetchAll(spaceId, query);
   }
 
   /**
@@ -134,7 +146,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     assertNotNull(entry, "entry");
     String entryId = getResourceIdOrThrow(entry, "entry");
     String spaceId = getSpaceIdOrThrow(entry, "entry");
-    return service.publish(entry.getVersion(), spaceId, entryId);
+    return service.publish(entry.getVersion(), spaceId, entryId, new Byte[0]);
   }
 
   /**
@@ -253,9 +265,22 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
      */
     public CMACallback<CMAArray<CMAEntry>> fetchAll(final String spaceId,
         CMACallback<CMAArray<CMAEntry>> callback) {
+      return fetchAll(spaceId, null, callback);
+    }
+
+    /**
+     * Fetch all Entries from a Space with a query.
+     *
+     * @param spaceId Space ID
+     * @param query Query
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
+    public CMACallback<CMAArray<CMAEntry>> fetchAll(final String spaceId,
+        final Map<String, String> query, CMACallback<CMAArray<CMAEntry>> callback) {
       return defer(new RxExtensions.DefFunc<CMAArray<CMAEntry>>() {
         @Override CMAArray<CMAEntry> method() {
-          return ModuleEntries.this.fetchAll(spaceId);
+          return ModuleEntries.this.fetchAll(spaceId, query);
         }
       }, callback);
     }

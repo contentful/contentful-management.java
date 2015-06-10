@@ -20,6 +20,7 @@ import com.contentful.java.cma.RxExtensions.DefFunc;
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAContentType;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Executor;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -95,8 +96,19 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
    * @return {@link CMAArray} result instance
    */
   public CMAArray<CMAContentType> fetchAll(String spaceId) {
+    return fetchAll(spaceId, null);
+  }
+
+  /**
+   * Fetch all Content Types from a Space with a query.
+   *
+   * @param spaceId Space ID
+   * @param query Query
+   * @return {@link CMAArray} result instance
+   */
+  public CMAArray<CMAContentType> fetchAll(String spaceId, Map<String, String> query) {
     assertNotNull(spaceId, "spaceId");
-    return service.fetchAll(spaceId);
+    return service.fetchAll(spaceId, query);
   }
 
   /**
@@ -122,7 +134,7 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
     assertNotNull(contentType, "contentType");
     String contentTypeId = getResourceIdOrThrow(contentType, "contentType");
     String spaceId = getSpaceIdOrThrow(contentType, "contentType");
-    return service.publish(contentType.getVersion(), spaceId, contentTypeId);
+    return service.publish(contentType.getVersion(), spaceId, contentTypeId, new Byte[0]);
   }
 
   /**
@@ -210,9 +222,23 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
      */
     public CMACallback<CMAArray<CMAContentType>> fetchAll(final String spaceId,
         CMACallback<CMAArray<CMAContentType>> callback) {
+      return fetchAll(spaceId, null, callback);
+    }
+
+    /**
+     * Fetch all Content Types from a Space with a query.
+     *
+     * @param spaceId Space ID
+     * @param query Query
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
+    public CMACallback<CMAArray<CMAContentType>> fetchAll(final String spaceId,
+        final Map<String, String> query,
+        CMACallback<CMAArray<CMAContentType>> callback) {
       return defer(new DefFunc<CMAArray<CMAContentType>>() {
         @Override CMAArray<CMAContentType> method() {
-          return ModuleContentTypes.this.fetchAll(spaceId);
+          return ModuleContentTypes.this.fetchAll(spaceId, query);
         }
       }, callback);
     }
