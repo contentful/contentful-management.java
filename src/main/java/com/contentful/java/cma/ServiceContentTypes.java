@@ -18,6 +18,7 @@ package com.contentful.java.cma;
 
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAContentType;
+import java.util.Map;
 import retrofit.client.Response;
 import retrofit.http.Body;
 import retrofit.http.DELETE;
@@ -26,6 +27,7 @@ import retrofit.http.Header;
 import retrofit.http.POST;
 import retrofit.http.PUT;
 import retrofit.http.Path;
+import retrofit.http.QueryMap;
 
 /**
  * ContentTypes Service.
@@ -49,7 +51,8 @@ interface ServiceContentTypes {
 
   @GET("/spaces/{space}/content_types")
   CMAArray<CMAContentType> fetchAll(
-      @Path("space") String spaceId);
+      @Path("space") String spaceId,
+      @QueryMap Map<String, String> query);
 
   @GET("/spaces/{space}/content_types/{content_type}")
   CMAContentType fetchOne(
@@ -60,7 +63,8 @@ interface ServiceContentTypes {
   CMAContentType publish(
       @Header("X-Contentful-Version") Integer version,
       @Path("space") String spaceId,
-      @Path("content_type") String contentTypeId);
+      @Path("content_type") String contentTypeId,
+      @Body Object body);
 
   @DELETE("/spaces/{space}/content_types/{content_type}/published")
   CMAContentType unPublish(

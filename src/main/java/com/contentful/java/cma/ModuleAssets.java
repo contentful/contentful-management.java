@@ -20,6 +20,7 @@ import com.contentful.java.cma.RxExtensions.DefFunc;
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAAsset;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Executor;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -50,7 +51,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     assertNotNull(asset, "asset");
     String assetId = getResourceIdOrThrow(asset, "asset");
     String spaceId = getSpaceIdOrThrow(asset, "asset");
-    return service.archive(spaceId, assetId);
+    return service.archive(spaceId, assetId, new Byte[0]);
   }
 
   /**
@@ -107,8 +108,19 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
    * @return {@link CMAArray} result instance
    */
   public CMAArray<CMAAsset> fetchAll(String spaceId) {
+    return fetchAll(spaceId, null);
+  }
+
+  /**
+   * Fetch all Assets from a Space with a query.
+   *
+   * @param spaceId Space ID
+   * @param query Query
+   * @return {@link CMAArray} result instance
+   */
+  public CMAArray<CMAAsset> fetchAll(String spaceId, Map<String, String> query) {
     assertNotNull(spaceId, "spaceId");
-    return service.fetchAll(spaceId);
+    return service.fetchAll(spaceId, query);
   }
 
   /**
@@ -135,7 +147,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     assertNotNull(asset, "asset");
     String assetId = getResourceIdOrThrow(asset, "asset");
     String spaceId = getSpaceIdOrThrow(asset, "asset");
-    return service.process(spaceId, assetId, locale);
+    return service.process(spaceId, assetId, locale, new Byte[0]);
   }
 
   /**
@@ -148,7 +160,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     assertNotNull(asset, "asset");
     String assetId = getResourceIdOrThrow(asset, "asset");
     String spaceId = getSpaceIdOrThrow(asset, "asset");
-    return service.publish(asset.getVersion(), spaceId, assetId);
+    return service.publish(asset.getVersion(), spaceId, assetId, new Byte[0]);
   }
 
   /**
@@ -264,11 +276,24 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
-    public CMACallback<CMAArray<CMAAsset>> fetchAll(final String spaceId,
+    public CMACallback<CMAArray<CMAAsset>> fetchAll(String spaceId,
         CMACallback<CMAArray<CMAAsset>> callback) {
+      return fetchAll(spaceId, null, callback);
+    }
+
+    /**
+     * Fetch all Assets from a Space with a query.
+     *
+     * @param spaceId Space ID
+     * @param query Query
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
+    public CMACallback<CMAArray<CMAAsset>> fetchAll(final String spaceId,
+        final Map<String, String> query, CMACallback<CMAArray<CMAAsset>> callback) {
       return defer(new DefFunc<CMAArray<CMAAsset>>() {
         @Override CMAArray<CMAAsset> method() {
-          return ModuleAssets.this.fetchAll(spaceId);
+          return ModuleAssets.this.fetchAll(spaceId, query);
         }
       }, callback);
     }

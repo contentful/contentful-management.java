@@ -18,6 +18,7 @@ package com.contentful.java.cma;
 
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAAsset;
+import java.util.Map;
 import retrofit.client.Response;
 import retrofit.http.Body;
 import retrofit.http.DELETE;
@@ -26,6 +27,7 @@ import retrofit.http.Header;
 import retrofit.http.POST;
 import retrofit.http.PUT;
 import retrofit.http.Path;
+import retrofit.http.QueryMap;
 
 /**
  * Assets Service.
@@ -34,7 +36,8 @@ interface ServiceAssets {
   @PUT("/spaces/{space}/assets/{asset}/archived")
   CMAAsset archive(
       @Path("space") String spaceId,
-      @Path("asset") String assetId);
+      @Path("asset") String assetId,
+      @Body Object body);
 
   @POST("/spaces/{space}/assets")
   CMAAsset create(
@@ -54,7 +57,8 @@ interface ServiceAssets {
 
   @GET("/spaces/{space}/assets")
   CMAArray<CMAAsset> fetchAll(
-      @Path("space") String spaceId);
+      @Path("space") String spaceId,
+      @QueryMap Map<String, String> query);
 
   @GET("/spaces/{space}/assets/{asset}")
   CMAAsset fetchOne(
@@ -65,13 +69,15 @@ interface ServiceAssets {
   Response process(
       @Path("space") String spaceId,
       @Path("asset") String assetId,
-      @Path("locale") String locale);
+      @Path("locale") String locale,
+      @Body Object body);
 
   @PUT("/spaces/{space}/assets/{asset}/published")
   CMAAsset publish(
       @Header("X-Contentful-Version") Integer version,
       @Path("space") String spaceId,
-      @Path("asset") String assetId);
+      @Path("asset") String assetId,
+      @Body Object body);
 
   @DELETE("/spaces/{space}/assets/{asset}/archived")
   CMAAsset unArchive(

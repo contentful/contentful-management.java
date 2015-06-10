@@ -17,8 +17,8 @@
 package com.contentful.java.cma.lib
 
 import com.contentful.java.cma.CMACallback
-import java.util.concurrent.CountDownLatch
 import retrofit.RetrofitError
+import java.util.concurrent.CountDownLatch
 
 class TestCallback<T>(val allowEmpty: Boolean = false) : CMACallback<T>() {
     val cdl: CountDownLatch

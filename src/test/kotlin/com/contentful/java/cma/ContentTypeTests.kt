@@ -17,15 +17,20 @@
 package com.contentful.java.cma
 
 import com.contentful.java.cma.Constants.CMAFieldType
-import com.squareup.okhttp.mockwebserver.MockResponse
-import com.contentful.java.cma.lib.*
-import org.junit.Test as test
-import kotlin.test.*
-import retrofit.RetrofitError
-import java.io.IOException
+import com.contentful.java.cma.lib.ModuleTestUtils
+import com.contentful.java.cma.lib.TestCallback
+import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAContentType
 import com.contentful.java.cma.model.CMAField
-import com.contentful.java.cma.model.CMAEntry
+import com.squareup.okhttp.HttpUrl
+import com.squareup.okhttp.mockwebserver.MockResponse
+import retrofit.RetrofitError
+import java.io.IOException
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
+import org.junit.Test as test
 
 class ContentTypeTests : BaseTest() {
     test fun testCreate() {
@@ -195,6 +200,23 @@ class ContentTypeTests : BaseTest() {
         val recordedRequest = server!!.takeRequest()
         assertEquals("GET", recordedRequest.getMethod())
         assertEquals("/spaces/spaceid/content_types", recordedRequest.getPath())
+    }
+
+    test fun testFetchAllWithQuery() {
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(
+                TestUtils.fileToString("content_type_fetch_all_response.json")))
+
+        val query = hashMapOf(Pair("skip", "1"), Pair("limit", "2"), Pair("foo", "bar"))
+
+        assertTestCallback(client!!.contentTypes().async().fetchAll(
+                "spaceid", query, TestCallback()) as TestCallback)
+
+        // Request
+        val request = server!!.takeRequest()
+        val url = HttpUrl.parse(server!!.getUrl(request.getPath()).toString())
+        assertEquals("1", url.queryParameter("skip"))
+        assertEquals("2", url.queryParameter("limit"))
+        assertEquals("bar", url.queryParameter("foo"))
     }
 
     test fun testFetchWithId() {

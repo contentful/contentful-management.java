@@ -18,6 +18,7 @@ package com.contentful.java.cma;
 
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAEntry;
+import java.util.Map;
 import retrofit.client.Response;
 import retrofit.http.Body;
 import retrofit.http.DELETE;
@@ -26,6 +27,7 @@ import retrofit.http.Header;
 import retrofit.http.POST;
 import retrofit.http.PUT;
 import retrofit.http.Path;
+import retrofit.http.QueryMap;
 
 /**
  * Entries Service.
@@ -34,7 +36,8 @@ interface ServiceEntries {
   @PUT("/spaces/{space}/entries/{entry}/archived")
   CMAEntry archive(
       @Path("space") String spaceId,
-      @Path("entry") String entryId);
+      @Path("entry") String entryId,
+      @Body Object body);
 
   @POST("/spaces/{space}/entries")
   CMAEntry create(
@@ -61,13 +64,15 @@ interface ServiceEntries {
 
   @GET("/spaces/{space}/entries")
   CMAArray<CMAEntry> fetchAll(
-      @Path("space") String spaceId);
+      @Path("space") String spaceId,
+      @QueryMap Map<String, String> query);
 
   @PUT("/spaces/{space}/entries/{entry}/published")
   CMAEntry publish(
       @Header("X-Contentful-Version") Integer version,
       @Path("space") String spaceId,
-      @Path("entry") String entryId);
+      @Path("entry") String entryId,
+      @Body Object body);
 
   @DELETE("/spaces/{space}/entries/{entry}/archived")
   CMAEntry unArchive(

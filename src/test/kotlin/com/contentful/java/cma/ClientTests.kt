@@ -16,23 +16,22 @@
 
 package com.contentful.java.cma
 
-import org.junit.Test as test
-import kotlin.test.assertEquals
 import com.contentful.java.cma.lib.TestCallback
+import com.contentful.java.cma.lib.TestUtils
+import com.contentful.java.cma.model.CMAArray
+import com.contentful.java.cma.model.CMASpace
+import com.squareup.okhttp.mockwebserver.MockResponse
+import org.mockito.Mockito
 import retrofit.RetrofitError
+import rx.Observable
+import java.io.IOException
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
-import com.contentful.java.cma.lib.TestUtils
-import com.squareup.okhttp.mockwebserver.MockResponse
+import kotlin.test.assertEquals
 import kotlin.test.assertFalse
-import java.io.IOException
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
-import rx.Observable
-import org.mockito.Mockito
-import com.contentful.java.cma.model.CMASpace
-import com.contentful.java.cma.model.CMAArray
-import com.contentful.java.cma.CMACallback
+import org.junit.Test as test
 
 class ClientTests : BaseTest() {
     test fun testCancelledCallback() {

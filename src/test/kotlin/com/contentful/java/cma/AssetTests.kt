@@ -16,18 +16,16 @@
 
 package com.contentful.java.cma
 
-import org.junit.Test as test
+import com.contentful.java.cma.lib.ModuleTestUtils
+import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.lib.TestUtils
+import com.contentful.java.cma.model.CMAAsset
+import com.squareup.okhttp.HttpUrl
 import com.squareup.okhttp.mockwebserver.MockResponse
-import kotlin.test.*
 import retrofit.RetrofitError
 import java.io.IOException
-import com.contentful.java.cma.lib.TestCallback
-import org.junit.Test
-import com.contentful.java.cma.model.CMAAsset
-import retrofit.RestAdapter
-import com.contentful.java.cma.lib.ModuleTestUtils
-import com.contentful.java.cma.model.CMAEntry
+import kotlin.test.*
+import org.junit.Test as test
 
 class AssetTests : BaseTest() {
     test fun testArchive() {
@@ -121,6 +119,23 @@ class AssetTests : BaseTest() {
         val request = server!!.takeRequest()
         assertEquals("GET", request.getMethod())
         assertEquals("/spaces/spaceid/assets", request.getPath())
+    }
+
+    test fun testFetchAllWithQuery() {
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(
+                TestUtils.fileToString("asset_fetch_all_response.json")))
+
+        val query = hashMapOf(Pair("skip", "1"), Pair("limit", "2"), Pair("content_type", "foo"))
+
+        assertTestCallback(client!!.assets().async().fetchAll(
+                "spaceid", query, TestCallback()) as TestCallback)
+
+        // Request
+        val request = server!!.takeRequest()
+        val url = HttpUrl.parse(server!!.getUrl(request.getPath()).toString())
+        assertEquals("1", url.queryParameter("skip"))
+        assertEquals("2", url.queryParameter("limit"))
+        assertEquals("foo", url.queryParameter("content_type"))
     }
 
     test fun testFetchWithId() {
