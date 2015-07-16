@@ -2,7 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Version [1.0.0][unreleased] - (in development)
+## Version [0.9.10][unreleased] - (in development)
+- TBD
+
+## Version [0.9.9] - 2015-07-16
+- Fixed: Support posting included resources as links.
 
 ## Version [0.9.8] - 2015-06-10
 - New: Add support for search queries via fetchAll() methods.
@@ -38,8 +42,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Version 0.9.0 - 2014-11-18
 Initial release.
 
-[unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-0.9.8...HEAD
-[0.9.8]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-0.9.8...0.9.7
+[unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-0.9.9...HEAD
+[0.9.9]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-0.9.8...cma-sdk-0.9.9
+[0.9.8]: https://github.com/contentful/contentful-management.java/compare/0.9.8...cma-sdk-0.9.8
 [0.9.7]: https://github.com/contentful/contentful-management.java/compare/0.9.6...0.9.7
 [0.9.6]: https://github.com/contentful/contentful-management.java/compare/0.9.5...0.9.6
 [0.9.5]: https://github.com/contentful/contentful-management.java/compare/0.9.4...0.9.5
