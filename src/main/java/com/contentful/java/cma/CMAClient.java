@@ -16,6 +16,7 @@
 
 package com.contentful.java.cma;
 
+import com.contentful.java.cma.model.CMAEntry;
 import com.contentful.java.cma.model.CMAField;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -119,8 +120,10 @@ public class CMAClient {
    */
   static Gson createGson() {
     if (gson == null) {
-      gson = new GsonBuilder().registerTypeAdapter(
-          CMAField.class, new FieldTypeAdapter()).create();
+      gson = new GsonBuilder()
+          .registerTypeAdapter(CMAField.class, new FieldTypeAdapter())
+          .registerTypeAdapter(CMAEntry.class, new EntrySerializer())
+          .create();
     }
 
     return gson;

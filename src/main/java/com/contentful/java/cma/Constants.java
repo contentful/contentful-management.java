@@ -27,7 +27,7 @@ public final class Constants {
   public static final String ENDPOINT_CMA = "https://api.contentful.com";
 
   @SuppressWarnings("UnusedDeclaration")
-  public static enum CMAFieldType {
+  public enum CMAFieldType {
     Array,
     Boolean,
     Date,

@@ -94,6 +94,39 @@ class EntryTests : BaseTest() {
         assertEquals("ctid", recordedRequest.getHeader("X-Contentful-Content-Type"))
     }
 
+    test fun testCreateWithLinks() {
+        val requestBody = TestUtils.fileToString("entry_create_links_request.json")
+        server!!.enqueue(MockResponse().setResponseCode(200))
+
+        val LOCALE = "en-US"
+
+        val foo = CMAEntry().setId("foo").setField("name", "foo", LOCALE)
+        val bar = CMAEntry().setId("bar").setField("name", "bar", LOCALE)
+
+        foo.setField("link", bar, LOCALE)
+        foo.setField("link", bar, "he-IL")
+        foo.setField("array", listOf(bar), LOCALE)
+
+        bar.setField("link", foo, LOCALE)
+
+        client!!.entries().create("space", "type", foo)
+
+        val request = server!!.takeRequest()
+        assertEquals(requestBody, request.getUtf8Body())
+    }
+
+    test(expected = RetrofitError::class)
+    fun testCreateWithBadLinksThrows() {
+        val foo = CMAEntry().setId("bar").setField("link", CMAEntry(), "en-US")
+        server!!.enqueue(MockResponse().setResponseCode(200))
+        try {
+            client!!.entries().create("space", "type", foo)
+        } catch(e: RetrofitError) {
+            assertEquals("Entry contains link to draft resource (has no ID).", e.getMessage())
+            throw e
+        }
+    }
+
     test fun testDelete() {
         server!!.enqueue(MockResponse().setResponseCode(200))
         assertTestCallback(client!!.entries().async().delete(
