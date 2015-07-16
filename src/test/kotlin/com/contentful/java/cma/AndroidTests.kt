@@ -15,7 +15,7 @@ import org.robolectric.annotation.Config
 import kotlin.test.assertEquals
 import org.junit.Test as test
 
-[RunWith(javaClass<RobolectricTestRunner>())]
+[RunWith(RobolectricTestRunner::class)]
 [Config(manifest=Config.NONE)]
 class AndroidTests : BaseTest() {
     test fun testCallbackExecutesOnMainThread() {

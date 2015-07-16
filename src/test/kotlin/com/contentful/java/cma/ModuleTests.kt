@@ -36,7 +36,7 @@ class ModuleTests : BaseTest() {
         }
     }
 
-    test(expected = javaClass<IllegalArgumentException>())
+    test(expected = IllegalArgumentException::class)
     fun testNotNull() {
         try {
             module!!.assertNotNull(null, "parameter")
@@ -46,7 +46,7 @@ class ModuleTests : BaseTest() {
         }
     }
 
-    test(expected = javaClass<IllegalArgumentException>())
+    test(expected = IllegalArgumentException::class)
     fun testResourceId() {
         try {
             module!!.getResourceIdOrThrow(CMAResource(), "parameter")
@@ -56,7 +56,7 @@ class ModuleTests : BaseTest() {
         }
     }
 
-    test(expected = javaClass<IllegalArgumentException>())
+    test(expected = IllegalArgumentException::class)
     fun testSpaceId() {
         try {
             module!!.getSpaceIdOrThrow(CMAResource(), "parameter")

@@ -324,7 +324,7 @@ class ContentTypeTests : BaseTest() {
         assertEquals("Entry", field.getLinkType())
     }
 
-    test(expected = javaClass<RetrofitError>())
+    test(expected = RetrofitError::class)
     fun testRetainsSysOnNetworkError() {
         val badClient = CMAClient.Builder()
                 .setAccessToken("accesstoken")
@@ -340,7 +340,7 @@ class ContentTypeTests : BaseTest() {
         }
     }
 
-    test(expected = javaClass<Exception>())
+    test(expected = Exception::class)
     fun testUpdateFailsWithoutVersion() {
         ModuleTestUtils.assertUpdateWithoutVersion {
             client!!.contentTypes().update(CMAContentType().setId("ctid")

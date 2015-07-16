@@ -118,7 +118,7 @@ class ClientTests : BaseTest() {
         assertEquals("${prefix}${versionName}", recordedRequest.getHeader("User-Agent"))
     }
 
-    test(expected = javaClass<IllegalArgumentException>())
+    test(expected = IllegalArgumentException::class)
     fun failsNoAccessToken() {
         try {
             CMAClient.Builder().build()
@@ -128,7 +128,7 @@ class ClientTests : BaseTest() {
         }
     }
 
-    test(expected = javaClass<IllegalArgumentException>())
+    test(expected = IllegalArgumentException::class)
     fun failsSetNullAccessToken() {
         try {
             CMAClient.Builder().setAccessToken(null)
@@ -138,7 +138,7 @@ class ClientTests : BaseTest() {
         }
     }
 
-    test(expected = javaClass<IllegalArgumentException>())
+    test(expected = IllegalArgumentException::class)
     fun failsSetNullClient() {
         try {
             CMAClient.Builder().setClient(null)
@@ -148,7 +148,7 @@ class ClientTests : BaseTest() {
         }
     }
 
-    test(expected = javaClass<IllegalArgumentException>())
+    test(expected = IllegalArgumentException::class)
     fun failsSetNullClientProvider() {
         try {
             CMAClient.Builder().setClientProvider(null)
@@ -158,7 +158,7 @@ class ClientTests : BaseTest() {
         }
     }
 
-    test(expected = javaClass<IllegalArgumentException>())
+    test(expected = IllegalArgumentException::class)
     fun failsSetNullLogLevel() {
         try {
             CMAClient.Builder().setLogLevel(null)
@@ -168,7 +168,7 @@ class ClientTests : BaseTest() {
         }
     }
 
-    test(expected = javaClass<IllegalArgumentException>())
+    test(expected = IllegalArgumentException::class)
     fun failsSetNullEndPoint() {
         try {
             CMAClient.Builder().setEndpoint(null)
@@ -178,7 +178,7 @@ class ClientTests : BaseTest() {
         }
     }
 
-    test(expected = javaClass<IllegalArgumentException>())
+    test(expected = IllegalArgumentException::class)
     fun failsSetCallbackExecutor() {
         try {
             CMAClient.Builder().setCallbackExecutor(null)
@@ -188,7 +188,7 @@ class ClientTests : BaseTest() {
         }
     }
 
-    test(expected = javaClass<RuntimeException>())
+    test(expected = RuntimeException::class)
     fun testUserAgentThrowsRuntimeExceptionOnFailure() {
         try {
             val reader = Mockito.mock(javaClass<PropertiesReader>())
