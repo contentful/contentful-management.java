@@ -230,7 +230,7 @@ class AssetTests : BaseTest() {
         assertEquals(requestBody, recordedRequest.getUtf8Body())
     }
 
-    test(expected = javaClass<RetrofitError>())
+    test(expected = RetrofitError::class)
     fun testRetainsSysOnNetworkError() {
         val badClient = CMAClient.Builder()
                 .setAccessToken("accesstoken")
@@ -250,7 +250,7 @@ class AssetTests : BaseTest() {
         assertNull(CMAAsset().getVersion())
     }
 
-    test(expected = javaClass<Exception>())
+    test(expected = Exception::class)
     fun testUpdateFailsWithoutVersion() {
         ModuleTestUtils.assertUpdateWithoutVersion {
             client!!.assets().update(CMAAsset().setId("aid").setSpaceId("spaceid"))

@@ -40,7 +40,7 @@ class TestCallback<T>(val allowEmpty: Boolean = false) : CMACallback<T>() {
         cdl.countDown()
     }
 
-    throws(javaClass<InterruptedException>())
+    throws(InterruptedException::class)
     public fun await() {
         cdl.await()
     }

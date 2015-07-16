@@ -15,8 +15,8 @@ import org.robolectric.annotation.Config
 import kotlin.test.assertEquals
 import org.junit.Test as test
 
-[RunWith(javaClass<RobolectricTestRunner>())]
-[Config(manifest=Config.NONE)]
+@RunWith(RobolectricTestRunner::class)
+@Config(manifest = Config.NONE)
 class AndroidTests : BaseTest() {
     test fun testCallbackExecutesOnMainThread() {
         val responseBody = TestUtils.fileToString("asset_fetch_all_response.json")

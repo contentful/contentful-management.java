@@ -244,7 +244,7 @@ class EntryTests : BaseTest() {
         assertEquals("/spaces/spaceid/entries/entryid/published", recordedRequest.getPath())
     }
 
-    test(expected = javaClass<RetrofitError>())
+    test(expected = RetrofitError::class)
     fun testRetainsSysOnNetworkError() {
         val badClient = CMAClient.Builder()
                 .setAccessToken("accesstoken")
@@ -260,7 +260,7 @@ class EntryTests : BaseTest() {
         }
     }
 
-    test(expected = javaClass<Exception>())
+    test(expected = Exception::class)
     fun testUpdateFailsWithoutVersion() {
         ModuleTestUtils.assertUpdateWithoutVersion {
             client!!.entries().update(CMAEntry().setId("eid").setSpaceId("spaceid"))

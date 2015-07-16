@@ -209,7 +209,7 @@ class SpaceTests : BaseTest() {
         assertEquals(requestBody, recordedRequest.getUtf8Body())
     }
 
-    test(expected = javaClass<Exception>())
+    test(expected = Exception::class)
     fun testUpdateFailsWithoutVersion() {
         ModuleTestUtils.assertUpdateWithoutVersion {
             val space: CMASpace = CMASpace().setName("name").setId("id")
