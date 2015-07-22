@@ -473,6 +473,10 @@ client.spaces().async().update(space, new CMACallback<CMASpace>() {
 });
 ```
 
+Documentation
+=============
+
+Javadoc is available [here][javadoc].
 
 License
 =======
@@ -486,3 +490,4 @@ Copyright (c) 2015 Contentful GmbH. See [LICENSE.txt][5] for further details.
  [4]: https://contentful.github.io/contentful-management.java
  [5]: LICENSE.txt
  [snap]: https://oss.sonatype.org/content/repositories/snapshots/
+ [javadoc]: https://contentful.github.io/contentful-management.java
