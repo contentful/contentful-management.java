@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Version [0.9.10][unreleased] - (in development)
-- TBD
+- Fixed: Correctly serialize Entry links.
 
 ## Version [0.9.9] - 2015-07-16
 - Fixed: Support posting included resources as links.
