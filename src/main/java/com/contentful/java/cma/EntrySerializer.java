@@ -48,7 +48,7 @@ final class EntrySerializer implements JsonSerializer<CMAEntry> {
     for (String locale : values.keySet()) {
       Object localized = values.get(locale);
       if (localized instanceof CMAResource) {
-        field.add(locale, toLink((CMAResource) localized));
+        field.add(locale, toLink(context, (CMAResource) localized));
       } else if (localized instanceof List) {
         field.add(locale, serializeList(context, (List) localized));
       } else if (localized != null) {
@@ -65,7 +65,7 @@ final class EntrySerializer implements JsonSerializer<CMAEntry> {
     JsonArray array = new JsonArray();
     for (Object item : list) {
       if (item instanceof CMAResource) {
-        array.add(toLink((CMAResource) item));
+        array.add(toLink(context, (CMAResource) item));
       } else {
         array.add(context.serialize(item));
       }
@@ -73,7 +73,7 @@ final class EntrySerializer implements JsonSerializer<CMAEntry> {
     return array;
   }
 
-  private JsonObject toLink(CMAResource resource) {
+  private JsonObject toLink(JsonSerializationContext context, CMAResource resource) {
     String id = resource.getResourceId();
     if (id == null || id.isEmpty()) {
       throw new IllegalArgumentException("Entry contains link to draft resource (has no ID).");
@@ -86,10 +86,14 @@ final class EntrySerializer implements JsonSerializer<CMAEntry> {
         type = "Entry";
       }
     }
+    JsonObject sys = new JsonObject();
+    sys.addProperty("type", Link.toString());
+    sys.addProperty("linkType", type);
+    sys.addProperty("id", id);
+
     JsonObject result = new JsonObject();
-    result.addProperty("type", Link.toString());
-    result.addProperty("linkType", type);
-    result.addProperty("id", id);
+    result.add("sys", context.serialize(sys));
+
     return result;
   }
 }
