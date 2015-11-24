@@ -2,7 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Version [0.9.10][unreleased] - (in development)
+## Version [0.9.11][unreleased] - (in development)
+- TBA.
+
+## Version [0.9.10] - 2015-11-24
 - Fixed: Correctly serialize Entry links.
 
 ## Version [0.9.9] - 2015-07-16
@@ -42,7 +45,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Version 0.9.0 - 2014-11-18
 Initial release.
 
-[unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-0.9.9...HEAD
+[unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-0.9.10...HEAD
+[0.9.10]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-0.9.9...cma-sdk-0.9.10
 [0.9.9]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-0.9.8...cma-sdk-0.9.9
 [0.9.8]: https://github.com/contentful/contentful-management.java/compare/0.9.8...cma-sdk-0.9.8
 [0.9.7]: https://github.com/contentful/contentful-management.java/compare/0.9.6...0.9.7
