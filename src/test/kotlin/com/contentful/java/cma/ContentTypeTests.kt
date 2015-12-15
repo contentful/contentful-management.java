@@ -178,17 +178,20 @@ class ContentTypeTests : BaseTest() {
         var field = items[0].fields[0]
         assertEquals("titleid", field.id)
         assertEquals("titlename", field.name)
+        assertTrue(field.isLocalized)
         assertEquals(CMAFieldType.Text, field.type)
 
         field = items[0].fields[1]
         assertEquals("bodyid", field.id)
         assertEquals("bodyname", field.name)
+        assertFalse(field.isLocalized)
         assertEquals(CMAFieldType.Text, field.type)
 
         // Assert second item
         field = items[1].fields[0]
         assertEquals("a", field.id)
         assertEquals("b", field.name)
+        assertFalse(field.isLocalized)
         assertEquals(CMAFieldType.Text, field.type)
 
         field = items[1].fields[1]

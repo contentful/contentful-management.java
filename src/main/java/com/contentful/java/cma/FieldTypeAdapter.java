@@ -36,6 +36,7 @@ final class FieldTypeAdapter implements JsonSerializer<CMAField> {
   private static final String ATTR_LINK_TYPE = "linkType";
   private static final String ATTR_REQUIRED = "required";
   private static final String ATTR_DISABLED = "disabled";
+  private static final String ATTR_LOCALIZED = "localized";
   private static final String ATTR_VALIDATIONS = "validations";
   private static final String ATTR_ARRAY_ITEMS = "items";
 
@@ -49,6 +50,7 @@ final class FieldTypeAdapter implements JsonSerializer<CMAField> {
     add(json, ATTR_LINK_TYPE, field.getLinkType());
     add(json, ATTR_REQUIRED, field.isRequired());
     add(json, ATTR_DISABLED, field.isDisabled());
+    add(json, ATTR_LOCALIZED, field.isLocalized());
 
     List<Map> validations = field.getValidations();
     if (validations != null) {
