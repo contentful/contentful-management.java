@@ -25,10 +25,13 @@ import com.squareup.okhttp.mockwebserver.MockResponse
 import retrofit.RetrofitError
 import java.io.IOException
 import kotlin.test.*
+
+
 import org.junit.Test as test
 
 class AssetTests : BaseTest() {
-    test fun testArchive() {
+    @test
+    fun testArchive() {
         val cli = CMAClient.Builder()
                 .setAccessToken("token")
                 .setEndpoint(server!!.getUrl("/").toString())
@@ -38,19 +41,20 @@ class AssetTests : BaseTest() {
         val responseBody = TestUtils.fileToString("asset_archive_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
         val asset = CMAAsset().setId("assetid").setSpaceId("spaceid")
-        assertFalse(asset.isArchived())
+        assertFalse(asset.isArchived)
 
         val result = assertTestCallback(cli.assets().async().archive(
-                asset, TestCallback()) as TestCallback)
+                asset, TestCallback()) as TestCallback)!!
 
         // Request
         val recordedRequest = server!!.takeRequest()
-        assertEquals("PUT", recordedRequest.getMethod())
-        assertEquals("/spaces/spaceid/assets/assetid/archived", recordedRequest.getPath())
-        assertTrue(result.isArchived())
+        assertEquals("PUT", recordedRequest.method)
+        assertEquals("/spaces/spaceid/assets/assetid/archived", recordedRequest.path)
+        assertTrue(result.isArchived)
     }
 
-    test fun testCreate() {
+    @test
+    fun testCreate() {
         val requestBody = TestUtils.fileToString("asset_create_request.json")
         val responseBody = TestUtils.fileToString("asset_create_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
@@ -64,12 +68,13 @@ class AssetTests : BaseTest() {
 
         // Request
         val recordedRequest = server!!.takeRequest()
-        assertEquals("POST", recordedRequest.getMethod())
-        assertEquals("/spaces/spaceid/assets", recordedRequest.getPath())
-        assertEquals(requestBody, recordedRequest.getUtf8Body())
+        assertEquals("POST", recordedRequest.method)
+        assertEquals("/spaces/spaceid/assets", recordedRequest.path)
+        assertEquals(requestBody, recordedRequest.utf8Body)
     }
 
-    test fun testCreateWithId() {
+    @test
+    fun testCreateWithId() {
         val requestBody = TestUtils.fileToString("asset_create_request.json")
         val responseBody = TestUtils.fileToString("asset_create_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
@@ -84,44 +89,47 @@ class AssetTests : BaseTest() {
 
         // Request
         val recordedRequest = server!!.takeRequest()
-        assertEquals("PUT", recordedRequest.getMethod())
-        assertEquals("/spaces/spaceid/assets/assetid", recordedRequest.getPath())
-        assertEquals(requestBody, recordedRequest.getUtf8Body())
+        assertEquals("PUT", recordedRequest.method)
+        assertEquals("/spaces/spaceid/assets/assetid", recordedRequest.path)
+        assertEquals(requestBody, recordedRequest.utf8Body)
     }
 
-    test fun testDelete() {
+    @test
+    fun testDelete() {
         server!!.enqueue(MockResponse().setResponseCode(200))
         assertTestCallback(client!!.assets().async().delete(
                 "spaceid", "assetid", TestCallback()) as TestCallback)
 
         // Request
         val recordedRequest = server!!.takeRequest()
-        assertEquals("DELETE", recordedRequest.getMethod())
-        assertEquals("/spaces/spaceid/assets/assetid", recordedRequest.getPath())
+        assertEquals("DELETE", recordedRequest.method)
+        assertEquals("/spaces/spaceid/assets/assetid", recordedRequest.path)
     }
 
-    test fun testFetchAll() {
+    @test
+    fun testFetchAll() {
         val responseBody = TestUtils.fileToString("asset_fetch_all_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val result = assertTestCallback(client!!.assets().async().fetchAll(
-                "spaceid", TestCallback()) as TestCallback)
+                "spaceid", TestCallback()) as TestCallback)!!
 
-        assertEquals("Array", result.getSys()["type"])
-        assertEquals(1, result.getTotal())
-        val items = result.getItems()
-        assertEquals(1, items.size())
-        assertEquals(2, items[0].getFields().size())
-        assertNotNull(items[0].getFields()["file"])
-        assertNotNull(items[0].getFields()["title"])
+        assertEquals("Array", result.sys["type"])
+        assertEquals(1, result.total)
+        val items = result.items
+        assertEquals(1, items.size)
+        assertEquals(2, items[0].fields.size)
+        assertNotNull(items[0].fields["file"])
+        assertNotNull(items[0].fields["title"])
 
         // Request
         val request = server!!.takeRequest()
-        assertEquals("GET", request.getMethod())
-        assertEquals("/spaces/spaceid/assets", request.getPath())
+        assertEquals("GET", request.method)
+        assertEquals("/spaces/spaceid/assets", request.path)
     }
 
-    test fun testFetchAllWithQuery() {
+    @test
+    fun testFetchAllWithQuery() {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(
                 TestUtils.fileToString("asset_fetch_all_response.json")))
 
@@ -132,13 +140,14 @@ class AssetTests : BaseTest() {
 
         // Request
         val request = server!!.takeRequest()
-        val url = HttpUrl.parse(server!!.getUrl(request.getPath()).toString())
+        val url = HttpUrl.parse(server!!.getUrl(request.path).toString())
         assertEquals("1", url.queryParameter("skip"))
         assertEquals("2", url.queryParameter("limit"))
         assertEquals("foo", url.queryParameter("content_type"))
     }
 
-    test fun testFetchWithId() {
+    @test
+    fun testFetchWithId() {
         server!!.enqueue(MockResponse().setResponseCode(200))
 
         assertTestCallback(client!!.assets().async().fetchOne(
@@ -147,11 +156,12 @@ class AssetTests : BaseTest() {
 
         // Request
         val request = server!!.takeRequest()
-        assertEquals("GET", request.getMethod())
-        assertEquals("/spaces/spaceid/assets/assetid", request.getPath())
+        assertEquals("GET", request.method)
+        assertEquals("/spaces/spaceid/assets/assetid", request.path)
     }
 
-    test fun testProcess() {
+    @test
+    fun testProcess() {
         server!!.enqueue(MockResponse().setResponseCode(200))
 
         assertTestCallback(client!!.assets().async().process(CMAAsset()
@@ -160,29 +170,31 @@ class AssetTests : BaseTest() {
 
         // Request
         val recordedRequest = server!!.takeRequest()
-        assertEquals("PUT", recordedRequest.getMethod())
-        assertEquals("/spaces/spaceid/assets/assetid/files/locale/process", recordedRequest.getPath())
+        assertEquals("PUT", recordedRequest.method)
+        assertEquals("/spaces/spaceid/assets/assetid/files/locale/process", recordedRequest.path)
     }
 
-    test fun testPublish() {
+    @test
+    fun testPublish() {
         val responseBody = TestUtils.fileToString("asset_publish_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val asset = CMAAsset().setId("assetid").setSpaceId("spaceid").setVersion(1.0)
-        assertFalse(asset.isPublished())
+        assertFalse(asset.isPublished)
 
         val result = assertTestCallback(client!!.assets().async().publish(
-                asset, TestCallback()) as TestCallback)
+                asset, TestCallback()) as TestCallback)!!
 
         // Request
         val recordedRequest = server!!.takeRequest()
-        assertEquals("PUT", recordedRequest.getMethod())
-        assertEquals("/spaces/spaceid/assets/assetid/published", recordedRequest.getPath())
+        assertEquals("PUT", recordedRequest.method)
+        assertEquals("/spaces/spaceid/assets/assetid/published", recordedRequest.path)
         assertNotNull(recordedRequest.getHeader("X-Contentful-Version"))
-        assertTrue(result.isPublished())
+        assertTrue(result.isPublished)
     }
 
-    test fun testUnArchive() {
+    @test
+    fun testUnArchive() {
         server!!.enqueue(MockResponse().setResponseCode(200))
 
         assertTestCallback(client!!.assets().async().unArchive(
@@ -191,11 +203,12 @@ class AssetTests : BaseTest() {
 
         // Request
         val recordedRequest = server!!.takeRequest()
-        assertEquals("DELETE", recordedRequest.getMethod())
-        assertEquals("/spaces/spaceid/assets/assetid/archived", recordedRequest.getPath())
+        assertEquals("DELETE", recordedRequest.method)
+        assertEquals("/spaces/spaceid/assets/assetid/archived", recordedRequest.path)
     }
 
-    test fun testUnPublish() {
+    @test
+    fun testUnPublish() {
         server!!.enqueue(MockResponse().setResponseCode(200))
 
         assertTestCallback(client!!.assets().async().unPublish(
@@ -204,11 +217,12 @@ class AssetTests : BaseTest() {
 
         // Request
         val recordedRequest = server!!.takeRequest()
-        assertEquals("DELETE", recordedRequest.getMethod())
-        assertEquals("/spaces/spaceid/assets/assetid/published", recordedRequest.getPath())
+        assertEquals("DELETE", recordedRequest.method)
+        assertEquals("/spaces/spaceid/assets/assetid/published", recordedRequest.path)
     }
 
-    test fun testUpdate() {
+    @test
+    fun testUpdate() {
         val requestBody = TestUtils.fileToString("asset_update_request.json")
         server!!.enqueue(MockResponse().setResponseCode(200))
 
@@ -224,33 +238,34 @@ class AssetTests : BaseTest() {
 
         // Request
         val recordedRequest = server!!.takeRequest()
-        assertEquals("PUT", recordedRequest.getMethod())
-        assertEquals("/spaces/spaceid/assets/assetid", recordedRequest.getPath())
+        assertEquals("PUT", recordedRequest.method)
+        assertEquals("/spaces/spaceid/assets/assetid", recordedRequest.path)
         assertNotNull(recordedRequest.getHeader("X-Contentful-Version"))
-        assertEquals(requestBody, recordedRequest.getUtf8Body())
+        assertEquals(requestBody, recordedRequest.utf8Body)
     }
 
-    test(expected = RetrofitError::class)
+    @org.junit.Test(expected = RetrofitError::class)
     fun testRetainsSysOnNetworkError() {
         val badClient = CMAClient.Builder()
                 .setAccessToken("accesstoken")
-                .setClient { throw RetrofitError.unexpectedError(it.getUrl(), IOException()) }
+                .setClient { throw RetrofitError.unexpectedError(it.url, IOException()) }
                 .build()
 
         val asset = CMAAsset().setVersion(31337.0)
         try {
             badClient.assets().create("spaceid", asset)
         } catch (e: RetrofitError) {
-            assertEquals(31337, asset.getVersion())
+            assertEquals(31337, asset.version)
             throw e
         }
     }
 
-    test fun testNullVersionDoesNotThrow() {
-        assertNull(CMAAsset().getVersion())
+    @test
+    fun testNullVersionDoesNotThrow() {
+        assertNull(CMAAsset().version)
     }
 
-    test(expected = Exception::class)
+    @org.junit.Test(expected = Exception::class)
     fun testUpdateFailsWithoutVersion() {
         ModuleTestUtils.assertUpdateWithoutVersion {
             client!!.assets().update(CMAAsset().setId("aid").setSpaceId("spaceid"))

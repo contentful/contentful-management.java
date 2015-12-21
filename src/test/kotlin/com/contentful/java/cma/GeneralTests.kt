@@ -10,20 +10,20 @@ import kotlin.test.assertTrue
 import org.junit.Test as test
 
 class GeneralTests : BaseTest() {
-    test fun testGsonInstanceRetained() {
-        assertTrue(CMAClient.createGson().identityEquals(CMAClient.createGson()))
+    @test fun testGsonInstanceRetained() {
+        assertTrue(CMAClient.createGson() === CMAClient.createGson())
     }
 
-    test fun testFieldSerialization() {
+    @test fun testFieldSerialization() {
         val field = gson!!.fromJson(
                 TestUtils.fileToString("field_object.json"),
-                javaClass<CMAField>())
+                CMAField::class.java)
 
-        assertTrue(field.isRequired())
-        assertTrue(field.isDisabled())
+        assertTrue(field.isRequired)
+        assertTrue(field.isDisabled)
 
         // True
-        var json = gson!!.toJsonTree(field, javaClass<CMAField>()).getAsJsonObject()
+        var json = gson!!.toJsonTree(field, CMAField::class.java).asJsonObject
         assertTrue(json.has("required"))
         assertTrue(json.has("disabled"))
 
@@ -32,33 +32,33 @@ class GeneralTests : BaseTest() {
         field.setDisabled(false)
 
         // General attributes
-        json = gson!!.toJsonTree(field, javaClass<CMAField>()).getAsJsonObject()
-        assertEquals("fieldname", json.get("name").getAsString())
-        assertEquals("fieldid", json.get("id").getAsString())
-        assertEquals("Text", json.get("type").getAsString())
+        json = gson!!.toJsonTree(field, CMAField::class.java).asJsonObject
+        assertEquals("fieldname", json.get("name").asString)
+        assertEquals("fieldid", json.get("id").asString)
+        assertEquals("Text", json.get("type").asString)
     }
 
-    test fun testFieldArraySerialization() {
+    @test fun testFieldArraySerialization() {
         val field = CMAField().setType(CMAFieldType.Array)
                 .setArrayItems(hashMapOf(Pair("type", CMAFieldType.Symbol.toString())))
 
-        val json = gson!!.toJsonTree(field, javaClass<CMAField>()).getAsJsonObject()
-        assertEquals("Array", json.get("type").getAsString())
-        val items = json.get("items").getAsJsonObject()
-        assertEquals("Symbol", items.get("type").getAsString())
+        val json = gson!!.toJsonTree(field, CMAField::class.java).asJsonObject
+        assertEquals("Array", json.get("type").asString)
+        val items = json.get("items").asJsonObject
+        assertEquals("Symbol", items.get("type").asString)
     }
 
-    test fun testConstantsThrowsUnsupportedException() {
-        assertPrivateConstructor(javaClass<Constants>())
+    @test fun testConstantsThrowsUnsupportedException() {
+        assertPrivateConstructor(Constants::class.java)
     }
 
-    test fun testRxExtensionsThrowsUnsupportedException() {
-        assertPrivateConstructor(javaClass<RxExtensions>())
+    @test fun testRxExtensionsThrowsUnsupportedException() {
+        assertPrivateConstructor(RxExtensions::class.java)
     }
 
     fun assertPrivateConstructor(clazz: Class<out Any>) {
         var ctor = clazz.getDeclaredConstructor()
-        ctor.setAccessible(true)
+        ctor.isAccessible = true
         var exception = try {
             ctor.newInstance()
         } catch(e: Exception) {
@@ -67,7 +67,7 @@ class GeneralTests : BaseTest() {
 
         assertNotNull(exception)
         assertTrue(exception is InvocationTargetException)
-        assertTrue((exception as InvocationTargetException).getCause() is
+        assertTrue((exception as InvocationTargetException).cause is
                 UnsupportedOperationException)
     }
 }

@@ -18,11 +18,11 @@ import org.junit.Test as test
 @RunWith(RobolectricTestRunner::class)
 @Config(manifest = Config.NONE)
 class AndroidTests : BaseTest() {
-    test fun testCallbackExecutesOnMainThread() {
+    @test fun testCallbackExecutesOnMainThread() {
         val responseBody = TestUtils.fileToString("asset_fetch_all_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
-        val activity = Robolectric.buildActivity(javaClass<TestActivity>())
+        val activity = Robolectric.buildActivity(TestActivity::class.java)
                 .withIntent(Intent().putExtra("EXTRA_URL", server!!.getUrl("/").toString()))
                 .create()
                 .get()
@@ -39,7 +39,7 @@ class AndroidTests : BaseTest() {
         var callbackLooper: Looper? = null
 
         override fun onCreate(savedInstanceState: Bundle?) {
-            super<Activity>.onCreate(savedInstanceState)
+            super.onCreate(savedInstanceState)
             val cb = object : CMACallback<CMAArray<CMAAsset>>() {
                 override fun onSuccess(result: CMAArray<CMAAsset>?) {
                     callbackLooper = Looper.myLooper()
@@ -48,7 +48,7 @@ class AndroidTests : BaseTest() {
 
             val androidClient = CMAClient.Builder()
                     .setAccessToken("token")
-                    .setEndpoint(getIntent().getStringExtra("EXTRA_URL"))
+                    .setEndpoint(intent.getStringExtra("EXTRA_URL"))
                     .build()
 
             androidClient.assets().async().fetchAll("space-id", cb)

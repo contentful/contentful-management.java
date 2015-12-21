@@ -34,7 +34,7 @@ import kotlin.test.assertTrue
 import org.junit.Test as test
 
 class ClientTests : BaseTest() {
-    test fun testCancelledCallback() {
+    @test fun testCancelledCallback() {
         val responseBody = TestUtils.fileToString("space_fetch_one_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -60,10 +60,10 @@ class ClientTests : BaseTest() {
         assertFalse(called)
     }
 
-    test fun testCallbackRetrofitError() {
+    @test fun testCallbackRetrofitError() {
         val badClient = CMAClient.Builder()
                 .setAccessToken("accesstoken")
-                .setClient { throw RetrofitError.unexpectedError(it.getUrl(), IOException()) }
+                .setClient { throw RetrofitError.unexpectedError(it.url, IOException()) }
                 .build()
 
         val cb = TestCallback<CMAArray<CMASpace>>()
@@ -72,7 +72,7 @@ class ClientTests : BaseTest() {
         assertNotNull(cb.error)
     }
 
-    test fun testCallbackGeneralError() {
+    @test fun testCallbackGeneralError() {
         var error: Throwable? = null
 
         val cb = object : CMACallback<CMASpace>() {
@@ -80,7 +80,7 @@ class ClientTests : BaseTest() {
             }
 
             override fun onFailure(retrofitError: RetrofitError?) {
-                super<CMACallback>.onFailure(retrofitError)
+                super.onFailure(retrofitError)
                 error = retrofitError
             }
         }
@@ -96,7 +96,7 @@ class ClientTests : BaseTest() {
         assertTrue(error is RetrofitError)
     }
 
-    test fun testAccessToken() {
+    @test fun testAccessToken() {
         server!!.enqueue(MockResponse().setResponseCode(200))
         client!!.spaces().fetchAll()
 
@@ -105,7 +105,7 @@ class ClientTests : BaseTest() {
         assertEquals("Bearer token", recordedRequest.getHeader("Authorization"))
     }
 
-    test fun testUserAgent() {
+    @test fun testUserAgent() {
         server!!.enqueue(MockResponse().setResponseCode(200))
         client!!.spaces().fetchAll()
 
@@ -115,91 +115,91 @@ class ClientTests : BaseTest() {
         // Request
         val recordedRequest = server!!.takeRequest()
 
-        assertEquals("${prefix}${versionName}", recordedRequest.getHeader("User-Agent"))
+        assertEquals("$prefix$versionName", recordedRequest.getHeader("User-Agent"))
     }
 
-    test(expected = IllegalArgumentException::class)
+    @test(expected = IllegalArgumentException::class)
     fun failsNoAccessToken() {
         try {
             CMAClient.Builder().build()
         } catch (e: IllegalArgumentException) {
-            assertEquals("No access token was set.", e.getMessage())
+            assertEquals("No access token was set.", e.message)
             throw e
         }
     }
 
-    test(expected = IllegalArgumentException::class)
+    @test(expected = IllegalArgumentException::class)
     fun failsSetNullAccessToken() {
         try {
             CMAClient.Builder().setAccessToken(null)
         } catch (e: IllegalArgumentException) {
-            assertEquals("Cannot call setAccessToken() with null.", e.getMessage())
+            assertEquals("Cannot call setAccessToken() with null.", e.message)
             throw e
         }
     }
 
-    test(expected = IllegalArgumentException::class)
+    @test(expected = IllegalArgumentException::class)
     fun failsSetNullClient() {
         try {
             CMAClient.Builder().setClient(null)
         } catch (e: IllegalArgumentException) {
-            assertEquals("Cannot call setClient() with null.", e.getMessage())
+            assertEquals("Cannot call setClient() with null.", e.message)
             throw e
         }
     }
 
-    test(expected = IllegalArgumentException::class)
+    @test(expected = IllegalArgumentException::class)
     fun failsSetNullClientProvider() {
         try {
             CMAClient.Builder().setClientProvider(null)
         } catch (e: IllegalArgumentException) {
-            assertEquals("Cannot call setClientProvider() with null.", e.getMessage())
+            assertEquals("Cannot call setClientProvider() with null.", e.message)
             throw e
         }
     }
 
-    test(expected = IllegalArgumentException::class)
+    @test(expected = IllegalArgumentException::class)
     fun failsSetNullLogLevel() {
         try {
             CMAClient.Builder().setLogLevel(null)
         } catch (e: IllegalArgumentException) {
-            assertEquals("Cannot call setLogLevel() with null.", e.getMessage())
+            assertEquals("Cannot call setLogLevel() with null.", e.message)
             throw e
         }
     }
 
-    test(expected = IllegalArgumentException::class)
+    @test(expected = IllegalArgumentException::class)
     fun failsSetNullEndPoint() {
         try {
             CMAClient.Builder().setEndpoint(null)
         } catch (e: IllegalArgumentException) {
-            assertEquals("Cannot call setEndpoint() with null.", e.getMessage())
+            assertEquals("Cannot call setEndpoint() with null.", e.message)
             throw e
         }
     }
 
-    test(expected = IllegalArgumentException::class)
+    @test(expected = IllegalArgumentException::class)
     fun failsSetCallbackExecutor() {
         try {
             CMAClient.Builder().setCallbackExecutor(null)
         } catch (e: IllegalArgumentException) {
-            assertEquals("Cannot call setCallbackExecutor() with null.", e.getMessage())
+            assertEquals("Cannot call setCallbackExecutor() with null.", e.message)
             throw e
         }
     }
 
-    test(expected = RuntimeException::class)
+    @test(expected = RuntimeException::class)
     fun testUserAgentThrowsRuntimeExceptionOnFailure() {
         try {
-            val reader = Mockito.mock(javaClass<PropertiesReader>())
+            val reader = Mockito.mock(PropertiesReader::class.java)
 
             Mockito.`when`(reader.getField(Constants.PROP_VERSION_NAME))
-                    .thenThrow(javaClass<IOException>())
+                    .thenThrow(IOException::class.java)
 
             CMAClient.sUserAgent = null
             client!!.getUserAgent(reader)
         } catch(e: RuntimeException) {
-            assertEquals("Unable to retrieve version name.", e.getMessage())
+            assertEquals("Unable to retrieve version name.", e.message)
             throw e
         }
     }

@@ -32,7 +32,7 @@ open class BaseTest {
     var client: CMAClient? = null
     var gson: Gson? = null
 
-    before fun setUp() {
+    @before fun setUp() {
         // MockWebServer
         server = MockWebServer()
         server!!.play()
@@ -46,30 +46,30 @@ open class BaseTest {
         gson = CMAClient.createGson()
     }
 
-    after fun tearDown() {
+    @after fun tearDown() {
         server!!.shutdown()
     }
 
-    fun <T> assertTestCallback(cb: TestCallback<T>): T {
+    fun <T : Any> assertTestCallback(cb: TestCallback<T>): T? {
         cb.await()
         assertNull(cb.error)
         if (cb.allowEmpty) {
             return null
         }
         assertNotNull(cb.value)
-        return cb.value!!
+        return cb.value
     }
 
     fun assertJsonEquals(json1: String, json2: String) {
         val parser = JsonParser()
         assertTrue(parser.parse(json1).equals(parser.parse(json2)),
-                "Expected:\n${json1}\nActual:\n${json2}\n")
+                "Expected:\n$json1\nActual:\n$json2\n")
     }
 }
 
 // Extensions
 fun <T : CMAResource> T.setSpaceId(spaceId: String): T {
-    var sys = getSys()
+    var sys = sys
 
     if (sys == null) {
         sys = hashMapOf()
@@ -82,7 +82,7 @@ fun <T : CMAResource> T.setSpaceId(spaceId: String): T {
 }
 
 fun <T : CMAResource> T.setVersion(version: Double): T {
-    var sys = getSys()
+    var sys = sys
     if (sys == null) {
         sys = hashMapOf()
         setSys(sys)

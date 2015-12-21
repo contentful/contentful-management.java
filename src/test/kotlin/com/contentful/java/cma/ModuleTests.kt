@@ -25,10 +25,10 @@ import org.junit.Before as before
 import org.junit.Test as test
 
 class ModuleTests : BaseTest() {
-    var module: AbsModule<Any>? = null
+    private var module: AbsModule<Any>? = null
 
-    before fun setup() {
-        super<BaseTest>.setUp()
+    @before fun setup() {
+        super.setUp()
         module = object : AbsModule<Any>(null, SynchronousExecutor()) {
             override fun createService(restAdapter: RestAdapter?): Any? {
                 return null
@@ -36,38 +36,38 @@ class ModuleTests : BaseTest() {
         }
     }
 
-    test(expected = IllegalArgumentException::class)
+    @test(expected = IllegalArgumentException::class)
     fun testNotNull() {
         try {
             module!!.assertNotNull(null, "parameter")
         } catch (e: IllegalArgumentException) {
-            assertEquals("parameter may not be null.", e.getMessage())
+            assertEquals("parameter may not be null.", e.message)
             throw e
         }
     }
 
-    test(expected = IllegalArgumentException::class)
+    @test(expected = IllegalArgumentException::class)
     fun testResourceId() {
         try {
             module!!.getResourceIdOrThrow(CMAResource(), "parameter")
         } catch (e: IllegalArgumentException) {
-            assertEquals("parameter.setId() was not called.", e.getMessage())
+            assertEquals("parameter.setId() was not called.", e.message)
             throw e
         }
     }
 
-    test(expected = IllegalArgumentException::class)
+    @test(expected = IllegalArgumentException::class)
     fun testSpaceId() {
         try {
             module!!.getSpaceIdOrThrow(CMAResource(), "parameter")
         } catch (e: IllegalArgumentException) {
-            assertEquals("parameter must have a space associated.", e.getMessage())
+            assertEquals("parameter must have a space associated.", e.message)
             throw e
         }
     }
 
-    test fun testDefersToBackgroundThread() {
-        val currentThreadId = Thread.currentThread().getId()
+    @test fun testDefersToBackgroundThread() {
+        val currentThreadId = Thread.currentThread().id
         var workerThreadId: Long? = null
 
         val module = object : AbsModule<Any>(null, SynchronousExecutor()) {
@@ -79,7 +79,7 @@ class ModuleTests : BaseTest() {
                 defer(
                         object : RxExtensions.DefFunc<Long>() {
                             override fun method(): Long? {
-                                workerThreadId = Thread.currentThread().getId()
+                                workerThreadId = Thread.currentThread().id
                                 return workerThreadId
                             }
                         },

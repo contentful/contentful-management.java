@@ -22,7 +22,7 @@ import java.util.concurrent.CountDownLatch
 
 class TestCallback<T>(val allowEmpty: Boolean = false) : CMACallback<T>() {
     val cdl: CountDownLatch
-    var value: T = null
+    var value: T? = null
     var error: RetrofitError? = null
 
     init {
@@ -35,12 +35,12 @@ class TestCallback<T>(val allowEmpty: Boolean = false) : CMACallback<T>() {
     }
 
     override fun onFailure(retrofitError: RetrofitError?) {
-        super<CMACallback>.onFailure(retrofitError)
+        super.onFailure(retrofitError)
         error = retrofitError
         cdl.countDown()
     }
 
-    throws(InterruptedException::class)
+    @Throws(InterruptedException::class)
     public fun await() {
         cdl.await()
     }

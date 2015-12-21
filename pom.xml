@@ -3,7 +3,7 @@
 
   <groupId>com.contentful.java</groupId>
   <artifactId>cma-sdk</artifactId>
-  <version>0.9.11-SNAPSHOT</version>
+  <version>0.10.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>cma-sdk</name>
@@ -53,7 +53,7 @@
     <!-- Test Dependencies -->
     <commonsio.version>2.4</commonsio.version>
     <junit.version>4.11</junit.version>
-    <kotlin.version>0.12.613</kotlin.version>
+    <kotlin.version>1.0.0-beta-3595</kotlin.version>
     <okhttp.version>2.4.0</okhttp.version>
     <rxjava.version>1.0.13</rxjava.version>
     <mockito.version>1.10.8</mockito.version>
