@@ -14,13 +14,14 @@
           "name": "titlename",
           "type": "Text",
           "uiid": "4o1p9hkj9q8",
-          "localized": false
+          "localized": true
         },
         {
           "id": "bodyid",
           "name": "bodyname",
           "type": "Text",
-          "uiid": "3qfg69lne2o"
+          "uiid": "3qfg69lne2o",
+          "localized": false
         }
       ],
       "sys": {

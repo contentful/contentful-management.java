@@ -18,6 +18,7 @@ package com.contentful.java.cma.model;
 
 import com.contentful.java.cma.Constants.CMAFieldType;
 import com.google.gson.annotations.SerializedName;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +51,9 @@ public class CMAField {
 
   // Disabled
   boolean disabled;
+
+  // Localized
+  boolean localized;
 
   /**
    * Sets the ID for this field.
@@ -128,6 +132,16 @@ public class CMAField {
   }
 
   /**
+   * Sets the {@code localized} attribute value.
+   * @param localized boolean indicating whether or not this field is localized
+   * Returns this {@code CMAField} instance
+   */
+  public CMAField setLocalized(boolean localized) {
+    this.localized = localized;
+    return this;
+  }
+
+  /**
    * Returns the {@code id} attribute of this field.
    */
   public String getId() {
@@ -181,5 +195,12 @@ public class CMAField {
    */
   public Boolean isDisabled() {
     return disabled;
+  }
+
+  /**
+   * Returns the {@code localized} attribute of this field.
+   */
+  public boolean isLocalized() {
+    return localized;
   }
 }

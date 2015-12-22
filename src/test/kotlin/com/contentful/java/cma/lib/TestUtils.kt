@@ -23,7 +23,7 @@ import kotlin.test.assertEquals
 class TestUtils {
     companion object {
         fun fileToString(fileName: String): String =
-                FileUtils.readFileToString(File("src/test/resources/${fileName}"), "UTF-8")
+                FileUtils.readFileToString(File("src/test/resources/$fileName"), "UTF-8")
     }
 }
 
@@ -36,7 +36,7 @@ class ModuleTestUtils {
                 val msg = "Cannot perform update action on a " +
                         "resource that has no version associated."
 
-                assertEquals(msg, e.getMessage())
+                assertEquals(msg, e.message)
                 throw e
             }
         }
