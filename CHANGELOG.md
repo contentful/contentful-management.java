@@ -49,7 +49,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Version 0.9.0 - 2014-11-18
 Initial release.
 
-[unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-0.9.10...HEAD
+[unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-0.10.0...HEAD
+[0.10.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-0.9.10...cma-sdk-0.10.0
 [0.9.10]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-0.9.9...cma-sdk-0.9.10
 [0.9.9]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-0.9.8...cma-sdk-0.9.9
 [0.9.8]: https://github.com/contentful/contentful-management.java/compare/0.9.8...cma-sdk-0.9.8
