@@ -2,7 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Version [0.10.0][unreleased] - (in development)
+## Version [0.10.1][unreleased] - (in development)
+- TBA
+
+## Version [0.10.0] - 2015-12-23
 - New: Add localized field to FieldTypeAdapter
 - Change: Use kotlin-1.0.0-beta-3595 for unit tests
 
