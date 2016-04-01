@@ -20,8 +20,8 @@ import com.contentful.java.cma.lib.ModuleTestUtils
 import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAEntry
-import com.squareup.okhttp.HttpUrl
-import com.squareup.okhttp.mockwebserver.MockResponse
+import okhttp3.HttpUrl
+import okhttp3.mockwebserver.MockResponse
 import retrofit.RetrofitError
 import java.io.IOException
 import kotlin.test.*
@@ -172,7 +172,7 @@ class EntryTests : BaseTest() {
 
         // Request
         val request = server!!.takeRequest()
-        val url = HttpUrl.parse(server!!.getUrl(request.path).toString())
+        val url = HttpUrl.parse(server!!.url(request.path).toString())
         assertEquals("1", url.queryParameter("skip"))
         assertEquals("2", url.queryParameter("limit"))
         assertEquals("foo", url.queryParameter("content_type"))

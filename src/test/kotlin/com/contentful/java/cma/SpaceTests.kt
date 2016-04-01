@@ -20,7 +20,7 @@ import com.contentful.java.cma.lib.ModuleTestUtils
 import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMASpace
-import com.squareup.okhttp.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockResponse
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
