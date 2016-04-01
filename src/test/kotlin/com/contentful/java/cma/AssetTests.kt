@@ -16,6 +16,7 @@
 
 package com.contentful.java.cma
 
+
 import com.contentful.java.cma.lib.ModuleTestUtils
 import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.lib.TestUtils
@@ -25,8 +26,6 @@ import com.squareup.okhttp.mockwebserver.MockResponse
 import retrofit.RetrofitError
 import java.io.IOException
 import kotlin.test.*
-
-
 import org.junit.Test as test
 
 class AssetTests : BaseTest() {
