@@ -97,16 +97,16 @@ class EntryTests : BaseTest() {
         val responseBody = TestUtils.fileToString("entry_create_links_request.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
-        val LOCALE = "en-US"
+        val locale = "en-US"
 
-        val foo = CMAEntry().setId("foo").setField("name", "foo", LOCALE)
-        val bar = CMAEntry().setId("bar").setField("name", "bar", LOCALE)
+        val foo = CMAEntry().setId("foo").setField("name", "foo", locale)
+        val bar = CMAEntry().setId("bar").setField("name", "bar", locale)
 
-        foo.setField("link", bar, LOCALE)
+        foo.setField("link", bar, locale)
         foo.setField("link", bar, "he-IL")
-        foo.setField("array", listOf(bar), LOCALE)
+        foo.setField("array", listOf(bar), locale)
 
-        bar.setField("link", foo, LOCALE)
+        bar.setField("link", foo, locale)
 
         client!!.entries().create("space", "type", foo)
 

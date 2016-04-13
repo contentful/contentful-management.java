@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
-import retrofit2.Response;
 import retrofit2.Retrofit;
 
 /**
@@ -60,9 +59,9 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
    * otherwise the server will auto-generate an ID that will be contained in the response upon
    * success.
    *
-   * @param spaceId Space ID
+   * @param spaceId       Space ID
    * @param contentTypeId Content Type ID
-   * @param entry Entry
+   * @param entry         Entry
    * @return {@link CMAEntry} result instance
    */
   @SuppressWarnings("unchecked")
@@ -116,7 +115,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
    * Fetch all Entries from a Space with a query.
    *
    * @param spaceId Space ID
-   * @param query Query
+   * @param query   Query
    * @return {@link CMAArray} result instance
    */
   public CMAArray<CMAEntry> fetchAll(String spaceId, Map<String, String> query) {
@@ -207,7 +206,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     /**
      * Archive an Entry.
      *
-     * @param entry Entry
+     * @param entry    Entry
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
@@ -225,14 +224,14 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
      * otherwise the server will auto-generate an ID that will be contained in the response upon
      * success.
      *
-     * @param spaceId Space ID
+     * @param spaceId       Space ID
      * @param contentTypeId Content Type ID
-     * @param entry Entry
-     * @param callback Callback
+     * @param entry         Entry
+     * @param callback      Callback
      * @return the given {@code CMACallback} instance
      */
     public CMACallback<CMAEntry> create(final String spaceId, final String contentTypeId,
-        final CMAEntry entry, CMACallback<CMAEntry> callback) {
+                                        final CMAEntry entry, CMACallback<CMAEntry> callback) {
       return defer(new RxExtensions.DefFunc<CMAEntry>() {
         @Override CMAEntry method() {
           return ModuleEntries.this.create(spaceId, contentTypeId, entry);
@@ -243,8 +242,8 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     /**
      * Delete an Entry.
      *
-     * @param spaceId Space ID
-     * @param entryId Entry ID
+     * @param spaceId  Space ID
+     * @param entryId  Entry ID
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
@@ -260,7 +259,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     /**
      * Fetch all Entries from a Space.
      *
-     * @param spaceId Space ID
+     * @param spaceId  Space ID
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
@@ -272,13 +271,14 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     /**
      * Fetch all Entries from a Space with a query.
      *
-     * @param spaceId Space ID
-     * @param query Query
+     * @param spaceId  Space ID
+     * @param query    Query
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
     public CMACallback<CMAArray<CMAEntry>> fetchAll(final String spaceId,
-        final Map<String, String> query, CMACallback<CMAArray<CMAEntry>> callback) {
+                                                    final Map<String, String> query,
+                                                    CMACallback<CMAArray<CMAEntry>> callback) {
       return defer(new RxExtensions.DefFunc<CMAArray<CMAEntry>>() {
         @Override CMAArray<CMAEntry> method() {
           return ModuleEntries.this.fetchAll(spaceId, query);
@@ -289,13 +289,13 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     /**
      * Fetch an Entry with the given {@code entryId} from a Space.
      *
-     * @param spaceId Space ID
-     * @param entryId Entry ID
+     * @param spaceId  Space ID
+     * @param entryId  Entry ID
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
     public CMACallback<CMAEntry> fetchOne(final String spaceId, final String entryId,
-        CMACallback<CMAEntry> callback) {
+                                          CMACallback<CMAEntry> callback) {
       return defer(new RxExtensions.DefFunc<CMAEntry>() {
         @Override CMAEntry method() {
           return ModuleEntries.this.fetchOne(spaceId, entryId);
@@ -306,7 +306,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     /**
      * Publish an Entry.
      *
-     * @param entry Entry
+     * @param entry    Entry
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
@@ -321,7 +321,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     /**
      * Un-Archive an Entry.
      *
-     * @param entry Entry
+     * @param entry    Entry
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
@@ -336,7 +336,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     /**
      * Un-Publish an Entry.
      *
-     * @param entry Entry
+     * @param entry    Entry
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
@@ -351,7 +351,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     /**
      * Update an Entry.
      *
-     * @param entry Entry
+     * @param entry    Entry
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */

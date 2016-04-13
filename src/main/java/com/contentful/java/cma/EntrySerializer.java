@@ -8,6 +8,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -43,7 +44,7 @@ final class EntrySerializer implements JsonSerializer<CMAEntry> {
   }
 
   private JsonObject serializeField(JsonSerializationContext context,
-      LinkedHashMap<String, Object> values) {
+                                    LinkedHashMap<String, Object> values) {
     JsonObject field = new JsonObject();
     for (String locale : values.keySet()) {
       Object localized = values.get(locale);

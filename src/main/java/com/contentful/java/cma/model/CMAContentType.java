@@ -103,6 +103,7 @@ public class CMAContentType extends StatefulResource {
 
   /**
    * Sets the display field for this Content Type.
+   *
    * @return this {@code CMAContentType} instance
    */
   public CMAContentType setDisplayField(String displayField) {
@@ -119,6 +120,7 @@ public class CMAContentType extends StatefulResource {
 
   /**
    * Sets the description field for this Content Type.
+   *
    * @return this {@code CMAContentType} instance
    */
   public CMAContentType setDescription(String description) {

@@ -16,7 +16,6 @@
 
 package com.contentful.java.cma
 
-
 import com.contentful.java.cma.lib.ModuleTestUtils
 import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.lib.TestUtils

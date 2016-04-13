@@ -26,7 +26,7 @@ public interface Logger {
 
   /**
    * Abstract method to be implemented by client.
-   * <p>
+   *
    * This method gets called, once there is something to log
    *
    * @param message to be delivered to the logger.

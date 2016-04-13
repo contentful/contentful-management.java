@@ -18,6 +18,7 @@ package com.contentful.java.cma;
 
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAEntry;
+
 import java.util.Map;
 
 import retrofit2.http.Body;

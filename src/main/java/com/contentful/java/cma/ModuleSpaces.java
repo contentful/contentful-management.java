@@ -23,7 +23,6 @@ import com.contentful.java.cma.model.CMASpace;
 
 import java.util.concurrent.Executor;
 
-import retrofit2.Response;
 import retrofit2.Retrofit;
 
 /**
@@ -55,7 +54,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
   /**
    * Create a Space in an Organization.
    *
-   * @param spaceName Space name
+   * @param spaceName      Space name
    * @param organizationId organization ID
    * @return {@link CMASpace} result instance
    */
@@ -139,7 +138,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
      * Create a Space.
      *
      * @param spaceName Space name
-     * @param callback Callback
+     * @param callback  Callback
      * @return the given {@code CMACallback} instance
      */
     public CMACallback<CMASpace> create(final String spaceName, CMACallback<CMASpace> callback) {
@@ -153,13 +152,13 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
     /**
      * Create a Space in an Organization.
      *
-     * @param spaceName Space name
+     * @param spaceName      Space name
      * @param organizationId organization ID
-     * @param callback Callback
+     * @param callback       Callback
      * @return the given {@code CMACallback} instance
      */
     public CMACallback<CMASpace> create(final String spaceName, final String organizationId,
-        CMACallback<CMASpace> callback) {
+                                        CMACallback<CMASpace> callback) {
       return defer(new DefFunc<CMASpace>() {
         @Override CMASpace method() {
           return ModuleSpaces.this.create(spaceName, organizationId);
@@ -170,7 +169,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
     /**
      * Delete a Space.
      *
-     * @param spaceId Space ID
+     * @param spaceId  Space ID
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
@@ -199,12 +198,13 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
     /**
      * Fetch Locales for a Space.
      *
-     * @param spaceId Space ID
+     * @param spaceId  Space ID
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
     public CMACallback<CMAArray<CMALocale>> fetchLocales(final String spaceId,
-        CMACallback<CMAArray<CMALocale>> callback) {
+                                                         CMACallback<
+                                                             CMAArray<CMALocale>> callback) {
       return defer(new DefFunc<CMAArray<CMALocale>>() {
         @Override CMAArray<CMALocale> method() {
           return ModuleSpaces.this.fetchLocales(spaceId);
@@ -215,7 +215,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
     /**
      * Fetch a Space with a given {@code spaceId}.
      *
-     * @param spaceId Space ID
+     * @param spaceId  Space ID
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
@@ -230,7 +230,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
     /**
      * Update a Space.
      *
-     * @param space Space
+     * @param space    Space
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */

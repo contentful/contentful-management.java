@@ -20,6 +20,7 @@ import com.contentful.java.cma.RxExtensions.ActionError;
 import com.contentful.java.cma.RxExtensions.ActionSuccess;
 import com.contentful.java.cma.RxExtensions.DefFunc;
 import com.contentful.java.cma.model.CMAResource;
+
 import java.util.concurrent.Executor;
 
 import retrofit2.Retrofit;

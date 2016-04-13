@@ -20,26 +20,16 @@ import com.contentful.java.cma.interceptor.AuthorizationHeaderInterceptor;
 import com.contentful.java.cma.interceptor.ErrorInterceptor;
 import com.contentful.java.cma.interceptor.LogInterceptor;
 import com.contentful.java.cma.interceptor.UserAgentHeaderInterceptor;
-import com.contentful.java.cma.model.CMAAsset;
 import com.contentful.java.cma.model.CMAEntry;
 import com.contentful.java.cma.model.CMAField;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
 
 import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
 import java.util.concurrent.Executor;
 
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
-import retrofit2.CallAdapter;
-import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -56,13 +46,13 @@ public class CMAClient {
   private static Gson gson;
 
   // Modules
-  final ModuleAssets modAssets;
-  final ModuleContentTypes modContentTypes;
-  final ModuleEntries modEntries;
-  final ModuleSpaces modSpaces;
+  private final ModuleAssets modAssets;
+  private final ModuleContentTypes modContentTypes;
+  private final ModuleEntries modEntries;
+  private final ModuleSpaces modSpaces;
 
   // PropertiesReader
-  final PropertiesReader propertiesReader;
+  private final PropertiesReader propertiesReader;
 
   // Executors
   Executor callbackExecutor;
@@ -128,6 +118,7 @@ public class CMAClient {
     if (cmaBuilder.logger != null) {
       switch (cmaBuilder.logLevel) {
         case NONE:
+        default:
           break;
         case BASIC:
           return okBuilder.addInterceptor(new LogInterceptor(cmaBuilder.logger));
@@ -136,7 +127,8 @@ public class CMAClient {
       }
     } else {
       if (cmaBuilder.logLevel != Logger.Level.NONE) {
-        throw new IllegalArgumentException("Cannot log to a null logger. Please set either logLevel to None, or do set a Logger");
+        throw new IllegalArgumentException(
+            "Cannot log to a null logger. Please set either logLevel to None, or do set a Logger");
       }
     }
     return okBuilder;

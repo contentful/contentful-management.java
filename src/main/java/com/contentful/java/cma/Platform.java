@@ -46,14 +46,18 @@ abstract class Platform {
 
   abstract Executor callbackExecutor();
 
-  /** Provides sane defaults for operation on the JVM. */
+  /**
+   * Provides sane defaults for operation on the JVM.
+   */
   private static class Base extends Platform {
     @Override Executor callbackExecutor() {
       return new SynchronousExecutor();
     }
   }
 
-  /** Provides sane defaults for operation on Android. */
+  /**
+   * Provides sane defaults for operation on Android.
+   */
   private static class Android extends Platform {
     @Override Executor callbackExecutor() {
       return new Executor() {

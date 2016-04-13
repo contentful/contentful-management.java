@@ -37,8 +37,8 @@ public class CMAEntry extends StatefulResource {
    * Creates a new field with the given {@code value}.
    * If a field named {@code key} already exists it will be replaced.
    *
-   * @param key field key
-   * @param value value
+   * @param key    field key
+   * @param value  value
    * @param locale locale
    * @return this {@code CMAEntry}
    */

@@ -76,8 +76,7 @@ public class CMAResource {
   /**
    * Returns the value of the system attribute {@code attr}, null if it does not exist.
    */
-  @SuppressWarnings("unchecked")
-  <T> T getSysAttribute(String attr) {
+  @SuppressWarnings("unchecked") <T> T getSysAttribute(String attr) {
     if (sys != null) {
       return (T) sys.get(attr);
     }

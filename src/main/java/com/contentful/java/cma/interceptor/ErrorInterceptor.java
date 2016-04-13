@@ -7,8 +7,6 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static java.lang.String.format;
-
 /**
  * This interceptor will only be used for throwing an exception, once the server returns an error.
  */
@@ -27,7 +25,7 @@ public class ErrorInterceptor implements Interceptor {
 
     if (!response.isSuccessful()) {
       throw new IOException(
-          format(
+          String.format(
               Locale.getDefault(),
               "FAILED REQUEST: %s\n\t… %s",
               request.toString(),

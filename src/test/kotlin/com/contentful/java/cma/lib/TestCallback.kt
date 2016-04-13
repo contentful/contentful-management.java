@@ -40,7 +40,7 @@ class TestCallback<T>(val allowEmpty: Boolean = false) : CMACallback<T>() {
     }
 
     @Throws(InterruptedException::class)
-    public fun await() {
+    fun await() {
         cdl.await()
     }
 }

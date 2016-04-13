@@ -1,8 +1,8 @@
 {
-  "sys":{
-    "type":"Space",
-    "id":"spaceid",
-    "version":1
+  "sys": {
+    "type": "Space",
+    "id": "spaceid",
+    "version": 1
   },
-  "name":"space"
+  "name": "space"
 }
