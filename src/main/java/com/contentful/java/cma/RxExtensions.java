@@ -17,7 +17,7 @@
 package com.contentful.java.cma;
 
 import java.util.concurrent.Executor;
-import retrofit.RetrofitError;
+
 import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func0;
@@ -72,18 +72,18 @@ final class RxExtensions {
     }
 
     @Override public void call(final Throwable t) {
-      final RetrofitError retrofitError;
+      final RuntimeException exception;
 
-      if (t instanceof RetrofitError) {
-        retrofitError = (RetrofitError) t;
+      if (t instanceof RuntimeException) {
+        exception = (RuntimeException) t;
       } else {
-        retrofitError = RetrofitError.unexpectedError(null, t);
+        exception = new RuntimeException("Unexpected Exception", t);
       }
 
       if (!callback.isCancelled()) {
         executor.execute(new Runnable() {
           @Override public void run() {
-            callback.onFailure(retrofitError);
+            callback.onFailure(exception);
           }
         });
       }

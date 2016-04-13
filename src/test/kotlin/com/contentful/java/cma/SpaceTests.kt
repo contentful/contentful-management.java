@@ -59,7 +59,8 @@ class SpaceTests : BaseTest() {
     }
 
     @org.junit.Test fun testDelete() {
-        server!!.enqueue(MockResponse().setResponseCode(200))
+        val requestBody = "203"
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(requestBody))
 
         assertTestCallback(client!!.spaces().async().delete(
                 "spaceid", TestCallback()) as TestCallback)

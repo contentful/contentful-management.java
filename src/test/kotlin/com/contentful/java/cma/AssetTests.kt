@@ -23,7 +23,6 @@ import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAAsset
 import okhttp3.HttpUrl
 import okhttp3.mockwebserver.MockResponse
-import retrofit.RetrofitError
 import java.io.IOException
 import kotlin.test.*
 import org.junit.Test as test
@@ -95,7 +94,8 @@ class AssetTests : BaseTest() {
 
     @test
     fun testDelete() {
-        server!!.enqueue(MockResponse().setResponseCode(200))
+        val responseBody = "203"
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
         assertTestCallback(client!!.assets().async().delete(
                 "spaceid", "assetid", TestCallback()) as TestCallback)
 
@@ -147,7 +147,8 @@ class AssetTests : BaseTest() {
 
     @test
     fun testFetchWithId() {
-        server!!.enqueue(MockResponse().setResponseCode(200))
+        val responseBody = TestUtils.fileToString("asset_publish_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         assertTestCallback(client!!.assets().async().fetchOne(
                 "spaceid", "assetid",
@@ -161,7 +162,8 @@ class AssetTests : BaseTest() {
 
     @test
     fun testProcess() {
-        server!!.enqueue(MockResponse().setResponseCode(200))
+        val responseBody = "203"
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         assertTestCallback(client!!.assets().async().process(CMAAsset()
                 .setId("assetid")
@@ -194,7 +196,8 @@ class AssetTests : BaseTest() {
 
     @test
     fun testUnArchive() {
-        server!!.enqueue(MockResponse().setResponseCode(200))
+        val responseBody = TestUtils.fileToString("asset_publish_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         assertTestCallback(client!!.assets().async().unArchive(
                 CMAAsset().setId("assetid").setSpaceId("spaceid"),
@@ -208,7 +211,8 @@ class AssetTests : BaseTest() {
 
     @test
     fun testUnPublish() {
-        server!!.enqueue(MockResponse().setResponseCode(200))
+        val responseBody = TestUtils.fileToString("asset_publish_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         assertTestCallback(client!!.assets().async().unPublish(
                 CMAAsset().setId("assetid").setSpaceId("spaceid"),
@@ -223,7 +227,7 @@ class AssetTests : BaseTest() {
     @test
     fun testUpdate() {
         val requestBody = TestUtils.fileToString("asset_update_request.json")
-        server!!.enqueue(MockResponse().setResponseCode(200))
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(requestBody))
 
         assertTestCallback(client!!.assets().async().update(CMAAsset()
                 .setId("assetid")
@@ -243,17 +247,17 @@ class AssetTests : BaseTest() {
         assertEquals(requestBody, recordedRequest.utf8Body)
     }
 
-    @org.junit.Test(expected = RetrofitError::class)
+    @org.junit.Test(expected = RuntimeException::class)
     fun testRetainsSysOnNetworkError() {
         val badClient = CMAClient.Builder()
                 .setAccessToken("accesstoken")
-                .setClient { throw RetrofitError.unexpectedError(it.url, IOException()) }
+                .setCallFactory { throw IOException(it.url().toString(), IOException()) }
                 .build()
 
         val asset = CMAAsset().setVersion(31337.0)
         try {
             badClient.assets().create("spaceid", asset)
-        } catch (e: RetrofitError) {
+        } catch (e: RuntimeException) {
             assertEquals(31337, asset.version)
             throw e
         }

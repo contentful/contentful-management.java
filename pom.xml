@@ -48,7 +48,7 @@
     <java.version>1.6</java.version>
 
     <!-- Dependencies -->
-    <retrofit.version>1.9.0</retrofit.version>
+    <retrofit.version>2.0.1</retrofit.version>
 
     <!-- Test Dependencies -->
     <commonsio.version>2.4</commonsio.version>
@@ -71,8 +71,20 @@
     </dependency>
 
     <dependency>
-      <groupId>com.squareup.retrofit</groupId>
+      <groupId>com.squareup.retrofit2</groupId>
       <artifactId>retrofit</artifactId>
+      <version>${retrofit.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.squareup.retrofit2</groupId>
+      <artifactId>adapter-rxjava</artifactId>
+      <version>${retrofit.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.squareup.retrofit2</groupId>
+      <artifactId>converter-gson</artifactId>
       <version>${retrofit.version}</version>
     </dependency>
 
@@ -120,7 +132,6 @@
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>okhttp</artifactId>
       <version>${okhttp.version}</version>
-      <scope>test</scope>
     </dependency>
 
     <dependency>

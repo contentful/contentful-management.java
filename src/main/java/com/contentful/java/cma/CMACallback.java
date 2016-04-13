@@ -16,8 +16,6 @@
 
 package com.contentful.java.cma;
 
-import retrofit.RetrofitError;
-
 /**
  * Callback to be used with any of the {@code CMAClient} asynchronous methods.
  *
@@ -31,7 +29,7 @@ import retrofit.RetrofitError;
  * of resources it is required to use {@code CDAArray} as the type.
  *
  * Callback can be cancelled at any point using the {@link #cancel()} method, that will prevent
- * any future calls to {@link #onSuccess} and {@link #onFailure(RetrofitError)}.
+ * any future calls to {@link #onSuccess} and {@link #onFailure(RuntimeException)}.
  */
 @SuppressWarnings("UnusedDeclaration")
 public abstract class CMACallback<T> {
@@ -47,15 +45,15 @@ public abstract class CMACallback<T> {
   /**
    * Callback to be invoked in case the request was unsuccessful.
    *
-   * @param retrofitError {@link retrofit.RetrofitError} instance
+   * @param exception{@link RuntimeException} instance
    */
-  protected void onFailure(RetrofitError retrofitError) {
+  protected void onFailure(RuntimeException exception) {
     // Do nothing.
   }
 
   /**
    * Cancels this callback. This will prevent any future calls to {@link #onSuccess(Object)} and
-   * {@link #onFailure(RetrofitError)} methods. This action cannot be reversed.
+   * {@link #onFailure(RuntimeException)} methods. This action cannot be reversed.
    */
   public synchronized void cancel() {
     this.cancelled = true;

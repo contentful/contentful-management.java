@@ -20,9 +20,11 @@ import com.contentful.java.cma.RxExtensions.DefFunc;
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMALocale;
 import com.contentful.java.cma.model.CMASpace;
+
 import java.util.concurrent.Executor;
-import retrofit.RestAdapter;
-import retrofit.client.Response;
+
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * Spaces Module.
@@ -30,13 +32,13 @@ import retrofit.client.Response;
 public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
   final Async async;
 
-  public ModuleSpaces(RestAdapter restAdapter, Executor callbackExecutor) {
-    super(restAdapter, callbackExecutor);
+  public ModuleSpaces(Retrofit retrofit, Executor callbackExecutor) {
+    super(retrofit, callbackExecutor);
     this.async = new Async();
   }
 
-  @Override protected ServiceSpaces createService(RestAdapter restAdapter) {
-    return restAdapter.create(ServiceSpaces.class);
+  @Override protected ServiceSpaces createService(Retrofit retrofit) {
+    return retrofit.create(ServiceSpaces.class);
   }
 
   /**
@@ -47,7 +49,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
    */
   public CMASpace create(String spaceName) {
     assertNotNull(spaceName, "spaceName");
-    return service.create(new CMASpace().setName(spaceName));
+    return service.create(new CMASpace().setName(spaceName)).toBlocking().first();
   }
 
   /**
@@ -60,7 +62,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
   public CMASpace create(String spaceName, String organizationId) {
     assertNotNull(spaceName, "spaceName");
     assertNotNull(organizationId, "organizationId");
-    return service.create(organizationId, new CMASpace().setName(spaceName));
+    return service.create(organizationId, new CMASpace().setName(spaceName)).toBlocking().first();
   }
 
   /**
@@ -69,9 +71,9 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
    * @param spaceId Space ID
    * @return Retrofit {@link Response} instance
    */
-  public Response delete(String spaceId) {
+  public String delete(String spaceId) {
     assertNotNull(spaceId, "spaceId");
-    return service.delete(spaceId);
+    return service.delete(spaceId).toBlocking().first();
   }
 
   /**
@@ -80,7 +82,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
    * @return {@link CMAArray} result instance
    */
   public CMAArray<CMASpace> fetchAll() {
-    return service.fetchAll();
+    return service.fetchAll().toBlocking().first();
   }
 
   /**
@@ -91,7 +93,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
    */
   public CMASpace fetchOne(String spaceId) {
     assertNotNull(spaceId, "spaceId");
-    return service.fetchOne(spaceId);
+    return service.fetchOne(spaceId).toBlocking().first();
   }
 
   /**
@@ -102,7 +104,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
    */
   public CMAArray<CMALocale> fetchLocales(String spaceId) {
     assertNotNull(spaceId, "spaceId");
-    return service.fetchLocales(spaceId);
+    return service.fetchLocales(spaceId).toBlocking().first();
   }
 
   /**
@@ -119,7 +121,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
 
     CMASpace update = new CMASpace();
     update.setName(space.getName());
-    return service.update(version, spaceId, update);
+    return service.update(version, spaceId, update).toBlocking().first();
   }
 
   /**
@@ -172,9 +174,9 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
-    public CMACallback<Response> delete(final String spaceId, CMACallback<Response> callback) {
-      return defer(new DefFunc<Response>() {
-        @Override Response method() {
+    public CMACallback<String> delete(final String spaceId, CMACallback<String> callback) {
+      return defer(new DefFunc<String>() {
+        @Override String method() {
           return ModuleSpaces.this.delete(spaceId);
         }
       }, callback);

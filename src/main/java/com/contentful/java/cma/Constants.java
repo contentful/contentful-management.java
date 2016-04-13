@@ -24,7 +24,7 @@ public final class Constants {
     throw new UnsupportedOperationException();
   }
 
-  public static final String ENDPOINT_CMA = "https://api.contentful.com";
+  public static final String ENDPOINT_CMA = "https://api.contentful.com/";
 
   @SuppressWarnings("UnusedDeclaration")
   public enum CMAFieldType {

@@ -22,7 +22,6 @@ import com.contentful.java.cma.model.CMAArray
 import com.contentful.java.cma.model.CMASpace
 import okhttp3.mockwebserver.MockResponse
 import org.mockito.Mockito
-import retrofit.RetrofitError
 import rx.Observable
 import java.io.IOException
 import java.util.concurrent.CountDownLatch
@@ -47,7 +46,7 @@ class ClientTests : BaseTest() {
                 cdl.countDown()
             }
 
-            override fun onFailure(retrofitError: RetrofitError?) {
+            override fun onFailure(exception: RuntimeException?) {
                 called = true
                 cdl.countDown()
             }
@@ -63,7 +62,7 @@ class ClientTests : BaseTest() {
     @test fun testCallbackRetrofitError() {
         val badClient = CMAClient.Builder()
                 .setAccessToken("accesstoken")
-                .setClient { throw RetrofitError.unexpectedError(it.url, IOException()) }
+                .setCallFactory { throw RuntimeException(it.url().toString(), IOException()) }
                 .build()
 
         val cb = TestCallback<CMAArray<CMASpace>>()
@@ -79,9 +78,9 @@ class ClientTests : BaseTest() {
             override fun onSuccess(result: CMASpace?) {
             }
 
-            override fun onFailure(retrofitError: RetrofitError?) {
-                super.onFailure(retrofitError)
-                error = retrofitError
+            override fun onFailure(exception: RuntimeException?) {
+                super.onFailure(exception)
+                error = exception
             }
         }
 
@@ -93,11 +92,12 @@ class ClientTests : BaseTest() {
                 RxExtensions.ActionSuccess<CMASpace>(client!!.callbackExecutor, cb),
                 RxExtensions.ActionError(client!!.callbackExecutor, cb))
 
-        assertTrue(error is RetrofitError)
+        assertTrue(error is RuntimeException)
     }
 
     @test fun testAccessToken() {
-        server!!.enqueue(MockResponse().setResponseCode(200))
+        val responseBody = TestUtils.fileToString("asset_publish_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
         client!!.spaces().fetchAll()
 
         // Request
@@ -106,7 +106,8 @@ class ClientTests : BaseTest() {
     }
 
     @test fun testUserAgent() {
-        server!!.enqueue(MockResponse().setResponseCode(200))
+        val responseBody = TestUtils.fileToString("asset_publish_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
         client!!.spaces().fetchAll()
 
         val prefix = "contentful-management.java/"
@@ -139,21 +140,11 @@ class ClientTests : BaseTest() {
     }
 
     @test(expected = IllegalArgumentException::class)
-    fun failsSetNullClient() {
+    fun failsSetNullCallFactory() {
         try {
-            CMAClient.Builder().setClient(null)
+            CMAClient.Builder().setCallFactory(null)
         } catch (e: IllegalArgumentException) {
-            assertEquals("Cannot call setClient() with null.", e.message)
-            throw e
-        }
-    }
-
-    @test(expected = IllegalArgumentException::class)
-    fun failsSetNullClientProvider() {
-        try {
-            CMAClient.Builder().setClientProvider(null)
-        } catch (e: IllegalArgumentException) {
-            assertEquals("Cannot call setClientProvider() with null.", e.message)
+            assertEquals("Cannot call setCallFactory() with null.", e.message)
             throw e
         }
     }

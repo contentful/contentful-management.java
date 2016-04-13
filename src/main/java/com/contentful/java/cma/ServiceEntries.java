@@ -19,73 +19,74 @@ package com.contentful.java.cma;
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAEntry;
 import java.util.Map;
-import retrofit.client.Response;
-import retrofit.http.Body;
-import retrofit.http.DELETE;
-import retrofit.http.GET;
-import retrofit.http.Header;
-import retrofit.http.POST;
-import retrofit.http.PUT;
-import retrofit.http.Path;
-import retrofit.http.QueryMap;
+
+import retrofit2.http.Body;
+import retrofit2.http.DELETE;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
+import retrofit2.http.QueryMap;
+import rx.Observable;
 
 /**
  * Entries Service.
  */
 interface ServiceEntries {
   @PUT("/spaces/{space}/entries/{entry}/archived")
-  CMAEntry archive(
+  Observable<CMAEntry> archive(
       @Path("space") String spaceId,
       @Path("entry") String entryId,
       @Body Object body);
 
   @POST("/spaces/{space}/entries")
-  CMAEntry create(
+  Observable<CMAEntry> create(
       @Path("space") String spaceId,
       @Header("X-Contentful-Content-Type") String contentType,
       @Body CMAEntry entry);
 
   @PUT("/spaces/{space}/entries/{entry}")
-  CMAEntry create(
+  Observable<CMAEntry> create(
       @Path("space") String spaceId,
       @Header("X-Contentful-Content-Type") String contentType,
       @Path("entry") String entryId,
       @Body CMAEntry entry);
 
   @DELETE("/spaces/{space}/entries/{entry}")
-  Response delete(
+  Observable<String> delete(
       @Path("space") String spaceId,
       @Path("entry") String entryId);
 
   @GET("/spaces/{space}/entries/{entry}")
-  CMAEntry fetchOne(
+  Observable<CMAEntry> fetchOne(
       @Path("space") String spaceId,
       @Path("entry") String entryId);
 
   @GET("/spaces/{space}/entries")
-  CMAArray<CMAEntry> fetchAll(
+  Observable<CMAArray<CMAEntry>> fetchAll(
       @Path("space") String spaceId,
       @QueryMap Map<String, String> query);
 
   @PUT("/spaces/{space}/entries/{entry}/published")
-  CMAEntry publish(
+  Observable<CMAEntry> publish(
       @Header("X-Contentful-Version") Integer version,
       @Path("space") String spaceId,
       @Path("entry") String entryId,
       @Body Object body);
 
   @DELETE("/spaces/{space}/entries/{entry}/archived")
-  CMAEntry unArchive(
+  Observable<CMAEntry> unArchive(
       @Path("space") String spaceId,
       @Path("entry") String entryId);
 
   @DELETE("/spaces/{space}/entries/{entry}/published")
-  CMAEntry entriesUnPublish(
+  Observable<CMAEntry> entriesUnPublish(
       @Path("space") String spaceId,
       @Path("entry") String entryId);
 
   @PUT("/spaces/{space}/entries/{entry}")
-  CMAEntry update(
+  Observable<CMAEntry> update(
       @Header("X-Contentful-Version") Integer version,
       @Path("space") String spaceId,
       @Path("entry") String entryId,

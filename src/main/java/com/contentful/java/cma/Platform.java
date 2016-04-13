@@ -17,8 +17,10 @@
 package com.contentful.java.cma;
 
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
+
 import java.util.concurrent.Executor;
-import retrofit.android.MainThreadExecutor;
 
 /**
  * Platform.
@@ -54,7 +56,13 @@ abstract class Platform {
   /** Provides sane defaults for operation on Android. */
   private static class Android extends Platform {
     @Override Executor callbackExecutor() {
-      return new MainThreadExecutor();
+      return new Executor() {
+        private final Handler handler = new Handler(Looper.getMainLooper());
+
+        @Override public void execute(Runnable command) {
+          handler.post(command);
+        }
+      };
     }
   }
 }

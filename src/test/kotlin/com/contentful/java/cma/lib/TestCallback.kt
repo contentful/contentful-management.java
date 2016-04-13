@@ -17,13 +17,12 @@
 package com.contentful.java.cma.lib
 
 import com.contentful.java.cma.CMACallback
-import retrofit.RetrofitError
 import java.util.concurrent.CountDownLatch
 
 class TestCallback<T>(val allowEmpty: Boolean = false) : CMACallback<T>() {
     val cdl: CountDownLatch
     var value: T? = null
-    var error: RetrofitError? = null
+    var error: RuntimeException? = null
 
     init {
         cdl = CountDownLatch(1)
@@ -34,9 +33,9 @@ class TestCallback<T>(val allowEmpty: Boolean = false) : CMACallback<T>() {
         cdl.countDown()
     }
 
-    override fun onFailure(retrofitError: RetrofitError?) {
-        super.onFailure(retrofitError)
-        error = retrofitError
+    override fun onFailure(exception: RuntimeException?) {
+        super.onFailure(exception)
+        error = exception
         cdl.countDown()
     }
 

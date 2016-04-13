@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Version [1.0.0][unreleased] - (in development)
 - Change: Use kotlin 1.0.1
 - Change: Use okhttp 3.2.0
+- Change: Use retrofit 2.0.1
 
 ## Version [0.10.0] - 2015-12-23
 - New: Add localized field to FieldTypeAdapter

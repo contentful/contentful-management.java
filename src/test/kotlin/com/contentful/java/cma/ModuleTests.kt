@@ -17,7 +17,7 @@
 package com.contentful.java.cma
 
 import com.contentful.java.cma.model.CMAResource
-import retrofit.RestAdapter
+import retrofit2.Retrofit
 import java.util.concurrent.CountDownLatch
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
@@ -30,7 +30,7 @@ class ModuleTests : BaseTest() {
     @before fun setup() {
         super.setUp()
         module = object : AbsModule<Any>(null, SynchronousExecutor()) {
-            override fun createService(restAdapter: RestAdapter?): Any? {
+            override fun createService(retrofit: Retrofit?): Any? {
                 return null
             }
         }
@@ -71,7 +71,7 @@ class ModuleTests : BaseTest() {
         var workerThreadId: Long? = null
 
         val module = object : AbsModule<Any>(null, SynchronousExecutor()) {
-            override fun createService(restAdapter: RestAdapter?): Any? = null
+            override fun createService(retrofit: Retrofit?): Any? = null
 
             fun work() {
                 val cdl = CountDownLatch(1)
