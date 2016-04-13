@@ -19,12 +19,12 @@ package com.contentful.java.cma;
 import com.contentful.java.cma.RxExtensions.DefFunc;
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAAsset;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+
+import retrofit2.Retrofit;
 
 /**
  * Assets Module.
@@ -32,13 +32,13 @@ import retrofit.client.Response;
 public final class ModuleAssets extends AbsModule<ServiceAssets> {
   final Async async;
 
-  public ModuleAssets(RestAdapter restAdapter, Executor callbackExecutor) {
-    super(restAdapter, callbackExecutor);
+  public ModuleAssets(Retrofit retrofit, Executor callbackExecutor) {
+    super(retrofit, callbackExecutor);
     this.async = new Async();
   }
 
-  @Override protected ServiceAssets createService(RestAdapter restAdapter) {
-    return restAdapter.create(ServiceAssets.class);
+  @Override protected ServiceAssets createService(Retrofit retrofit) {
+    return retrofit.create(ServiceAssets.class);
   }
 
   /**
@@ -51,7 +51,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     assertNotNull(asset, "asset");
     String assetId = getResourceIdOrThrow(asset, "asset");
     String spaceId = getSpaceIdOrThrow(asset, "asset");
-    return service.archive(spaceId, assetId, new Byte[0]);
+    return service.archive(spaceId, assetId, new Byte[0]).toBlocking().first();
   }
 
   /**
@@ -61,7 +61,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
    * success.
    *
    * @param spaceId Space ID
-   * @param asset Asset
+   * @param asset   Asset
    * @return {@link CMAAsset} result instance
    */
   @SuppressWarnings("unchecked")
@@ -76,13 +76,13 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     try {
       CMAAsset result;
       if (assetId == null) {
-        result = service.create(spaceId, asset);
+        result = service.create(spaceId, asset).toBlocking().first();
       } else {
-        result = service.create(spaceId, assetId, asset);
+        result = service.create(spaceId, assetId, asset).toBlocking().first();
       }
       asset.setSys(sys);
       return result;
-    } catch (RetrofitError e) {
+    } catch (RuntimeException e) {
       asset.setSys(sys);
       throw (e);
     }
@@ -93,12 +93,12 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
    *
    * @param spaceId Space ID
    * @param assetId Asset ID
-   * @return Retrofit {@link Response} instance
+   * @return A string representing the result of the delete operation
    */
-  public Response delete(String spaceId, String assetId) {
+  public String delete(String spaceId, String assetId) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(assetId, "assetId");
-    return service.delete(spaceId, assetId);
+    return service.delete(spaceId, assetId).toBlocking().first();
   }
 
   /**
@@ -115,12 +115,12 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
    * Fetch all Assets from a Space with a query.
    *
    * @param spaceId Space ID
-   * @param query Query
+   * @param query   Query
    * @return {@link CMAArray} result instance
    */
   public CMAArray<CMAAsset> fetchAll(String spaceId, Map<String, String> query) {
     assertNotNull(spaceId, "spaceId");
-    return service.fetchAll(spaceId, query);
+    return service.fetchAll(spaceId, query).toBlocking().first();
   }
 
   /**
@@ -133,21 +133,21 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
   public CMAAsset fetchOne(String spaceId, String assetId) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(assetId, "assetId");
-    return service.fetchOne(spaceId, assetId);
+    return service.fetchOne(spaceId, assetId).toBlocking().first();
   }
 
   /**
    * Process an Asset.
    *
-   * @param asset Asset
+   * @param asset  Asset
    * @param locale Locale
    * @return Retrofit {@link Response} instance
    */
-  public Response process(CMAAsset asset, String locale) {
+  public String process(CMAAsset asset, String locale) {
     assertNotNull(asset, "asset");
     String assetId = getResourceIdOrThrow(asset, "asset");
     String spaceId = getSpaceIdOrThrow(asset, "asset");
-    return service.process(spaceId, assetId, locale, new Byte[0]);
+    return service.process(spaceId, assetId, locale, new Byte[0]).toBlocking().first();
   }
 
   /**
@@ -160,7 +160,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     assertNotNull(asset, "asset");
     String assetId = getResourceIdOrThrow(asset, "asset");
     String spaceId = getSpaceIdOrThrow(asset, "asset");
-    return service.publish(asset.getVersion(), spaceId, assetId, new Byte[0]);
+    return service.publish(asset.getVersion(), spaceId, assetId, new Byte[0]).toBlocking().first();
   }
 
   /**
@@ -173,7 +173,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     assertNotNull(asset, "asset");
     String assetId = getResourceIdOrThrow(asset, "asset");
     String spaceId = getSpaceIdOrThrow(asset, "asset");
-    return service.unArchive(spaceId, assetId);
+    return service.unArchive(spaceId, assetId).toBlocking().first();
   }
 
   /**
@@ -186,7 +186,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     assertNotNull(asset, "asset");
     String assetId = getResourceIdOrThrow(asset, "asset");
     String spaceId = getSpaceIdOrThrow(asset, "asset");
-    return service.unPublish(spaceId, assetId);
+    return service.unPublish(spaceId, assetId).toBlocking().first();
   }
 
   /**
@@ -203,7 +203,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
 
     CMAAsset update = new CMAAsset();
     update.setFields(asset.getFields());
-    return service.update(version, spaceId, assetId, update);
+    return service.update(version, spaceId, assetId, update).toBlocking().first();
   }
 
   /**
@@ -220,7 +220,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     /**
      * Archive an Asset.
      *
-     * @param asset Asset
+     * @param asset    Asset
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
@@ -238,13 +238,13 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
      * otherwise the server will auto-generate an ID that will be contained in the response upon
      * success.
      *
-     * @param spaceId Space ID
-     * @param asset Asset
+     * @param spaceId  Space ID
+     * @param asset    Asset
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
     public CMACallback<CMAAsset> create(final String spaceId, final CMAAsset asset,
-        CMACallback<CMAAsset> callback) {
+                                        CMACallback<CMAAsset> callback) {
       return defer(new DefFunc<CMAAsset>() {
         @Override CMAAsset method() {
           return ModuleAssets.this.create(spaceId, asset);
@@ -255,15 +255,15 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     /**
      * Delete an Asset.
      *
-     * @param spaceId Space ID
-     * @param assetId Asset ID
+     * @param spaceId  Space ID
+     * @param assetId  Asset ID
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
-    public CMACallback<Response> delete(final String spaceId, final String assetId,
-        CMACallback<Response> callback) {
-      return defer(new DefFunc<Response>() {
-        @Override Response method() {
+    public CMACallback<String> delete(final String spaceId, final String assetId,
+                                      CMACallback<String> callback) {
+      return defer(new DefFunc<String>() {
+        @Override String method() {
           return ModuleAssets.this.delete(spaceId, assetId);
         }
       }, callback);
@@ -272,25 +272,26 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     /**
      * Fetch all Assets from a Space.
      *
-     * @param spaceId Space ID
+     * @param spaceId  Space ID
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
     public CMACallback<CMAArray<CMAAsset>> fetchAll(String spaceId,
-        CMACallback<CMAArray<CMAAsset>> callback) {
-      return fetchAll(spaceId, null, callback);
+                                                    CMACallback<CMAArray<CMAAsset>> callback) {
+      return fetchAll(spaceId, new HashMap<String, String>(), callback);
     }
 
     /**
      * Fetch all Assets from a Space with a query.
      *
-     * @param spaceId Space ID
-     * @param query Query
+     * @param spaceId  Space ID
+     * @param query    Query
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
     public CMACallback<CMAArray<CMAAsset>> fetchAll(final String spaceId,
-        final Map<String, String> query, CMACallback<CMAArray<CMAAsset>> callback) {
+                                                    final Map<String, String> query,
+                                                    CMACallback<CMAArray<CMAAsset>> callback) {
       return defer(new DefFunc<CMAArray<CMAAsset>>() {
         @Override CMAArray<CMAAsset> method() {
           return ModuleAssets.this.fetchAll(spaceId, query);
@@ -301,13 +302,13 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     /**
      * Fetch an Asset with the given {@code assetId} from a Space.
      *
-     * @param spaceId Space ID
-     * @param assetId Asset ID
+     * @param spaceId  Space ID
+     * @param assetId  Asset ID
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
     public CMACallback<CMAAsset> fetchOne(final String spaceId, final String assetId,
-        CMACallback<CMAAsset> callback) {
+                                          CMACallback<CMAAsset> callback) {
       return defer(new DefFunc<CMAAsset>() {
         @Override CMAAsset method() {
           return ModuleAssets.this.fetchOne(spaceId, assetId);
@@ -318,15 +319,15 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     /**
      * Process an Asset.
      *
-     * @param asset Asset
-     * @param locale Locale
+     * @param asset    Asset
+     * @param locale   Locale
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
-    public CMACallback<Response> process(final CMAAsset asset, final String locale,
-        CMACallback<Response> callback) {
-      return defer(new DefFunc<Response>() {
-        @Override Response method() {
+    public CMACallback<String> process(final CMAAsset asset, final String locale,
+                                       CMACallback<String> callback) {
+      return defer(new DefFunc<String>() {
+        @Override String method() {
           return ModuleAssets.this.process(asset, locale);
         }
       }, callback);
@@ -335,7 +336,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     /**
      * Publish an Asset.
      *
-     * @param asset Asset
+     * @param asset    Asset
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
@@ -350,7 +351,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     /**
      * Un-Archive an Asset.
      *
-     * @param asset Asset
+     * @param asset    Asset
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
@@ -365,7 +366,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     /**
      * Un-Publish an Asset.
      *
-     * @param asset Asset
+     * @param asset    Asset
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
@@ -380,7 +381,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     /**
      * Update an Asset.
      *
-     * @param asset Asset
+     * @param asset    Asset
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */

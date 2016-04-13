@@ -20,9 +20,8 @@ import com.contentful.java.cma.lib.ModuleTestUtils
 import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAEntry
-import com.squareup.okhttp.HttpUrl
-import com.squareup.okhttp.mockwebserver.MockResponse
-import retrofit.RetrofitError
+import okhttp3.HttpUrl
+import okhttp3.mockwebserver.MockResponse
 import java.io.IOException
 import kotlin.test.*
 import org.junit.Test as test
@@ -95,40 +94,42 @@ class EntryTests : BaseTest() {
     }
 
     @test fun testCreateWithLinks() {
-        val requestBody = TestUtils.fileToString("entry_create_links_request.json")
-        server!!.enqueue(MockResponse().setResponseCode(200))
+        val responseBody = TestUtils.fileToString("entry_create_links_request.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
-        val LOCALE = "en-US"
+        val locale = "en-US"
 
-        val foo = CMAEntry().setId("foo").setField("name", "foo", LOCALE)
-        val bar = CMAEntry().setId("bar").setField("name", "bar", LOCALE)
+        val foo = CMAEntry().setId("foo").setField("name", "foo", locale)
+        val bar = CMAEntry().setId("bar").setField("name", "bar", locale)
 
-        foo.setField("link", bar, LOCALE)
+        foo.setField("link", bar, locale)
         foo.setField("link", bar, "he-IL")
-        foo.setField("array", listOf(bar), LOCALE)
+        foo.setField("array", listOf(bar), locale)
 
-        bar.setField("link", foo, LOCALE)
+        bar.setField("link", foo, locale)
 
         client!!.entries().create("space", "type", foo)
 
+        val requestBody = TestUtils.fileToString("entry_create_links_request.json")
         val request = server!!.takeRequest()
         assertEquals(requestBody, request.utf8Body)
     }
 
-    @test(expected = RetrofitError::class)
+    @test(expected = RuntimeException::class)
     fun testCreateWithBadLinksThrows() {
         val foo = CMAEntry().setId("bar").setField("link", CMAEntry(), "en-US")
         server!!.enqueue(MockResponse().setResponseCode(200))
         try {
             client!!.entries().create("space", "type", foo)
-        } catch(e: RetrofitError) {
+        } catch(e: RuntimeException) {
             assertEquals("Entry contains link to draft resource (has no ID).", e.message)
             throw e
         }
     }
 
     @test fun testDelete() {
-        server!!.enqueue(MockResponse().setResponseCode(200))
+        val requestBody = "203"
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(requestBody))
         assertTestCallback(client!!.entries().async().delete(
                 "spaceid", "entryid", TestCallback()) as TestCallback)
 
@@ -172,7 +173,7 @@ class EntryTests : BaseTest() {
 
         // Request
         val request = server!!.takeRequest()
-        val url = HttpUrl.parse(server!!.getUrl(request.path).toString())
+        val url = HttpUrl.parse(server!!.url(request.path).toString())
         assertEquals("1", url.queryParameter("skip"))
         assertEquals("2", url.queryParameter("limit"))
         assertEquals("foo", url.queryParameter("content_type"))
@@ -237,7 +238,8 @@ class EntryTests : BaseTest() {
     }
 
     @test fun testPublish() {
-        server!!.enqueue(MockResponse().setResponseCode(200))
+        val requestBody = TestUtils.fileToString("entry_create_links_request.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(requestBody))
 
         assertTestCallback(client!!.entries().async().publish(CMAEntry()
                 .setId("entryid")
@@ -252,7 +254,8 @@ class EntryTests : BaseTest() {
     }
 
     @test fun testUnArchive() {
-        server!!.enqueue(MockResponse().setResponseCode(200))
+        val requestBody = TestUtils.fileToString("space_create_request.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(requestBody))
 
         assertTestCallback(client!!.entries().async().unArchive(
                 CMAEntry().setId("entryid").setSpaceId("spaceid"),
@@ -265,7 +268,8 @@ class EntryTests : BaseTest() {
     }
 
     @test fun testUnPublish() {
-        server!!.enqueue(MockResponse().setResponseCode(200))
+        val requestBody = TestUtils.fileToString("entry_create_links_request.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(requestBody))
 
         assertTestCallback(client!!.entries().async().unPublish(
                 CMAEntry().setId("entryid").setSpaceId("spaceid"),
@@ -277,17 +281,17 @@ class EntryTests : BaseTest() {
         assertEquals("/spaces/spaceid/entries/entryid/published", recordedRequest.path)
     }
 
-    @test(expected = RetrofitError::class)
+    @test(expected = RuntimeException::class)
     fun testRetainsSysOnNetworkError() {
         val badClient = CMAClient.Builder()
                 .setAccessToken("accesstoken")
-                .setClient { throw RetrofitError.unexpectedError(it.url, IOException()) }
+                .setCallFactory { throw RuntimeException(it.url().toString(), IOException()) }
                 .build()
 
         val entry = CMAEntry().setVersion(31337.0)
         try {
             badClient.entries().create("spaceid", "ctid", entry)
-        } catch (e: RetrofitError) {
+        } catch (e: RuntimeException) {
             assertEquals(31337, entry.version)
             throw e
         }

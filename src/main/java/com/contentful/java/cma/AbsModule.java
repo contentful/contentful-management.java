@@ -20,8 +20,10 @@ import com.contentful.java.cma.RxExtensions.ActionError;
 import com.contentful.java.cma.RxExtensions.ActionSuccess;
 import com.contentful.java.cma.RxExtensions.DefFunc;
 import com.contentful.java.cma.model.CMAResource;
+
 import java.util.concurrent.Executor;
-import retrofit.RestAdapter;
+
+import retrofit2.Retrofit;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
@@ -32,12 +34,12 @@ abstract class AbsModule<T> {
   final T service;
   final Executor callbackExecutor;
 
-  AbsModule(RestAdapter restAdapter, Executor callbackExecutor) {
-    this.service = createService(restAdapter);
+  AbsModule(Retrofit retrofit, Executor callbackExecutor) {
+    this.service = createService(retrofit);
     this.callbackExecutor = callbackExecutor;
   }
 
-  protected abstract T createService(RestAdapter restAdapter);
+  protected abstract T createService(Retrofit retrofit);
 
   /**
    * Asserts that the given {@code object} with name {@code param} is not null, throws

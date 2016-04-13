@@ -16,16 +16,23 @@
 
 package com.contentful.java.cma;
 
+import com.contentful.java.cma.interceptor.AuthorizationHeaderInterceptor;
+import com.contentful.java.cma.interceptor.ErrorInterceptor;
+import com.contentful.java.cma.interceptor.LogInterceptor;
+import com.contentful.java.cma.interceptor.UserAgentHeaderInterceptor;
 import com.contentful.java.cma.model.CMAEntry;
 import com.contentful.java.cma.model.CMAField;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
 import java.io.IOException;
 import java.util.concurrent.Executor;
-import retrofit.RequestInterceptor;
-import retrofit.RestAdapter;
-import retrofit.client.Client;
-import retrofit.converter.GsonConverter;
+
+import okhttp3.Call;
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * The CMAClient is used to request information from the server. Contrary to the delivery
@@ -39,42 +46,43 @@ public class CMAClient {
   private static Gson gson;
 
   // Modules
-  final ModuleAssets modAssets;
-  final ModuleContentTypes modContentTypes;
-  final ModuleEntries modEntries;
-  final ModuleSpaces modSpaces;
+  private final ModuleAssets modAssets;
+  private final ModuleContentTypes modContentTypes;
+  private final ModuleEntries modEntries;
+  private final ModuleSpaces modSpaces;
 
   // PropertiesReader
-  final PropertiesReader propertiesReader;
+  private final PropertiesReader propertiesReader;
 
   // Executors
   Executor callbackExecutor;
 
-  private CMAClient(Builder builder) {
-    if (builder.accessToken == null) {
+  private CMAClient(Builder cmaBuilder) {
+    if (cmaBuilder.accessToken == null) {
       throw new IllegalArgumentException("No access token was set.");
     }
 
-    // Retrofit RestAdapter
-    RestAdapter.Builder restBuilder =
-        new RestAdapter.Builder().setEndpoint(Constants.ENDPOINT_CMA)
-            .setConverter(new GsonConverter(createGson()))
-            .setRequestInterceptor(createInterceptor(builder));
-
-    setEndpoint(builder, restBuilder);
-    setClient(builder, restBuilder);
-    setLogLevel(builder, restBuilder);
-    setCallbackExecutor(builder);
-    RestAdapter adapter = restBuilder.build();
-
-    // Modules
-    this.modAssets = new ModuleAssets(adapter, callbackExecutor);
-    this.modContentTypes = new ModuleContentTypes(adapter, callbackExecutor);
-    this.modEntries = new ModuleEntries(adapter, callbackExecutor);
-    this.modSpaces = new ModuleSpaces(adapter, callbackExecutor);
-
     // PropertiesReader
     this.propertiesReader = new PropertiesReader();
+
+    // Retrofit Retrofit
+    Retrofit.Builder retrofitBuilder =
+        new Retrofit.Builder()
+            .addConverterFactory(GsonConverterFactory.create(createGson()))
+            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+            .baseUrl(Constants.ENDPOINT_CMA);
+
+    retrofitBuilder = setEndpoint(cmaBuilder, retrofitBuilder);
+    retrofitBuilder = setCallFactory(cmaBuilder, retrofitBuilder);
+
+    setCallbackExecutor(cmaBuilder);
+    Retrofit retrofit = retrofitBuilder.build();
+
+    // Modules
+    this.modAssets = new ModuleAssets(retrofit, callbackExecutor);
+    this.modContentTypes = new ModuleContentTypes(retrofit, callbackExecutor);
+    this.modEntries = new ModuleEntries(retrofit, callbackExecutor);
+    this.modSpaces = new ModuleSpaces(retrofit, callbackExecutor);
   }
 
   /**
@@ -89,30 +97,51 @@ public class CMAClient {
   }
 
   /**
-   * Configures log level.
+   * Configures a custom client.
    */
-  private void setLogLevel(Builder clientBuilder, RestAdapter.Builder restBuilder) {
-    if (clientBuilder.logLevel != null) {
-      restBuilder.setLogLevel(clientBuilder.logLevel);
+  private Retrofit.Builder setCallFactory(Builder cmaBuilder, Retrofit.Builder retrofitBuilder) {
+    if (cmaBuilder.callFactory == null) {
+      OkHttpClient.Builder okBuilder = new OkHttpClient.Builder()
+          .addInterceptor(new AuthorizationHeaderInterceptor(cmaBuilder.accessToken))
+          .addInterceptor(new UserAgentHeaderInterceptor(getUserAgent(propertiesReader)))
+          .addInterceptor(new ErrorInterceptor());
+
+      okBuilder = setLogger(okBuilder, cmaBuilder);
+
+      return retrofitBuilder.callFactory(okBuilder.build());
+    } else {
+      return retrofitBuilder.callFactory(cmaBuilder.callFactory);
     }
   }
 
-  /**
-   * Configures a custom client.
-   */
-  private void setClient(Builder clientBuilder, RestAdapter.Builder restBuilder) {
-    if (clientBuilder.clientProvider != null) {
-      restBuilder.setClient(clientBuilder.clientProvider);
+  private OkHttpClient.Builder setLogger(OkHttpClient.Builder okBuilder, Builder cmaBuilder) {
+    if (cmaBuilder.logger != null) {
+      switch (cmaBuilder.logLevel) {
+        case NONE:
+        default:
+          break;
+        case BASIC:
+          return okBuilder.addInterceptor(new LogInterceptor(cmaBuilder.logger));
+        case FULL:
+          return okBuilder.addNetworkInterceptor(new LogInterceptor(cmaBuilder.logger));
+      }
+    } else {
+      if (cmaBuilder.logLevel != Logger.Level.NONE) {
+        throw new IllegalArgumentException(
+            "Cannot log to a null logger. Please set either logLevel to None, or do set a Logger");
+      }
     }
+    return okBuilder;
   }
 
   /**
    * Configures CMA endpoint.
    */
-  private void setEndpoint(Builder clientBuilder, RestAdapter.Builder restBuilder) {
+  private Retrofit.Builder setEndpoint(Builder clientBuilder, Retrofit.Builder retrofitBuilder) {
     if (clientBuilder.endpoint != null) {
-      restBuilder.setEndpoint(clientBuilder.endpoint);
+      return retrofitBuilder.baseUrl(clientBuilder.endpoint);
     }
+    return retrofitBuilder;
   }
 
   /**
@@ -127,20 +156,6 @@ public class CMAClient {
     }
 
     return gson;
-  }
-
-  /**
-   * Creates and returns a {@code RequestInterceptor} from the given {@code builder}.
-   */
-  private RequestInterceptor createInterceptor(Builder builder) {
-    final String accessToken = builder.accessToken;
-    return new RequestInterceptor() {
-      @Override public void intercept(RequestFacade requestFacade) {
-        requestFacade.addHeader("Authorization", "Bearer " + accessToken);
-        requestFacade.addHeader("Content-Type", "application/vnd.contentful.management.v1+json");
-        requestFacade.addHeader("User-Agent", getUserAgent(propertiesReader));
-      }
-    };
   }
 
   /**
@@ -191,8 +206,9 @@ public class CMAClient {
    */
   public static class Builder {
     String accessToken;
-    Client.Provider clientProvider;
-    RestAdapter.LogLevel logLevel;
+    Call.Factory callFactory;
+    Logger logger;
+    Logger.Level logLevel = Logger.Level.NONE;
     String endpoint;
     Executor callbackExecutor;
 
@@ -225,34 +241,17 @@ public class CMAClient {
     }
 
     /**
-     * Sets a custom HTTP client.
+     * Sets a custom HTTP call factory.
      *
-     * @param client Client
-     * @return this {@link Builder} instance
-     */
-    public Builder setClient(final Client client) {
-      if (client == null) {
-        throw new IllegalArgumentException("Cannot call setClient() with null.");
-      }
-      return setClientProvider(new Client.Provider() {
-        @Override public Client get() {
-          return client;
-        }
-      });
-    }
-
-    /**
-     * Sets a custom HTTP client provider.
-     *
-     * @param clientProvider {@link retrofit.client.Client.Provider} instance
+     * @param callFactory {@link okhttp3.Call.Factory} instance
      * @return this {@code Builder} instance
      */
-    public Builder setClientProvider(Client.Provider clientProvider) {
-      if (clientProvider == null) {
-        throw new IllegalArgumentException("Cannot call setClientProvider() with null.");
+    public Builder setCallFactory(Call.Factory callFactory) {
+      if (callFactory == null) {
+        throw new IllegalArgumentException("Cannot call setCallFactory() with null.");
       }
 
-      this.clientProvider = clientProvider;
+      this.callFactory = callFactory;
       return this;
     }
 
@@ -260,8 +259,8 @@ public class CMAClient {
      * Sets the executor to use when invoking asynchronous callbacks.
      *
      * @param executor Executor on which any {@link CMACallback} methods will be invoked. This
-     * defaults to execute on the main thread for Android projects. For non-Android
-     * projects this defaults to the same thread of the HTTP client.
+     *                 defaults to execute on the main thread for Android projects. For non-Android
+     *                 projects this defaults to the same thread of the HTTP client.
      * @return this {@code Builder} instance
      */
     public Builder setCallbackExecutor(Executor executor) {
@@ -274,12 +273,27 @@ public class CMAClient {
     }
 
     /**
-     * Sets the log level for this client.
+     * Sets the logger to be used for logging all network requests or all application requests.
      *
-     * @param logLevel {@link retrofit.RestAdapter.LogLevel} value
+     * @param logger {@link Logger}
      * @return this {@code Builder} instance
      */
-    public Builder setLogLevel(RestAdapter.LogLevel logLevel) {
+    public Builder setLogger(Logger logger) {
+      if (logger == null) {
+        throw new IllegalArgumentException("Do not set a null logger");
+      }
+
+      this.logger = logger;
+      return this;
+    }
+
+    /**
+     * Sets the log level for this client.
+     *
+     * @param logLevel {@link Logger.Level} value
+     * @return this {@code Builder} instance
+     */
+    public Builder setLogLevel(Logger.Level logLevel) {
       if (logLevel == null) {
         throw new IllegalArgumentException("Cannot call setLogLevel() with null.");
       }

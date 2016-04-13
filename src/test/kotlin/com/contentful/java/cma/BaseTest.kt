@@ -20,7 +20,7 @@ import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.model.CMAResource
 import com.google.gson.Gson
 import com.google.gson.JsonParser
-import com.squareup.okhttp.mockwebserver.MockWebServer
+import okhttp3.mockwebserver.MockWebServer
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
@@ -35,12 +35,12 @@ open class BaseTest {
     @before fun setUp() {
         // MockWebServer
         server = MockWebServer()
-        server!!.play()
+        server!!.start()
 
         // Client
         client = CMAClient.Builder()
                 .setAccessToken("token")
-                .setEndpoint(server!!.getUrl("/").toString())
+                .setEndpoint(server!!.url("/").toString())
                 .build()
 
         gson = CMAClient.createGson()

@@ -22,9 +22,8 @@ import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAContentType
 import com.contentful.java.cma.model.CMAField
-import com.squareup.okhttp.HttpUrl
-import com.squareup.okhttp.mockwebserver.MockResponse
-import retrofit.RetrofitError
+import okhttp3.HttpUrl
+import okhttp3.mockwebserver.MockResponse
 import java.io.IOException
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -95,8 +94,8 @@ class ContentTypeTests : BaseTest() {
     }
 
     @test fun testCreateWithLink() {
-        val requestBody = TestUtils.fileToString("content_type_create_with_link.json")
-        server!!.enqueue(MockResponse().setResponseCode(200))
+        val responseBody = TestUtils.fileToString("content_type_create_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         client!!.contentTypes().create("spaceid", CMAContentType()
                 .setName("whatever1")
@@ -107,6 +106,7 @@ class ContentTypeTests : BaseTest() {
                         .setLinkType("Entry")))
 
         // Request
+        val requestBody = TestUtils.fileToString("content_type_create_with_link.json")
         val recordedRequest = server!!.takeRequest()
         assertEquals("POST", recordedRequest.method)
         assertEquals("/spaces/spaceid/content_types", recordedRequest.path)
@@ -147,7 +147,8 @@ class ContentTypeTests : BaseTest() {
     }
 
     @test fun testDelete() {
-        server!!.enqueue(MockResponse().setResponseCode(200))
+        val requestBody = "203"
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(requestBody))
 
         assertTestCallback(client!!.contentTypes().async().delete(
                 "spaceid", "contenttypeid", TestCallback()) as TestCallback)
@@ -216,7 +217,7 @@ class ContentTypeTests : BaseTest() {
 
         // Request
         val request = server!!.takeRequest()
-        val url = HttpUrl.parse(server!!.getUrl(request.path).toString())
+        val url = HttpUrl.parse(server!!.url(request.path).toString())
         assertEquals("1", url.queryParameter("skip"))
         assertEquals("2", url.queryParameter("limit"))
         assertEquals("bar", url.queryParameter("foo"))
@@ -327,17 +328,17 @@ class ContentTypeTests : BaseTest() {
         assertEquals("Entry", field.linkType)
     }
 
-    @test(expected = RetrofitError::class)
+    @test(expected = RuntimeException::class)
     fun testRetainsSysOnNetworkError() {
         val badClient = CMAClient.Builder()
                 .setAccessToken("accesstoken")
-                .setClient { throw RetrofitError.unexpectedError(it.url, IOException()) }
+                .setCallFactory { throw RuntimeException(it.url().toString(), IOException()) }
                 .build()
 
         val contentType = CMAContentType().setVersion(31337.0)
         try {
             badClient.contentTypes().create("spaceid", contentType)
-        } catch (e: RetrofitError) {
+        } catch (e: RuntimeException) {
             assertEquals(31337, contentType.version)
             throw e
         }

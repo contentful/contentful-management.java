@@ -18,12 +18,12 @@ package com.contentful.java.cma;
 
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAEntry;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+
+import retrofit2.Retrofit;
 
 /**
  * Entries Module.
@@ -31,13 +31,13 @@ import retrofit.client.Response;
 public final class ModuleEntries extends AbsModule<ServiceEntries> {
   final Async async;
 
-  public ModuleEntries(RestAdapter restAdapter, Executor callbackExecutor) {
-    super(restAdapter, callbackExecutor);
+  public ModuleEntries(Retrofit retrofit, Executor callbackExecutor) {
+    super(retrofit, callbackExecutor);
     this.async = new Async();
   }
 
-  @Override protected ServiceEntries createService(RestAdapter restAdapter) {
-    return restAdapter.create(ServiceEntries.class);
+  @Override protected ServiceEntries createService(Retrofit retrofit) {
+    return retrofit.create(ServiceEntries.class);
   }
 
   /**
@@ -50,7 +50,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     assertNotNull(entry, "entry");
     String entryId = getResourceIdOrThrow(entry, "entry");
     String spaceId = getSpaceIdOrThrow(entry, "entry");
-    return service.archive(spaceId, entryId, new Byte[0]);
+    return service.archive(spaceId, entryId, new Byte[0]).toBlocking().first();
   }
 
   /**
@@ -59,9 +59,9 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
    * otherwise the server will auto-generate an ID that will be contained in the response upon
    * success.
    *
-   * @param spaceId Space ID
+   * @param spaceId       Space ID
    * @param contentTypeId Content Type ID
-   * @param entry Entry
+   * @param entry         Entry
    * @return {@link CMAEntry} result instance
    */
   @SuppressWarnings("unchecked")
@@ -76,13 +76,13 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     try {
       CMAEntry result;
       if (entryId == null) {
-        result = service.create(spaceId, contentTypeId, entry);
+        result = service.create(spaceId, contentTypeId, entry).toBlocking().first();
       } else {
-        result = service.create(spaceId, contentTypeId, entryId, entry);
+        result = service.create(spaceId, contentTypeId, entryId, entry).toBlocking().first();
       }
       entry.setSys(sys);
       return result;
-    } catch (RetrofitError e) {
+    } catch (RuntimeException e) {
       entry.setSys(sys);
       throw (e);
     }
@@ -95,10 +95,10 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
    * @param entryId Entry ID
    * @return Retrofit {@link Response} instance
    */
-  public Response delete(String spaceId, String entryId) {
+  public String delete(String spaceId, String entryId) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(entryId, "entryId");
-    return service.delete(spaceId, entryId);
+    return service.delete(spaceId, entryId).toBlocking().first();
   }
 
   /**
@@ -115,12 +115,12 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
    * Fetch all Entries from a Space with a query.
    *
    * @param spaceId Space ID
-   * @param query Query
+   * @param query   Query
    * @return {@link CMAArray} result instance
    */
   public CMAArray<CMAEntry> fetchAll(String spaceId, Map<String, String> query) {
     assertNotNull(spaceId, "spaceId");
-    return service.fetchAll(spaceId, query);
+    return service.fetchAll(spaceId, query).toBlocking().first();
   }
 
   /**
@@ -133,7 +133,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
   public CMAEntry fetchOne(String spaceId, String entryId) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(entryId, "entryId");
-    return service.fetchOne(spaceId, entryId);
+    return service.fetchOne(spaceId, entryId).toBlocking().first();
   }
 
   /**
@@ -146,7 +146,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     assertNotNull(entry, "entry");
     String entryId = getResourceIdOrThrow(entry, "entry");
     String spaceId = getSpaceIdOrThrow(entry, "entry");
-    return service.publish(entry.getVersion(), spaceId, entryId, new Byte[0]);
+    return service.publish(entry.getVersion(), spaceId, entryId, new Byte[0]).toBlocking().first();
   }
 
   /**
@@ -159,7 +159,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     assertNotNull(entry, "entry");
     String entryId = getResourceIdOrThrow(entry, "entry");
     String spaceId = getSpaceIdOrThrow(entry, "entry");
-    return service.unArchive(spaceId, entryId);
+    return service.unArchive(spaceId, entryId).toBlocking().first();
   }
 
   /**
@@ -172,7 +172,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     assertNotNull(entry, "entry");
     String entryId = getResourceIdOrThrow(entry, "entry");
     String spaceId = getSpaceIdOrThrow(entry, "entry");
-    return service.entriesUnPublish(spaceId, entryId);
+    return service.entriesUnPublish(spaceId, entryId).toBlocking().first();
   }
 
   /**
@@ -189,7 +189,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
 
     CMAEntry update = new CMAEntry();
     update.setFields(entry.getFields());
-    return service.update(version, spaceId, entryId, update);
+    return service.update(version, spaceId, entryId, update).toBlocking().first();
   }
 
   /**
@@ -206,7 +206,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     /**
      * Archive an Entry.
      *
-     * @param entry Entry
+     * @param entry    Entry
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
@@ -224,14 +224,14 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
      * otherwise the server will auto-generate an ID that will be contained in the response upon
      * success.
      *
-     * @param spaceId Space ID
+     * @param spaceId       Space ID
      * @param contentTypeId Content Type ID
-     * @param entry Entry
-     * @param callback Callback
+     * @param entry         Entry
+     * @param callback      Callback
      * @return the given {@code CMACallback} instance
      */
     public CMACallback<CMAEntry> create(final String spaceId, final String contentTypeId,
-        final CMAEntry entry, CMACallback<CMAEntry> callback) {
+                                        final CMAEntry entry, CMACallback<CMAEntry> callback) {
       return defer(new RxExtensions.DefFunc<CMAEntry>() {
         @Override CMAEntry method() {
           return ModuleEntries.this.create(spaceId, contentTypeId, entry);
@@ -242,15 +242,15 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     /**
      * Delete an Entry.
      *
-     * @param spaceId Space ID
-     * @param entryId Entry ID
+     * @param spaceId  Space ID
+     * @param entryId  Entry ID
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
-    public CMACallback<Response> delete(final String spaceId, final String entryId,
-        CMACallback<Response> callback) {
-      return defer(new RxExtensions.DefFunc<Response>() {
-        @Override Response method() {
+    public CMACallback<String> delete(final String spaceId, final String entryId,
+                                      CMACallback<String> callback) {
+      return defer(new RxExtensions.DefFunc<String>() {
+        @Override String method() {
           return ModuleEntries.this.delete(spaceId, entryId);
         }
       }, callback);
@@ -259,25 +259,26 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     /**
      * Fetch all Entries from a Space.
      *
-     * @param spaceId Space ID
+     * @param spaceId  Space ID
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
     public CMACallback<CMAArray<CMAEntry>> fetchAll(final String spaceId,
-        CMACallback<CMAArray<CMAEntry>> callback) {
-      return fetchAll(spaceId, null, callback);
+                                                    CMACallback<CMAArray<CMAEntry>> callback) {
+      return fetchAll(spaceId, new HashMap<String, String>(), callback);
     }
 
     /**
      * Fetch all Entries from a Space with a query.
      *
-     * @param spaceId Space ID
-     * @param query Query
+     * @param spaceId  Space ID
+     * @param query    Query
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
     public CMACallback<CMAArray<CMAEntry>> fetchAll(final String spaceId,
-        final Map<String, String> query, CMACallback<CMAArray<CMAEntry>> callback) {
+                                                    final Map<String, String> query,
+                                                    CMACallback<CMAArray<CMAEntry>> callback) {
       return defer(new RxExtensions.DefFunc<CMAArray<CMAEntry>>() {
         @Override CMAArray<CMAEntry> method() {
           return ModuleEntries.this.fetchAll(spaceId, query);
@@ -288,13 +289,13 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     /**
      * Fetch an Entry with the given {@code entryId} from a Space.
      *
-     * @param spaceId Space ID
-     * @param entryId Entry ID
+     * @param spaceId  Space ID
+     * @param entryId  Entry ID
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
     public CMACallback<CMAEntry> fetchOne(final String spaceId, final String entryId,
-        CMACallback<CMAEntry> callback) {
+                                          CMACallback<CMAEntry> callback) {
       return defer(new RxExtensions.DefFunc<CMAEntry>() {
         @Override CMAEntry method() {
           return ModuleEntries.this.fetchOne(spaceId, entryId);
@@ -305,7 +306,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     /**
      * Publish an Entry.
      *
-     * @param entry Entry
+     * @param entry    Entry
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
@@ -320,7 +321,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     /**
      * Un-Archive an Entry.
      *
-     * @param entry Entry
+     * @param entry    Entry
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
@@ -335,7 +336,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     /**
      * Un-Publish an Entry.
      *
-     * @param entry Entry
+     * @param entry    Entry
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
@@ -350,7 +351,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     /**
      * Update an Entry.
      *
-     * @param entry Entry
+     * @param entry    Entry
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */

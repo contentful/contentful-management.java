@@ -18,61 +18,63 @@ package com.contentful.java.cma;
 
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAContentType;
+
 import java.util.Map;
-import retrofit.client.Response;
-import retrofit.http.Body;
-import retrofit.http.DELETE;
-import retrofit.http.GET;
-import retrofit.http.Header;
-import retrofit.http.POST;
-import retrofit.http.PUT;
-import retrofit.http.Path;
-import retrofit.http.QueryMap;
+
+import retrofit2.http.Body;
+import retrofit2.http.DELETE;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
+import retrofit2.http.QueryMap;
+import rx.Observable;
 
 /**
  * ContentTypes Service.
  */
 interface ServiceContentTypes {
   @POST("/spaces/{space}/content_types")
-  CMAContentType create(
+  Observable<CMAContentType> create(
       @Path("space") String spaceId,
       @Body CMAContentType contentType);
 
   @PUT("/spaces/{space}/content_types/{content_type}")
-  CMAContentType create(
+  Observable<CMAContentType> create(
       @Path("space") String spaceId,
       @Path("content_type") String contentTypeId,
       @Body CMAContentType contentType);
 
   @DELETE("/spaces/{space}/content_types/{content_type}")
-  Response delete(
+  Observable<String> delete(
       @Path("space") String spaceId,
       @Path("content_type") String contentTypeId);
 
   @GET("/spaces/{space}/content_types")
-  CMAArray<CMAContentType> fetchAll(
+  Observable<CMAArray<CMAContentType>> fetchAll(
       @Path("space") String spaceId,
       @QueryMap Map<String, String> query);
 
   @GET("/spaces/{space}/content_types/{content_type}")
-  CMAContentType fetchOne(
+  Observable<CMAContentType> fetchOne(
       @Path("space") String spaceId,
       @Path("content_type") String contentTypeId);
 
   @PUT("/spaces/{space}/content_types/{content_type}/published")
-  CMAContentType publish(
+  Observable<CMAContentType> publish(
       @Header("X-Contentful-Version") Integer version,
       @Path("space") String spaceId,
       @Path("content_type") String contentTypeId,
       @Body Object body);
 
   @DELETE("/spaces/{space}/content_types/{content_type}/published")
-  CMAContentType unPublish(
+  Observable<CMAContentType> unPublish(
       @Path("space") String spaceId,
       @Path("content_type") String contentTypeId);
 
   @PUT("/spaces/{space}/content_types/{content_type}")
-  CMAContentType update(
+  Observable<CMAContentType> update(
       @Header("X-Contentful-Version") Integer version,
       @Path("space") String spaceId,
       @Path("content_type") String contentTypeId,

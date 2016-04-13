@@ -1,16 +1,16 @@
 {
-  "sys":{
-    "type":"Space",
-    "id":"spaceid",
-    "version":2,
-    "updatedBy":{
-      "sys":{
-        "type":"Link",
-        "linkType":"User",
-        "id":"someone"
+  "sys": {
+    "type": "Space",
+    "id": "spaceid",
+    "version": 2,
+    "updatedBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "someone"
       }
     },
-    "updatedAt":"sometime"
+    "updatedAt": "sometime"
   },
-  "name":"newname"
+  "name": "newname"
 }

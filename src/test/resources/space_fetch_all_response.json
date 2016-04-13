@@ -1,58 +1,58 @@
 {
-  "sys":{
-    "type":"Array"
+  "sys": {
+    "type": "Array"
   },
-  "items":[
+  "items": [
     {
-      "sys":{
-        "type":"Space",
-        "id":"id1",
-        "version":1,
-        "createdBy":{
-          "sys":{
-            "type":"Link",
-            "linkType":"User",
-            "id":"user1"
+      "sys": {
+        "type": "Space",
+        "id": "id1",
+        "version": 1,
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "user1"
           }
         },
-        "createdAt":"2014-03-21T08:43:52Z",
-        "updatedBy":{
-          "sys":{
-            "type":"Link",
-            "linkType":"User",
-            "id":"user1"
+        "createdAt": "2014-03-21T08:43:52Z",
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "user1"
           }
         },
-        "updatedAt":"2014-04-27T18:16:10Z"
+        "updatedAt": "2014-04-27T18:16:10Z"
       },
-      "name":"space1"
+      "name": "space1"
     },
     {
-      "sys":{
-        "type":"Space",
-        "id":"id2",
-        "version":2,
-        "createdBy":{
-          "sys":{
-            "type":"Link",
-            "linkType":"User",
-            "id":"user2"
+      "sys": {
+        "type": "Space",
+        "id": "id2",
+        "version": 2,
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "user2"
           }
         },
-        "createdAt":"2014-05-19T09:00:27Z",
-        "updatedBy":{
-          "sys":{
-            "type":"Link",
-            "linkType":"User",
-            "id":"user2"
+        "createdAt": "2014-05-19T09:00:27Z",
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "user2"
           }
         },
-        "updatedAt":"2014-07-09T07:48:24Z"
+        "updatedAt": "2014-07-09T07:48:24Z"
       },
-      "name":"space2"
+      "name": "space2"
     }
   ],
-  "total":2,
-  "limit":25,
-  "skip":0
+  "total": 2,
+  "limit": 25,
+  "skip": 0
 }

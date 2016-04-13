@@ -19,45 +19,46 @@ package com.contentful.java.cma;
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMALocale;
 import com.contentful.java.cma.model.CMASpace;
-import retrofit.client.Response;
-import retrofit.http.Body;
-import retrofit.http.DELETE;
-import retrofit.http.GET;
-import retrofit.http.Header;
-import retrofit.http.POST;
-import retrofit.http.PUT;
-import retrofit.http.Path;
+
+import retrofit2.http.Body;
+import retrofit2.http.DELETE;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
+import rx.Observable;
 
 /**
  * Spaces Service.
  */
 interface ServiceSpaces {
   @POST("/spaces")
-  CMASpace create(
+  Observable<CMASpace> create(
       @Body CMASpace space);
 
   @POST("/spaces")
-  CMASpace create(
+  Observable<CMASpace> create(
       @Header("X-Contentful-Organization") String organization,
       @Body CMASpace space);
 
   @DELETE("/spaces/{space}")
-  Response delete(
+  Observable<String> delete(
       @Path("space") String spaceId);
 
   @GET("/spaces")
-  CMAArray<CMASpace> fetchAll();
+  Observable<CMAArray<CMASpace>> fetchAll();
 
   @GET("/spaces/{space}")
-  CMASpace fetchOne(
+  Observable<CMASpace> fetchOne(
       @Path("space") String spaceId);
 
   @GET("/spaces/{space}/locales")
-  CMAArray<CMALocale> fetchLocales(
+  Observable<CMAArray<CMALocale>> fetchLocales(
       @Path("space") String spaceId);
 
   @PUT("/spaces/{space}")
-  CMASpace update(
+  Observable<CMASpace> update(
       @Header("X-Contentful-Version") Integer version,
       @Path("space") String spaceId,
       @Body CMASpace space);

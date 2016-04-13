@@ -37,8 +37,8 @@ public class CMAAsset extends StatefulResource {
   /**
    * Creates a new field. If a field with the given key already exists it will be replaced.
    *
-   * @param key field key
-   * @param value value
+   * @param key    field key
+   * @param value  value
    * @param locale locale
    * @return this {@code CMAAsset} instance
    */

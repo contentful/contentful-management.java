@@ -7,7 +7,7 @@ import android.os.Looper
 import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAArray
 import com.contentful.java.cma.model.CMAAsset
-import com.squareup.okhttp.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockResponse
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
@@ -23,7 +23,7 @@ class AndroidTests : BaseTest() {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val activity = Robolectric.buildActivity(TestActivity::class.java)
-                .withIntent(Intent().putExtra("EXTRA_URL", server!!.getUrl("/").toString()))
+                .withIntent(Intent().putExtra("EXTRA_URL", server!!.url("/").toString()))
                 .create()
                 .get()
 

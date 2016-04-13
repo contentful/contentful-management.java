@@ -19,12 +19,12 @@ package com.contentful.java.cma;
 import com.contentful.java.cma.RxExtensions.DefFunc;
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAContentType;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+
+import retrofit2.Retrofit;
 
 /**
  * Content Types Module.
@@ -32,13 +32,13 @@ import retrofit.client.Response;
 public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
   final Async async;
 
-  public ModuleContentTypes(RestAdapter restAdapter, Executor callbackExecutor) {
-    super(restAdapter, callbackExecutor);
+  public ModuleContentTypes(Retrofit retrofit, Executor callbackExecutor) {
+    super(retrofit, callbackExecutor);
     this.async = new Async();
   }
 
-  @Override protected ServiceContentTypes createService(RestAdapter restAdapter) {
-    return restAdapter.create(ServiceContentTypes.class);
+  @Override protected ServiceContentTypes createService(Retrofit retrofit) {
+    return retrofit.create(ServiceContentTypes.class);
   }
 
   /**
@@ -47,13 +47,13 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
    * otherwise the server will auto-generate an ID that will be contained in the response upon
    * success.
    *
-   * @param spaceId Space ID
+   * @param spaceId     Space ID
    * @param contentType Content Type
    * @return {@link CMAContentType} result instance
    */
   @SuppressWarnings("unchecked")
   public CMAContentType create(String spaceId,
-      CMAContentType contentType) {
+                               CMAContentType contentType) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(contentType, "contentType");
 
@@ -64,13 +64,13 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
     try {
       CMAContentType result;
       if (contentTypeId == null) {
-        result = service.create(spaceId, contentType);
+        result = service.create(spaceId, contentType).toBlocking().first();
       } else {
-        result = service.create(spaceId, contentTypeId, contentType);
+        result = service.create(spaceId, contentTypeId, contentType).toBlocking().first();
       }
       contentType.setSys(sys);
       return result;
-    } catch (RetrofitError e) {
+    } catch (RuntimeException e) {
       contentType.setSys(sys);
       throw (e);
     }
@@ -79,14 +79,14 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
   /**
    * Delete a Content Type.
    *
-   * @param spaceId Space ID
+   * @param spaceId       Space ID
    * @param contentTypeId Content Type ID
    * @return Retrofit {@link Response} instance
    */
-  public Response delete(String spaceId, String contentTypeId) {
+  public String delete(String spaceId, String contentTypeId) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(contentTypeId, "contentTypeId");
-    return service.delete(spaceId, contentTypeId);
+    return service.delete(spaceId, contentTypeId).toBlocking().first();
   }
 
   /**
@@ -103,25 +103,25 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
    * Fetch all Content Types from a Space with a query.
    *
    * @param spaceId Space ID
-   * @param query Query
+   * @param query   Query
    * @return {@link CMAArray} result instance
    */
   public CMAArray<CMAContentType> fetchAll(String spaceId, Map<String, String> query) {
     assertNotNull(spaceId, "spaceId");
-    return service.fetchAll(spaceId, query);
+    return service.fetchAll(spaceId, query).toBlocking().first();
   }
 
   /**
    * Fetch a Content Type with the given {@code contentTypeId} from a Space.
    *
-   * @param spaceId Space ID
+   * @param spaceId       Space ID
    * @param contentTypeId Content Type ID
    * @return {@link CMAContentType} result instance
    */
   public CMAContentType fetchOne(String spaceId, String contentTypeId) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(contentTypeId, "contentTypeId");
-    return service.fetchOne(spaceId, contentTypeId);
+    return service.fetchOne(spaceId, contentTypeId).toBlocking().first();
   }
 
   /**
@@ -134,7 +134,12 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
     assertNotNull(contentType, "contentType");
     String contentTypeId = getResourceIdOrThrow(contentType, "contentType");
     String spaceId = getSpaceIdOrThrow(contentType, "contentType");
-    return service.publish(contentType.getVersion(), spaceId, contentTypeId, new Byte[0]);
+    return service.publish(
+        contentType.getVersion(),
+        spaceId,
+        contentTypeId,
+        new Byte[0]
+    ).toBlocking().first();
   }
 
   /**
@@ -147,7 +152,7 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
     assertNotNull(contentType, "contentType");
     String contentTypeId = getResourceIdOrThrow(contentType, "contentType");
     String spaceId = getSpaceIdOrThrow(contentType, "contentType");
-    return service.unPublish(spaceId, contentTypeId);
+    return service.unPublish(spaceId, contentTypeId).toBlocking().first();
   }
 
   /**
@@ -162,7 +167,12 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
     String contentTypeId = getResourceIdOrThrow(contentType, "contentType");
     String spaceId = getSpaceIdOrThrow(contentType, "contentType");
     Integer version = getVersionOrThrow(contentType, "update");
-    return service.update(version, spaceId, contentTypeId, contentType);
+    return service.update(
+        version,
+        spaceId,
+        contentTypeId,
+        contentType
+    ).toBlocking().first();
   }
 
   /**
@@ -182,13 +192,14 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
      * otherwise the server will auto-generate an ID that will be contained in the response upon
      * success.
      *
-     * @param spaceId Space ID
+     * @param spaceId     Space ID
      * @param contentType Content Type
-     * @param callback Callback
+     * @param callback    Callback
      * @return the given {@code CMACallback} instance
      */
     public CMACallback<CMAContentType> create(final String spaceId,
-        final CMAContentType contentType, CMACallback<CMAContentType> callback) {
+                                              final CMAContentType contentType,
+                                              CMACallback<CMAContentType> callback) {
       return defer(new DefFunc<CMAContentType>() {
         @Override CMAContentType method() {
           return ModuleContentTypes.this.create(spaceId, contentType);
@@ -199,15 +210,15 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
     /**
      * Delete a Content Type.
      *
-     * @param spaceId Space ID
+     * @param spaceId       Space ID
      * @param contentTypeId Content Type ID
-     * @param callback Callback
+     * @param callback      Callback
      * @return the given {@code CMACallback} instance
      */
-    public CMACallback<Response> delete(final String spaceId, final String contentTypeId,
-        CMACallback<Response> callback) {
-      return defer(new DefFunc<Response>() {
-        @Override Response method() {
+    public CMACallback<String> delete(final String spaceId, final String contentTypeId,
+                                      CMACallback<String> callback) {
+      return defer(new DefFunc<String>() {
+        @Override String method() {
           return ModuleContentTypes.this.delete(spaceId, contentTypeId);
         }
       }, callback);
@@ -216,26 +227,28 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
     /**
      * Fetch all Content Types from a Space.
      *
-     * @param spaceId Space ID
+     * @param spaceId  Space ID
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
     public CMACallback<CMAArray<CMAContentType>> fetchAll(final String spaceId,
-        CMACallback<CMAArray<CMAContentType>> callback) {
-      return fetchAll(spaceId, null, callback);
+                                                          CMACallback<
+                                                              CMAArray<CMAContentType>> callback) {
+      return fetchAll(spaceId, new HashMap<String, String>(), callback);
     }
 
     /**
      * Fetch all Content Types from a Space with a query.
      *
-     * @param spaceId Space ID
-     * @param query Query
+     * @param spaceId  Space ID
+     * @param query    Query
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
     public CMACallback<CMAArray<CMAContentType>> fetchAll(final String spaceId,
-        final Map<String, String> query,
-        CMACallback<CMAArray<CMAContentType>> callback) {
+                                                          final Map<String, String> query,
+                                                          CMACallback<
+                                                              CMAArray<CMAContentType>> callback) {
       return defer(new DefFunc<CMAArray<CMAContentType>>() {
         @Override CMAArray<CMAContentType> method() {
           return ModuleContentTypes.this.fetchAll(spaceId, query);
@@ -246,13 +259,13 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
     /**
      * Fetch a Content Type with the given {@code contentTypeId} from a Space.
      *
-     * @param spaceId Space ID
+     * @param spaceId       Space ID
      * @param contentTypeId Content Type ID
-     * @param callback Callback
+     * @param callback      Callback
      * @return the given {@code CMACallback} instance
      */
     public CMACallback<CMAContentType> fetchOne(final String spaceId, final String contentTypeId,
-        CMACallback<CMAContentType> callback) {
+                                                CMACallback<CMAContentType> callback) {
       return defer(new DefFunc<CMAContentType>() {
         @Override CMAContentType method() {
           return ModuleContentTypes.this.fetchOne(spaceId, contentTypeId);
@@ -264,11 +277,11 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
      * Publish a Content Type.
      *
      * @param contentType Content Type
-     * @param callback Callback
+     * @param callback    Callback
      * @return the given {@code CMACallback} instance
      */
     public CMACallback<CMAContentType> publish(final CMAContentType contentType,
-        CMACallback<CMAContentType> callback) {
+                                               CMACallback<CMAContentType> callback) {
       return defer(new DefFunc<CMAContentType>() {
         @Override CMAContentType method() {
           return ModuleContentTypes.this.publish(contentType);
@@ -280,11 +293,11 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
      * Un-Publish a Content Type.
      *
      * @param contentType Content Type
-     * @param callback Callback
+     * @param callback    Callback
      * @return the given {@code CMACallback} instance
      */
     public CMACallback<CMAContentType> unPublish(final CMAContentType contentType,
-        CMACallback<CMAContentType> callback) {
+                                                 CMACallback<CMAContentType> callback) {
       return defer(new DefFunc<CMAContentType>() {
         @Override CMAContentType method() {
           return ModuleContentTypes.this.unPublish(contentType);
@@ -296,11 +309,11 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
      * Update a Content Type.
      *
      * @param contentType Content Type
-     * @param callback Callback
+     * @param callback    Callback
      * @return the given {@code CMACallback} instance
      */
     public CMACallback<CMAContentType> update(final CMAContentType contentType,
-        CMACallback<CMAContentType> callback) {
+                                              CMACallback<CMAContentType> callback) {
       return defer(new DefFunc<CMAContentType>() {
         @Override CMAContentType method() {
           return ModuleContentTypes.this.update(contentType);

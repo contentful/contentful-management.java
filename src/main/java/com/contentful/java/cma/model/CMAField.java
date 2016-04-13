@@ -93,8 +93,9 @@ public class CMAField {
 
   /**
    * Sets a {@code List} of validation rules for this field.
+   *
    * @param validations validations list
-   * Returns this {@code CMAField} instance
+   *                    Returns this {@code CMAField} instance
    */
   public CMAField setValidations(List<Map> validations) {
     this.validations = validations;
@@ -103,6 +104,7 @@ public class CMAField {
 
   /**
    * Sets the {@code items} attribute value.
+   *
    * @param arrayItems Map instance
    * @return this {@code CMAField} instance
    */
@@ -113,8 +115,9 @@ public class CMAField {
 
   /**
    * Sets the {@code required} attribute value.
+   *
    * @param required boolean indicating whether or not this field is required
-   * Returns this {@code CMAField} instance
+   *                 Returns this {@code CMAField} instance
    */
   public CMAField setRequired(boolean required) {
     this.required = required;
@@ -123,8 +126,9 @@ public class CMAField {
 
   /**
    * Sets the {@code disabled} attribute value.
+   *
    * @param disabled boolean indicating whether or not this field is disabled
-   * Returns this {@code CMAField} instance
+   *                 Returns this {@code CMAField} instance
    */
   public CMAField setDisabled(boolean disabled) {
     this.disabled = disabled;
@@ -133,8 +137,9 @@ public class CMAField {
 
   /**
    * Sets the {@code localized} attribute value.
+   *
    * @param localized boolean indicating whether or not this field is localized
-   * Returns this {@code CMAField} instance
+   *                  Returns this {@code CMAField} instance
    */
   public CMAField setLocalized(boolean localized) {
     this.localized = localized;
