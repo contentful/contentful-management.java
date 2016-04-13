@@ -16,6 +16,7 @@
 
 package com.contentful.java.cma
 
+import com.contentful.java.cma.interceptor.AuthorizationHeaderInterceptor
 import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAArray
@@ -102,7 +103,8 @@ class ClientTests : BaseTest() {
 
         // Request
         val recordedRequest = server!!.takeRequest()
-        assertEquals("Bearer token", recordedRequest.getHeader("Authorization"))
+        assertEquals(AuthorizationHeaderInterceptor.HEADER_BEARER + " token",
+                recordedRequest.getHeader(AuthorizationHeaderInterceptor.HEADER_NAME))
     }
 
     @test fun testUserAgent() {

@@ -11,6 +11,8 @@ import okhttp3.Response;
  */
 public class AuthorizationHeaderInterceptor implements Interceptor {
   public static final String HEADER_NAME = "Authorization";
+  public static final String HEADER_BEARER = "Bearer";
+
   private final String token;
 
   /**
@@ -33,7 +35,7 @@ public class AuthorizationHeaderInterceptor implements Interceptor {
     final Request request = chain.request();
 
     return chain.proceed(request.newBuilder()
-        .addHeader(HEADER_NAME, "Bearer " + token)
+        .addHeader(HEADER_NAME, HEADER_BEARER + " " + token)
         .build());
   }
 }
