@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Version [1.0.0][unreleased] - (in development)
+- upcomming features
+
+## Version [1.0.0] - 2016-04-15
 - Change: Use kotlin 1.0.1
 - Change: Use okhttp 3.2.0
 - Change: Use retrofit 2.0.1
@@ -51,7 +54,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Version 0.9.0 - 2014-11-18
 Initial release.
 
-[unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-0.10.0...HEAD
+[unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-1.0.0...HEAD
+[1.0.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-0.10.0...cma-sdk-1.0.0
 [0.10.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-0.9.10...cma-sdk-0.10.0
 [0.9.10]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-0.9.9...cma-sdk-0.9.10
 [0.9.9]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-0.9.8...cma-sdk-0.9.9
