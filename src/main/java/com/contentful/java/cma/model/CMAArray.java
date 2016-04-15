@@ -39,35 +39,35 @@ public class CMAArray<T extends CMAResource> extends CMAResource {
   int limit;
 
   /**
-   * Returns the list of resources for this array.
+   * @return the list of resources for this array.
    */
   public List<T> getItems() {
     return items;
   }
 
   /**
-   * Returns the total number of resources contained within this array.
+   * @return the total number of resources contained within this array.
    */
   public int getTotal() {
     return total;
   }
 
   /**
-   * Returns the {@code skip} attribute for this array.
+   * @return the {@code skip} attribute for this array.
    */
   public int getSkip() {
     return skip;
   }
 
   /**
-   * Returns the {@code limit} attribute for this array.
+   * @return the {@code limit} attribute for this array.
    */
   public int getLimit() {
     return limit;
   }
 
   /**
-   * Returns a map of included resources.
+   * @return a map of included resources.
    */
   public Map getIncludes() {
     return includes;

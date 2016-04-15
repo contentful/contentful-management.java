@@ -124,7 +124,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
   }
 
   /**
-   * Returns a module with a set of asynchronous methods.
+   * @return a module with a set of asynchronous methods.
    */
   public Async async() {
     return async;

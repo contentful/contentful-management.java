@@ -37,7 +37,8 @@ public class CMAContentType extends StatefulResource {
 
   /**
    * Sets the ID for this Content Type.
-   * Returns this {@code CMAContentType} instance
+   * @param id the id to be set
+   * @return this {@code CMAContentType} instance
    */
   @Override public CMAContentType setId(String id) {
     return (CMAContentType) super.setId(id);
@@ -70,14 +71,14 @@ public class CMAContentType extends StatefulResource {
   }
 
   /**
-   * Returns the name of this Content Type.
+   * @return the name of this Content Type.
    */
   public String getName() {
     return name;
   }
 
   /**
-   * Returns a list of fields for this Content Type.
+   * @return a list of fields for this Content Type.
    */
   public List<CMAField> getFields() {
     return fields;
@@ -95,7 +96,7 @@ public class CMAContentType extends StatefulResource {
   }
 
   /**
-   * Returns the display field of this Content Type.
+   * @return the display field of this Content Type.
    */
   public String getDisplayField() {
     return displayField;
@@ -103,6 +104,8 @@ public class CMAContentType extends StatefulResource {
 
   /**
    * Sets the display field for this Content Type.
+   *
+   * @param displayField the field to be set
    *
    * @return this {@code CMAContentType} instance
    */
@@ -112,7 +115,7 @@ public class CMAContentType extends StatefulResource {
   }
 
   /**
-   * Returns the description of this Content Type.
+   * @return the description of this Content Type.
    */
   public String getDescription() {
     return description;
@@ -120,7 +123,7 @@ public class CMAContentType extends StatefulResource {
 
   /**
    * Sets the description field for this Content Type.
-   *
+   * @param description the description to be set
    * @return this {@code CMAContentType} instance
    */
   public CMAContentType setDescription(String description) {

@@ -57,7 +57,8 @@ public class CMAField {
 
   /**
    * Sets the ID for this field.
-   * Returns this {@code CMAField} instance
+   * @param id the id to be set
+   * @return this {@code CMAField} instance
    */
   public CMAField setId(String id) {
     this.id = id;
@@ -66,7 +67,8 @@ public class CMAField {
 
   /**
    * Sets the name for this field.
-   * Returns this {@code CMAField} instance
+   * @param name the name to be set
+   * @return this {@code CMAField} instance
    */
   public CMAField setName(String name) {
     this.name = name;
@@ -75,7 +77,8 @@ public class CMAField {
 
   /**
    * Sets the type for this field.
-   * Returns this {@code CMAField} instance
+   * @param type the type to be set
+   * @return this {@code CMAField} instance
    */
   public CMAField setType(CMAFieldType type) {
     this.type = type;
@@ -84,7 +87,8 @@ public class CMAField {
 
   /**
    * Sets the link type for this field.
-   * Returns this {@code CMAField} instance
+   * @param linkType the type of link to be set
+   * @return this {@code CMAField} instance
    */
   public CMAField setLinkType(String linkType) {
     this.linkType = linkType;
@@ -96,6 +100,7 @@ public class CMAField {
    *
    * @param validations validations list
    *                    Returns this {@code CMAField} instance
+   * @return this {@code CMAField} instance
    */
   public CMAField setValidations(List<Map> validations) {
     this.validations = validations;
@@ -118,6 +123,7 @@ public class CMAField {
    *
    * @param required boolean indicating whether or not this field is required
    *                 Returns this {@code CMAField} instance
+   * @return this {@code CMAField} instance
    */
   public CMAField setRequired(boolean required) {
     this.required = required;
@@ -129,6 +135,7 @@ public class CMAField {
    *
    * @param disabled boolean indicating whether or not this field is disabled
    *                 Returns this {@code CMAField} instance
+   * @return this {@code CMAField} instance
    */
   public CMAField setDisabled(boolean disabled) {
     this.disabled = disabled;
@@ -140,6 +147,7 @@ public class CMAField {
    *
    * @param localized boolean indicating whether or not this field is localized
    *                  Returns this {@code CMAField} instance
+   * @return this {@code CMAField} instance
    */
   public CMAField setLocalized(boolean localized) {
     this.localized = localized;
@@ -147,63 +155,63 @@ public class CMAField {
   }
 
   /**
-   * Returns the {@code id} attribute of this field.
+   * @return the {@code id} attribute of this field.
    */
   public String getId() {
     return id;
   }
 
   /**
-   * Returns the {@code name} attribute of this field.
+   * @return the {@code name} attribute of this field.
    */
   public String getName() {
     return name;
   }
 
   /**
-   * Returns the {@code type} attribute of this field.
+   * @return the {@code type} attribute of this field.
    */
   public CMAFieldType getType() {
     return type;
   }
 
   /**
-   * Returns the {@code linkType} attribute of this field.
+   * @return the {@code linkType} attribute of this field.
    */
   public String getLinkType() {
     return linkType;
   }
 
   /**
-   * Returns a {@code List} of validation rules for this field.
+   * @return a {@code List} of validation rules for this field.
    */
   public List<Map> getValidations() {
     return validations;
   }
 
   /**
-   * Returns the {@code items} attribute value as a {@code Map}.
+   * @return the {@code items} attribute value as a {@code Map}.
    */
   public HashMap getArrayItems() {
     return arrayItems;
   }
 
   /**
-   * Returns the {@code required} attribute of this field.
+   * @return the {@code required} attribute of this field.
    */
   public boolean isRequired() {
     return required;
   }
 
   /**
-   * Returns the {@code disabled} attribute of this field.
+   * @return the {@code disabled} attribute of this field.
    */
   public Boolean isDisabled() {
     return disabled;
   }
 
   /**
-   * Returns the {@code localized} attribute of this field.
+   * @return the {@code localized} attribute of this field.
    */
   public boolean isLocalized() {
     return localized;

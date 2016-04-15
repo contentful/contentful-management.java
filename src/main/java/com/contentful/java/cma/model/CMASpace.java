@@ -25,7 +25,8 @@ public class CMASpace extends CMAResource {
 
   /**
    * Sets the name for this Space.
-   * Returns this {@code CMASpace} instance.
+   * @param name the name of the Space to be set
+   * @return this {@code CMASpace} instance.
    */
   public CMASpace setName(String name) {
     this.name = name;
@@ -33,7 +34,7 @@ public class CMASpace extends CMAResource {
   }
 
   /**
-   * Returns the name of this Space.
+   * @return the name of this Space.
    */
   public String getName() {
     return name;

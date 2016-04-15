@@ -29,7 +29,7 @@ public class AuthorizationHeaderInterceptor implements Interceptor {
    *
    * @param chain the execution chain for the request.
    * @return the response received
-   * @throws IOException
+   * @throws IOException if a problem happened
    */
   @Override public Response intercept(Chain chain) throws IOException {
     final Request request = chain.request();

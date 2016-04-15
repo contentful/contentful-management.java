@@ -38,7 +38,7 @@ public class LogInterceptor implements Interceptor {
    *
    * @param chain the chain of interceptor, provided by the okhttp3
    * @return the response of the chain
-   * @throws IOException
+   * @throws IOException if an error happened in the chain.
    */
   @Override public Response intercept(Chain chain) throws IOException {
     Request request = chain.request();

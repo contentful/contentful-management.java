@@ -59,7 +59,7 @@ public class CMAAsset extends StatefulResource {
   }
 
   /**
-   * Returns a map of fields for this Asset.
+   * @return a map of fields for this Asset.
    */
   public LinkedHashMap<String, Map<String, Object>> getFields() {
     return fields;

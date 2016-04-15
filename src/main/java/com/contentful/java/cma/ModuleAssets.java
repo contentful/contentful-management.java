@@ -141,7 +141,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
    *
    * @param asset  Asset
    * @param locale Locale
-   * @return Retrofit {@link Response} instance
+   * @return String representing the success (203) of processing
    */
   public String process(CMAAsset asset, String locale) {
     assertNotNull(asset, "asset");
@@ -207,7 +207,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
   }
 
   /**
-   * Returns a module with a set of asynchronous methods.
+   * @return a module with a set of asynchronous methods.
    */
   public Async async() {
     return async;

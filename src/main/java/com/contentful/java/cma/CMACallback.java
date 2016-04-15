@@ -61,7 +61,7 @@ public abstract class CMACallback<T> {
   }
 
   /**
-   * Returns true in case this callback instance was previously canceled.
+   * @return true in case this callback instance was previously canceled.
    */
   public synchronized boolean isCancelled() {
     return cancelled;

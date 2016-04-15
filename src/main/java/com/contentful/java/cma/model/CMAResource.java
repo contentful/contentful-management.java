@@ -28,7 +28,8 @@ public class CMAResource {
 
   /**
    * Sets the ID for this CMAResource.
-   * Returns this {@code CMAResource} instance
+   * @param id to be set
+   * @return this {@code CMAResource} instance
    */
   @SuppressWarnings("unchecked")
   public <T extends CMAResource> T setId(String id) {
@@ -40,7 +41,7 @@ public class CMAResource {
   }
 
   /**
-   * Returns the {@code sys.version} value, null if it does not exist.
+   * @return the {@code sys.version} value, null if it does not exist.
    */
   public Integer getVersion() {
     if (sys != null) {
@@ -53,14 +54,14 @@ public class CMAResource {
   }
 
   /**
-   * Returns the {@code sys.id} value, null if it is does not exist.
+   * @return the {@code sys.id} value, null if it is does not exist.
    */
   public String getResourceId() {
     return getSysAttribute("id");
   }
 
   /**
-   * Returns the ID of the Space associated with this resource, null if it does not exist.
+   * @return the ID of the Space associated with this resource, null if it does not exist.
    */
   public String getSpaceId() {
     Map space = getSysAttribute("space");
@@ -74,7 +75,7 @@ public class CMAResource {
   }
 
   /**
-   * Returns the value of the system attribute {@code attr}, null if it does not exist.
+   * @return the value of the system attribute {@code attr}, null if it does not exist.
    */
   @SuppressWarnings("unchecked") <T> T getSysAttribute(String attr) {
     if (sys != null) {
@@ -84,7 +85,7 @@ public class CMAResource {
   }
 
   /**
-   * Returns a map of system attributes.
+   * @return a map of system attributes.
    */
   public HashMap<String, Object> getSys() {
     return sys;
@@ -92,6 +93,8 @@ public class CMAResource {
 
   /**
    * Sets a map of system attributes.
+   *
+   * @param sys sets the sys hash.
    */
   public void setSys(HashMap<String, Object> sys) {
     this.sys = sys;

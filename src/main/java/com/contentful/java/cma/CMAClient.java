@@ -161,28 +161,28 @@ public class CMAClient {
   }
 
   /**
-   * Returns the Assets module.
+   * @return the Assets module.
    */
   public ModuleAssets assets() {
     return modAssets;
   }
 
   /**
-   * Returns the Content Types module.
+   * @return the Content Types module.
    */
   public ModuleContentTypes contentTypes() {
     return modContentTypes;
   }
 
   /**
-   * Returns the Entries module.
+   * @return the Entries module.
    */
   public ModuleEntries entries() {
     return modEntries;
   }
 
   /**
-   * Returns the Spaces module.
+   * @return the Spaces module.
    */
   public ModuleSpaces spaces() {
     return modSpaces;
@@ -304,7 +304,7 @@ public class CMAClient {
     }
 
     /**
-     * Returns a {@link CMAClient} out of this {@link Builder}.
+     * @return a {@link CMAClient} out of this {@link Builder}.
      */
     public CMAClient build() {
       return new CMAClient(this);

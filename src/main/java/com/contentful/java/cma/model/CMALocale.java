@@ -30,28 +30,28 @@ public class CMALocale extends CMAResource {
   boolean isDefault;
 
   /**
-   * Returns the {@code name} attribute of this locale.
+   * @return the {@code name} attribute of this locale.
    */
   public String getName() {
     return name;
   }
 
   /**
-   * Returns the {@code code} attribute of this locale.
+   * @return the {@code code} attribute of this locale.
    */
   public String getCode() {
     return code;
   }
 
   /**
-   * Returns the {@code publish} attribute of this locale.
+   * @return the {@code publish} attribute of this locale.
    */
   public boolean isPublished() {
     return publish;
   }
 
   /**
-   * Returns the {@code default} attribute of this locale.
+   * @return the {@code default} attribute of this locale.
    */
   public boolean isDefault() {
     return isDefault;

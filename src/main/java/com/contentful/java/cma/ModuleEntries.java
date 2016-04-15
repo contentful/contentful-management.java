@@ -193,7 +193,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
   }
 
   /**
-   * Returns a module with a set of asynchronous methods.
+   * @return a module with a set of asynchronous methods.
    */
   public Async async() {
     return async;

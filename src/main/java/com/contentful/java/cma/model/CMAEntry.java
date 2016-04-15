@@ -27,7 +27,8 @@ public class CMAEntry extends StatefulResource {
 
   /**
    * Sets the ID for this Entry.
-   * Returns this {@code CMAEntry} instance
+   * @param id the id to be set
+   * @return this {@code CMAEntry} instance
    */
   @Override public CMAEntry setId(String id) {
     return (CMAEntry) super.setId(id);
@@ -58,7 +59,7 @@ public class CMAEntry extends StatefulResource {
   }
 
   /**
-   * Returns a map of fields for this Entry.
+   * @return a map of fields for this Entry.
    */
   public LinkedHashMap<String, LinkedHashMap<String, Object>> getFields() {
     return fields;
@@ -67,7 +68,7 @@ public class CMAEntry extends StatefulResource {
   /**
    * Sets a map of fields for this Entry.
    *
-   * @param fields
+   * @param fields the fields to be set
    * @return this {@code CMAEntry} instance
    */
   public CMAEntry setFields(LinkedHashMap<String, LinkedHashMap<String, Object>> fields) {

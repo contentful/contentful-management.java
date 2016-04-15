@@ -29,7 +29,7 @@ public class ContentTypeInterceptor implements Interceptor {
    *
    * @param chain the execution chain for the request.
    * @return the response received
-   * @throws IOException
+   * @throws IOException if chain had an error
    */
   @Override public Response intercept(Chain chain) throws IOException {
     final Request request = chain.request();
