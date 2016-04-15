@@ -7,10 +7,12 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 /**
- * Interceptor to add authorization header to requests
+ * Interceptor to add content type header to requests
  */
 public class ContentTypeInterceptor implements Interceptor {
   public static final String HEADER_NAME = "Content-Type";
+  public static final String DEFAULT_CONTENT_TYPE = "application/vnd.contentful.management.v1+json";
+
   private final String contentType;
 
   /**

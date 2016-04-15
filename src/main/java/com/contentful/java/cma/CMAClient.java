@@ -17,6 +17,7 @@
 package com.contentful.java.cma;
 
 import com.contentful.java.cma.interceptor.AuthorizationHeaderInterceptor;
+import com.contentful.java.cma.interceptor.ContentTypeInterceptor;
 import com.contentful.java.cma.interceptor.ErrorInterceptor;
 import com.contentful.java.cma.interceptor.LogInterceptor;
 import com.contentful.java.cma.interceptor.UserAgentHeaderInterceptor;
@@ -104,6 +105,7 @@ public class CMAClient {
       OkHttpClient.Builder okBuilder = new OkHttpClient.Builder()
           .addInterceptor(new AuthorizationHeaderInterceptor(cmaBuilder.accessToken))
           .addInterceptor(new UserAgentHeaderInterceptor(getUserAgent(propertiesReader)))
+          .addInterceptor(new ContentTypeInterceptor(ContentTypeInterceptor.DEFAULT_CONTENT_TYPE))
           .addInterceptor(new ErrorInterceptor());
 
       okBuilder = setLogger(okBuilder, cmaBuilder);
