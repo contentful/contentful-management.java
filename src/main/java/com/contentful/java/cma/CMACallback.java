@@ -26,7 +26,7 @@ package com.contentful.java.cma;
  * implementation for handling errors.
  *
  * @param <T> the type of object to be expected as a result. For methods that return a collection
- *            of resources it is required to use {@code CDAArray} as the type.
+ *            of resources it is required to use {@code CMAArray} as the type.
  *            <p/>
  *            Callback can be cancelled at any point using the {@link #cancel()} method, that will
  *            prevent any future calls to {@link #onSuccess} and
