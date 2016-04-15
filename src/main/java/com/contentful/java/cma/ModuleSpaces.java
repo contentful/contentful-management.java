@@ -68,7 +68,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
    * Delete a Space.
    *
    * @param spaceId Space ID
-   * @return Retrofit {@link Response} instance
+   * @return String representing the result (203, or an error code)
    */
   public String delete(String spaceId) {
     assertNotNull(spaceId, "spaceId");

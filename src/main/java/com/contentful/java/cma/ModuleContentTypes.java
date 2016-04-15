@@ -81,7 +81,7 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
    *
    * @param spaceId       Space ID
    * @param contentTypeId Content Type ID
-   * @return Retrofit {@link Response} instance
+   * @return String representing the result of the operation
    */
   public String delete(String spaceId, String contentTypeId) {
     assertNotNull(spaceId, "spaceId");
