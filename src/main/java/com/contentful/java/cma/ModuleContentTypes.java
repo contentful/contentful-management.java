@@ -96,7 +96,7 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
    * @return {@link CMAArray} result instance
    */
   public CMAArray<CMAContentType> fetchAll(String spaceId) {
-    return fetchAll(spaceId, new HashMap<String,String>());
+    return fetchAll(spaceId, new HashMap<String, String>());
   }
 
   /**
