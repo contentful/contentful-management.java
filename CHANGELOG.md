@@ -2,8 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Version [1.0.0][unreleased] - (in development)
+## Version [1.0.2][unreleased] - (in development)
 - upcomming features
+
+## Version [1.0.1] - 2016-04-18
+- Fixed: java.lang.IllegalArgumentException: Query map was null in ModuleContentTypes
 
 ## Version [1.0.0] - 2016-04-15
 - Change: Use kotlin 1.0.1
