@@ -108,7 +108,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
    * @return {@link CMAArray} result instance
    */
   public CMAArray<CMAAsset> fetchAll(String spaceId) {
-    return fetchAll(spaceId, null);
+    return fetchAll(spaceId, new HashMap<String, String>());
   }
 
   /**
