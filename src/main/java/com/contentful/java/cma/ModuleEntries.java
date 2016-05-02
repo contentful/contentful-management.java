@@ -108,7 +108,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
    * @return {@link CMAArray} result instance
    */
   public CMAArray<CMAEntry> fetchAll(String spaceId) {
-    return fetchAll(spaceId, null);
+    return fetchAll(spaceId, new HashMap<String, String>());
   }
 
   /**
