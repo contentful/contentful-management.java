@@ -21,6 +21,8 @@ import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMALocale;
 import com.contentful.java.cma.model.CMASpace;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Executor;
 
 import retrofit2.Retrofit;
@@ -81,7 +83,18 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
    * @return {@link CMAArray} result instance
    */
   public CMAArray<CMASpace> fetchAll() {
-    return service.fetchAll().toBlocking().first();
+    return fetchAll(new HashMap<String, String>());
+  }
+
+  /**
+   * Fetch all Spaces, using specific queries.
+   *
+   * @param query filter the results
+   * @return {@link CMAArray} result instance
+   */
+  public CMAArray<CMASpace> fetchAll(HashMap<String, String> query) {
+    DefaultQueryParameter.putIfNotSet(query, DefaultQueryParameter.FETCH);
+    return service.fetchAll(query).toBlocking().first();
   }
 
   /**
@@ -102,8 +115,20 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
    * @return {@link CMAArray} result instance
    */
   public CMAArray<CMALocale> fetchLocales(String spaceId) {
+    return fetchLocales(spaceId, new HashMap<String, String>());
+  }
+
+  /**
+   * Fetch specific Locales for a Space.
+   *
+   * @param spaceId Space ID
+   * @param query   the filters to be applied for the locales to be fetched
+   * @return {@link CMAArray} result instance
+   */
+  public CMAArray<CMALocale> fetchLocales(String spaceId, HashMap<String, String> query) {
     assertNotNull(spaceId, "spaceId");
-    return service.fetchLocales(spaceId).toBlocking().first();
+    DefaultQueryParameter.putIfNotSet(query, DefaultQueryParameter.FETCH);
+    return service.fetchLocales(spaceId, query).toBlocking().first();
   }
 
   /**
@@ -184,12 +209,27 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
     /**
      * Fetch all Spaces.
      *
-     * @param callback Callback
-     * @return the given {@code CMACallback} instance
+     * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH}.
+     *
+     * @param callback Inform about results on the callback.
+     * @return the given {@link CMACallback} instance.
      */
     public CMACallback<CMAArray<CMASpace>> fetchAll(CMACallback<CMAArray<CMASpace>> callback) {
+      return fetchAll(new HashMap<String, String>(), callback);
+    }
+
+    /**
+     * Fetch all Spaces using a non empty query.
+     *
+     * @param query    used to narrow down on the space requested.
+     * @param callback callback to be called, once the result is present.
+     * @return the given {@link CMACallback} instance
+     */
+    public CMACallback<CMAArray<CMASpace>> fetchAll(final Map<String, String> query,
+                                                    CMACallback<CMAArray<CMASpace>> callback) {
       return defer(new DefFunc<CMAArray<CMASpace>>() {
         @Override CMAArray<CMASpace> method() {
+          DefaultQueryParameter.putIfNotSet(query, DefaultQueryParameter.FETCH);
           return ModuleSpaces.this.fetchAll();
         }
       }, callback);

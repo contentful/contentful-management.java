@@ -104,6 +104,8 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
   /**
    * Fetch all Assets from a Space.
    *
+   * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH}
+   *
    * @param spaceId Space ID
    * @return {@link CMAArray} result instance
    */
@@ -112,14 +114,15 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
   }
 
   /**
-   * Fetch all Assets from a Space with a query.
+   * Fetch all Assets from a Space with query parameter.
    *
    * @param spaceId Space ID
-   * @param query   Query
+   * @param query   specifying details about which assets to fetch.
    * @return {@link CMAArray} result instance
    */
   public CMAArray<CMAAsset> fetchAll(String spaceId, Map<String, String> query) {
     assertNotNull(spaceId, "spaceId");
+    DefaultQueryParameter.putIfNotSet(query, DefaultQueryParameter.FETCH);
     return service.fetchAll(spaceId, query).toBlocking().first();
   }
 
@@ -294,6 +297,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
                                                     CMACallback<CMAArray<CMAAsset>> callback) {
       return defer(new DefFunc<CMAArray<CMAAsset>>() {
         @Override CMAArray<CMAAsset> method() {
+          DefaultQueryParameter.putIfNotSet(query, DefaultQueryParameter.FETCH);
           return ModuleAssets.this.fetchAll(spaceId, query);
         }
       }, callback);

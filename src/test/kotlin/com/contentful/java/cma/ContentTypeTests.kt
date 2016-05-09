@@ -203,7 +203,7 @@ class ContentTypeTests : BaseTest() {
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("GET", recordedRequest.method)
-        assertEquals("/spaces/spaceid/content_types", recordedRequest.path)
+        assertEquals("/spaces/spaceid/content_types?limit=100", recordedRequest.path)
     }
 
     @test fun testFetchAllWithQuery() {

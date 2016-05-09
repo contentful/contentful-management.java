@@ -20,6 +20,8 @@ import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMALocale;
 import com.contentful.java.cma.model.CMASpace;
 
+import java.util.HashMap;
+
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -27,6 +29,7 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.QueryMap;
 import rx.Observable;
 
 /**
@@ -47,7 +50,9 @@ interface ServiceSpaces {
       @Path("space") String spaceId);
 
   @GET("/spaces")
-  Observable<CMAArray<CMASpace>> fetchAll();
+  Observable<CMAArray<CMASpace>> fetchAll(
+      @QueryMap HashMap<String, String> query
+      );
 
   @GET("/spaces/{space}")
   Observable<CMASpace> fetchOne(
@@ -55,7 +60,9 @@ interface ServiceSpaces {
 
   @GET("/spaces/{space}/locales")
   Observable<CMAArray<CMALocale>> fetchLocales(
-      @Path("space") String spaceId);
+      @Path("space") String spaceId,
+      @QueryMap HashMap<String, String> query
+  );
 
   @PUT("/spaces/{space}")
   Observable<CMASpace> update(

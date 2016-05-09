@@ -130,7 +130,7 @@ class SpaceTests : BaseTest() {
         // Request
         val request = server!!.takeRequest()
         assertEquals("GET", request.method)
-        assertEquals("/spaces", request.path)
+        assertEquals("/spaces?limit=100", request.path)
     }
 
     @org.junit.Test fun testFetchWithId() {
@@ -166,7 +166,7 @@ class SpaceTests : BaseTest() {
         assertEquals("/spaces/spaceid", request.path)
     }
 
-    @org.junit.Test fun testFetchLocales() {
+    @org.junit.Test fun testFetchAllLocales() {
         val responseBody = TestUtils.fileToString("space_fetch_locales_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -182,7 +182,7 @@ class SpaceTests : BaseTest() {
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("GET", recordedRequest.method)
-        assertEquals("/spaces/spaceid/locales", recordedRequest.path)
+        assertEquals("/spaces/spaceid/locales?limit=100", recordedRequest.path)
     }
 
     @org.junit.Test fun testUpdate() {

@@ -159,7 +159,7 @@ class EntryTests : BaseTest() {
         // Request
         val request = server!!.takeRequest()
         assertEquals("GET", request.method)
-        assertEquals("/spaces/spaceid/entries", request.path)
+        assertEquals("/spaces/spaceid/entries?limit=100", request.path)
     }
 
     @test fun testFetchAllWithQuery() {

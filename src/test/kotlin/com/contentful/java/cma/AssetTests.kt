@@ -123,7 +123,7 @@ class AssetTests : BaseTest() {
         // Request
         val request = server!!.takeRequest()
         assertEquals("GET", request.method)
-        assertEquals("/spaces/spaceid/assets", request.path)
+        assertEquals("/spaces/spaceid/assets?limit=100", request.path)
     }
 
     @test
