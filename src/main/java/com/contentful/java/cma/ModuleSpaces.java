@@ -92,7 +92,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
    * @param query filter the results
    * @return {@link CMAArray} result instance
    */
-  public CMAArray<CMASpace> fetchAll(HashMap<String, String> query) {
+  public CMAArray<CMASpace> fetchAll(Map<String, String> query) {
     DefaultQueryParameter.putIfNotSet(query, DefaultQueryParameter.FETCH);
     return service.fetchAll(query).toBlocking().first();
   }
@@ -125,7 +125,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
    * @param query   the filters to be applied for the locales to be fetched
    * @return {@link CMAArray} result instance
    */
-  public CMAArray<CMALocale> fetchLocales(String spaceId, HashMap<String, String> query) {
+  public CMAArray<CMALocale> fetchLocales(String spaceId, Map<String, String> query) {
     assertNotNull(spaceId, "spaceId");
     DefaultQueryParameter.putIfNotSet(query, DefaultQueryParameter.FETCH);
     return service.fetchLocales(spaceId, query).toBlocking().first();
