@@ -230,7 +230,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
       return defer(new DefFunc<CMAArray<CMASpace>>() {
         @Override CMAArray<CMASpace> method() {
           DefaultQueryParameter.putIfNotSet(query, DefaultQueryParameter.FETCH);
-          return ModuleSpaces.this.fetchAll();
+          return ModuleSpaces.this.fetchAll(query);
         }
       }, callback);
     }

@@ -20,7 +20,6 @@ import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMALocale;
 import com.contentful.java.cma.model.CMASpace;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import retrofit2.http.Body;
@@ -53,7 +52,7 @@ interface ServiceSpaces {
   @GET("/spaces")
   Observable<CMAArray<CMASpace>> fetchAll(
       @QueryMap Map<String, String> query
-      );
+  );
 
   @GET("/spaces/{space}")
   Observable<CMASpace> fetchOne(
