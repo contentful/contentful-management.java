@@ -2,8 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Version [1.1.1][unreleased] - (in development)
+## Version [1.1.2][unreleased] - (in development)
 - TBA
+
+## Version [1.1.1] - 2016-05-09
+- Fix: Redirect input query on async `ModuleSpaces` fetches.
+- Changed: Use `Map` instead of `HashMap` in query maps.
 
 ## Version [1.1.0] - 2016-05-09
 - New: Add query maps for `fetchAll` and have `limit` default to `100`.
@@ -63,7 +67,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Version 0.9.0 - 2014-11-18
 Initial release.
 
-[unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-1.1.0...HEAD
+[unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-1.1.1...HEAD
+[1.1.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-1.1.0...cma-sdk-1.1.1
 [1.1.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-1.0.2...cma-sdk-1.1.0
 [1.0.2]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-1.0.1...cma-sdk-1.0.2
 [1.0.1]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-1.0.0...cma-sdk-1.0.1
