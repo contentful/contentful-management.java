@@ -104,6 +104,8 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
   /**
    * Fetch all Entries from a Space.
    *
+   * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH}
+   *
    * @param spaceId Space ID
    * @return {@link CMAArray} result instance
    */
@@ -112,7 +114,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
   }
 
   /**
-   * Fetch all Entries from a Space with a query.
+   * Fetch all Entries from a Space with a query url parameter map.
    *
    * @param spaceId Space ID
    * @param query   Query
@@ -120,6 +122,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
    */
   public CMAArray<CMAEntry> fetchAll(String spaceId, Map<String, String> query) {
     assertNotNull(spaceId, "spaceId");
+    DefaultQueryParameter.putIfNotSet(query, DefaultQueryParameter.FETCH);
     return service.fetchAll(spaceId, query).toBlocking().first();
   }
 
@@ -281,6 +284,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
                                                     CMACallback<CMAArray<CMAEntry>> callback) {
       return defer(new RxExtensions.DefFunc<CMAArray<CMAEntry>>() {
         @Override CMAArray<CMAEntry> method() {
+          DefaultQueryParameter.putIfNotSet(query, DefaultQueryParameter.FETCH);
           return ModuleEntries.this.fetchAll(spaceId, query);
         }
       }, callback);

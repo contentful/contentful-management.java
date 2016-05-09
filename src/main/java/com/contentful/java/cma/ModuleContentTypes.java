@@ -90,7 +90,9 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
   }
 
   /**
-   * Fetch all Content Types from a Space.
+   * Fetch all Content Types from a Space, using default query parameter.
+   *
+   * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH}
    *
    * @param spaceId Space ID
    * @return {@link CMAArray} result instance
@@ -100,14 +102,15 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
   }
 
   /**
-   * Fetch all Content Types from a Space with a query.
+   * Fetch all Content Types from a Space with query parameters.
    *
    * @param spaceId Space ID
-   * @param query   Query
+   * @param query   Query to narrow down the content_types to be searched for
    * @return {@link CMAArray} result instance
    */
   public CMAArray<CMAContentType> fetchAll(String spaceId, Map<String, String> query) {
     assertNotNull(spaceId, "spaceId");
+    DefaultQueryParameter.putIfNotSet(query, DefaultQueryParameter.FETCH);
     return service.fetchAll(spaceId, query).toBlocking().first();
   }
 
@@ -251,6 +254,7 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
                                                               CMAArray<CMAContentType>> callback) {
       return defer(new DefFunc<CMAArray<CMAContentType>>() {
         @Override CMAArray<CMAContentType> method() {
+          DefaultQueryParameter.putIfNotSet(query, DefaultQueryParameter.FETCH);
           return ModuleContentTypes.this.fetchAll(spaceId, query);
         }
       }, callback);
