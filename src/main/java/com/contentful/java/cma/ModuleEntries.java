@@ -93,7 +93,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
    *
    * @param spaceId Space ID
    * @param entryId Entry ID
-   * @return String representint the success (203) of the action
+   * @return String representing the success (203) of the action
    */
   public String delete(String spaceId, String entryId) {
     assertNotNull(spaceId, "spaceId");
