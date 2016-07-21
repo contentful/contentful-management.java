@@ -2,8 +2,8 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Version [1.1.2][unreleased] - (in development)
-- TBA
+## Version [1.2.0][unreleased] - (in development)
+- New: Add `omitted` field for content type fields.
 
 ## Version [1.1.1] - 2016-05-09
 - Fix: Redirect input query on async `ModuleSpaces` fetches.

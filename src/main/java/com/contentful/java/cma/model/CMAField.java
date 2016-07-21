@@ -52,11 +52,15 @@ public class CMAField {
   // Disabled
   boolean disabled;
 
+  // Omitted
+  boolean omitted;
+
   // Localized
   boolean localized;
 
   /**
    * Sets the ID for this field.
+   *
    * @param id the id to be set
    * @return this {@code CMAField} instance
    */
@@ -67,6 +71,7 @@ public class CMAField {
 
   /**
    * Sets the name for this field.
+   *
    * @param name the name to be set
    * @return this {@code CMAField} instance
    */
@@ -77,6 +82,7 @@ public class CMAField {
 
   /**
    * Sets the type for this field.
+   *
    * @param type the type to be set
    * @return this {@code CMAField} instance
    */
@@ -87,6 +93,7 @@ public class CMAField {
 
   /**
    * Sets the link type for this field.
+   *
    * @param linkType the type of link to be set
    * @return this {@code CMAField} instance
    */
@@ -139,6 +146,18 @@ public class CMAField {
    */
   public CMAField setDisabled(boolean disabled) {
     this.disabled = disabled;
+    return this;
+  }
+
+  /**
+   * Sets the {@code omitted} attribute value.
+   *
+   * @param omitted boolean indicating whether or not this field is complete omitted
+   *                Returns this {@code CMAField} instance
+   * @return this {@code CMAField} instance
+   */
+  public CMAField setOmitted(boolean omitted) {
+    this.omitted = omitted;
     return this;
   }
 
@@ -208,6 +227,13 @@ public class CMAField {
    */
   public Boolean isDisabled() {
     return disabled;
+  }
+
+  /**
+   * @return the {@code omitted} attribute of this field.
+   */
+  public Boolean isOmitted() {
+    return omitted;
   }
 
   /**
