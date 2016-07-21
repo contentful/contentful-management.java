@@ -2,7 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Version [1.2.0][unreleased] - (in development)
+## Version [1.2.1][unreleased] - (in development)
+- TBD
+
+## Version [1.2.0] - 2016-07-21
 - New: Add `omitted` field for content type fields.
 
 ## Version [1.1.1] - 2016-05-09
