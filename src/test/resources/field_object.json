@@ -4,6 +4,7 @@
   "type": "Text",
   "required": true,
   "disabled": true,
+  "omitted": true,
   "validations": [
     {
       "size": {

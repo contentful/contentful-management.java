@@ -21,15 +21,18 @@ class GeneralTests : BaseTest() {
 
         assertTrue(field.isRequired)
         assertTrue(field.isDisabled)
+        assertTrue(field.isOmitted)
 
         // True
         var json = gson!!.toJsonTree(field, CMAField::class.java).asJsonObject
         assertTrue(json.has("required"))
         assertTrue(json.has("disabled"))
+        assertTrue(json.has("omitted"))
 
         // False
         field.setRequired(false)
         field.setDisabled(false)
+        field.setOmitted(false)
 
         // General attributes
         json = gson!!.toJsonTree(field, CMAField::class.java).asJsonObject
