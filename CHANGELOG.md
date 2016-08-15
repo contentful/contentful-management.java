@@ -3,7 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Version [1.3.0][unreleased] - (in development)
-- Fix: Send correct `Content-Type`
+- Fix: Send correct `Content-Type`.
+- Changed: Report response body from failed requests.
 
 ## Version [1.2.0] - 2016-07-21
 - New: Add `omitted` field for content type fields.
