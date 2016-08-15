@@ -1,0 +1,37 @@
+{
+  "url":"http://example.com",
+  "httpBasicUsername":null,
+  "name":"cma-created",
+  "headers":[],
+  "topics":[
+    "Entry.Save"
+  ],
+  "sys":{
+    "type":"WebhookDefinition",
+    "id":"webhookid",
+    "version":0,
+    "space":{
+      "sys":{
+        "type":"Link",
+        "linkType":"Space",
+        "id":"arqlnkt58eul"
+      }
+    },
+    "createdBy":{
+      "sys":{
+        "type":"Link",
+        "linkType":"User",
+        "id":"7uJNojWP0gbuP7Pplz7Syo"
+      }
+    },
+    "createdAt":"2016-07-26T09:48:13Z",
+    "updatedBy":{
+      "sys":{
+        "type":"Link",
+        "linkType":"User",
+        "id":"7uJNojWP0gbuP7Pplz7Syo"
+      }
+    },
+    "updatedAt":"2016-07-26T09:48:13Z"
+  }
+}

@@ -36,7 +36,8 @@ public class ErrorInterceptor implements Interceptor {
     return response;
   }
 
-  private IOException createExceptionWithBody(Request request, Response response) throws IOException {
+  private IOException createExceptionWithBody(Request request, Response response)
+      throws IOException {
     return new IOException(
         String.format(
             Locale.getDefault(),

@@ -3,8 +3,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Version [1.3.0][unreleased] - (in development)
-- Fix: Send correct `Content-Type`.
-- Changed: Report response body from failed requests.
+- New: [`Webhooks` module](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/webhooks).
+- Fix: Send correct `Content-Type`-header on PUT/POST HTTP requests.
+- Changed: Report response body from failed HTTP requests.
 
 ## Version [1.2.0] - 2016-07-21
 - New: Add `omitted` field for content type fields.

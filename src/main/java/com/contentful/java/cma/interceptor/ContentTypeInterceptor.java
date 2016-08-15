@@ -50,7 +50,8 @@ public class ContentTypeInterceptor implements Interceptor {
     return chain.proceed(contentTypeRequest);
   }
 
-  private void rewriteBodyWithCustomContentType(Request request, Request.Builder builder) throws IOException {
+  private void rewriteBodyWithCustomContentType(Request request, Request.Builder builder)
+      throws IOException {
     final Buffer sink = new Buffer();
     request.body().writeTo(sink);
 
