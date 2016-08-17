@@ -35,7 +35,7 @@ class AndroidTests : BaseTest() {
     }
 
     class TestActivity : Activity() {
-        val mainThreadLooper = Looper.getMainLooper()
+        val mainThreadLooper = Looper.getMainLooper()!!
         var callbackLooper: Looper? = null
 
         override fun onCreate(savedInstanceState: Bundle?) {

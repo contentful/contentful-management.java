@@ -46,7 +46,7 @@ public class CMAWebhookCallDetail extends CMAResource {
   }
 
   /**
-   * @return The timestamp contentfull issued this Webhook.
+   * @return The timestamp Contentful issued this Webhook.
    */
   public String getRequestAt() {
     return requestAt;

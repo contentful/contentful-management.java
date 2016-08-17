@@ -28,7 +28,7 @@ public class CMAWebhookHealth extends CMAResource {
     Integer healthy;
 
     /**
-     * @return Number of calls happend to this Webhook in total.
+     * @return Number of calls happened to this Webhook in total.
      */
     public Integer getTotal() {
       return total;

@@ -194,7 +194,7 @@ class SpaceTests : BaseTest() {
                 TestUtils.fileToString("space_update_object.json"),
                 CMASpace::class.java)
 
-        space.setName("newname")
+        space.name = "newname"
 
         space = assertTestCallback(client!!.spaces().async().update(
                 space, TestCallback()) as TestCallback)

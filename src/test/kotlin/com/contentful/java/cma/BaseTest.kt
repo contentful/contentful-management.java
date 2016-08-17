@@ -72,7 +72,7 @@ fun <T : CMAResource> T.setVersion(version: Double): T {
         setSys(sys)
     }
 
-    sys.put("version", version);
+    sys.put("version", version)
     return this@setVersion
 }
 

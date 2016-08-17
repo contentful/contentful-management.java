@@ -51,7 +51,7 @@ public class CMAWebhookCall extends CMAResource {
   }
 
   /**
-   * @return The type of event issuinng this callback.
+   * @return The type of event issuing this callback.
    */
   public String getEventType() {
     return eventType;

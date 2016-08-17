@@ -30,9 +30,9 @@ class GeneralTests : BaseTest() {
         assertTrue(json.has("omitted"))
 
         // False
-        field.setRequired(false)
-        field.setDisabled(false)
-        field.setOmitted(false)
+        field.isRequired = false
+        field.isDisabled = false
+        field.isOmitted = false
 
         // General attributes
         json = gson!!.toJsonTree(field, CMAField::class.java).asJsonObject
@@ -60,10 +60,10 @@ class GeneralTests : BaseTest() {
     }
 
     fun assertPrivateConstructor(clazz: Class<out Any>) {
-        var ctor = clazz.getDeclaredConstructor()
-        ctor.isAccessible = true
-        var exception = try {
-            ctor.newInstance()
+        val constructor = clazz.getDeclaredConstructor()
+        constructor.isAccessible = true
+        val exception = try {
+            constructor.newInstance()
         } catch(e: Exception) {
             e
         }

@@ -27,6 +27,7 @@ public class CMAEntry extends StatefulResource {
 
   /**
    * Sets the ID for this Entry.
+   *
    * @param id the id to be set
    * @return this {@code CMAEntry} instance
    */

@@ -49,7 +49,7 @@ public class CMAWebhookResponse {
   }
 
   /**
-   * @return A status code, retuned by calling the Webhook.
+   * @return A status code, returned by calling the Webhook.
    */
   public Integer getStatusCode() {
     return statusCode;
