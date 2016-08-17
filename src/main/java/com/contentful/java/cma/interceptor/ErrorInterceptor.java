@@ -24,13 +24,37 @@ public class ErrorInterceptor implements Interceptor {
     final Response response = chain.proceed(request);
 
     if (!response.isSuccessful()) {
-      throw new IOException(
-          String.format(
-              Locale.getDefault(),
-              "FAILED REQUEST: %s\n\t… %s",
-              request.toString(),
-              response.toString()));
+      IOException ioException;
+      try {
+        ioException = createExceptionWithBody(request, response);
+      } catch (IOException e) {
+        ioException = createException(request, response);
+      }
+
+      throw ioException;
     }
     return response;
+  }
+
+  private IOException createExceptionWithBody(Request request, Response response)
+      throws IOException {
+    return new IOException(
+        String.format(
+            Locale.getDefault(),
+            "FAILED REQUEST: %s\n\t… %s\n\t… Body%s",
+            request.toString(),
+            response.toString(),
+            new String(response.body().bytes()))
+    );
+  }
+
+  private IOException createException(Request request, Response response) {
+    return new IOException(
+        String.format(
+            Locale.getDefault(),
+            "FAILED REQUEST: %s\n\t… %s",
+            request.toString(),
+            response.toString())
+    );
   }
 }

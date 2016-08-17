@@ -2,8 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Version [1.2.1][unreleased] - (in development)
-- TBD
+## Version [1.3.0][unreleased] - (in development)
+- New: [`Webhooks` module](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/webhooks).
+- Fix: Send correct `Content-Type`-header on PUT/POST HTTP requests.
+- Changed: Report response body from failed HTTP requests.
 
 ## Version [1.2.0] - 2016-07-21
 - New: Add `omitted` field for content type fields.
@@ -70,8 +72,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Version 0.9.0 - 2014-11-18
 Initial release.
 
-[unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-1.1.1...HEAD
-[1.1.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-1.1.0...cma-sdk-1.1.1
+[unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-1.3.0...HEAD
+[1.3.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-1.2.0...cma-sdk-1.3.0
+[1.2.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-1.1.1...cma-sdk-1.2.0
+[1.1.1]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-1.1.0...cma-sdk-1.1.1
 [1.1.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-1.0.2...cma-sdk-1.1.0
 [1.0.2]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-1.0.1...cma-sdk-1.0.2
 [1.0.1]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-1.0.0...cma-sdk-1.0.1

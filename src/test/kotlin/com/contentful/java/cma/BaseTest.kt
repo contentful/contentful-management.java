@@ -49,22 +49,6 @@ open class BaseTest {
     @after fun tearDown() {
         server!!.shutdown()
     }
-
-    fun <T : Any> assertTestCallback(cb: TestCallback<T>): T? {
-        cb.await()
-        assertNull(cb.error)
-        if (cb.allowEmpty) {
-            return null
-        }
-        assertNotNull(cb.value)
-        return cb.value
-    }
-
-    fun assertJsonEquals(json1: String, json2: String) {
-        val parser = JsonParser()
-        assertTrue(parser.parse(json1).equals(parser.parse(json2)),
-                "Expected:\n$json1\nActual:\n$json2\n")
-    }
 }
 
 // Extensions
@@ -90,4 +74,20 @@ fun <T : CMAResource> T.setVersion(version: Double): T {
 
     sys.put("version", version);
     return this@setVersion
+}
+
+fun <T : Any> assertTestCallback(cb: TestCallback<T>): T? {
+    cb.await()
+    assertNull(cb.error)
+    if (cb.allowEmpty) {
+        return null
+    }
+    assertNotNull(cb.value)
+    return cb.value
+}
+
+fun assertJsonEquals(json1: String, json2: String) {
+    val parser = JsonParser()
+    assertTrue(parser.parse(json1).equals(parser.parse(json2)),
+            "Expected:\n$json1\nActual:\n$json2\n")
 }

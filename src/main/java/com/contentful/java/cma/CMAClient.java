@@ -51,6 +51,7 @@ public class CMAClient {
   private final ModuleContentTypes modContentTypes;
   private final ModuleEntries modEntries;
   private final ModuleSpaces modSpaces;
+  private final ModuleWebhooks modWebhooks;
 
   // PropertiesReader
   private final PropertiesReader propertiesReader;
@@ -84,6 +85,7 @@ public class CMAClient {
     this.modContentTypes = new ModuleContentTypes(retrofit, callbackExecutor);
     this.modEntries = new ModuleEntries(retrofit, callbackExecutor);
     this.modSpaces = new ModuleSpaces(retrofit, callbackExecutor);
+    this.modWebhooks = new ModuleWebhooks(retrofit, callbackExecutor);
   }
 
   /**
@@ -186,6 +188,13 @@ public class CMAClient {
    */
   public ModuleSpaces spaces() {
     return modSpaces;
+  }
+
+  /**
+   * @return the Webhooks module.
+   */
+  public ModuleWebhooks webhooks() {
+    return modWebhooks;
   }
 
   /**
