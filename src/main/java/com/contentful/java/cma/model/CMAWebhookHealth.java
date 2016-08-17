@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Contentful GmbH
+ * Copyright (C) 2016 Contentful GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ public class CMAWebhookHealth extends CMAResource {
     Integer healthy;
 
     /**
-     * @return Number of calls happend to this Webhook in total.
+     * @return Number of calls happened to this Webhook in total.
      */
     public Integer getTotal() {
       return total;

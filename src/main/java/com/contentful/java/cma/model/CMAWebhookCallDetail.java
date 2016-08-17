@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Contentful GmbH
+ * Copyright (C) 2016 Contentful GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ public class CMAWebhookCallDetail extends CMAResource {
   }
 
   /**
-   * @return The timestamp contentfull issued this Webhook.
+   * @return The timestamp Contentful issued this Webhook.
    */
   public String getRequestAt() {
     return requestAt;

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Contentful GmbH
+ * Copyright (C) 2016 Contentful GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ public class CMAEntry extends StatefulResource {
 
   /**
    * Sets the ID for this Entry.
+   *
    * @param id the id to be set
    * @return this {@code CMAEntry} instance
    */

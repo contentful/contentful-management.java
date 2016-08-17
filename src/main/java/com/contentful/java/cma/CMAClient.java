@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Contentful GmbH
+ * Copyright (C) 2016 Contentful GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,11 +47,11 @@ public class CMAClient {
   private static Gson gson;
 
   // Modules
-  private final ModuleAssets modAssets;
-  private final ModuleContentTypes modContentTypes;
-  private final ModuleEntries modEntries;
-  private final ModuleSpaces modSpaces;
-  private final ModuleWebhooks modWebhooks;
+  private final ModuleAssets moduleAssets;
+  private final ModuleContentTypes moduleContentTypes;
+  private final ModuleEntries moduleEntries;
+  private final ModuleSpaces moduleSpaces;
+  private final ModuleWebhooks moduleWebhooks;
 
   // PropertiesReader
   private final PropertiesReader propertiesReader;
@@ -81,11 +81,11 @@ public class CMAClient {
     Retrofit retrofit = retrofitBuilder.build();
 
     // Modules
-    this.modAssets = new ModuleAssets(retrofit, callbackExecutor);
-    this.modContentTypes = new ModuleContentTypes(retrofit, callbackExecutor);
-    this.modEntries = new ModuleEntries(retrofit, callbackExecutor);
-    this.modSpaces = new ModuleSpaces(retrofit, callbackExecutor);
-    this.modWebhooks = new ModuleWebhooks(retrofit, callbackExecutor);
+    this.moduleAssets = new ModuleAssets(retrofit, callbackExecutor);
+    this.moduleContentTypes = new ModuleContentTypes(retrofit, callbackExecutor);
+    this.moduleEntries = new ModuleEntries(retrofit, callbackExecutor);
+    this.moduleSpaces = new ModuleSpaces(retrofit, callbackExecutor);
+    this.moduleWebhooks = new ModuleWebhooks(retrofit, callbackExecutor);
   }
 
   /**
@@ -166,35 +166,35 @@ public class CMAClient {
    * @return the Assets module.
    */
   public ModuleAssets assets() {
-    return modAssets;
+    return moduleAssets;
   }
 
   /**
    * @return the Content Types module.
    */
   public ModuleContentTypes contentTypes() {
-    return modContentTypes;
+    return moduleContentTypes;
   }
 
   /**
    * @return the Entries module.
    */
   public ModuleEntries entries() {
-    return modEntries;
+    return moduleEntries;
   }
 
   /**
    * @return the Spaces module.
    */
   public ModuleSpaces spaces() {
-    return modSpaces;
+    return moduleSpaces;
   }
 
   /**
    * @return the Webhooks module.
    */
   public ModuleWebhooks webhooks() {
-    return modWebhooks;
+    return moduleWebhooks;
   }
 
   /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Contentful GmbH
+ * Copyright (C) 2016 Contentful GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -104,7 +104,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
   }
 
   /**
-   * Retrieve all the webhooks definied for this space.
+   * Retrieve all the webhooks defined for this space.
    *
    * @param spaceId The id of the space to be asked for all of its spaces.
    * @return An {@link CMAArray<CMAWebhook>} containing all found webhooks for this space.

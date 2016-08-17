@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Contentful GmbH
+ * Copyright (C) 2016 Contentful GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,28 +25,28 @@ class DefaultQueryParameterTests {
     val MAP_VALUE = "value"
 
     @org.junit.Test fun testEmptyMapWithDefaults() {
-        var defaultMap = hashMapOf(Pair(MAP_KEY, MAP_VALUE))
-        var targetMap = HashMap<String, String>()
+        val defaultMap = hashMapOf(Pair(MAP_KEY, MAP_VALUE))
+        val targetMap = HashMap<String, String>()
 
-        DefaultQueryParameter.putIfNotSet(targetMap, defaultMap);
+        DefaultQueryParameter.putIfNotSet(targetMap, defaultMap)
 
         assertEquals(targetMap[MAP_KEY], MAP_VALUE)
     }
 
     @org.junit.Test fun testDoNotOverwriteValueWithDefaultValue() {
-        var defaultMap = hashMapOf(Pair(MAP_KEY, MAP_VALUE))
-        var targetMap = hashMapOf(Pair(MAP_KEY, "NON_DEFAULT_VALUE"))
+        val defaultMap = hashMapOf(Pair(MAP_KEY, MAP_VALUE))
+        val targetMap = hashMapOf(Pair(MAP_KEY, "NON_DEFAULT_VALUE"))
 
-        DefaultQueryParameter.putIfNotSet(targetMap, defaultMap);
+        DefaultQueryParameter.putIfNotSet(targetMap, defaultMap)
 
         assertEquals(targetMap[MAP_KEY], "NON_DEFAULT_VALUE")
     }
 
     @org.junit.Test fun testDoNotChangeDifferentValues() {
-        var defaultMap = hashMapOf(Pair(MAP_KEY + "_123", "SOMETHING"))
-        var targetMap = hashMapOf(Pair(MAP_KEY, MAP_VALUE))
+        val defaultMap = hashMapOf(Pair(MAP_KEY + "_123", "SOMETHING"))
+        val targetMap = hashMapOf(Pair(MAP_KEY, MAP_VALUE))
 
-        DefaultQueryParameter.putIfNotSet(targetMap, defaultMap);
+        DefaultQueryParameter.putIfNotSet(targetMap, defaultMap)
 
         assertEquals(targetMap[MAP_KEY], MAP_VALUE)
         assertEquals(targetMap[MAP_KEY + "_123"], "SOMETHING")

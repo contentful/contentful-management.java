@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Contentful GmbH
+ * Copyright (C) 2016 Contentful GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ public class CMAWebhookCall extends CMAResource {
   }
 
   /**
-   * @return The type of event issuinng this callback.
+   * @return The type of event issuing this callback.
    */
   public String getEventType() {
     return eventType;
