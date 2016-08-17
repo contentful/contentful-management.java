@@ -107,7 +107,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
    * Retrieve all the webhooks defined for this space.
    *
    * @param spaceId The id of the space to be asked for all of its spaces.
-   * @return An {@link CMAArray<CMAWebhook>} containing all found webhooks for this space.
+   * @return An {@link CMAArray} containing all found webhooks for this space.
    */
   public CMAArray<CMAWebhook> fetchAll(String spaceId) {
     assertNotNull(spaceId, "spaceId");
@@ -217,6 +217,10 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
   public final class Async {
     /**
      * Asynchronous variant of {@link ModuleWebhooks#create(String, CMAWebhook)}
+     *
+     * @param spaceId id of the space to be used.
+     * @param webhook data to be used for creation.
+     * @param callback the callback to be called once finished.
      */
     public CMACallback<CMAWebhook> create(final String spaceId, final CMAWebhook webhook,
                                           CMACallback<CMAWebhook> callback) {
@@ -229,6 +233,11 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
 
     /**
      * Asynchronous variant of {@link ModuleWebhooks#create(String, String, CMAWebhook)}
+     *
+     * @param spaceId id of the space to be used.
+     * @param webhookId id for the webhook to be created/updated.
+     * @param webhook data to be used for creation.
+     * @param callback the callback to be called once finished.
      */
     public CMACallback<CMAWebhook> create(final String spaceId,
                                           final String webhookId,
@@ -243,6 +252,10 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
 
     /**
      * Asynchronous variant of {@link ModuleWebhooks#delete(String, String)}
+     *
+     * @param spaceId id of the space to be used.
+     * @param webhookId id of the webhook to be deleted.
+     * @param callback the callback to be called once finished.
      */
     public CMACallback<String> delete(final String spaceId, final String webhookId,
                                       CMACallback<String> callback) {
@@ -255,6 +268,9 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
 
     /**
      * Asynchronous variant of {@link ModuleWebhooks#fetchAll(String)}
+     *
+     * @param spaceId id of the space to be used.
+     * @param callback the callback to be called once finished.
      */
     public CMACallback<CMAArray<CMAWebhook>> fetchAll(final String spaceId,
                                                       CMACallback<CMAArray<CMAWebhook>> callback) {
@@ -267,6 +283,10 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
 
     /**
      * Asynchronous variant of {@link ModuleWebhooks#fetchOne(String, String)}
+     *
+     * @param spaceId id of the space to be used.
+     * @param webhookId id of the webhook to be retrieved.
+     * @param callback the callback to be called once finished.
      */
     public CMACallback<CMAWebhook> fetchOne(final String spaceId, final String webhookId,
                                             CMACallback<CMAWebhook> callback) {
@@ -279,6 +299,9 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
 
     /**
      * Asynchronous variant of {@link ModuleWebhooks#update(CMAWebhook)}
+     *
+     * @param webhook data to be used for update.
+     * @param callback the callback to be called once finished.
      */
     public CMACallback<CMAWebhook> update(final CMAWebhook webhook,
                                           CMACallback<CMAWebhook> callback) {
@@ -291,6 +314,10 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
 
     /**
      * Asynchronous variant of {@link ModuleWebhooks#calls(String, String)}
+     *
+     * @param spaceId id of the space to be used.
+     * @param webhookId id to be used to retrieve calls from.
+     * @param callback the callback to be called once finished.
      */
     public CMACallback<CMAArray<CMAWebhookCall>> calls(final String spaceId,
                                                        final String webhookId,
@@ -305,6 +332,11 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
 
     /**
      * Asynchronous variant of {@link ModuleWebhooks#callDetails(String, String, String)}
+     *
+     * @param spaceId id of the space to be used.
+     * @param webhookId id of webhook.
+     * @param callId id of call.
+     * @param callback the callback to be called once finished.
      */
     public CMACallback<CMAWebhookCallDetail> callDetails(final String spaceId,
                                                          final String webhookId,
@@ -320,6 +352,10 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
 
     /**
      * Asynchronous variant of {@link ModuleWebhooks#health(String, String)}
+     *
+     * @param spaceId id of the space to be used.
+     * @param webhookId id to be used for healthy check.
+     * @param callback the callback to be called once finished.
      */
     public CMACallback<CMAWebhookHealth> health(final String spaceId, final String webhookId,
                                                 CMACallback<CMAWebhookHealth> callback) {
