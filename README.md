@@ -473,6 +473,91 @@ client.spaces().async().update(space, new CMACallback<CMASpace>() {
 });
 ```
 
+### Webhooks
+
+Retrieving all webhooks from the space:
+
+```java
+client.webhooks().async().fetchAll(SPACE_ID, new CMACallback<CMAArray<CMAWebhook>>() {
+  @Override protected void onSuccess(CMAArray<CMAWebhook> result) {
+    // ...
+  }
+});
+```
+
+Retrieving one webhook by the webhook-id from the space:
+
+```java
+client.webhooks().async().fetchOne(SPACE_ID, WEBHOOK_ID, new CMACallback<CMAWebhook>() {
+  @Override protected void onSuccess(CMAWebhook result) {
+    // ...
+  }
+});
+```
+
+Creating a webhook:
+
+```java
+CMAWebhook requestedWebhook = new CMAWebhook()
+                .setName(WEBHOOK_NAME)
+                .setUrl("http://lorempixel.com/200/200/cats")
+                .addTopic(CMAWebhookTopic.EntrySave);
+
+client.webhooks().async().create(SPACE_ID, requestedWebhook, callback);
+```
+
+Updating a webhook:
+
+```java
+client.webhooks().async().create(SPACE_ID, WEBHOOK_ID, requestedWebhook, callback);
+```
+
+Delete webhook:
+
+```java
+client.webhooks().async().delete(SPACE_ID, WEBHOOK_ID, callback);
+```
+
+Creating a webhook with custom headers and custom topics:
+
+```java
+CMAWebhook requestedWebhook = new CMAWebhook()
+                .setId<CMAWebhook>(WEBHOOK_ID)
+                .setName(WEBHOOK_NAME)
+                .setUrl("http://lorempixel.com/200/200/cats")
+                .addTopic(CMAWebhookTopic.EntrySave)
+                .addHeader("key", "value")
+                .setBasicAuthorization("user", "password");
+
+client.webhooks().async().create(SPACE_ID, requestedWebhook, callback);
+```
+
+#### Webhook Details
+
+Retrieve overview information off webhook calls:
+
+```java
+client.webhooks().async().calls(
+                SPACE_ID, WEBHOOK_ID,
+                CMACallback<CMAArray<CMAWebhookCall>>() {
+  @Override protected void onSuccess(CMAArray<CMAWebhookCall> result) {
+    // ...
+  }});
+```
+
+Retrieve specific information from the overview (synchronously!):
+
+```java
+CMAWebhookCallDetail detail = client.webhooks().callDetails(SPACE_ID, WEBHOOK_ID, calls.items[0].resourceId);
+```
+#### Webhook Health
+
+Get health of current webhook (synchronously!):
+
+```java
+CMAWebhookHealth health = client.webhooks().health(SPACE_ID, WEBHOOOK_ID);
+```
+
 Documentation
 =============
 
