@@ -73,7 +73,7 @@ client.spaces() // returns the Spaces module
 
 Each module contains a set of methods which can be used to perform various operations on the specified resource type. Every method has a corresponding asynchronous extension which can be accessed through the `async()` method of the module, for example:
 
-Retrieving all spaces (synchronously):
+#### Retrieving all spaces (synchronously):
 
 ```java
 try {
@@ -84,7 +84,7 @@ try {
 }
 ```
 
-or asynchronously:
+#### or asynchronously:
 
 ```java
 client.spaces().async().fetchAll(new CMACallback<CMAArray<CMASpace>>() {
@@ -104,7 +104,7 @@ When creating resources, it is possible to specify an ID for the resource. In ca
 
 ### Assets
 
-Retrieving all assets from a space:
+#### Retrieving all assets from a space:
 
 ```java
 client.assets().async().fetchAll("space-id", new CMACallback<CMAArray<CMAAsset>>() {
@@ -114,7 +114,7 @@ client.assets().async().fetchAll("space-id", new CMACallback<CMAArray<CMAAsset>>
 });
 ```
 
-Retrieving an asset by ID:
+#### Retrieving an asset by ID:
 
 ```java
 client.assets().async().fetchOne("space-id", "asset-id", new CMACallback<CMAAsset>() {
@@ -124,7 +124,7 @@ client.assets().async().fetchOne("space-id", "asset-id", new CMACallback<CMAAsse
 });
 ```
 
-Creating an asset:
+#### Creating an asset:
 
 ```java
 client.assets().async().create("space-id",
@@ -136,7 +136,7 @@ client.assets().async().create("space-id",
     });
 ```
 
-Updating an asset:
+#### Updating an asset:
 
 ```java
 asset.setField("title", "new title", "en-US");
@@ -148,7 +148,7 @@ client.assets().async().update(asset, new CMACallback<CMAAsset>() {
 });
 ```
 
-Deleting an asset:
+#### Deleting an asset:
 
 ```java
 client.assets().async().delete("space-id", "asset-id", new CMACallback<Response>() {
@@ -158,7 +158,7 @@ client.assets().async().delete("space-id", "asset-id", new CMACallback<Response>
 });
 ```
 
-Archiving or unarchiving an asset:
+#### Archiving or unarchiving an asset:
 
 ```java
 client.assets().async().archive(asset, new CMACallback<CMAAsset>() {
@@ -174,13 +174,13 @@ client.assets().async().unArchive(asset, new CMACallback<CMAAsset>() {
 });
 ```
 
-Checking if an asset is archived:
+#### Checking if an asset is archived:
 
 ```java
 asset.isArchived();
 ```
 
-Publishing or unpublishing an asset:
+#### Publishing or unpublishing an asset:
 
 ```java
 client.assets().async().publish(asset, new CMACallback<CMAAsset>() {
@@ -196,7 +196,7 @@ client.assets().async().unPublish(asset, new CMACallback<CMAAsset>() {
 });
 ```
 
-Checking if an asset is published:
+#### Checking if an asset is published:
 
 ```java
 asset.isPublished();
@@ -204,7 +204,7 @@ asset.isPublished();
 
 ### Content Types
 
-Retrieving all content types from a space:
+#### Retrieving all content types from a space:
 
 ```java
 client.contentTypes().async().fetchAll("space-id", new CMACallback<CMAArray<CMAContentType>>() {
@@ -214,7 +214,7 @@ client.contentTypes().async().fetchAll("space-id", new CMACallback<CMAArray<CMAC
 });
 ```
 
-Retrieving one content type by ID from a space:
+#### Retrieving one content type by ID from a space:
 
 ```java
 client.contentTypes()
@@ -226,7 +226,7 @@ client.contentTypes()
         });
 ```
 
-Creating a field for a content type:
+#### Creating a field for a content type:
 
 ```java
 contentType.addField(
@@ -235,13 +235,13 @@ contentType.addField(
         .setType(CMAFieldType.Text));
 ```
 
-Deleting a field from the content type:
+#### Deleting a field from the content type:
 
 ```java
 contentType.deleteField("field-id");
 ```
 
-Creating a content type:
+#### Creating a content type:
 
 ```java
 client.contentTypes()
@@ -257,7 +257,7 @@ client.contentTypes()
         });
 ```
 
-Deleting a content type:
+#### Deleting a content type:
 
 ```java
 client.contentTypes()
@@ -269,7 +269,7 @@ client.contentTypes()
     });
 ```
 
-Activating or deactivating a content type:
+#### Activating or deactivating a content type:
 
 ```java
 client.contentTypes()
@@ -289,13 +289,13 @@ client.contentTypes()
     });
 ```
 
-Checking if a content type is active:
+#### Checking if a content type is active:
 
 ```java
 contentType.isPublished();
 ```
 
-Updating a content type:
+#### Updating a content type:
 
 ```java
 contentType.setName("new-name");
@@ -311,7 +311,7 @@ client.contentTypes()
 
 ### Entries
 
-Retrieving all entries from a space:
+#### Retrieving all entries from a space:
 
 ```java
 client.entries().async().fetchAll("space-id", new CMACallback<CMAArray<CMAEntry>>() {
@@ -321,7 +321,7 @@ client.entries().async().fetchAll("space-id", new CMACallback<CMAArray<CMAEntry>
 });
 ```
 
-Retrieving an entry by ID:
+#### Retrieving an entry by ID:
 
 ```java
 client.entries().async().fetchOne("space-id", "entry-id", new CMACallback<CMAEntry>() {
@@ -331,7 +331,7 @@ client.entries().async().fetchOne("space-id", "entry-id", new CMACallback<CMAEnt
 });
 ```
 
-Creating an entry:
+#### Creating an entry:
 
 ```java
 client.entries().async().create("space-id", "content-type-id", 
@@ -343,7 +343,7 @@ client.entries().async().create("space-id", "content-type-id",
     });
 ```
 
-Updating an entry:
+#### Updating an entry:
 
 ```java
 client.entries().async().update(entry, new CMACallback<CMAEntry>() {
@@ -353,7 +353,7 @@ client.entries().async().update(entry, new CMACallback<CMAEntry>() {
 });
 ```
 
-Deleting an entry:
+#### Deleting an entry:
 
 ```java
 client.entries().async().delete("space-id", "entry-id", new CMACallback<Response>() {
@@ -363,7 +363,7 @@ client.entries().async().delete("space-id", "entry-id", new CMACallback<Response
 });
 ```
 
-Archiving or unarchiving the entry:
+#### Archiving or unarchiving the entry:
 
 ```java
 client.entries().async().archive(entry, new CMACallback<CMAEntry>() {
@@ -379,13 +379,13 @@ client.entries().async().unArchive(entry, new CMACallback<CMAEntry>() {
 });
 ```
 
-Checking if the entry is archived:
+#### Checking if the entry is archived:
 
 ```java
 entry.isArchived();
 ```
 
-Publishing or unpublishing the entry:
+#### Publishing or unpublishing the entry:
 
 ```java
 client.entries().async().publish(entry, new CMACallback<CMAEntry>() {
@@ -401,7 +401,7 @@ client.entries().async().unPublish(entry, new CMACallback<CMAEntry>() {
 });
 ```
 
-Checking if the entry is published:
+#### Checking if the entry is published:
 
 ```java
 entry.isPublished();
@@ -409,7 +409,7 @@ entry.isPublished();
 
 ### Spaces
 
-Retrieving all spaces:
+#### Retrieving all spaces:
 
 ```java
 client.spaces().async().fetchAll(new CMACallback<CMAArray<CMASpace>>() {
@@ -419,7 +419,7 @@ client.spaces().async().fetchAll(new CMACallback<CMAArray<CMASpace>>() {
 });
 ```
 
-Retrieving one space by ID:
+#### Retrieving one space by ID:
 
 ```java
 client.spaces().async().fetchOne("space-id", new CMACallback<CMASpace>() {
@@ -429,7 +429,7 @@ client.spaces().async().fetchOne("space-id", new CMACallback<CMASpace>() {
 });
 ```
 
-Deleting a space:
+#### Deleting a space:
 
 ```java
 client.spaces().async().delete("space-id", new CMACallback<Response>() {
@@ -439,7 +439,7 @@ client.spaces().async().delete("space-id", new CMACallback<Response>() {
 });
 ```
 
-Creating a space:
+#### Creating a space:
 
 ```java
 client.spaces().async().create("space-name", new CMACallback<CMASpace>() {
@@ -449,7 +449,7 @@ client.spaces().async().create("space-name", new CMACallback<CMASpace>() {
 });
 ```
 
-or in the context of the organization (if you have multiple organizations within your account):
+#### In the context of the organization (if you have multiple organizations within your account):
 
 ```java
 client.spaces()
@@ -461,7 +461,7 @@ client.spaces()
     });
 ```
 
-Updating a space:
+#### Updating a space:
 
 ```java
 space.setName("new-name");
@@ -475,7 +475,7 @@ client.spaces().async().update(space, new CMACallback<CMASpace>() {
 
 ### Webhooks
 
-Retrieving all webhooks from the space:
+#### Retrieving all webhooks from the space:
 
 ```java
 client.webhooks().async().fetchAll(SPACE_ID, new CMACallback<CMAArray<CMAWebhook>>() {
@@ -485,7 +485,7 @@ client.webhooks().async().fetchAll(SPACE_ID, new CMACallback<CMAArray<CMAWebhook
 });
 ```
 
-Retrieving one webhook by the webhook-id from the space:
+#### Retrieving one webhook by the webhook-id from the space:
 
 ```java
 client.webhooks().async().fetchOne(SPACE_ID, WEBHOOK_ID, new CMACallback<CMAWebhook>() {
@@ -495,7 +495,7 @@ client.webhooks().async().fetchOne(SPACE_ID, WEBHOOK_ID, new CMACallback<CMAWebh
 });
 ```
 
-Creating a webhook:
+#### Creating a webhook:
 
 ```java
 CMAWebhook requestedWebhook = new CMAWebhook()
@@ -506,19 +506,19 @@ CMAWebhook requestedWebhook = new CMAWebhook()
 client.webhooks().async().create(SPACE_ID, requestedWebhook, callback);
 ```
 
-Updating a webhook:
+#### Updating a webhook:
 
 ```java
 client.webhooks().async().create(SPACE_ID, WEBHOOK_ID, requestedWebhook, callback);
 ```
 
-Delete webhook:
+#### Delete webhook:
 
 ```java
 client.webhooks().async().delete(SPACE_ID, WEBHOOK_ID, callback);
 ```
 
-Creating a webhook with custom headers and custom topics:
+#### Creating a webhook with custom headers and custom topics:
 
 ```java
 CMAWebhook requestedWebhook = new CMAWebhook()
@@ -532,9 +532,9 @@ CMAWebhook requestedWebhook = new CMAWebhook()
 client.webhooks().async().create(SPACE_ID, requestedWebhook, callback);
 ```
 
-#### Webhook Details
+### Webhook Details
 
-Retrieve overview information off webhook calls:
+#### Retrieve overview information off webhook calls:
 
 ```java
 client.webhooks().async().calls(
@@ -545,14 +545,14 @@ client.webhooks().async().calls(
   }});
 ```
 
-Retrieve specific information from the overview (synchronously!):
+#### Retrieve specific information from the overview (synchronously!):
 
 ```java
 CMAWebhookCallDetail detail = client.webhooks().callDetails(SPACE_ID, WEBHOOK_ID, calls.items[0].resourceId);
 ```
-#### Webhook Health
+### Webhook Health
 
-Get health of current webhook (synchronously!):
+#### Get health of current webhook (synchronously!):
 
 ```java
 CMAWebhookHealth health = client.webhooks().health(SPACE_ID, WEBHOOOK_ID);
