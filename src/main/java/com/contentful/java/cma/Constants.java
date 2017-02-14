@@ -26,6 +26,10 @@ public final class Constants {
 
   public static final String ENDPOINT_CMA = "https://api.contentful.com/";
 
+  /**
+   * @see <a href=http://docs.contentfulcma.apiary.io/#reference/content-types">management api
+   * docs</a>
+   */
   @SuppressWarnings("UnusedDeclaration")
   public enum CMAFieldType {
     Array,
