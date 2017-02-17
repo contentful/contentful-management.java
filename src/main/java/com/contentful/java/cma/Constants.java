@@ -27,7 +27,7 @@ public final class Constants {
   public static final String ENDPOINT_CMA = "https://api.contentful.com/";
 
   /**
-   * @see <a href=http://docs.contentfulcma.apiary.io/#reference/content-types">management api
+   * @see <a href=https://www.contentful.com/developers/docs/references/content-management-api/#/reference/content-types">management api
    * docs</a>
    */
   @SuppressWarnings("UnusedDeclaration")
