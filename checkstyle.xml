@@ -139,5 +139,14 @@
     <!--module name="FinalParameters"/-->
     <module name="TodoComment"/>
     <module name="UpperEll"/>
+
+    <module name="FileContentsHolder"/>
+  </module>
+
+  <!-- Disable checkstyle for to long lines of code -->
+  <module name="SuppressionCommentFilter">
+    <property name="offCommentFormat" value="BEGIN TO LONG CODE LINES"/>
+    <property name="onCommentFormat" value="END TO LONG CODE LINES"/>
+    <property name="checkFormat" value="LineLengthCheck"/>
   </module>
 </module>
