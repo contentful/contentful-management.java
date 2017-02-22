@@ -162,7 +162,7 @@ class WebhookTests : BaseTest() {
     fun testRetainsSysOnNetworkError() {
         val badClient = CMAClient.Builder()
                 .setAccessToken("accesstoken")
-                .setCallFactory { throw IOException(it.url().toString(), IOException()) }
+                .setCoreCallFactory { throw IOException(it.url().toString(), IOException()) }
                 .build()
 
         val webhook = CMAWebhook().setVersion(31337.0)

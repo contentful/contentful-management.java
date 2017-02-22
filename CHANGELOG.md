@@ -2,8 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Version [1.3.1][unreleased] - (in development)
-- TBD
+## Version [1.4.1][unreleased] - (in development)
+
+## Version [1.4.0][unreleased] - (in development)
+- New [`Upload` module](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/upload).
 
 ## Version [1.3.0] - 2016-08-17
 - New: [`Webhooks` module](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/webhooks).
@@ -75,7 +77,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Version 0.9.0 - 2014-11-18
 Initial release.
 
-[unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-1.3.0...HEAD
+[unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-1.4.0...HEAD
+[1.4.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-1.3.0...cma-sdk-1.4.0
 [1.3.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-1.2.0...cma-sdk-1.3.0
 [1.2.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-1.1.1...cma-sdk-1.2.0
 [1.1.1]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-1.1.0...cma-sdk-1.1.1

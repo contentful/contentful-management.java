@@ -63,7 +63,7 @@ class ClientTests : BaseTest() {
     @test fun testCallbackRetrofitError() {
         val badClient = CMAClient.Builder()
                 .setAccessToken("accesstoken")
-                .setCallFactory { throw RuntimeException(it.url().toString(), IOException()) }
+                .setCoreCallFactory { throw RuntimeException(it.url().toString(), IOException()) }
                 .build()
 
         val cb = TestCallback<CMAArray<CMASpace>>()
@@ -144,7 +144,7 @@ class ClientTests : BaseTest() {
     @test(expected = IllegalArgumentException::class)
     fun failsSetNullCallFactory() {
         try {
-            CMAClient.Builder().setCallFactory(null)
+            CMAClient.Builder().setCoreCallFactory(null)
         } catch (e: IllegalArgumentException) {
             assertEquals("Cannot call setCallFactory() with null.", e.message)
             throw e
@@ -164,9 +164,9 @@ class ClientTests : BaseTest() {
     @test(expected = IllegalArgumentException::class)
     fun failsSetNullEndPoint() {
         try {
-            CMAClient.Builder().setEndpoint(null)
+            CMAClient.Builder().setCoreEndpoint(null)
         } catch (e: IllegalArgumentException) {
-            assertEquals("Cannot call setEndpoint() with null.", e.message)
+            assertEquals("Cannot call setCoreEndpoint() with null.", e.message)
             throw e
         }
     }

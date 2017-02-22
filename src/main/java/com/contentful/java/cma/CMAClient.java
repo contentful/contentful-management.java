@@ -52,6 +52,7 @@ public class CMAClient {
   private final ModuleEntries moduleEntries;
   private final ModuleSpaces moduleSpaces;
   private final ModuleWebhooks moduleWebhooks;
+  private final ModuleUploads moduleUploads;
 
   // PropertiesReader
   private final PropertiesReader propertiesReader;
@@ -74,11 +75,17 @@ public class CMAClient {
             .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
             .baseUrl(Constants.ENDPOINT_CMA);
 
-    retrofitBuilder = setEndpoint(cmaBuilder, retrofitBuilder);
-    retrofitBuilder = setCallFactory(cmaBuilder, retrofitBuilder);
+    retrofitBuilder = setEndpoint(retrofitBuilder, cmaBuilder.coreEndpoint);
+    retrofitBuilder = setCallFactory(cmaBuilder, retrofitBuilder, cmaBuilder.coreCallFactory);
 
     setCallbackExecutor(cmaBuilder);
     Retrofit retrofit = retrofitBuilder.build();
+
+    // copy settings for upload, and change endpoint and callfactory
+    retrofitBuilder.baseUrl(Constants.ENDPOINT_UPLOAD);
+    retrofitBuilder = setEndpoint(retrofitBuilder, cmaBuilder.uploadEndpoint);
+    retrofitBuilder = setCallFactory(cmaBuilder, retrofitBuilder, cmaBuilder.uploadCallFactory);
+    Retrofit uploadRetrofit = retrofitBuilder.build();
 
     // Modules
     this.moduleAssets = new ModuleAssets(retrofit, callbackExecutor);
@@ -86,6 +93,8 @@ public class CMAClient {
     this.moduleEntries = new ModuleEntries(retrofit, callbackExecutor);
     this.moduleSpaces = new ModuleSpaces(retrofit, callbackExecutor);
     this.moduleWebhooks = new ModuleWebhooks(retrofit, callbackExecutor);
+
+    this.moduleUploads = new ModuleUploads(uploadRetrofit, callbackExecutor);
   }
 
   /**
@@ -102,8 +111,9 @@ public class CMAClient {
   /**
    * Configures a custom client.
    */
-  private Retrofit.Builder setCallFactory(Builder cmaBuilder, Retrofit.Builder retrofitBuilder) {
-    if (cmaBuilder.callFactory == null) {
+  private Retrofit.Builder setCallFactory(Builder cmaBuilder, Retrofit.Builder retrofitBuilder,
+                                          Call.Factory callFactory) {
+    if (callFactory == null) {
       OkHttpClient.Builder okBuilder = new OkHttpClient.Builder()
           .addInterceptor(new AuthorizationHeaderInterceptor(cmaBuilder.accessToken))
           .addInterceptor(new UserAgentHeaderInterceptor(getUserAgent(propertiesReader)))
@@ -114,7 +124,7 @@ public class CMAClient {
 
       return retrofitBuilder.callFactory(okBuilder.build());
     } else {
-      return retrofitBuilder.callFactory(cmaBuilder.callFactory);
+      return retrofitBuilder.callFactory(callFactory);
     }
   }
 
@@ -139,11 +149,12 @@ public class CMAClient {
   }
 
   /**
-   * Configures CMA endpoint.
+   * Configures CMA core endpoint.
    */
-  private Retrofit.Builder setEndpoint(Builder clientBuilder, Retrofit.Builder retrofitBuilder) {
-    if (clientBuilder.endpoint != null) {
-      return retrofitBuilder.baseUrl(clientBuilder.endpoint);
+  private Retrofit.Builder setEndpoint(Retrofit.Builder retrofitBuilder
+      , String endpoint) {
+    if (endpoint != null) {
+      return retrofitBuilder.baseUrl(endpoint);
     }
     return retrofitBuilder;
   }
@@ -198,6 +209,13 @@ public class CMAClient {
   }
 
   /**
+   * @return the Upload module.
+   */
+  public ModuleUploads uploads() {
+    return moduleUploads;
+  }
+
+  /**
    * Sets the value for {@code sUserAgent} from properties (if needed) and returns it.
    */
   String getUserAgent(PropertiesReader reader) {
@@ -217,23 +235,41 @@ public class CMAClient {
    */
   public static class Builder {
     String accessToken;
-    Call.Factory callFactory;
+    Call.Factory coreCallFactory;
+    Call.Factory uploadCallFactory;
     Logger logger;
     Logger.Level logLevel = Logger.Level.NONE;
-    String endpoint;
+    String coreEndpoint;
+    String uploadEndpoint;
     Executor callbackExecutor;
 
     /**
-     * Overrides the default remote URL.
+     * Overrides the default remote URL for core modules.
      *
      * @param remoteUrl String representing the remote URL
      * @return this {@link Builder} instance
+     * @see #setUploadEndpoint(String)
      */
-    public Builder setEndpoint(String remoteUrl) {
+    public Builder setCoreEndpoint(String remoteUrl) {
       if (remoteUrl == null) {
-        throw new IllegalArgumentException("Cannot call setEndpoint() with null.");
+        throw new IllegalArgumentException("Cannot call setCoreEndpoint() with null.");
       }
-      this.endpoint = remoteUrl;
+      this.coreEndpoint = remoteUrl;
+      return this;
+    }
+
+    /**
+     * Overrides the remote URL for upload module.
+     *
+     * @param remoteUrl String representing the remote URL
+     * @return this {@link Builder} instance
+     * @see #setCoreEndpoint(String)
+     */
+    public Builder setUploadEndpoint(String remoteUrl) {
+      if (remoteUrl == null) {
+        throw new IllegalArgumentException("Cannot call setUploadEndpoint() with null.");
+      }
+      this.uploadEndpoint = remoteUrl;
       return this;
     }
 
@@ -252,17 +288,36 @@ public class CMAClient {
     }
 
     /**
-     * Sets a custom HTTP call factory.
+     * Sets a custom HTTP call factory for core modules.
+     * <p>
+     * Please also add a {@link AuthorizationHeaderInterceptor} {@link ContentTypeInterceptor} if
+     * you are using a custom call factory to ensure properly setup http headers.
      *
      * @param callFactory {@link okhttp3.Call.Factory} instance
      * @return this {@code Builder} instance
      */
-    public Builder setCallFactory(Call.Factory callFactory) {
+    public Builder setCoreCallFactory(Call.Factory callFactory) {
       if (callFactory == null) {
         throw new IllegalArgumentException("Cannot call setCallFactory() with null.");
       }
 
-      this.callFactory = callFactory;
+      this.coreCallFactory = callFactory;
+      return this;
+    }
+
+    /**
+     * Sets a custom HTTP call factory for the upload module.
+     *
+     * @param callFactory {@link okhttp3.Call.Factory} instance
+     * @return this {@code Builder} instance
+     * @see #setCoreCallFactory(Call.Factory) Call.Factory for needed interceptors.
+     */
+    public Builder setUploadCallFactory(Call.Factory callFactory) {
+      if (callFactory == null) {
+        throw new IllegalArgumentException("Cannot call setCallFactory() with null.");
+      }
+
+      this.uploadCallFactory = callFactory;
       return this;
     }
 

@@ -1,0 +1,22 @@
+{
+  "sys": {
+    "id": "upload_id",
+    "type": "Upload",
+    "createdAt": "2017-02-22T15:17:27.000Z",
+    "expiresAt": "2017-02-24T00:00:00.000Z",
+    "space": {
+      "sys": {
+        "type": "Link",
+        "linkType": "Space",
+        "id": "0ixrn4rxzjob"
+      }
+    },
+    "createdBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "7uqvFPPLzgtVaezGvjA9U6"
+      }
+    }
+  }
+}

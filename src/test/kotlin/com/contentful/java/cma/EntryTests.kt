@@ -285,7 +285,7 @@ class EntryTests : BaseTest() {
     fun testRetainsSysOnNetworkError() {
         val badClient = CMAClient.Builder()
                 .setAccessToken("accesstoken")
-                .setCallFactory { throw RuntimeException(it.url().toString(), IOException()) }
+                .setCoreCallFactory { throw RuntimeException(it.url().toString(), IOException()) }
                 .build()
 
         val entry = CMAEntry().setVersion(31337.0)

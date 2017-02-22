@@ -31,7 +31,7 @@ class AssetTests : BaseTest() {
     fun testArchive() {
         val cli = CMAClient.Builder()
                 .setAccessToken("token")
-                .setEndpoint(server!!.url("/").toString())
+                .setCoreEndpoint(server!!.url("/").toString())
                 .setCallbackExecutor { it.run() }
                 .build()
 
@@ -250,7 +250,7 @@ class AssetTests : BaseTest() {
     fun testRetainsSysOnNetworkError() {
         val badClient = CMAClient.Builder()
                 .setAccessToken("accesstoken")
-                .setCallFactory { throw IOException(it.url().toString(), IOException()) }
+                .setCoreCallFactory { throw IOException(it.url().toString(), IOException()) }
                 .build()
 
         val asset = CMAAsset().setVersion(31337.0)
@@ -273,4 +273,35 @@ class AssetTests : BaseTest() {
             client!!.assets().update(CMAAsset().setId("aid").setSpaceId("spaceid"))
         }
     }
+
+    @test
+    fun testCreateAssetWithUploadId() {
+        val client = CMAClient.Builder()
+                .setAccessToken("token")
+                .setCoreEndpoint(server!!.url("/").toString())
+                .setCallbackExecutor { it.run() }
+                .build()
+
+        val responseBody = TestUtils.fileToString("asset_create_with_upload_id_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client.assets().async()
+                .create(
+                        "space_id",
+                        CMAAsset()
+                                .setSpaceId("space_id")
+                                .setVersion(1.0)
+                                .setField("file", linkedMapOf(
+                                        Pair("content_type", "image/jpeg"),
+                                        Pair("uploadFrom", "some_secret_keys"),
+                                        Pair("fileName", "example.jpg")
+                                ), "en-US")
+                        , TestCallback()) as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("POST", recordedRequest.method)
+        assertEquals("/spaces/space_id/assets", recordedRequest.path)
+    }
+
 }

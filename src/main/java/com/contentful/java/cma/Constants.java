@@ -25,6 +25,7 @@ public final class Constants {
   }
 
   public static final String ENDPOINT_CMA = "https://api.contentful.com/";
+  public static final String ENDPOINT_UPLOAD = "https://upload.contentful.com/";
 
   //BEGIN TO LONG CODE LINES
   /**

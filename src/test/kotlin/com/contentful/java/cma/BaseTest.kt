@@ -40,7 +40,8 @@ open class BaseTest {
         // Client
         client = CMAClient.Builder()
                 .setAccessToken("token")
-                .setEndpoint(server!!.url("/").toString())
+                .setCoreEndpoint(server!!.url("/").toString())
+                .setUploadEndpoint(server!!.url("/").toString())
                 .build()
 
         gson = CMAClient.createGson()
