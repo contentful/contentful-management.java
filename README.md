@@ -1,7 +1,8 @@
-contentful-management.java
-==========================
+Contentful Management SDK for Java
+==================================
 
 [![Build Status](https://travis-ci.org/contentful/contentful-management.java.svg)](https://travis-ci.org/contentful/contentful-management.java/builds#)
+[![codecov](https://codecov.io/gh/contentful/contentful-management.java/branch/master/graph/badge.svg)](https://codecov.io/gh/contentful/contentful-management.java)
 
 Java SDK for [Contentful's][1] Content Management API.
 
