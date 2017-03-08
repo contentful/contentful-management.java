@@ -185,12 +185,14 @@ class ClientTests : BaseTest() {
     fun testUserAgentThrowsRuntimeExceptionOnFailure() {
         try {
             val reader = Mockito.mock(PropertiesReader::class.java)
-
             Mockito.`when`(reader.getField(Constants.PROP_VERSION_NAME))
                     .thenThrow(IOException::class.java)
+            CMAClient.Builder.sUserAgent = null
 
-            CMAClient.sUserAgent = null
-            client!!.getUserAgent(reader)
+            val builder = CMAClient.Builder()
+            builder.propertiesReader = reader
+            builder.defaultCoreCallFactoryBuilder()
+
         } catch(e: RuntimeException) {
             assertEquals("Unable to retrieve version name.", e.message)
             throw e

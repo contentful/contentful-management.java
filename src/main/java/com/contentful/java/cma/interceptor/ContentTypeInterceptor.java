@@ -14,7 +14,9 @@ import okio.Buffer;
  */
 public class ContentTypeInterceptor implements Interceptor {
   public static final String HEADER_NAME = "Content-Type";
+
   public static final String DEFAULT_CONTENT_TYPE = "application/vnd.contentful.management.v1+json";
+  public static final String OCTET_STREAM_CONTENT_TYPE = "application/octet-stream";
 
   private final String contentType;
   private final MediaType mediaType;

@@ -42,9 +42,6 @@ import static com.contentful.java.cma.Logger.Level.NONE;
  * API, a client is not associated with one Space, but with one user.
  */
 public class CMAClient {
-  // User Agent
-  static String sUserAgent;
-
   // Gson
   private static Gson gson;
 
@@ -72,15 +69,21 @@ public class CMAClient {
             .baseUrl(Constants.ENDPOINT_CMA);
 
     retrofitBuilder = setEndpoint(retrofitBuilder, cmaBuilder.coreEndpoint);
-    retrofitBuilder = setCallFactory(cmaBuilder, retrofitBuilder, cmaBuilder.coreCallFactory);
+    retrofitBuilder.callFactory(
+        cmaBuilder.coreCallFactory == null ?
+            cmaBuilder.defaultCoreCallFactoryBuilder().build()
+            : cmaBuilder.coreCallFactory);
 
     setCallbackExecutor(cmaBuilder);
     Retrofit retrofit = retrofitBuilder.build();
 
-    // copy settings for upload, and change endpoint and callfactory
+    // copy settings for upload, and change endpoint and call factory
     retrofitBuilder.baseUrl(Constants.ENDPOINT_UPLOAD);
     retrofitBuilder = setEndpoint(retrofitBuilder, cmaBuilder.uploadEndpoint);
-    retrofitBuilder = setCallFactory(cmaBuilder, retrofitBuilder, cmaBuilder.uploadCallFactory);
+    retrofitBuilder.callFactory(
+        cmaBuilder.uploadCallFactory == null ?
+            cmaBuilder.defaultUploadCallFactoryBuilder().build()
+            : cmaBuilder.uploadCallFactory);
     Retrofit uploadRetrofit = retrofitBuilder.build();
 
     // Modules
@@ -101,19 +104,6 @@ public class CMAClient {
       callbackExecutor = Platform.get().callbackExecutor();
     } else {
       callbackExecutor = clientBuilder.callbackExecutor;
-    }
-  }
-
-  /**
-   * Configures a custom client.
-   */
-  private Retrofit.Builder setCallFactory(Builder cmaBuilder, Retrofit.Builder retrofitBuilder,
-                                          Call.Factory callFactory) {
-    if (callFactory == null) {
-      final OkHttpClient.Builder okBuilder = cmaBuilder.defaultCallFactoryBuilder();
-      return retrofitBuilder.callFactory(okBuilder.build());
-    } else {
-      return retrofitBuilder.callFactory(callFactory);
     }
   }
 
@@ -188,6 +178,9 @@ public class CMAClient {
    * Builder.
    */
   public static class Builder {
+    // User Agent
+    static String sUserAgent;
+
     String accessToken;
     Call.Factory coreCallFactory;
     Call.Factory uploadCallFactory;
@@ -196,7 +189,7 @@ public class CMAClient {
     String coreEndpoint;
     String uploadEndpoint;
     Executor callbackExecutor;
-    final PropertiesReader propertiesReader = new PropertiesReader();
+    PropertiesReader propertiesReader = new PropertiesReader();
 
     /**
      * Overrides the default remote URL for core modules.
@@ -329,11 +322,21 @@ public class CMAClient {
       return new CMAClient(this);
     }
 
-    public OkHttpClient.Builder defaultCallFactoryBuilder() {
+    public OkHttpClient.Builder defaultCoreCallFactoryBuilder() {
       final OkHttpClient.Builder okBuilder = new OkHttpClient.Builder()
           .addInterceptor(new AuthorizationHeaderInterceptor(accessToken))
           .addInterceptor(new UserAgentHeaderInterceptor(getUserAgent(propertiesReader)))
           .addInterceptor(new ContentTypeInterceptor(ContentTypeInterceptor.DEFAULT_CONTENT_TYPE))
+          .addInterceptor(new ErrorInterceptor());
+
+      return setLogger(okBuilder);
+    }
+
+    public OkHttpClient.Builder defaultUploadCallFactoryBuilder() {
+      final OkHttpClient.Builder okBuilder = new OkHttpClient.Builder()
+          .addInterceptor(new AuthorizationHeaderInterceptor(accessToken))
+          .addInterceptor(new UserAgentHeaderInterceptor(getUserAgent(propertiesReader)))
+          .addInterceptor(new ContentTypeInterceptor(ContentTypeInterceptor.OCTET_STREAM_CONTENT_TYPE))
           .addInterceptor(new ErrorInterceptor());
 
       return setLogger(okBuilder);

@@ -26,6 +26,9 @@ class TestUtils {
         fun fileToString(fileName: String): String =
                 FileUtils.readFileToString(File("src/test/resources/$fileName"), "UTF-8")
 
+        fun fileToBytes(fileName: String): ByteArray =
+                FileUtils.readFileToByteArray(File("src/test/resources/$fileName"))
+
         fun fileToInputStream(fileName: String): InputStream =
                 FileUtils.openInputStream(File("src/test/resources/$fileName"))
     }
