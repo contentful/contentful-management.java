@@ -36,6 +36,8 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.contentful.java.cma.Logger.Level.NONE;
+import static com.contentful.java.cma.interceptor.ContentTypeInterceptor.DEFAULT_CONTENT_TYPE;
+import static com.contentful.java.cma.interceptor.ContentTypeInterceptor.OCTET_STREAM_CONTENT_TYPE;
 
 /**
  * The CMAClient is used to request information from the server. Contrary to the delivery
@@ -70,9 +72,10 @@ public class CMAClient {
 
     retrofitBuilder = setEndpoint(retrofitBuilder, cmaBuilder.coreEndpoint);
     retrofitBuilder.callFactory(
-        cmaBuilder.coreCallFactory == null ?
-            cmaBuilder.defaultCoreCallFactoryBuilder().build()
-            : cmaBuilder.coreCallFactory);
+        cmaBuilder.coreCallFactory == null
+            ? cmaBuilder.defaultCoreCallFactoryBuilder().build()
+            : cmaBuilder.coreCallFactory
+    );
 
     setCallbackExecutor(cmaBuilder);
     Retrofit retrofit = retrofitBuilder.build();
@@ -81,9 +84,10 @@ public class CMAClient {
     retrofitBuilder.baseUrl(Constants.ENDPOINT_UPLOAD);
     retrofitBuilder = setEndpoint(retrofitBuilder, cmaBuilder.uploadEndpoint);
     retrofitBuilder.callFactory(
-        cmaBuilder.uploadCallFactory == null ?
-            cmaBuilder.defaultUploadCallFactoryBuilder().build()
-            : cmaBuilder.uploadCallFactory);
+        cmaBuilder.uploadCallFactory == null
+            ? cmaBuilder.defaultUploadCallFactoryBuilder().build()
+            : cmaBuilder.uploadCallFactory
+    );
     Retrofit uploadRetrofit = retrofitBuilder.build();
 
     // Modules
@@ -326,7 +330,7 @@ public class CMAClient {
       final OkHttpClient.Builder okBuilder = new OkHttpClient.Builder()
           .addInterceptor(new AuthorizationHeaderInterceptor(accessToken))
           .addInterceptor(new UserAgentHeaderInterceptor(getUserAgent(propertiesReader)))
-          .addInterceptor(new ContentTypeInterceptor(ContentTypeInterceptor.DEFAULT_CONTENT_TYPE))
+          .addInterceptor(new ContentTypeInterceptor(DEFAULT_CONTENT_TYPE))
           .addInterceptor(new ErrorInterceptor());
 
       return setLogger(okBuilder);
@@ -336,7 +340,7 @@ public class CMAClient {
       final OkHttpClient.Builder okBuilder = new OkHttpClient.Builder()
           .addInterceptor(new AuthorizationHeaderInterceptor(accessToken))
           .addInterceptor(new UserAgentHeaderInterceptor(getUserAgent(propertiesReader)))
-          .addInterceptor(new ContentTypeInterceptor(ContentTypeInterceptor.OCTET_STREAM_CONTENT_TYPE))
+          .addInterceptor(new ContentTypeInterceptor(OCTET_STREAM_CONTENT_TYPE))
           .addInterceptor(new ErrorInterceptor());
 
       return setLogger(okBuilder);
@@ -356,7 +360,7 @@ public class CMAClient {
       } else {
         if (logLevel != NONE) {
           throw new IllegalArgumentException(
-              "Cannot log to a null logger. Please set either logLevel to None, or do set a Logger");
+              "Cannot log to a null logger. Please set either no logLevel or set a custom Logger");
         }
       }
       return okBuilder;
