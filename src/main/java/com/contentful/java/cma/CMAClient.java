@@ -35,6 +35,8 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.contentful.java.cma.Logger.Level.NONE;
+
 /**
  * The CMAClient is used to request information from the server. Contrary to the delivery
  * API, a client is not associated with one Space, but with one user.
@@ -54,9 +56,6 @@ public class CMAClient {
   private final ModuleWebhooks moduleWebhooks;
   private final ModuleUploads moduleUploads;
 
-  // PropertiesReader
-  private final PropertiesReader propertiesReader;
-
   // Executors
   Executor callbackExecutor;
 
@@ -64,9 +63,6 @@ public class CMAClient {
     if (cmaBuilder.accessToken == null) {
       throw new IllegalArgumentException("No access token was set.");
     }
-
-    // PropertiesReader
-    this.propertiesReader = new PropertiesReader();
 
     // Retrofit Retrofit
     Retrofit.Builder retrofitBuilder =
@@ -114,38 +110,11 @@ public class CMAClient {
   private Retrofit.Builder setCallFactory(Builder cmaBuilder, Retrofit.Builder retrofitBuilder,
                                           Call.Factory callFactory) {
     if (callFactory == null) {
-      OkHttpClient.Builder okBuilder = new OkHttpClient.Builder()
-          .addInterceptor(new AuthorizationHeaderInterceptor(cmaBuilder.accessToken))
-          .addInterceptor(new UserAgentHeaderInterceptor(getUserAgent(propertiesReader)))
-          .addInterceptor(new ContentTypeInterceptor(ContentTypeInterceptor.DEFAULT_CONTENT_TYPE))
-          .addInterceptor(new ErrorInterceptor());
-
-      okBuilder = setLogger(okBuilder, cmaBuilder);
-
+      final OkHttpClient.Builder okBuilder = cmaBuilder.defaultCallFactoryBuilder();
       return retrofitBuilder.callFactory(okBuilder.build());
     } else {
       return retrofitBuilder.callFactory(callFactory);
     }
-  }
-
-  private OkHttpClient.Builder setLogger(OkHttpClient.Builder okBuilder, Builder cmaBuilder) {
-    if (cmaBuilder.logger != null) {
-      switch (cmaBuilder.logLevel) {
-        case NONE:
-        default:
-          break;
-        case BASIC:
-          return okBuilder.addInterceptor(new LogInterceptor(cmaBuilder.logger));
-        case FULL:
-          return okBuilder.addNetworkInterceptor(new LogInterceptor(cmaBuilder.logger));
-      }
-    } else {
-      if (cmaBuilder.logLevel != Logger.Level.NONE) {
-        throw new IllegalArgumentException(
-            "Cannot log to a null logger. Please set either logLevel to None, or do set a Logger");
-      }
-    }
-    return okBuilder;
   }
 
   /**
@@ -216,21 +185,6 @@ public class CMAClient {
   }
 
   /**
-   * Sets the value for {@code sUserAgent} from properties (if needed) and returns it.
-   */
-  String getUserAgent(PropertiesReader reader) {
-    if (sUserAgent == null) {
-      try {
-        String versionName = reader.getField(Constants.PROP_VERSION_NAME);
-        sUserAgent = String.format("contentful-management.java/%s", versionName);
-      } catch (IOException e) {
-        throw new RuntimeException("Unable to retrieve version name.", e);
-      }
-    }
-    return sUserAgent;
-  }
-
-  /**
    * Builder.
    */
   public static class Builder {
@@ -238,10 +192,11 @@ public class CMAClient {
     Call.Factory coreCallFactory;
     Call.Factory uploadCallFactory;
     Logger logger;
-    Logger.Level logLevel = Logger.Level.NONE;
+    Logger.Level logLevel = NONE;
     String coreEndpoint;
     String uploadEndpoint;
     Executor callbackExecutor;
+    final PropertiesReader propertiesReader = new PropertiesReader();
 
     /**
      * Overrides the default remote URL for core modules.
@@ -373,5 +328,48 @@ public class CMAClient {
     public CMAClient build() {
       return new CMAClient(this);
     }
+
+    public OkHttpClient.Builder defaultCallFactoryBuilder() {
+      final OkHttpClient.Builder okBuilder = new OkHttpClient.Builder()
+          .addInterceptor(new AuthorizationHeaderInterceptor(accessToken))
+          .addInterceptor(new UserAgentHeaderInterceptor(getUserAgent(propertiesReader)))
+          .addInterceptor(new ContentTypeInterceptor(ContentTypeInterceptor.DEFAULT_CONTENT_TYPE))
+          .addInterceptor(new ErrorInterceptor());
+
+      return setLogger(okBuilder);
+    }
+
+    private OkHttpClient.Builder setLogger(OkHttpClient.Builder okBuilder) {
+      if (logger != null) {
+        switch (logLevel) {
+          case NONE:
+          default:
+            break;
+          case BASIC:
+            return okBuilder.addInterceptor(new LogInterceptor(logger));
+          case FULL:
+            return okBuilder.addNetworkInterceptor(new LogInterceptor(logger));
+        }
+      } else {
+        if (logLevel != NONE) {
+          throw new IllegalArgumentException(
+              "Cannot log to a null logger. Please set either logLevel to None, or do set a Logger");
+        }
+      }
+      return okBuilder;
+    }
+
+    String getUserAgent(PropertiesReader reader) {
+      if (sUserAgent == null) {
+        try {
+          String versionName = reader.getField(Constants.PROP_VERSION_NAME);
+          sUserAgent = String.format("contentful-management.java/%s", versionName);
+        } catch (IOException e) {
+          throw new RuntimeException("Unable to retrieve version name.", e);
+        }
+      }
+      return sUserAgent;
+    }
+
   }
 }
