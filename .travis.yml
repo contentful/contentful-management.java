@@ -4,7 +4,11 @@ jdk:
   - oraclejdk7
   - oraclejdk8
 
+script:
+  - mvn jacoco:prepare-agent test jacoco:report
+
 after_success:
+  - .buildscript/codecov.sh
   - .buildscript/deploy_snapshot.sh
 
 env:
