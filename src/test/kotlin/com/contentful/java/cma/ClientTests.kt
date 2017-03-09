@@ -63,7 +63,7 @@ class ClientTests : BaseTest() {
     @test fun testCallbackRetrofitError() {
         val badClient = CMAClient.Builder()
                 .setAccessToken("accesstoken")
-                .setCallFactory { throw RuntimeException(it.url().toString(), IOException()) }
+                .setCoreCallFactory { throw RuntimeException(it.url().toString(), IOException()) }
                 .build()
 
         val cb = TestCallback<CMAArray<CMASpace>>()
@@ -144,7 +144,7 @@ class ClientTests : BaseTest() {
     @test(expected = IllegalArgumentException::class)
     fun failsSetNullCallFactory() {
         try {
-            CMAClient.Builder().setCallFactory(null)
+            CMAClient.Builder().setCoreCallFactory(null)
         } catch (e: IllegalArgumentException) {
             assertEquals("Cannot call setCallFactory() with null.", e.message)
             throw e
@@ -164,9 +164,9 @@ class ClientTests : BaseTest() {
     @test(expected = IllegalArgumentException::class)
     fun failsSetNullEndPoint() {
         try {
-            CMAClient.Builder().setEndpoint(null)
+            CMAClient.Builder().setCoreEndpoint(null)
         } catch (e: IllegalArgumentException) {
-            assertEquals("Cannot call setEndpoint() with null.", e.message)
+            assertEquals("Cannot call setCoreEndpoint() with null.", e.message)
             throw e
         }
     }
@@ -185,12 +185,14 @@ class ClientTests : BaseTest() {
     fun testUserAgentThrowsRuntimeExceptionOnFailure() {
         try {
             val reader = Mockito.mock(PropertiesReader::class.java)
-
             Mockito.`when`(reader.getField(Constants.PROP_VERSION_NAME))
                     .thenThrow(IOException::class.java)
+            CMAClient.Builder.sUserAgent = null
 
-            CMAClient.sUserAgent = null
-            client!!.getUserAgent(reader)
+            val builder = CMAClient.Builder()
+            builder.propertiesReader = reader
+            builder.defaultCoreCallFactoryBuilder()
+
         } catch(e: RuntimeException) {
             assertEquals("Unable to retrieve version name.", e.message)
             throw e

@@ -18,6 +18,8 @@ package com.contentful.java.cma.model;
 
 /**
  * StatefulResource.
+ *
+ * This resource contains the state on whether this resource is archived or published.
  */
 abstract class StatefulResource extends CMAResource {
   /**

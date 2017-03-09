@@ -35,14 +35,15 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.contentful.java.cma.Constants.DEFAULT_CONTENT_TYPE;
+import static com.contentful.java.cma.Constants.OCTET_STREAM_CONTENT_TYPE;
+import static com.contentful.java.cma.Logger.Level.NONE;
+
 /**
  * The CMAClient is used to request information from the server. Contrary to the delivery
  * API, a client is not associated with one Space, but with one user.
  */
 public class CMAClient {
-  // User Agent
-  static String sUserAgent;
-
   // Gson
   private static Gson gson;
 
@@ -52,9 +53,7 @@ public class CMAClient {
   private final ModuleEntries moduleEntries;
   private final ModuleSpaces moduleSpaces;
   private final ModuleWebhooks moduleWebhooks;
-
-  // PropertiesReader
-  private final PropertiesReader propertiesReader;
+  private final ModuleUploads moduleUploads;
 
   // Executors
   Executor callbackExecutor;
@@ -64,9 +63,6 @@ public class CMAClient {
       throw new IllegalArgumentException("No access token was set.");
     }
 
-    // PropertiesReader
-    this.propertiesReader = new PropertiesReader();
-
     // Retrofit Retrofit
     Retrofit.Builder retrofitBuilder =
         new Retrofit.Builder()
@@ -74,11 +70,25 @@ public class CMAClient {
             .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
             .baseUrl(Constants.ENDPOINT_CMA);
 
-    retrofitBuilder = setEndpoint(cmaBuilder, retrofitBuilder);
-    retrofitBuilder = setCallFactory(cmaBuilder, retrofitBuilder);
+    retrofitBuilder = setEndpoint(retrofitBuilder, cmaBuilder.coreEndpoint);
+    retrofitBuilder.callFactory(
+        cmaBuilder.coreCallFactory == null
+            ? cmaBuilder.defaultCoreCallFactoryBuilder().build()
+            : cmaBuilder.coreCallFactory
+    );
 
     setCallbackExecutor(cmaBuilder);
     Retrofit retrofit = retrofitBuilder.build();
+
+    // copy settings for upload, and change endpoint and call factory
+    retrofitBuilder.baseUrl(Constants.ENDPOINT_UPLOAD);
+    retrofitBuilder = setEndpoint(retrofitBuilder, cmaBuilder.uploadEndpoint);
+    retrofitBuilder.callFactory(
+        cmaBuilder.uploadCallFactory == null
+            ? cmaBuilder.defaultUploadCallFactoryBuilder().build()
+            : cmaBuilder.uploadCallFactory
+    );
+    Retrofit uploadRetrofit = retrofitBuilder.build();
 
     // Modules
     this.moduleAssets = new ModuleAssets(retrofit, callbackExecutor);
@@ -86,6 +96,8 @@ public class CMAClient {
     this.moduleEntries = new ModuleEntries(retrofit, callbackExecutor);
     this.moduleSpaces = new ModuleSpaces(retrofit, callbackExecutor);
     this.moduleWebhooks = new ModuleWebhooks(retrofit, callbackExecutor);
+
+    this.moduleUploads = new ModuleUploads(uploadRetrofit, callbackExecutor);
   }
 
   /**
@@ -100,50 +112,12 @@ public class CMAClient {
   }
 
   /**
-   * Configures a custom client.
+   * Configures CMA core endpoint.
    */
-  private Retrofit.Builder setCallFactory(Builder cmaBuilder, Retrofit.Builder retrofitBuilder) {
-    if (cmaBuilder.callFactory == null) {
-      OkHttpClient.Builder okBuilder = new OkHttpClient.Builder()
-          .addInterceptor(new AuthorizationHeaderInterceptor(cmaBuilder.accessToken))
-          .addInterceptor(new UserAgentHeaderInterceptor(getUserAgent(propertiesReader)))
-          .addInterceptor(new ContentTypeInterceptor(ContentTypeInterceptor.DEFAULT_CONTENT_TYPE))
-          .addInterceptor(new ErrorInterceptor());
-
-      okBuilder = setLogger(okBuilder, cmaBuilder);
-
-      return retrofitBuilder.callFactory(okBuilder.build());
-    } else {
-      return retrofitBuilder.callFactory(cmaBuilder.callFactory);
-    }
-  }
-
-  private OkHttpClient.Builder setLogger(OkHttpClient.Builder okBuilder, Builder cmaBuilder) {
-    if (cmaBuilder.logger != null) {
-      switch (cmaBuilder.logLevel) {
-        case NONE:
-        default:
-          break;
-        case BASIC:
-          return okBuilder.addInterceptor(new LogInterceptor(cmaBuilder.logger));
-        case FULL:
-          return okBuilder.addNetworkInterceptor(new LogInterceptor(cmaBuilder.logger));
-      }
-    } else {
-      if (cmaBuilder.logLevel != Logger.Level.NONE) {
-        throw new IllegalArgumentException(
-            "Cannot log to a null logger. Please set either logLevel to None, or do set a Logger");
-      }
-    }
-    return okBuilder;
-  }
-
-  /**
-   * Configures CMA endpoint.
-   */
-  private Retrofit.Builder setEndpoint(Builder clientBuilder, Retrofit.Builder retrofitBuilder) {
-    if (clientBuilder.endpoint != null) {
-      return retrofitBuilder.baseUrl(clientBuilder.endpoint);
+  private Retrofit.Builder setEndpoint(Retrofit.Builder retrofitBuilder
+      , String endpoint) {
+    if (endpoint != null) {
+      return retrofitBuilder.baseUrl(endpoint);
     }
     return retrofitBuilder;
   }
@@ -198,42 +172,56 @@ public class CMAClient {
   }
 
   /**
-   * Sets the value for {@code sUserAgent} from properties (if needed) and returns it.
+   * @return the Upload module.
    */
-  String getUserAgent(PropertiesReader reader) {
-    if (sUserAgent == null) {
-      try {
-        String versionName = reader.getField(Constants.PROP_VERSION_NAME);
-        sUserAgent = String.format("contentful-management.java/%s", versionName);
-      } catch (IOException e) {
-        throw new RuntimeException("Unable to retrieve version name.", e);
-      }
-    }
-    return sUserAgent;
+  public ModuleUploads uploads() {
+    return moduleUploads;
   }
 
   /**
    * Builder.
    */
   public static class Builder {
+    // User Agent
+    static String sUserAgent;
+
     String accessToken;
-    Call.Factory callFactory;
+    Call.Factory coreCallFactory;
+    Call.Factory uploadCallFactory;
     Logger logger;
-    Logger.Level logLevel = Logger.Level.NONE;
-    String endpoint;
+    Logger.Level logLevel = NONE;
+    String coreEndpoint;
+    String uploadEndpoint;
     Executor callbackExecutor;
+    PropertiesReader propertiesReader = new PropertiesReader();
 
     /**
-     * Overrides the default remote URL.
+     * Overrides the default remote URL for core modules.
      *
      * @param remoteUrl String representing the remote URL
      * @return this {@link Builder} instance
+     * @see #setUploadEndpoint(String)
      */
-    public Builder setEndpoint(String remoteUrl) {
+    public Builder setCoreEndpoint(String remoteUrl) {
       if (remoteUrl == null) {
-        throw new IllegalArgumentException("Cannot call setEndpoint() with null.");
+        throw new IllegalArgumentException("Cannot call setCoreEndpoint() with null.");
       }
-      this.endpoint = remoteUrl;
+      this.coreEndpoint = remoteUrl;
+      return this;
+    }
+
+    /**
+     * Overrides the remote URL for upload module.
+     *
+     * @param remoteUrl String representing the remote URL
+     * @return this {@link Builder} instance
+     * @see #setCoreEndpoint(String)
+     */
+    public Builder setUploadEndpoint(String remoteUrl) {
+      if (remoteUrl == null) {
+        throw new IllegalArgumentException("Cannot call setUploadEndpoint() with null.");
+      }
+      this.uploadEndpoint = remoteUrl;
       return this;
     }
 
@@ -252,17 +240,36 @@ public class CMAClient {
     }
 
     /**
-     * Sets a custom HTTP call factory.
+     * Sets a custom HTTP call factory for core modules.
+     * <p>
+     * Please also add a {@link AuthorizationHeaderInterceptor} {@link ContentTypeInterceptor} if
+     * you are using a custom call factory to ensure properly setup http headers.
      *
      * @param callFactory {@link okhttp3.Call.Factory} instance
      * @return this {@code Builder} instance
      */
-    public Builder setCallFactory(Call.Factory callFactory) {
+    public Builder setCoreCallFactory(Call.Factory callFactory) {
       if (callFactory == null) {
         throw new IllegalArgumentException("Cannot call setCallFactory() with null.");
       }
 
-      this.callFactory = callFactory;
+      this.coreCallFactory = callFactory;
+      return this;
+    }
+
+    /**
+     * Sets a custom HTTP call factory for the upload module.
+     *
+     * @param callFactory {@link okhttp3.Call.Factory} instance
+     * @return this {@code Builder} instance
+     * @see #setCoreCallFactory(Call.Factory) Call.Factory for needed interceptors.
+     */
+    public Builder setUploadCallFactory(Call.Factory callFactory) {
+      if (callFactory == null) {
+        throw new IllegalArgumentException("Cannot call setCallFactory() with null.");
+      }
+
+      this.uploadCallFactory = callFactory;
       return this;
     }
 
@@ -318,5 +325,58 @@ public class CMAClient {
     public CMAClient build() {
       return new CMAClient(this);
     }
+
+    public OkHttpClient.Builder defaultCoreCallFactoryBuilder() {
+      final OkHttpClient.Builder okBuilder = new OkHttpClient.Builder()
+          .addInterceptor(new AuthorizationHeaderInterceptor(accessToken))
+          .addInterceptor(new UserAgentHeaderInterceptor(getUserAgent(propertiesReader)))
+          .addInterceptor(new ContentTypeInterceptor(DEFAULT_CONTENT_TYPE))
+          .addInterceptor(new ErrorInterceptor());
+
+      return setLogger(okBuilder);
+    }
+
+    public OkHttpClient.Builder defaultUploadCallFactoryBuilder() {
+      final OkHttpClient.Builder okBuilder = new OkHttpClient.Builder()
+          .addInterceptor(new AuthorizationHeaderInterceptor(accessToken))
+          .addInterceptor(new UserAgentHeaderInterceptor(getUserAgent(propertiesReader)))
+          .addInterceptor(new ContentTypeInterceptor(OCTET_STREAM_CONTENT_TYPE))
+          .addInterceptor(new ErrorInterceptor());
+
+      return setLogger(okBuilder);
+    }
+
+    private OkHttpClient.Builder setLogger(OkHttpClient.Builder okBuilder) {
+      if (logger != null) {
+        switch (logLevel) {
+          case NONE:
+          default:
+            break;
+          case BASIC:
+            return okBuilder.addInterceptor(new LogInterceptor(logger));
+          case FULL:
+            return okBuilder.addNetworkInterceptor(new LogInterceptor(logger));
+        }
+      } else {
+        if (logLevel != NONE) {
+          throw new IllegalArgumentException(
+              "Cannot log to a null logger. Please set either no logLevel or set a custom Logger");
+        }
+      }
+      return okBuilder;
+    }
+
+    String getUserAgent(PropertiesReader reader) {
+      if (sUserAgent == null) {
+        try {
+          String versionName = reader.getField(Constants.PROP_VERSION_NAME);
+          sUserAgent = String.format("contentful-management.java/%s", versionName);
+        } catch (IOException e) {
+          throw new RuntimeException("Unable to retrieve version name.", e);
+        }
+      }
+      return sUserAgent;
+    }
+
   }
 }

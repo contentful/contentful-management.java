@@ -332,7 +332,7 @@ class ContentTypeTests : BaseTest() {
     fun testRetainsSysOnNetworkError() {
         val badClient = CMAClient.Builder()
                 .setAccessToken("accesstoken")
-                .setCallFactory { throw RuntimeException(it.url().toString(), IOException()) }
+                .setCoreCallFactory { throw RuntimeException(it.url().toString(), IOException()) }
                 .build()
 
         val contentType = CMAContentType().setVersion(31337.0)

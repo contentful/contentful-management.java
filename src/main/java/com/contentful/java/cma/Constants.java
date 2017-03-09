@@ -25,6 +25,7 @@ public final class Constants {
   }
 
   public static final String ENDPOINT_CMA = "https://api.contentful.com/";
+  public static final String ENDPOINT_UPLOAD = "https://upload.contentful.com/";
 
   //BEGIN TO LONG CODE LINES
   /**
@@ -48,4 +49,8 @@ public final class Constants {
   // Properties
   static final String SDK_PROPERTIES = "contentful_cma.properties";
   static final String PROP_VERSION_NAME = "version.name";
+
+  // Content Type Header Values
+  public static final String DEFAULT_CONTENT_TYPE = "application/vnd.contentful.management.v1+json";
+  public static final String OCTET_STREAM_CONTENT_TYPE = "application/octet-stream";
 }
