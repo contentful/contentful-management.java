@@ -35,9 +35,9 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.contentful.java.cma.Constants.DEFAULT_CONTENT_TYPE;
+import static com.contentful.java.cma.Constants.OCTET_STREAM_CONTENT_TYPE;
 import static com.contentful.java.cma.Logger.Level.NONE;
-import static com.contentful.java.cma.interceptor.ContentTypeInterceptor.DEFAULT_CONTENT_TYPE;
-import static com.contentful.java.cma.interceptor.ContentTypeInterceptor.OCTET_STREAM_CONTENT_TYPE;
 
 /**
  * The CMAClient is used to request information from the server. Contrary to the delivery

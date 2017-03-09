@@ -26,13 +26,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 
-import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import static com.contentful.java.cma.Constants.OCTET_STREAM_CONTENT_TYPE;
 import static java.lang.System.arraycopy;
 import static java.util.Arrays.copyOf;
+import static okhttp3.MediaType.parse;
 
 /**
  * Upload Module.
@@ -41,7 +42,6 @@ import static java.util.Arrays.copyOf;
  * uploading a file to contentful, receiving it's id.
  */
 public final class ModuleUploads extends AbsModule<ServiceUploads> {
-  private static final String CONTENT_TYPE_STREAM = "application/octet-stream";
   final Async async;
 
   public ModuleUploads(Retrofit retrofit, Executor callbackExecutor) {
@@ -79,7 +79,7 @@ public final class ModuleUploads extends AbsModule<ServiceUploads> {
 
     final byte[] content = readAllBytes(stream);
 
-    final RequestBody payload = RequestBody.create(MediaType.parse(CONTENT_TYPE_STREAM), content);
+    final RequestBody payload = RequestBody.create(parse(OCTET_STREAM_CONTENT_TYPE), content);
     return service.create(spaceId, payload).toBlocking().first();
   }
 
