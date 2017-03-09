@@ -4,8 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Version [1.4.1][unreleased] - (in development)
 
-## Version [1.4.0][unreleased] - (in development)
-- New [`Upload` module](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/uploads).
+## Version [1.4.0] - 2017-03-09
+- New: [`Upload` module](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/uploads).
+- New: Add convenience `default call factory` method in client builder.
 
 ## Version [1.3.0] - 2016-08-17
 - New: [`Webhooks` module](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/webhooks).
