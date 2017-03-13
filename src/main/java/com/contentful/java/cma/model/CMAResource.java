@@ -28,15 +28,13 @@ public class CMAResource {
 
   /**
    * Sets the ID for this CMAResource.
+   *
    * @param id to be set
    * @return this {@code CMAResource} instance
    */
   @SuppressWarnings("unchecked")
   public <T extends CMAResource> T setId(String id) {
-    if (sys == null) {
-      sys = new HashMap();
-    }
-    sys.put("id", id);
+    setSysAttribute("id", id);
     return (T) this;
   }
 
@@ -77,11 +75,19 @@ public class CMAResource {
   /**
    * @return the value of the system attribute {@code attr}, null if it does not exist.
    */
-  @SuppressWarnings("unchecked") <T> T getSysAttribute(String attr) {
+  @SuppressWarnings("unchecked") public <T> T getSysAttribute(String attr) {
     if (sys != null) {
       return (T) sys.get(attr);
     }
     return null;
+  }
+
+  @SuppressWarnings("unchecked") public <T> T setSysAttribute(String key, Object value) {
+    if (sys == null) {
+      sys = new HashMap<String, Object>();
+    }
+    sys.put(key, value);
+    return (T) this;
   }
 
   /**

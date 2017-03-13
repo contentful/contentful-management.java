@@ -2,12 +2,13 @@ package com.contentful.java.cma
 
 import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAAsset
+import com.contentful.java.cma.model.CMAAssetFile
+import com.contentful.java.cma.model.CMAUploadLink
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.junit.Assert.*
-import java.util.*
-import org.junit.Test as test
 import org.junit.Ignore as ignore
+import org.junit.Test as test
 
 class UploadE2ETests {
     private val TOKEN = System.getenv("CMA_TOKEN")
@@ -39,25 +40,20 @@ class UploadE2ETests {
         // upload file
         val file = TestUtils.fileToInputStream(fileName)
         val uploadResponse = client.uploads().create(SPACE, file)
-        assertEquals(uploadResponse.sys["type"], "Upload")
+
+        assertEquals(uploadResponse.getSysAttribute("type"), "Upload")
 
         // create asset
         val asset = CMAAsset()
-        val resourceLinkSys = HashMap<String, String>()
-        resourceLinkSys.put("type", "Link")
-        resourceLinkSys.put("linkType", "Upload")
-        resourceLinkSys.put("id", uploadResponse.resourceId)
 
-        val resourceLink = HashMap<String, Map<String, String>>()
-        resourceLink.put("sys", resourceLinkSys)
-
-        val assetFile = HashMap<String, Any>()
-        assetFile.put("fileName", fileName)
-        assetFile.put("uploadFrom", resourceLink)
-        assetFile.put("contentType", "image/jpg")
-
-        asset.setField("title", fileName, LOCALE)
-        asset.setField("file", assetFile, LOCALE)
+        asset
+                .localize(LOCALE)
+                .setTitle(fileName)
+                .setDescription("Simple sample, please ignore and/or delete!")
+                .file = CMAAssetFile()
+                .setFileName(fileName)
+                .setUploadFrom(CMAUploadLink().setId(uploadResponse.resourceId))
+                .setContentType("image/jpg")
 
         val createdAsset = client.assets().create(SPACE, asset)
         client.assets().process(createdAsset, LOCALE)
@@ -74,12 +70,10 @@ class UploadE2ETests {
 
             val retrievedAsset = client.assets().fetchOne(SPACE, createdAsset.resourceId)
 
-            val retrievedFields = retrievedAsset.fields
-            val retrievedFileField = retrievedFields["file"]
-            val retrievedFileFieldLocalized = retrievedFileField!![LOCALE] as Map<String, Any?>
+            val retrievedFile = retrievedAsset.localize(LOCALE).file
 
-            uploadFrom = retrievedFileFieldLocalized["uploadFrom"]
-            url = retrievedFileFieldLocalized["url"] as String?
+            uploadFrom = retrievedFile.uploadFrom
+            url = retrievedFile.url
 
         } while (--attempts > 0 && uploadFrom != null && url == null)
 

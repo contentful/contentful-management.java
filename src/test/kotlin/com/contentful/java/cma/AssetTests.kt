@@ -20,6 +20,7 @@ import com.contentful.java.cma.lib.ModuleTestUtils
 import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAAsset
+import com.contentful.java.cma.model.CMAAssetFile
 import okhttp3.HttpUrl
 import okhttp3.mockwebserver.MockResponse
 import java.io.IOException
@@ -233,10 +234,36 @@ class AssetTests : BaseTest() {
                 .setSpaceId("spaceid")
                 .setVersion(1.0)
                 .setField("file", linkedMapOf(
-                        Pair("content_type", "image/jpeg"),
+                        Pair("contentType", "image/jpeg"),
                         Pair("upload", "https://www.nowhere.com/image.jpg"),
                         Pair("fileName", "example.jpg")
                 ), "en-US"), TestCallback(true)) as TestCallback)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("PUT", recordedRequest.method)
+        assertEquals("/spaces/spaceid/assets/assetid", recordedRequest.path)
+        assertNotNull(recordedRequest.getHeader("X-Contentful-Version"))
+        assertEquals(requestBody, recordedRequest.utf8Body)
+    }
+
+    @test
+    fun testUpdateWithFluidInterface() {
+        val requestBody = TestUtils.fileToString("asset_update_request.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(requestBody))
+
+        val asset = CMAAsset()
+                .setId("assetid")
+                .setSpaceId("spaceid")
+                .setVersion(1.0)
+        asset
+                .localize("en-US")
+                .setFile(CMAAssetFile()
+                        .setContentType("image/jpeg")
+                        .setUploadUrl("https://www.nowhere.com/image.jpg")
+                        .setFileName("example.jpg"))
+
+        assertTestCallback(client!!.assets().async().update(asset, TestCallback(true)) as TestCallback)
 
         // Request
         val recordedRequest = server!!.takeRequest()
