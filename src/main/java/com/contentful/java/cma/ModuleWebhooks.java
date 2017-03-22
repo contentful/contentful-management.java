@@ -17,6 +17,7 @@
 package com.contentful.java.cma;
 
 import com.contentful.java.cma.model.CMAArray;
+import com.contentful.java.cma.model.CMASystem;
 import com.contentful.java.cma.model.CMAWebhook;
 import com.contentful.java.cma.model.CMAWebhookCall;
 import com.contentful.java.cma.model.CMAWebhookCallDetail;
@@ -68,7 +69,13 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(webhook, "webook");
 
-    return service.create(spaceId, webhook).toBlocking().first();
+    final CMASystem system = webhook.getSystem();
+    webhook.setSystem(null);
+    try {
+      return service.create(spaceId, webhook).toBlocking().first();
+    } finally {
+      webhook.setSystem(system);
+    }
   }
 
   /**
@@ -86,7 +93,14 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
     assertNotNull(webhookId, "webookId");
     assertNotNull(webhook, "webook");
 
-    return service.create(spaceId, webhookId, webhook).toBlocking().first();
+    final CMASystem system = webhook.getSystem();
+    webhook.setSystem(null);
+
+    try {
+      return service.create(spaceId, webhookId, webhook).toBlocking().first();
+    } finally {
+      webhook.setSystem(system);
+    }
   }
 
   /**
@@ -142,7 +156,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
 
     Integer version = webhook.getVersion();
     String spaceId = webhook.getSpaceId();
-    String webhookId = webhook.getResourceId();
+    String webhookId = webhook.getId();
 
     assertNotNull(version, "version");
     assertNotNull(spaceId, "spaceId");

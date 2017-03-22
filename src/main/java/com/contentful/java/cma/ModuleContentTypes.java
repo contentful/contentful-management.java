@@ -19,6 +19,7 @@ package com.contentful.java.cma;
 import com.contentful.java.cma.RxExtensions.DefFunc;
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAContentType;
+import com.contentful.java.cma.model.CMASystem;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,22 +58,18 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(contentType, "contentType");
 
-    String contentTypeId = contentType.getResourceId();
-    HashMap sys = contentType.getSys();
-    contentType.setSys(null);
+    final String contentTypeId = contentType.getId();
+    final CMASystem sys = contentType.getSystem();
+    contentType.setSystem(null);
 
     try {
-      CMAContentType result;
       if (contentTypeId == null) {
-        result = service.create(spaceId, contentType).toBlocking().first();
+        return service.create(spaceId, contentType).toBlocking().first();
       } else {
-        result = service.create(spaceId, contentTypeId, contentType).toBlocking().first();
+        return service.create(spaceId, contentTypeId, contentType).toBlocking().first();
       }
-      contentType.setSys(sys);
-      return result;
-    } catch (RuntimeException e) {
-      contentType.setSys(sys);
-      throw (e);
+    } finally {
+      contentType.setSystem(sys);
     }
   }
 
@@ -167,15 +164,24 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
   public CMAContentType update(CMAContentType contentType) {
     assertNotNull(contentType, "contentType");
     assertNotNull(contentType.getName(), "contentType.name");
+
     String contentTypeId = getResourceIdOrThrow(contentType, "contentType");
     String spaceId = getSpaceIdOrThrow(contentType, "contentType");
     Integer version = getVersionOrThrow(contentType, "update");
-    return service.update(
-        version,
-        spaceId,
-        contentTypeId,
-        contentType
-    ).toBlocking().first();
+
+    final CMASystem system = contentType.getSystem();
+    contentType.setSystem(null);
+
+    try {
+      return service.update(
+          version,
+          spaceId,
+          contentTypeId,
+          contentType
+      ).toBlocking().first();
+    } finally {
+      contentType.setSystem(system);
+    }
   }
 
   /**

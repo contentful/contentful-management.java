@@ -20,6 +20,7 @@ import com.contentful.java.cma.RxExtensions.DefFunc;
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMALocale;
 import com.contentful.java.cma.model.CMASpace;
+import com.contentful.java.cma.model.CMASystem;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,7 +51,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
    */
   public CMASpace create(String spaceName) {
     assertNotNull(spaceName, "spaceName");
-    return service.create(new CMASpace().setName(spaceName)).toBlocking().first();
+    return service.create(new CMASpace().setName(spaceName).setSystem(null)).toBlocking().first();
   }
 
   /**
@@ -143,9 +144,14 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
     String spaceId = getResourceIdOrThrow(space, "space");
     Integer version = getVersionOrThrow(space, "update");
 
-    CMASpace update = new CMASpace();
-    update.setName(space.getName());
-    return service.update(version, spaceId, update).toBlocking().first();
+    final CMASystem system = space.getSystem();
+    space.setSystem(null);
+
+    try {
+      return service.update(version, spaceId, space).toBlocking().first();
+    } finally {
+      space.setSystem(system);
+    }
   }
 
   /**

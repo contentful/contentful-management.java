@@ -22,6 +22,7 @@ import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAContentType
 import com.contentful.java.cma.model.CMAField
+import com.contentful.java.cma.model.CMAType
 import okhttp3.HttpUrl
 import okhttp3.mockwebserver.MockResponse
 import java.io.IOException
@@ -122,7 +123,7 @@ class ContentTypeTests : BaseTest() {
                 TestUtils.fileToString("content_type_update_object.json"),
                 CMAContentType::class.java)
 
-        assertEquals(1.toDouble(), contentType.sys["version"])
+        assertEquals(1, contentType.version)
 
         contentType.addField(CMAField().setId("f3")
                 .setName("field3")
@@ -143,7 +144,7 @@ class ContentTypeTests : BaseTest() {
         assertEquals("/spaces/spaceid/content_types/contenttypeid", recordedRequest.path)
         assertJsonEquals(requestBody, recordedRequest.utf8Body)
         assertNotNull(recordedRequest.getHeader("X-Contentful-Version"))
-        assertEquals(2.toDouble(), contentType.sys["version"])
+        assertEquals(2, contentType.version)
     }
 
     @test fun testDelete() {
@@ -168,7 +169,7 @@ class ContentTypeTests : BaseTest() {
 
         val items = result.items
         assertEquals(2, items.size)
-        assertEquals("Array", result.sys["type"])
+        assertEquals(CMAType.Array, result.system.type)
         assertEquals("Blog Post", items[0].name)
         assertEquals(2, items[0].fields.size)
         assertEquals(2, result.total)
@@ -246,32 +247,29 @@ class ContentTypeTests : BaseTest() {
         assertEquals(CMAFieldType.Text, fields[1].type)
 
         // System Attributes
-        val sys = result.sys
-        assertEquals("contenttypeid", sys["id"])
-        assertEquals("ContentType", sys["type"])
-        assertEquals("2014-11-05T09:19:49.489Z", sys["createdAt"])
-        assertEquals("2014-11-05T09:20:41.770Z", sys["firstPublishedAt"])
-        assertEquals(1.toDouble(), sys["publishedCounter"])
-        assertEquals(3.toDouble(), sys["version"])
-        assertEquals("2014-11-05T09:44:09.857Z", sys["updatedAt"])
+        val sys = result.system
+        assertEquals("contenttypeid", sys.id)
+        assertEquals(CMAType.ContentType, sys.type)
+        assertEquals("2014-11-05T09:19:49.489Z", sys.createdAt)
+        assertEquals("2014-11-05T09:20:41.770Z", sys.firstPublishedAt)
+        assertEquals(1, sys.publishedCounter)
+        assertEquals(3, sys.version)
+        assertEquals("2014-11-05T09:44:09.857Z", sys.updatedAt)
 
         // Created By
-        var map = (sys["createdBy"] as Map<*, *>)["sys"] as Map<*, *>
-        assertEquals("Link", map["type"])
-        assertEquals("User", map["linkType"])
-        assertEquals("cuid", map["id"])
+        assertEquals(CMAType.Link, sys.createdBy.system.type)
+        assertEquals(CMAType.User, sys.createdBy.system.linkType)
+        assertEquals("cuid", sys.createdBy.system.id)
 
         // Updated By
-        map = (sys["updatedBy"] as Map<*, *>)["sys"] as Map<*, *>
-        assertEquals("Link", map["type"])
-        assertEquals("User", map["linkType"])
-        assertEquals("uuid", map["id"])
+        assertEquals(CMAType.Link, sys.updatedBy.system.type)
+        assertEquals(CMAType.User, sys.updatedBy.system.linkType)
+        assertEquals("uuid", sys.updatedBy.system.id)
 
         // Space
-        map = (sys["space"] as Map<*, *>)["sys"] as Map<*, *>
-        assertEquals("Link", map["type"])
-        assertEquals("Space", map["linkType"])
-        assertEquals("spaceid", map["id"])
+        assertEquals(CMAType.Link, sys.space.system.type)
+        assertEquals(CMAType.Space, sys.space.system.linkType)
+        assertEquals("spaceid", sys.space.system.id)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -287,7 +285,7 @@ class ContentTypeTests : BaseTest() {
                 CMAContentType()
                         .setId("ctid")
                         .setSpaceId("spaceid")
-                        .setVersion(1.0),
+                        .setVersion(1),
                 TestCallback()) as TestCallback)!!
 
         // Request
@@ -335,7 +333,7 @@ class ContentTypeTests : BaseTest() {
                 .setCoreCallFactory { throw RuntimeException(it.url().toString(), IOException()) }
                 .build()
 
-        val contentType = CMAContentType().setVersion(31337.0)
+        val contentType = CMAContentType().setVersion(31337)
         try {
             badClient.contentTypes().create("spaceid", contentType)
         } catch (e: RuntimeException) {

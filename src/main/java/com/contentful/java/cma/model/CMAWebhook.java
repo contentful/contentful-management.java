@@ -40,6 +40,57 @@ public class CMAWebhook extends CMAResource {
   String password;
 
   /**
+   * Create a webhoook, setting up the system attribute for it.
+   */
+  public CMAWebhook() {
+    super(CMAType.WebhookDefinition);
+  }
+
+  /**
+   * Sets the system field.
+   *
+   * @param system sets the system property.
+   */
+  @SuppressWarnings("unchecked")
+  public CMAWebhook setSystem(CMASystem system) {
+    this.system = system;
+    return this;
+  }
+
+  /**
+   * Convenience: Update the id of this entry without going through {@link #getSystem()}.
+   *
+   * @param id to be set.
+   * @return the calling instance for chaining.
+   */
+  @SuppressWarnings("unchecked")
+  @Override public CMAWebhook setId(String id) {
+    return (CMAWebhook) super.setId(id);
+  }
+
+  /**
+   * Convenience: Update the version of this entry without going through {@link #getSystem()}.
+   *
+   * @param version to be set.
+   * @return the calling instance for chaining.
+   */
+  @SuppressWarnings("unchecked")
+  @Override public CMAWebhook setVersion(Integer version) {
+    return (CMAWebhook) super.setVersion(version);
+  }
+
+  /**
+   * Convenience: Update the space id of this entry without going through {@link #getSystem()}.
+   *
+   * @param spaceId to be set.
+   * @return the calling instance for chaining.
+   */
+  @SuppressWarnings("unchecked")
+  @Override public CMAWebhook setSpaceId(String spaceId) {
+    return (CMAWebhook) super.setSpaceId(spaceId);
+  }
+
+  /**
    * Set the name of this webhook.
    *
    * @param name to identify this webhook

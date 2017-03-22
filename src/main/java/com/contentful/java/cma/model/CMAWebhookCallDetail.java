@@ -32,6 +32,13 @@ public class CMAWebhookCallDetail extends CMAResource {
   List<String> errors;
 
   /**
+   * Create this call detail.
+   */
+  public CMAWebhookCallDetail() {
+    super(CMAType.WebhookCallOverview);
+  }
+
+  /**
    * @return The url called from Contentful.
    */
   public String getUrl() {

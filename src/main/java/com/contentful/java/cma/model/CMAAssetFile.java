@@ -28,11 +28,11 @@ public class CMAAssetFile {
   }
 
   String contentType;
+  Details details;
   String url;
   String upload;
-  CMAUploadLink uploadFrom;
-  Details details;
   String fileName;
+  CMALink uploadFrom;
 
   public String getUrl() {
     return url;
@@ -47,11 +47,20 @@ public class CMAAssetFile {
     return this;
   }
 
-  public CMAUploadLink getUploadFrom() {
+  /**
+   * @return a link to the upload from {@link com.contentful.java.cma.ModuleUploads}
+   */
+  public CMALink getUploadFrom() {
     return uploadFrom;
   }
 
-  public CMAAssetFile setUploadFrom(CMAUploadLink uploadFrom) {
+  /**
+   * Set a link to a Contentful Upload entry, to be used for processing the binary data from.
+   *
+   * @return the calling instance for chaining.
+   * @see com.contentful.java.cma.ModuleUploads
+   */
+  public CMAAssetFile setUploadFrom(CMALink uploadFrom) {
     this.uploadFrom = uploadFrom;
     return this;
   }

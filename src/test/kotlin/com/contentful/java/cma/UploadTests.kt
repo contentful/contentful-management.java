@@ -18,10 +18,9 @@ package com.contentful.java.cma
 
 import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.lib.TestUtils
+import com.contentful.java.cma.model.CMAType
 import junit.framework.TestCase.assertEquals
 import okhttp3.mockwebserver.MockResponse
-import org.hamcrest.CoreMatchers.startsWith
-import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test as test
 
 class UploadTests : BaseTest() {
@@ -39,7 +38,7 @@ class UploadTests : BaseTest() {
         val recordedRequest = server!!.takeRequest()
         assertEquals("POST", recordedRequest.method)
         assertEquals("/spaces/space_id/uploads", recordedRequest.path)
-        assertEquals("upload_id", result.resourceId)
+        assertEquals("upload_id", result.id)
     }
 
     @test
@@ -55,8 +54,8 @@ class UploadTests : BaseTest() {
         assertEquals("GET", recordedRequest.method)
         assertEquals("/spaces/space_id/uploads/upload_id", recordedRequest.path)
 
-        assertEquals("upload_id", result.sys["id"])
-        assertEquals("Upload", result.sys["type"])
+        assertEquals("upload_id", result.system.id)
+        assertEquals(CMAType.Upload, result.system.type)
     }
 
     @test

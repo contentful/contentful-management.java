@@ -20,6 +20,7 @@ import com.contentful.java.cma.lib.ModuleTestUtils
 import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAEntry
+import com.contentful.java.cma.model.CMAType
 import okhttp3.HttpUrl
 import okhttp3.mockwebserver.MockResponse
 import java.io.IOException
@@ -48,8 +49,8 @@ class EntryTests : BaseTest() {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val entry = CMAEntry()
-                .setField("fid1", "value1", "en-US")
-                .setField("fid2", "value2", "en-US")
+                .setField("fid1", "en-US", "value1")
+                .setField("fid2", "en-US", "value2")
 
         val result = assertTestCallback(client!!.entries()
                 .async()
@@ -79,8 +80,8 @@ class EntryTests : BaseTest() {
 
         val entry = CMAEntry()
                 .setId("entryid")
-                .setField("fid1", "value1", "en-US")
-                .setField("fid2", "value2", "en-US")
+                .setField("fid1", "en-US", "value1")
+                .setField("fid2", "en-US", "value2")
 
         assertTestCallback(client!!.entries().async().create(
                 "spaceid", "ctid", entry, TestCallback()) as TestCallback)
@@ -99,14 +100,14 @@ class EntryTests : BaseTest() {
 
         val locale = "en-US"
 
-        val foo = CMAEntry().setId("foo").setField("name", "foo", locale)
-        val bar = CMAEntry().setId("bar").setField("name", "bar", locale)
+        val foo = CMAEntry().setId("foo").setField("name", locale, "foo")
+        val bar = CMAEntry().setId("bar").setField("name", locale, "bar")
 
-        foo.setField("link", bar, locale)
-        foo.setField("link", bar, "he-IL")
-        foo.setField("array", listOf(bar), locale)
+        foo.setField("link", locale, bar)
+        foo.setField("link", "he-IL", bar)
+        foo.setField("array", locale, listOf(bar))
 
-        bar.setField("link", foo, locale)
+        bar.setField("link", locale, foo)
 
         client!!.entries().create("space", "type", foo)
 
@@ -117,7 +118,7 @@ class EntryTests : BaseTest() {
 
     @test(expected = RuntimeException::class)
     fun testCreateWithBadLinksThrows() {
-        val foo = CMAEntry().setId("bar").setField("link", CMAEntry(), "en-US")
+        val foo = CMAEntry().setId("bar").setField("link", "en-US", CMAEntry())
         server!!.enqueue(MockResponse().setResponseCode(200))
         try {
             client!!.entries().create("space", "type", foo)
@@ -146,7 +147,7 @@ class EntryTests : BaseTest() {
         val result = assertTestCallback(client!!.entries().async().fetchAll(
                 "spaceid", TestCallback()) as TestCallback)!!
 
-        assertEquals("Array", result.sys["type"])
+        assertEquals(CMAType.Array, result.system.type)
         assertEquals(1, result.total)
         assertEquals(1, result.items.size)
 
@@ -186,11 +187,11 @@ class EntryTests : BaseTest() {
         val result = assertTestCallback(client!!.entries().async().fetchOne(
                 "space", "entry", TestCallback()) as TestCallback)!!
 
-        val sys = result.sys
+        val sys = result.system
         val fields = result.fields
 
-        assertEquals("Entry", sys["type"])
-        assertEquals("entryid", sys["id"])
+        assertEquals(CMAType.Entry, sys.type)
+        assertEquals("entryid", sys.id)
         assertEquals(2, fields.size)
         assertEquals("http://www.url.com", fields["url"]!!["en-US"])
         assertEquals("value", fields["key"]!!["en-US"])
@@ -212,17 +213,20 @@ class EntryTests : BaseTest() {
         val responseBody = TestUtils.fileToString("entry_update_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
-        val result = assertTestCallback(client!!.entries().async().update(CMAEntry()
+        val entry = CMAEntry()
                 .setId("entryid")
                 .setSpaceId("spaceid")
-                .setVersion(1.0)
-                .setField("fid1", "newvalue1", "en-US")
-                .setField("fid2", "newvalue2", "en-US"), TestCallback()) as TestCallback)!!
+                .setVersion(1)
+                .setField("fid1", "en-US", "newvalue1")
+                .setField("fid2", "en-US", "newvalue2")
+
+        val result = assertTestCallback(client!!.entries().async()
+                .update(entry, TestCallback()) as TestCallback)!!
+
+        assertEquals("entryid", result.id)
+        assertEquals(CMAType.Entry, result.system.type)
 
         val fields = result.fields.entries.toList()
-
-        assertEquals("entryid", result.sys["id"])
-        assertEquals("Entry", result.sys["type"])
         assertEquals(2, fields.size)
         assertEquals("fid1", fields[0].key)
         assertEquals("newvalue1", fields[0].value["en-US"])
@@ -244,7 +248,7 @@ class EntryTests : BaseTest() {
         assertTestCallback(client!!.entries().async().publish(CMAEntry()
                 .setId("entryid")
                 .setSpaceId("spaceid")
-                .setVersion(1.0), TestCallback(true)) as TestCallback)
+                .setVersion(1), TestCallback(true)) as TestCallback)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -288,7 +292,7 @@ class EntryTests : BaseTest() {
                 .setCoreCallFactory { throw RuntimeException(it.url().toString(), IOException()) }
                 .build()
 
-        val entry = CMAEntry().setVersion(31337.0)
+        val entry = CMAEntry().setVersion(31337)
         try {
             badClient.entries().create("spaceid", "ctid", entry)
         } catch (e: RuntimeException) {
@@ -302,5 +306,21 @@ class EntryTests : BaseTest() {
         ModuleTestUtils.assertUpdateWithoutVersion {
             client!!.entries().update(CMAEntry().setId("eid").setSpaceId("spaceid"))
         }
+    }
+
+    @test
+    fun testChainingInterface() {
+        val entry = CMAEntry()
+        entry.setField("foo", "en-US", "bar").setField("foo", "en-US", "baz")
+
+        assertEquals("baz", entry.getField("foo", "en-US"))
+    }
+
+    @test
+    fun testLocalizedChainingInterface() {
+        val entry = CMAEntry()
+        entry.localize("en-US").setField("foo", "bar").setField("foo", "baz")
+
+        assertEquals("baz", entry.getField("foo", "en-US"))
     }
 }

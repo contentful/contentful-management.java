@@ -34,9 +34,9 @@
       },
       "name": "U.S. English",
       "code": "en-US",
+      "fallbackCode":null,
       "default": true,
       "contentManagementApi": true,
-      "publish": true,
       "contentDeliveryApi": true
     }
   ],

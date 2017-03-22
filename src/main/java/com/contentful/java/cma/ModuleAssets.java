@@ -19,6 +19,7 @@ package com.contentful.java.cma;
 import com.contentful.java.cma.RxExtensions.DefFunc;
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAAsset;
+import com.contentful.java.cma.model.CMASystem;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -69,22 +70,18 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(asset, "asset");
 
-    String assetId = asset.getResourceId();
-    HashMap sys = asset.getSys();
-    asset.setSys(null);
+    final String assetId = asset.getId();
+    final CMASystem sys = asset.getSystem();
+    asset.setSystem(null);
 
     try {
-      CMAAsset result;
       if (assetId == null) {
-        result = service.create(spaceId, asset).toBlocking().first();
+        return service.create(spaceId, asset).toBlocking().first();
       } else {
-        result = service.create(spaceId, assetId, asset).toBlocking().first();
+        return service.create(spaceId, assetId, asset).toBlocking().first();
       }
-      asset.setSys(sys);
-      return result;
-    } catch (RuntimeException e) {
-      asset.setSys(sys);
-      throw (e);
+    } finally {
+      asset.setSystem(sys);
     }
   }
 
@@ -163,7 +160,8 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     assertNotNull(asset, "asset");
     String assetId = getResourceIdOrThrow(asset, "asset");
     String spaceId = getSpaceIdOrThrow(asset, "asset");
-    return service.publish(asset.getVersion(), spaceId, assetId, new Byte[0]).toBlocking().first();
+    return service.publish(asset.getSystem().getVersion(), spaceId, assetId,
+        new Byte[0]).toBlocking().first();
   }
 
   /**
@@ -204,9 +202,14 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     String spaceId = getSpaceIdOrThrow(asset, "asset");
     Integer version = getVersionOrThrow(asset, "update");
 
-    CMAAsset update = new CMAAsset();
-    update.setFields(asset.getFields());
-    return service.update(version, spaceId, assetId, update).toBlocking().first();
+    final CMASystem sys = asset.getSystem();
+    asset.setSystem(null);
+
+    try {
+      return service.update(version, spaceId, assetId, asset).toBlocking().first();
+    } finally {
+      asset.setSystem(sys);
+    }
   }
 
   /**

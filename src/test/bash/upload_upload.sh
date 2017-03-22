@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 if [ ! -e /tmp/200.jpg ]; then
 	echo 'Downloading cat'
 	curl https://http.cat/200 > /tmp/200.jpg
@@ -8,9 +9,9 @@ fi
 set -ev
 curl \
 	--request POST \
-	--header 'Content-Type: application/vnd.contentful.management.v1+json' \
-	--header 'Authorization: Bearer '$F_CMA_TOKEN \
+	--header 'Content-Type: application/octet-stream' \
+	--header 'Authorization: Bearer '$CMA_TOKEN \
 	--data-binary @/tmp/200.jpg \
-	'https://upload.contentful.com/spaces/'$F_SPACE_ID'/uploads' \
+	'https://upload.contentful.com/spaces/'$SPACE_ID'/uploads' \
 	| tee /tmp/contentful-upload-response
 

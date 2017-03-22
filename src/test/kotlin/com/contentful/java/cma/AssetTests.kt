@@ -21,6 +21,8 @@ import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAAsset
 import com.contentful.java.cma.model.CMAAssetFile
+import com.contentful.java.cma.model.CMALink
+import com.contentful.java.cma.model.CMAType
 import okhttp3.HttpUrl
 import okhttp3.mockwebserver.MockResponse
 import java.io.IOException
@@ -38,7 +40,10 @@ class AssetTests : BaseTest() {
 
         val responseBody = TestUtils.fileToString("asset_archive_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
-        val asset = CMAAsset().setId("assetid").setSpaceId("spaceid")
+
+        val asset = CMAAsset()
+                .setSpaceId("spaceid")
+                .setId("assetid")
         assertFalse(asset.isArchived)
 
         val result = assertTestCallback(cli.assets().async().archive(
@@ -58,8 +63,9 @@ class AssetTests : BaseTest() {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val asset = CMAAsset()
-                .setField("title", "title", "en-US")
-                .setField("description", "description", "en-US")
+        asset.fields.localize("en-US")
+                .setTitle("title")
+                .setDescription("description")
 
         assertTestCallback(client!!.assets().async().create(
                 "spaceid", asset, TestCallback()) as TestCallback)
@@ -79,8 +85,9 @@ class AssetTests : BaseTest() {
 
         val asset = CMAAsset()
                 .setId("assetid")
-                .setField("title", "title", "en-US")
-                .setField("description", "description", "en-US")
+        asset.fields.localize("en-US")
+                .setTitle("title")
+                .setDescription("description")
 
         assertTestCallback(client!!.assets().async().create(
                 "spaceid", asset, TestCallback()) as TestCallback)
@@ -113,13 +120,13 @@ class AssetTests : BaseTest() {
         val result = assertTestCallback(client!!.assets().async().fetchAll(
                 "spaceid", TestCallback()) as TestCallback)!!
 
-        assertEquals("Array", result.sys["type"])
+        assertEquals(CMAType.Array, result.system.type)
         assertEquals(1, result.total)
         val items = result.items
         assertEquals(1, items.size)
-        assertEquals(2, items[0].fields.size)
-        assertNotNull(items[0].fields["file"])
-        assertNotNull(items[0].fields["title"])
+        assertNull(items[0].fields.localize("en-US").description)
+        assertNotNull(items[0].fields.localize("en-US").file)
+        assertNotNull(items[0].fields.localize("en-US").title)
 
         // Request
         val request = server!!.takeRequest()
@@ -165,9 +172,12 @@ class AssetTests : BaseTest() {
         val responseBody = "203"
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
-        assertTestCallback(client!!.assets().async().process(CMAAsset()
+        val asset = CMAAsset()
                 .setId("assetid")
-                .setSpaceId("spaceid"), "locale", TestCallback()) as TestCallback)
+                .setSpaceId("spaceid")
+
+        assertTestCallback(client!!.assets().async().process(asset,
+                "locale", TestCallback()) as TestCallback)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -180,7 +190,10 @@ class AssetTests : BaseTest() {
         val responseBody = TestUtils.fileToString("asset_publish_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
-        val asset = CMAAsset().setId("assetid").setSpaceId("spaceid").setVersion(1.0)
+        val asset = CMAAsset()
+                .setId("assetid")
+                .setSpaceId("spaceid")
+                .setVersion(1)
         assertFalse(asset.isPublished)
 
         val result = assertTestCallback(client!!.assets().async().publish(
@@ -199,8 +212,12 @@ class AssetTests : BaseTest() {
         val responseBody = TestUtils.fileToString("asset_publish_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
+        val asset = CMAAsset()
+                .setId("assetid")
+                .setSpaceId("spaceid")
+
         assertTestCallback(client!!.assets().async().unArchive(
-                CMAAsset().setId("assetid").setSpaceId("spaceid"),
+                asset,
                 TestCallback(true)) as TestCallback)
 
         // Request
@@ -229,15 +246,18 @@ class AssetTests : BaseTest() {
         val requestBody = TestUtils.fileToString("asset_update_request.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(requestBody))
 
-        assertTestCallback(client!!.assets().async().update(CMAAsset()
-                .setId("assetid")
+        val asset = CMAAsset()
+        asset.setId("assetid")
                 .setSpaceId("spaceid")
-                .setVersion(1.0)
-                .setField("file", linkedMapOf(
-                        Pair("contentType", "image/jpeg"),
-                        Pair("upload", "https://www.nowhere.com/image.jpg"),
-                        Pair("fileName", "example.jpg")
-                ), "en-US"), TestCallback(true)) as TestCallback)
+                .setVersion(1)
+        asset.fields.localize("en-US")
+                .file = CMAAssetFile()
+                .setContentType("image/jpeg")
+                .setUploadUrl("https://www.nowhere.com/image.jpg")
+                .setFileName("example.jpg")
+
+        assertTestCallback(client!!.assets().async().update(asset,
+                TestCallback(true)) as TestCallback)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -255,13 +275,13 @@ class AssetTests : BaseTest() {
         val asset = CMAAsset()
                 .setId("assetid")
                 .setSpaceId("spaceid")
-                .setVersion(1.0)
-        asset
-                .localize("en-US")
-                .setFile(CMAAssetFile()
-                        .setContentType("image/jpeg")
-                        .setUploadUrl("https://www.nowhere.com/image.jpg")
-                        .setFileName("example.jpg"))
+                .setVersion(1)
+
+        asset.fields.localize("en-US")
+                .file = CMAAssetFile()
+                .setContentType("image/jpeg")
+                .setUploadUrl("https://www.nowhere.com/image.jpg")
+                .setFileName("example.jpg")
 
         assertTestCallback(client!!.assets().async().update(asset, TestCallback(true)) as TestCallback)
 
@@ -280,7 +300,7 @@ class AssetTests : BaseTest() {
                 .setCoreCallFactory { throw IOException(it.url().toString(), IOException()) }
                 .build()
 
-        val asset = CMAAsset().setVersion(31337.0)
+        val asset = CMAAsset().setVersion(31337)
         try {
             badClient.assets().create("spaceid", asset)
         } catch (e: RuntimeException) {
@@ -301,6 +321,20 @@ class AssetTests : BaseTest() {
         }
     }
 
+    @org.junit.Test
+    fun testDoNotChangeSysOnException() {
+        val asset = CMAAsset().setId("aid").setSpaceId("spaceid")
+        val system = asset.system
+
+        try {
+            ModuleTestUtils.assertUpdateWithoutVersion {
+                client!!.assets().update(asset)
+            }
+        } catch (e: Exception) {
+            assertEquals(system, asset.system)
+        }
+    }
+
     @test
     fun testCreateAssetWithUploadId() {
         val client = CMAClient.Builder()
@@ -312,17 +346,19 @@ class AssetTests : BaseTest() {
         val responseBody = TestUtils.fileToString("asset_create_with_upload_id_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
+        val asset = CMAAsset()
+                .setSpaceId("space_id")
+                .setVersion(1)
+
+        asset.fields.localize("en-US").file = CMAAssetFile()
+                .setContentType("image/jpeg")
+                .setUploadFrom(CMALink().setId<CMALink>("some_secret_keys"))
+                .setFileName("example.jpg")
+
         assertTestCallback(client.assets().async()
                 .create(
                         "space_id",
-                        CMAAsset()
-                                .setSpaceId("space_id")
-                                .setVersion(1.0)
-                                .setField("file", linkedMapOf(
-                                        Pair("content_type", "image/jpeg"),
-                                        Pair("uploadFrom", "some_secret_keys"),
-                                        Pair("fileName", "example.jpg")
-                                ), "en-US")
+                        asset
                         , TestCallback()) as TestCallback)!!
 
         // Request

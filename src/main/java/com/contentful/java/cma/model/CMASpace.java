@@ -24,7 +24,26 @@ public class CMASpace extends CMAResource {
   String name;
 
   /**
+   * Create a space using the default types for the system property.
+   */
+  public CMASpace() {
+    super(CMAType.Space);
+  }
+
+  /**
+   * Sets the system field.
+   *
+   * @param system sets the system property.
+   */
+  @SuppressWarnings("unchecked")
+  public CMASpace setSystem(CMASystem system) {
+    this.system = system;
+    return this;
+  }
+
+  /**
    * Sets the name for this Space.
+   *
    * @param name the name of the Space to be set
    * @return this {@code CMASpace} instance.
    */

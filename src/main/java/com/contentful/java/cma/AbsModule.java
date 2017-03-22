@@ -57,7 +57,7 @@ abstract class AbsModule<T> {
    * Throws {@link IllegalArgumentException} if the value is not present.
    */
   String getResourceIdOrThrow(CMAResource resource, String param) {
-    String resourceId = resource.getResourceId();
+    final String resourceId = resource.getId();
     if (resourceId == null) {
       throw new IllegalArgumentException(String.format(
           "%s.setId() was not called.", param));
@@ -70,7 +70,7 @@ abstract class AbsModule<T> {
    * Throws {@link IllegalArgumentException} if the value is not present.
    */
   String getSpaceIdOrThrow(CMAResource resource, String param) {
-    String spaceId = resource.getSpaceId();
+    final String spaceId = resource.getSpaceId();
     if (spaceId == null) {
       throw new IllegalArgumentException(String.format(
           "%s must have a space associated.", param));
@@ -83,7 +83,7 @@ abstract class AbsModule<T> {
    * Throws {@link IllegalArgumentException} if the value is not present.
    */
   Integer getVersionOrThrow(CMAResource resource, String action) {
-    Integer version = resource.getVersion();
+    final Integer version = resource.getVersion();
     if (version == null) {
       throw new IllegalArgumentException(String.format(
           "Cannot perform %s action on a resource that has no version associated.",
