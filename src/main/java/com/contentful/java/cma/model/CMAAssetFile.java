@@ -109,11 +109,6 @@ public class CMAAssetFile {
     return details;
   }
 
-  public CMAAssetFile setDetails(Details details) {
-    this.details = details;
-    return this;
-  }
-
   /**
    * @return the name of the file used.
    */
