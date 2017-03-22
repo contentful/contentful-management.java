@@ -1,8 +1,10 @@
-package com.contentful.java.cma;
+package com.contentful.java.cma.gson;
 
 import com.contentful.java.cma.model.CMAAsset;
 import com.contentful.java.cma.model.CMAEntry;
 import com.contentful.java.cma.model.CMAResource;
+import com.contentful.java.cma.model.CMASystem;
+import com.contentful.java.cma.model.CMAType;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -10,14 +12,24 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
 import java.lang.reflect.Type;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.contentful.java.cma.Constants.CMAFieldType.Link;
+import static com.contentful.java.cma.model.CMAType.Link;
 
-final class EntrySerializer implements JsonSerializer<CMAEntry> {
+/**
+ * Serialize an entry from Contentful
+ */
+public class EntrySerializer implements JsonSerializer<CMAEntry> {
+  /**
+   * Make sure all fields are mapped in the locale->value way.
+   *
+   * @param src     the source to be edited.
+   * @param type    the type to be used.
+   * @param context the json context to be changed.
+   * @return a created json element.
+   */
   @Override
   public JsonElement serialize(CMAEntry src, Type type, JsonSerializationContext context) {
     JsonObject fields = new JsonObject();
@@ -36,7 +48,7 @@ final class EntrySerializer implements JsonSerializer<CMAEntry> {
     JsonObject result = new JsonObject();
     result.add("fields", fields);
 
-    HashMap<String, Object> sys = src.getSys();
+    final CMASystem sys = src.getSystem();
     if (sys != null) {
       result.add("sys", context.serialize(sys));
     }
@@ -75,21 +87,23 @@ final class EntrySerializer implements JsonSerializer<CMAEntry> {
   }
 
   private JsonObject toLink(JsonSerializationContext context, CMAResource resource) {
-    String id = resource.getResourceId();
+    final String id = resource.getId();
     if (id == null || id.isEmpty()) {
       throw new IllegalArgumentException("Entry contains link to draft resource (has no ID).");
     }
-    String type = (String) resource.getSys().get("type");
+
+    CMAType type = resource.getSystem().getType();
     if (type == null) {
       if (resource instanceof CMAAsset) {
-        type = "Asset";
+        type = CMAType.Asset;
       } else if (resource instanceof CMAEntry) {
-        type = "Entry";
+        type = CMAType.Entry;
       }
     }
+
     JsonObject sys = new JsonObject();
     sys.addProperty("type", Link.toString());
-    sys.addProperty("linkType", type);
+    sys.addProperty("linkType", type.toString());
     sys.addProperty("id", id);
 
     JsonObject result = new JsonObject();

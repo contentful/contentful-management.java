@@ -16,6 +16,8 @@
 
 package com.contentful.java.cma;
 
+import com.contentful.java.cma.gson.EntrySerializer;
+import com.contentful.java.cma.gson.FieldTypeAdapter;
 import com.contentful.java.cma.interceptor.AuthorizationHeaderInterceptor;
 import com.contentful.java.cma.interceptor.ContentTypeInterceptor;
 import com.contentful.java.cma.interceptor.ErrorInterceptor;
