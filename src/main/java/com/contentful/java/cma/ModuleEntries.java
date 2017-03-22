@@ -56,6 +56,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
 
   /**
    * Create a new Entry.
+   * <p>
    * In case the given {@code entry} has an ID associated with it, that ID will be used,
    * otherwise the server will auto-generate an ID that will be contained in the response upon
    * success.
@@ -100,7 +101,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
 
   /**
    * Fetch all Entries from a Space.
-   *
+   * <p>
    * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH}
    *
    * @param spaceId Space ID

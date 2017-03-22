@@ -23,7 +23,7 @@ import java.util.List;
 
 /**
  * Represents one webhook definition.
- *
+ * <p>
  * A valid webhook needs to at least have called {@link #setName(String)},  {@link #setUrl(String)},
  * {@link #addTopic(CMAWebhookTopic)}.
  */

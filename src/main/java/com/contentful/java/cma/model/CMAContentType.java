@@ -104,7 +104,6 @@ public class CMAContentType extends CMAResource {
    * Sets the display field for this Content Type.
    *
    * @param displayField the field to be set
-   *
    * @return this {@code CMAContentType} instance
    */
   public CMAContentType setDisplayField(String displayField) {
@@ -121,6 +120,7 @@ public class CMAContentType extends CMAResource {
 
   /**
    * Sets the description field for this Content Type.
+   *
    * @param description the description to be set
    * @return this {@code CMAContentType} instance
    */

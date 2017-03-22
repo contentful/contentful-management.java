@@ -100,7 +100,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
 
   /**
    * Fetch all Assets from a Space.
-   *
+   * <p>
    * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH}
    *
    * @param spaceId Space ID

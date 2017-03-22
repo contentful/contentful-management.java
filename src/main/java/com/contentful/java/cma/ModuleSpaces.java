@@ -214,7 +214,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
 
     /**
      * Fetch all Spaces.
-     *
+     * <p>
      * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH}.
      *
      * @param callback Inform about results on the callback.

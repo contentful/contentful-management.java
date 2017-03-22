@@ -88,7 +88,7 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
 
   /**
    * Fetch all Content Types from a Space, using default query parameter.
-   *
+   * <p>
    * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH}
    *
    * @param spaceId Space ID
