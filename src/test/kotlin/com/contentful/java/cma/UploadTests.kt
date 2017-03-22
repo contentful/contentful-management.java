@@ -26,22 +26,6 @@ import org.junit.Test as test
 
 class UploadTests : BaseTest() {
     @test
-    fun testGetUploadMessage() {
-        val responseBody = TestUtils.fileToString("upload_welcome_response.json")
-        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
-
-        val result = assertTestCallback(client!!.uploads().async()
-                .welcome(TestCallback()) as TestCallback)!!
-
-        // Request
-        val recordedRequest = server!!.takeRequest()
-        assertEquals("GET", recordedRequest.method)
-        assertEquals("/", recordedRequest.path)
-        assertThat(result.message, startsWith("Read the docs: https://www.contentful.com"))
-        assertEquals("Welcome", result.sys["type"])
-    }
-
-    @test
     fun testPostBinaryToUpload() {
         val responseBody = TestUtils.fileToString("upload_post_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))

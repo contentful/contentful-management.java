@@ -17,7 +17,6 @@
 package com.contentful.java.cma;
 
 import com.contentful.java.cma.model.CMAUpload;
-import com.contentful.java.cma.model.CMAUploadWelcome;
 
 import okhttp3.RequestBody;
 import retrofit2.Response;
@@ -34,9 +33,6 @@ import rx.Observable;
  * This service will be used to wrap the uploading rest calls to Contentfuls endpoint.
  */
 interface ServiceUploads {
-  @GET("/")
-  Observable<CMAUploadWelcome> welcome();
-
   @POST("spaces/{spaceId}/uploads")
   Observable<CMAUpload> create(
       @Path("spaceId") String spaceId,
