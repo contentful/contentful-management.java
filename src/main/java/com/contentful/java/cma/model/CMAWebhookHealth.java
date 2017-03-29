@@ -45,6 +45,13 @@ public class CMAWebhookHealth extends CMAResource {
   CMAWebhookHealthCall calls;
 
   /**
+   * Create a webhook health record.
+   */
+  public CMAWebhookHealth() {
+    super(CMAType.Webhook);
+  }
+
+  /**
    * @return Returns Object containing Counts of calls of this Webhook.
    */
   public CMAWebhookHealthCall getCalls() {

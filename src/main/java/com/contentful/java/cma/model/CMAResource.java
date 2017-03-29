@@ -16,27 +16,55 @@
 
 package com.contentful.java.cma.model;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.google.gson.annotations.SerializedName;
 
 /**
- * Base CMA resource.
+ * Base CMA resource. All `things` you will be retrieving and sending from and to Contentful
+ * will be based on this class.
  */
 public class CMAResource {
-  // System attributes
-  HashMap<String, Object> sys;
+
+  @SerializedName("sys")
+  CMASystem system = new CMASystem();
+
+  public CMAResource(CMAType type) {
+    getSystem().setType(type);
+  }
+
+  /**
+   * @return the system field.
+   */
+  public CMASystem getSystem() {
+    return system;
+  }
+
+  /**
+   * Sets the system field.
+   *
+   * @param system sets the system property.
+   */
+  @SuppressWarnings("unchecked")
+  public <T extends CMAResource> T setSystem(CMASystem system) {
+    this.system = system;
+    return (T) this;
+  }
+
+  /**
+   * @return the {@code sys.id} value, null if it is does not exist.
+   */
+  public String getId() {
+    return getSystem().getId();
+  }
 
   /**
    * Sets the ID for this CMAResource.
+   *
    * @param id to be set
    * @return this {@code CMAResource} instance
    */
   @SuppressWarnings("unchecked")
   public <T extends CMAResource> T setId(String id) {
-    if (sys == null) {
-      sys = new HashMap();
-    }
-    sys.put("id", id);
+    getSystem().setId(id);
     return (T) this;
   }
 
@@ -44,59 +72,62 @@ public class CMAResource {
    * @return the {@code sys.version} value, null if it does not exist.
    */
   public Integer getVersion() {
-    if (sys != null) {
-      Double value = (Double) sys.get("version");
-      if (value != null) {
-        return value.intValue();
-      }
-    }
-    return null;
+    return getSystem().getVersion();
   }
 
   /**
-   * @return the {@code sys.id} value, null if it is does not exist.
+   * Convenience method for setting a version.
+   *
+   * @param version the version number to be set.
+   * @param <T>     the type of the CMAResource calling.
+   * @return the calling {@link CMAResource} for chaining.
    */
-  public String getResourceId() {
-    return getSysAttribute("id");
+  @SuppressWarnings("unchecked")
+  public <T extends CMAResource> T setVersion(Integer version) {
+    getSystem().setVersion(version);
+    return (T) this;
   }
 
   /**
    * @return the ID of the Space associated with this resource, null if it does not exist.
    */
   public String getSpaceId() {
-    Map space = getSysAttribute("space");
+    final CMALink space = getSystem().getSpace();
     if (space != null) {
-      Map spaceSys = (Map) space.get("sys");
-      if (spaceSys != null) {
-        return (String) spaceSys.get("id");
-      }
+      return space.getSystem().getId();
     }
     return null;
   }
 
   /**
-   * @return the value of the system attribute {@code attr}, null if it does not exist.
-   */
-  @SuppressWarnings("unchecked") <T> T getSysAttribute(String attr) {
-    if (sys != null) {
-      return (T) sys.get(attr);
-    }
-    return null;
-  }
-
-  /**
-   * @return a map of system attributes.
-   */
-  public HashMap<String, Object> getSys() {
-    return sys;
-  }
-
-  /**
-   * Sets a map of system attributes.
+   * Convenience method for setting a space id.
    *
-   * @param sys sets the sys hash.
+   * @param spaceId the id to be set.
+   * @param <T>     An implementation of CMAResource, normally used for chaining setter methods.
+   * @return the calling {@link CMAResource} for chaining.
    */
-  public void setSys(HashMap<String, Object> sys) {
-    this.sys = sys;
+  @SuppressWarnings("unchecked")
+  public <T extends CMAResource> T setSpaceId(String spaceId) {
+    if (getSystem().getSpace() == null) {
+      getSystem().space = new CMALink(CMAType.Space);
+    }
+
+    getSystem().space.setId(spaceId);
+
+    return (T) this;
+  }
+
+  /**
+   * @return true if this resource is archived.
+   */
+  public Boolean isArchived() {
+    return system != null && system.getArchivedVersion() != null;
+  }
+
+  /**
+   * @return true if this resource is published.
+   */
+  public Boolean isPublished() {
+    return system != null && system.getPublishedVersion() != null;
   }
 }

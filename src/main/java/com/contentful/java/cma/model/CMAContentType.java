@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * Represents a resource of type Content Type.
  */
-public class CMAContentType extends StatefulResource {
+public class CMAContentType extends CMAResource {
   // Name
   String name;
 
@@ -36,12 +36,10 @@ public class CMAContentType extends StatefulResource {
   List<CMAField> fields;
 
   /**
-   * Sets the ID for this Content Type.
-   * @param id the id to be set
-   * @return this {@code CMAContentType} instance
+   * Create a CMAContentType, filling it's {@link CMASystem} field.
    */
-  @Override public CMAContentType setId(String id) {
-    return (CMAContentType) super.setId(id);
+  public CMAContentType() {
+    super(CMAType.ContentType);
   }
 
   /**
@@ -106,7 +104,6 @@ public class CMAContentType extends StatefulResource {
    * Sets the display field for this Content Type.
    *
    * @param displayField the field to be set
-   *
    * @return this {@code CMAContentType} instance
    */
   public CMAContentType setDisplayField(String displayField) {
@@ -123,6 +120,7 @@ public class CMAContentType extends StatefulResource {
 
   /**
    * Sets the description field for this Content Type.
+   *
    * @param description the description to be set
    * @return this {@code CMAContentType} instance
    */
@@ -130,4 +128,59 @@ public class CMAContentType extends StatefulResource {
     this.description = description;
     return this;
   }
+
+  /**
+   * Sets the system field.
+   *
+   * @param system sets the system property.
+   */
+  @SuppressWarnings("unchecked")
+  public CMAContentType setSystem(CMASystem system) {
+    this.system = system;
+    return this;
+  }
+
+  /**
+   * Convenience: Update the id of this entry without going through {@link #getSystem()}.
+   *
+   * @param id to be set.
+   * @return the calling instance for chaining.
+   */
+  @SuppressWarnings("unchecked")
+  @Override public CMAContentType setId(String id) {
+    return (CMAContentType) super.setId(id);
+  }
+
+  /**
+   * Convenience: Update the version of this entry without going through {@link #getSystem()}.
+   *
+   * @param version to be set.
+   * @return the calling instance for chaining.
+   */
+  @SuppressWarnings("unchecked")
+  @Override public CMAContentType setVersion(Integer version) {
+    return (CMAContentType) super.setVersion(version);
+  }
+
+  /**
+   * Convenience for getting the version of this resource.
+   *
+   * @return the calling instance for chaining.
+   */
+  @SuppressWarnings("unchecked")
+  @Override public Integer getVersion() {
+    return super.getVersion();
+  }
+
+  /**
+   * Convenience: Update the space id of this entry without going through {@link #getSystem()}.
+   *
+   * @param spaceId to be set.
+   * @return the calling instance for chaining.
+   */
+  @SuppressWarnings("unchecked")
+  @Override public CMAContentType setSpaceId(String spaceId) {
+    return (CMAContentType) super.setSpaceId(spaceId);
+  }
+
 }

@@ -30,6 +30,13 @@ public class CMAWebhookCall extends CMAResource {
   String requestAt;
 
   /**
+   * Create a webhook call, setting the type in it's system property.
+   */
+  public CMAWebhookCall() {
+    super(CMAType.WebhookCallOverview);
+  }
+
+  /**
    * @return The http status code the call to the webhook returned.
    */
   public Integer getStatusCode() {

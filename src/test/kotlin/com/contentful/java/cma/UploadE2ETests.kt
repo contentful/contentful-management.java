@@ -1,13 +1,14 @@
 package com.contentful.java.cma
 
 import com.contentful.java.cma.lib.TestUtils
-import com.contentful.java.cma.model.CMAAsset
+import com.contentful.java.cma.model.*
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.junit.Assert.*
-import java.util.*
-import org.junit.Test as test
+import java.util.concurrent.TimeUnit
 import org.junit.Ignore as ignore
+import org.junit.Test as test
 
 class UploadE2ETests {
     private val TOKEN = System.getenv("CMA_TOKEN")
@@ -30,56 +31,56 @@ class UploadE2ETests {
     }
 
     private fun testE2EUpload(fileName: String) {
-        val client = CMAClient.Builder()
+        val clientBuilder = CMAClient.Builder()
                 .setAccessToken(TOKEN)
                 .setCoreEndpoint(CORE_URL)
                 .setUploadEndpoint(UPLOAD_URL)
-                .build()
+
+        clientBuilder.setUploadCallFactory(
+                clientBuilder
+                        .defaultUploadCallFactoryBuilder()
+                        .connectTimeout(30, TimeUnit.SECONDS)
+                        .build()
+        )
+
+        val client = clientBuilder.build()
 
         // upload file
         val file = TestUtils.fileToInputStream(fileName)
         val uploadResponse = client.uploads().create(SPACE, file)
-        assertEquals(uploadResponse.sys["type"], "Upload")
+
+        assertEquals(CMAType.Upload, uploadResponse.system.type)
 
         // create asset
         val asset = CMAAsset()
-        val resourceLinkSys = HashMap<String, String>()
-        resourceLinkSys.put("type", "Link")
-        resourceLinkSys.put("linkType", "Upload")
-        resourceLinkSys.put("id", uploadResponse.resourceId)
 
-        val resourceLink = HashMap<String, Map<String, String>>()
-        resourceLink.put("sys", resourceLinkSys)
-
-        val assetFile = HashMap<String, Any>()
-        assetFile.put("fileName", fileName)
-        assetFile.put("uploadFrom", resourceLink)
-        assetFile.put("contentType", "image/jpg")
-
-        asset.setField("title", fileName, LOCALE)
-        asset.setField("file", assetFile, LOCALE)
+        asset.fields.localize(LOCALE)
+                .setTitle(fileName)
+                .setDescription("Simple sample, please ignore and/or delete!")
+                .file = CMAAssetFile()
+                .setFileName(fileName)
+                .setUploadFrom(CMALink(CMAType.Upload).setId(uploadResponse.id))
+                .setContentType("image/jpg")
 
         val createdAsset = client.assets().create(SPACE, asset)
         client.assets().process(createdAsset, LOCALE)
 
         // poll for upload
+        var retrievedAsset: CMAAsset
         var uploadFrom: Any?
         var url: String?
         var attempts = MAXIMUM_ATTEMPTS
         do {
             if (attempts < MAXIMUM_ATTEMPTS) {
                 // give Contentful some time to update
-                Thread.sleep(500)
+                Thread.sleep(100)
             }
 
-            val retrievedAsset = client.assets().fetchOne(SPACE, createdAsset.resourceId)
+            retrievedAsset = client.assets().fetchOne(SPACE, createdAsset.id)
+            val retrievedFile = retrievedAsset.fields.getFile(LOCALE)
 
-            val retrievedFields = retrievedAsset.fields
-            val retrievedFileField = retrievedFields["file"]
-            val retrievedFileFieldLocalized = retrievedFileField!![LOCALE] as Map<String, Any?>
-
-            uploadFrom = retrievedFileFieldLocalized["uploadFrom"]
-            url = retrievedFileFieldLocalized["url"] as String?
+            uploadFrom = retrievedFile.uploadFrom
+            url = retrievedFile.url
 
         } while (--attempts > 0 && uploadFrom != null && url == null)
 
@@ -98,5 +99,8 @@ class UploadE2ETests {
         val expectedBytes = TestUtils.fileToBytes(fileName)
 
         assertArrayEquals("Downloaded and uploaded bytes.", expectedBytes, uploadedBytes)
+
+        val publish = client.assets().publish(retrievedAsset)
+        assertEquals(3, publish.version)
     }
 }

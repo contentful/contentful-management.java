@@ -20,41 +20,165 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * CMALocale.
+ * <p>
+ * This class will be used to represent a locale on the CMA SDK.
  */
 public class CMALocale extends CMAResource {
   String name;
   String code;
-  boolean publish;
+  String fallbackCode;
+  boolean optional;
 
   @SerializedName("default")
   boolean isDefault;
 
   /**
-   * @return the {@code name} attribute of this locale.
+   * Create a new locale, specifying the type in the system property.
+   */
+  public CMALocale() {
+    super(CMAType.Locale);
+  }
+
+  /**
+   * Sets the system field.
+   *
+   * @param system sets the system property.
+   */
+  @SuppressWarnings("unchecked")
+  public CMALocale setSystem(CMASystem system) {
+    this.system = system;
+    return this;
+  }
+
+  /**
+   * Convenience: Update the id of this entry without going through {@link #getSystem()}.
+   *
+   * @param id to be set.
+   * @return the calling instance for chaining.
+   */
+  @SuppressWarnings("unchecked")
+  @Override public CMALocale setId(String id) {
+    return (CMALocale) super.setId(id);
+  }
+
+  /**
+   * Convenience: Update the version of this entry without going through {@link #getSystem()}.
+   *
+   * @param version to be set.
+   * @return the calling instance for chaining.
+   */
+  @SuppressWarnings("unchecked")
+  @Override public CMALocale setVersion(Integer version) {
+    return (CMALocale) super.setVersion(version);
+  }
+
+  /**
+   * Convenience: Update the space id of this entry without going through {@link #getSystem()}.
+   *
+   * @param spaceId to be set.
+   * @return the calling instance for chaining.
+   */
+  @SuppressWarnings("unchecked")
+  @Override public CMALocale setSpaceId(String spaceId) {
+    return (CMALocale) super.setSpaceId(spaceId);
+  }
+
+  /**
+   * What is the human readable name of this locale?
+   *
+   * @return the locale's name.
    */
   public String getName() {
     return name;
   }
 
   /**
-   * @return the {@code code} attribute of this locale.
+   * Change or create a human readable name of this locale.
+   *
+   * @param name name of the locale to be set.
+   * @return the instance calling this method for ease of chaining.
+   */
+  public CMALocale setName(String name) {
+    this.name = name;
+    return this;
+  }
+
+  /**
+   * Get the code of this locale.
+   * <p>
+   * This code will be one of IETF specification.
+   *
+   * @return the code of the locale.
+   * @see <a href="https://en.wikipedia.org/wiki/IETF_language_tag">IETF</a>
    */
   public String getCode() {
     return code;
   }
 
   /**
-   * @return the {@code publish} attribute of this locale.
+   * Set the code of the locale.
+   *
+   * @param code IETF code to be set.
+   * @return this instance for chaining.
+   * @see #getCode()
    */
-  public boolean isPublished() {
-    return publish;
+  public CMALocale setCode(String code) {
+    this.code = code;
+    return this;
   }
 
   /**
-   * @return the {@code default} attribute of this locale.
+   * @return the current fallback locale to be used once a localized field is not set in CDA.
+   */
+  public String getFallbackCode() {
+    return fallbackCode;
+  }
+
+  /**
+   * Set the fallback locale to be used once a localized field is not set in CDA.
+   *
+   * @param fallbackCode an IETF code to represent the fallback.
+   * @return this intance for ease of chaining.
+   */
+  public CMALocale setFallbackCode(String fallbackCode) {
+    this.fallbackCode = fallbackCode;
+    return this;
+  }
+
+  /**
+   * @return true when this locale is optional, aka, can contain null fields.
+   */
+  public boolean isOptional() {
+    return optional;
+  }
+
+  /**
+   * Control whether this locale is optional.
+   *
+   * @param optional a flag indicating optionality status of this locale.
+   * @return this instance to ease chaining.
+   */
+  public CMALocale setOptional(boolean optional) {
+    this.optional = optional;
+    return this;
+  }
+
+  /**
+   * @return whether this is the default locale, the fallback if no fallback is set.
    */
   public boolean isDefault() {
     return isDefault;
+  }
+
+  /**
+   * Change this locale to be the default, or remove this flag from it.
+   *
+   * @param isDefault set this to true, if you want this locale to be the default one.
+   * @return this instance for ease of chaining.
+   */
+  public CMALocale setDefault(boolean isDefault) {
+    this.isDefault = isDefault;
+    return this;
   }
 }
 

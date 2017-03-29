@@ -18,6 +18,7 @@ package com.contentful.java.cma;
 
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAEntry;
+import com.contentful.java.cma.model.CMASystem;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,6 +56,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
 
   /**
    * Create a new Entry.
+   * <p>
    * In case the given {@code entry} has an ID associated with it, that ID will be used,
    * otherwise the server will auto-generate an ID that will be contained in the response upon
    * success.
@@ -69,22 +71,18 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(entry, "entry");
 
-    String entryId = entry.getResourceId();
-    HashMap sys = entry.getSys();
-    entry.setSys(null);
+    final String entryId = entry.getSystem().getId();
+    final CMASystem sys = entry.getSystem();
+    entry.setSystem(null);
 
     try {
-      CMAEntry result;
       if (entryId == null) {
-        result = service.create(spaceId, contentTypeId, entry).toBlocking().first();
+        return service.create(spaceId, contentTypeId, entry).toBlocking().first();
       } else {
-        result = service.create(spaceId, contentTypeId, entryId, entry).toBlocking().first();
+        return service.create(spaceId, contentTypeId, entryId, entry).toBlocking().first();
       }
-      entry.setSys(sys);
-      return result;
-    } catch (RuntimeException e) {
-      entry.setSys(sys);
-      throw (e);
+    } finally {
+      entry.setSystem(sys);
     }
   }
 
@@ -103,7 +101,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
 
   /**
    * Fetch all Entries from a Space.
-   *
+   * <p>
    * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH}
    *
    * @param spaceId Space ID
@@ -149,7 +147,8 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     assertNotNull(entry, "entry");
     String entryId = getResourceIdOrThrow(entry, "entry");
     String spaceId = getSpaceIdOrThrow(entry, "entry");
-    return service.publish(entry.getVersion(), spaceId, entryId, new Byte[0]).toBlocking().first();
+    return service.publish(entry.getSystem().getVersion(), spaceId, entryId,
+        new Byte[0]).toBlocking().first();
   }
 
   /**
@@ -186,13 +185,17 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
    */
   public CMAEntry update(CMAEntry entry) {
     assertNotNull(entry, "entry");
-    String entryId = getResourceIdOrThrow(entry, "entry");
-    String spaceId = getSpaceIdOrThrow(entry, "entry");
-    Integer version = getVersionOrThrow(entry, "update");
+    final String entryId = getResourceIdOrThrow(entry, "entry");
+    final String spaceId = getSpaceIdOrThrow(entry, "entry");
+    final Integer version = getVersionOrThrow(entry, "update");
 
-    CMAEntry update = new CMAEntry();
-    update.setFields(entry.getFields());
-    return service.update(version, spaceId, entryId, update).toBlocking().first();
+    final CMASystem system = entry.getSystem();
+    entry.setSystem(null);
+    try {
+      return service.update(version, spaceId, entryId, entry).toBlocking().first();
+    } finally {
+      entry.setSystem(system);
+    }
   }
 
   /**

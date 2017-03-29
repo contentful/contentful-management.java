@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 if [ ! -e /tmp/contentful-upload-response ]; then
 	echo 'please run `upload.sh` first.'
 	exit
@@ -11,7 +12,7 @@ echo "ID: "$ID
 set -ev
 curl \
 	--request GET \
-	--header 'Authorization: Bearer '$F_CMA_TOKEN \
-	'https://upload.contentful.com/spaces/'$F_SPACE_ID'/uploads/'$ID \
+	--header 'Authorization: Bearer '$CMA_TOKEN \
+	'https://upload.contentful.com/spaces/'$SPACE_ID'/uploads/'$ID \
 	| tee /tmp/contentful-upload-id-response
 

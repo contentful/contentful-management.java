@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 if [ ! -e /tmp/contentful-upload-response ]; then
 	echo 'please run `upload.sh` first.'
 	exit
@@ -12,8 +13,8 @@ set -ev
 curl \
 	--verbose \
 	--request DELETE \
-	--header 'Authorization: Bearer '$F_CMA_TOKEN \
-	'https://upload.contentful.com/spaces/'$F_SPACE_ID'/uploads/'$ID \
+	--header 'Authorization: Bearer '$CMA_TOKEN \
+	'https://upload.contentful.com/spaces/'$SPACE_ID'/uploads/'$ID \
 	| tee /tmp/contentful-upload-delete-response
 
 rm /tmp/contentful-upload-response

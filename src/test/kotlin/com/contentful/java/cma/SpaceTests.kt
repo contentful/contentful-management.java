@@ -20,9 +20,11 @@ import com.contentful.java.cma.lib.ModuleTestUtils
 import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMASpace
+import com.contentful.java.cma.model.CMAType
 import okhttp3.mockwebserver.MockResponse
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import org.junit.Test as tests
 
@@ -35,7 +37,7 @@ class SpaceTests : BaseTest() {
         val result = assertTestCallback(client!!.spaces().async().create(
                 "xxx", TestCallback()) as TestCallback)!!
 
-        assertEquals("spaceid", result.sys["id"])
+        assertEquals("spaceid", result.id)
         assertEquals("xxx", result.name)
 
         // Request
@@ -79,53 +81,49 @@ class SpaceTests : BaseTest() {
                 .fetchAll(TestCallback()) as TestCallback)!!
 
         val items = result.items
-        assertEquals("Array", result.sys["type"])
+        assertEquals(CMAType.Array, result.system.type)
         assertEquals(2, items.size)
         assertEquals(2, result.total)
         assertEquals(0, result.skip)
         assertEquals(25, result.limit)
 
         // Space #1
-        var sys = items[0].sys
-        assertEquals("Space", sys["type"])
-        assertEquals("id1", sys["id"])
-        assertEquals(1.toDouble(), sys["version"])
-        assertEquals("2014-03-21T08:43:52Z", sys["createdAt"])
-        assertEquals("2014-04-27T18:16:10Z", sys["updatedAt"])
+        var sys = items[0].system
+        assertEquals(CMAType.Space, sys.type)
+        assertEquals("id1", sys.id)
+        assertEquals(1, sys.version)
+        assertEquals("2014-03-21T08:43:52Z", sys.createdAt)
+        assertEquals("2014-04-27T18:16:10Z", sys.updatedAt)
         assertEquals("space1", items[0].name)
 
         // Created By
-        var map = (items[0].sys["createdBy"] as Map<*, *>)["sys"] as Map<*, *>
-        assertEquals("Link", map["type"])
-        assertEquals("User", map["linkType"])
-        assertEquals("user1", map["id"])
+        assertEquals(CMAType.Link, sys.createdBy.system.type)
+        assertEquals(CMAType.User, sys.createdBy.system.linkType)
+        assertEquals("user1", sys.createdBy.system.id)
 
         // Updated By
-        map = (items[0].sys["updatedBy"] as Map<*, *>)["sys"] as Map<*, *>
-        assertEquals("Link", map["type"])
-        assertEquals("User", map["linkType"])
-        assertEquals("user1", map["id"])
+        assertEquals(CMAType.Link, sys.updatedBy.system.type)
+        assertEquals(CMAType.User, sys.updatedBy.system.linkType)
+        assertEquals("user1", sys.updatedBy.system.id)
 
         // Space #2
-        sys = items[1].sys
-        assertEquals("Space", sys["type"])
-        assertEquals("id2", sys["id"])
-        assertEquals(2.toDouble(), sys["version"])
-        assertEquals("2014-05-19T09:00:27Z", sys["createdAt"])
-        assertEquals("2014-07-09T07:48:24Z", sys["updatedAt"])
+        sys = items[1].system
+        assertEquals(CMAType.Space, sys.type)
+        assertEquals("id2", sys.id)
+        assertEquals(2, sys.version)
+        assertEquals("2014-05-19T09:00:27Z", sys.createdAt)
+        assertEquals("2014-07-09T07:48:24Z", sys.updatedAt)
         assertEquals("space2", items[1].name)
 
         // Created By
-        map = (sys["createdBy"] as Map<*, *>)["sys"] as Map<*, *>
-        assertEquals("Link", map["type"])
-        assertEquals("User", map["linkType"])
-        assertEquals("user2", map["id"])
+        assertEquals(CMAType.Link, sys.createdBy.system.type)
+        assertEquals(CMAType.User, sys.createdBy.system.linkType)
+        assertEquals("user2", sys.createdBy.system.id)
 
         // Updated By
-        map = (sys["updatedBy"] as Map<*, *>)["sys"] as Map<*, *>
-        assertEquals("Link", map["type"])
-        assertEquals("User", map["linkType"])
-        assertEquals("user2", map["id"])
+        assertEquals(CMAType.Link, sys.updatedBy.system.type)
+        assertEquals(CMAType.User, sys.updatedBy.system.linkType)
+        assertEquals("user2", sys.updatedBy.system.id)
 
         // Request
         val request = server!!.takeRequest()
@@ -140,25 +138,23 @@ class SpaceTests : BaseTest() {
         val result = assertTestCallback(client!!.spaces().async().fetchOne(
                 "spaceid", TestCallback()) as TestCallback)!!
 
-        val sys = result.sys
-        assertEquals("Space", sys["type"])
-        assertEquals("id1", sys["id"])
-        assertEquals(1.toDouble(), sys["version"])
-        assertEquals("2014-03-21T08:43:52Z", sys["createdAt"])
-        assertEquals("2014-04-27T18:16:10Z", sys["updatedAt"])
+        val sys = result.system
+        assertEquals(CMAType.Space, sys.type)
+        assertEquals("id1", sys.id)
+        assertEquals(1, sys.version)
+        assertEquals("2014-03-21T08:43:52Z", sys.createdAt)
+        assertEquals("2014-04-27T18:16:10Z", sys.updatedAt)
         assertEquals("space1", result.name)
 
         // Created By
-        var map = (sys["createdBy"] as Map<*, *>)["sys"] as Map<*, *>
-        assertEquals("Link", map["type"])
-        assertEquals("User", map["linkType"])
-        assertEquals("user1", map["id"])
+        assertEquals(CMAType.Link, sys.createdBy.system.type)
+        assertEquals(CMAType.User, sys.createdBy.system.linkType)
+        assertEquals("user1", sys.createdBy.system.id)
 
         // Updated By
-        map = (sys["updatedBy"] as Map<*, *>)["sys"] as Map<*, *>
-        assertEquals("Link", map["type"])
-        assertEquals("User", map["linkType"])
-        assertEquals("user1", map["id"])
+        assertEquals(CMAType.Link, sys.updatedBy.system.type)
+        assertEquals(CMAType.User, sys.updatedBy.system.linkType)
+        assertEquals("user1", sys.updatedBy.system.id)
 
         // Request
         val request = server!!.takeRequest()
@@ -176,8 +172,8 @@ class SpaceTests : BaseTest() {
         val item = result.items[0]
         assertEquals("U.S. English", item.name)
         assertEquals("en-US", item.code)
+        assertNull(item.fallbackCode)
         assertTrue(item.isDefault)
-        assertTrue(item.isPublished)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -199,7 +195,7 @@ class SpaceTests : BaseTest() {
         space = assertTestCallback(client!!.spaces().async().update(
                 space, TestCallback()) as TestCallback)
 
-        assertEquals(2.toDouble(), space.sys["version"])
+        assertEquals(2, space.system.version)
         assertEquals("newname", space.name)
 
         // Request

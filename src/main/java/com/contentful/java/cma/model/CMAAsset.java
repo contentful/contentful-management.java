@@ -17,62 +17,277 @@
 package com.contentful.java.cma.model;
 
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * Represents a resource of type Asset.
  */
-public class CMAAsset extends StatefulResource {
+public class CMAAsset extends CMAResource {
+  /**
+   * Collect all fields of an asset.
+   */
+  public static class Fields {
+    LinkedHashMap<String, String> title;
+    LinkedHashMap<String, String> description;
+    LinkedHashMap<String, CMAAssetFile> file;
+
+    /**
+     * Retrieve the description to the given locale.
+     *
+     * @param locale which locale should the description be in?
+     * @return a string representing the description in the given locale.
+     */
+    public String getDescription(String locale) {
+      if (description == null) {
+        return null;
+      }
+
+      return description.get(locale);
+    }
+
+    /**
+     * Set the description in a specific locale.
+     *
+     * @param locale      the locale to be used. Think 'en-US'.
+     * @param description the text of the description, localized into the locale.
+     * @return the {@link Fields} instance calling, used for chaining.
+     */
+    public Fields setDescription(String locale, String description) {
+      if (this.description == null) {
+        this.description = new LinkedHashMap<String, String>();
+      }
+
+      this.description.put(locale, description);
+      return this;
+    }
+
+    /**
+     * What is the title of this asset in a given locale?
+     *
+     * @param locale the locale to check for a title
+     * @return the localized title, or null if no entry for this locale was found.
+     */
+    public String getTitle(String locale) {
+      if (title == null) {
+        return null;
+      }
+
+      return title.get(locale);
+    }
+
+    /**
+     * Update or set title in a given locale.
+     * <p>
+     * If a title in the given locale is present, update it, otherwise create a new
+     * one.
+     *
+     * @param locale which locale to be used.
+     * @param title  the title corresponding to this locale.
+     * @return The same {@link Fields} instance used to calling other setters for chaining.
+     */
+    public Fields setTitle(String locale, String title) {
+      if (this.title == null) {
+        this.title = new LinkedHashMap<String, String>();
+      }
+
+      this.title.put(locale, title);
+      return this;
+    }
+
+    /**
+     * Return the localized file of this asset.
+     * <p>
+     * Returns  {@link CMAAssetFile} for the given locale.
+     *
+     * @param locale which locale should be used to select the right file?
+     * @return the CMAAssetFile listed under the given locale.
+     */
+    public CMAAssetFile getFile(String locale) {
+      if (file == null) {
+        return null;
+      }
+
+      return file.get(locale);
+    }
+
+    /**
+     * Update or create a new file for this asset.
+     *
+     * @param locale which locale to be used?
+     * @param file   the actual file to be set.
+     * @return For chaining, return the same instance getting called with.
+     */
+    public Fields setFile(String locale, CMAAssetFile file) {
+      if (this.file == null) {
+        this.file = new LinkedHashMap<String, CMAAssetFile>();
+      }
+
+      this.file.put(locale, file);
+      return this;
+    }
+
+    /**
+     * Localize access to fields by the same locale.
+     * <p>
+     * Use this to not keep repeating the same locale for fields.
+     *
+     * @param locale a code of a locale. Think `en-US`.
+     * @return a visitor to localize all upcoming field access.
+     */
+    public Localized localize(String locale) {
+      return new Localized(locale);
+    }
+
+    /**
+     * Localize all fields with a given locale.
+     * <p>
+     * Please use {@link Fields#localize(String)} to see how to create an instance.
+     */
+    public class Localized {
+      private final String locale;
+
+      /**
+       * Internal method for creating the Localized fields.
+       *
+       * @param locale the locale, like 'en-US', to be used.
+       */
+      Localized(String locale) {
+        this.locale = locale;
+      }
+
+      /**
+       * @return a localized version of {@link Fields#getDescription(String)}
+       */
+      public String getDescription() {
+        return Fields.this.getDescription(locale);
+      }
+
+      /**
+       * Change the localized version of the description.
+       *
+       * @return the Localized Fields instance calling this method.
+       * @see Fields#setDescription(String, String)
+       */
+      public Localized setDescription(String value) {
+        Fields.this.setDescription(locale, value);
+        return this;
+      }
+
+      /**
+       * @return a localized version of {@link Fields#getTitle(String)}
+       */
+      public String getTitle() {
+        return Fields.this.getTitle(locale);
+      }
+
+      /**
+       * Change the localized version of the title.
+       *
+       * @return the Localized Fields instance calling this method.
+       * @see Fields#setTitle(String, String)
+       */
+      public Localized setTitle(String value) {
+        Fields.this.setTitle(locale, value);
+        return this;
+      }
+
+      /**
+       * @return a localized version of {@link Fields#getFile(String)}
+       */
+      public CMAAssetFile getFile() {
+        return Fields.this.getFile(locale);
+      }
+
+      /**
+       * Change the localized version of the file.
+       *
+       * @return the Localized Fields instance calling this method.
+       * @see Fields#setFile(String, CMAAssetFile)
+       */
+      public Localized setFile(CMAAssetFile value) {
+        Fields.this.setFile(locale, value);
+        return this;
+      }
+    }
+  }
+
   // Map of fields
-  LinkedHashMap<String, Map<String, Object>> fields;
+  Fields fields = new Fields();
 
   /**
-   * Sets the ID for this Asset.
-   * Returns this {@code CMAAsset} instance
+   * Create a new asset, setting the system's type field.
    */
+  public CMAAsset() {
+    super(CMAType.Asset);
+  }
+
+  /**
+   * @return fields for this asset.
+   */
+  public Fields getFields() {
+    return fields;
+  }
+
+  /**
+   * Sets new fields for this Asset.
+   *
+   * @param fields fields to overwrite the current set of fields.
+   * @return this {@code CMAAsset} instance
+   */
+  public CMAAsset setFields(Fields fields) {
+    this.fields = fields;
+    return this;
+  }
+
+  /**
+   * Sets the system field.
+   *
+   * @param system sets the system property.
+   */
+  @SuppressWarnings("unchecked")
+  public CMAAsset setSystem(CMASystem system) {
+    this.system = system;
+    return this;
+  }
+
+  /**
+   * Convenience: Update the id of this entry without going through {@link #getSystem()}.
+   *
+   * @param id to be set.
+   * @return the calling instance for chaining.
+   */
+  @SuppressWarnings("unchecked")
   @Override public CMAAsset setId(String id) {
     return (CMAAsset) super.setId(id);
   }
 
   /**
-   * Creates a new field. If a field with the given key already exists it will be replaced.
+   * Convenience: Update the version of this entry without going through {@link #getSystem()}.
    *
-   * @param key    field key
-   * @param value  value
-   * @param locale locale
-   * @return this {@code CMAAsset} instance
+   * @param version to be set.
+   * @return the calling instance for chaining.
    */
   @SuppressWarnings("unchecked")
-  public CMAAsset setField(String key, Object value, String locale) {
-    if (fields == null) {
-      fields = new LinkedHashMap<String, Map<String, Object>>();
-    }
-
-    Map<String, Object> field = fields.get(key);
-    if (field == null) {
-      field = new LinkedHashMap<String, Object>();
-    }
-
-    field.put(locale, value);
-    fields.put(key, field);
-    return this;
+  @Override public CMAAsset setVersion(Integer version) {
+    return (CMAAsset) super.setVersion(version);
   }
 
   /**
-   * @return a map of fields for this Asset.
-   */
-  public LinkedHashMap<String, Map<String, Object>> getFields() {
-    return fields;
-  }
-
-  /**
-   * Sets a map of fields for this Asset.
+   * Convenience for getting the version of this resource.
    *
-   * @param fields Map of fields
-   * @return this {@code CMAAsset} instance
+   * @return the calling instance for chaining.
    */
-  public CMAAsset setFields(LinkedHashMap<String, Map<String, Object>> fields) {
-    this.fields = fields;
-    return this;
+  @Override public Integer getVersion() {
+    return super.getVersion();
+  }
+
+  /**
+   * Convenience: Update the space id of this entry without going through {@link #getSystem()}.
+   *
+   * @param spaceId to be set.
+   * @return the calling instance for chaining.
+   */
+  @SuppressWarnings("unchecked")
+  @Override public CMAAsset setSpaceId(String spaceId) {
+    return (CMAAsset) super.setSpaceId(spaceId);
   }
 }

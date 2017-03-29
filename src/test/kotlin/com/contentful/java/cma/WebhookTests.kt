@@ -18,6 +18,7 @@ package com.contentful.java.cma
 
 import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.lib.TestUtils
+import com.contentful.java.cma.model.CMAType
 import com.contentful.java.cma.model.CMAWebhook
 import com.contentful.java.cma.model.CMAWebhookTopic
 import okhttp3.mockwebserver.MockResponse
@@ -57,7 +58,7 @@ class WebhookTests : BaseTest() {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val webhook = CMAWebhook()
-                .setId<CMAWebhook>("webhookid")
+                .setId("webhookid")
                 .setName("cma-created")
                 .setUrl("http://lorempixel.com/200/200/cats")
                 .addTopic(CMAWebhookTopic.EntrySave)
@@ -96,7 +97,7 @@ class WebhookTests : BaseTest() {
         val result = assertTestCallback(client!!.webhooks().async().fetchAll(
                 "spaceid", TestCallback()) as TestCallback)!!
 
-        assertEquals("Array", result.sys["type"])
+        assertEquals(CMAType.Array, result.system.type)
         assertEquals(3, result.total)
         val items = result.items
         assertEquals(3, items.size)
@@ -130,7 +131,7 @@ class WebhookTests : BaseTest() {
         assertEquals("GET", request.method)
         assertEquals("/spaces/spaceid/webhook_definitions/webhookid", request.path)
 
-        assertEquals("WebhookDefinition", result!!.sys["type"])
+        assertEquals(CMAType.WebhookDefinition, result!!.system.type)
         assertNotNull(result)
         assertEquals("cma-created", result.name)
         assertEquals("http://foo.bar/", result.url)
@@ -145,9 +146,9 @@ class WebhookTests : BaseTest() {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(requestBody))
 
         assertTestCallback(client!!.webhooks().async().update(CMAWebhook()
-                .setId<CMAWebhook>("webhookid")
+                .setId("webhookid")
                 .setSpaceId("spaceid")
-                .setVersion(5.0)
+                .setVersion(5)
                 .addHeader("my_new_header_name", "header_value")
                 , TestCallback(true)) as TestCallback)
 
@@ -165,7 +166,7 @@ class WebhookTests : BaseTest() {
                 .setCoreCallFactory { throw IOException(it.url().toString(), IOException()) }
                 .build()
 
-        val webhook = CMAWebhook().setVersion(31337.0)
+        val webhook = CMAWebhook().setVersion(31337)
         try {
             badClient.webhooks().create("spaceid", webhook)
         } catch (e: RuntimeException) {

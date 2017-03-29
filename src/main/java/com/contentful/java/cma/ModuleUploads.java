@@ -18,7 +18,6 @@ package com.contentful.java.cma;
 
 import com.contentful.java.cma.RxExtensions.DefFunc;
 import com.contentful.java.cma.model.CMAUpload;
-import com.contentful.java.cma.model.CMAUploadWelcome;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,13 +50,6 @@ public final class ModuleUploads extends AbsModule<ServiceUploads> {
 
   @Override protected ServiceUploads createService(Retrofit retrofit) {
     return retrofit.create(ServiceUploads.class);
-  }
-
-  /**
-   * @return Welcome message of upload api.
-   */
-  public CMAUploadWelcome welcome() {
-    return service.welcome().toBlocking().first();
   }
 
   /**
@@ -127,18 +119,6 @@ public final class ModuleUploads extends AbsModule<ServiceUploads> {
    * Async module.
    */
   public final class Async {
-
-    /**
-     * @return Welcome message of upload api, asynchronously.
-     */
-    public CMACallback<CMAUploadWelcome> welcome(CMACallback<CMAUploadWelcome> callback) {
-      return defer(new DefFunc<CMAUploadWelcome>() {
-        @Override CMAUploadWelcome method() {
-          return ModuleUploads.this.welcome();
-        }
-      }, callback);
-    }
-
     /**
      * Create a new upload, asynchronously.
      * <p>

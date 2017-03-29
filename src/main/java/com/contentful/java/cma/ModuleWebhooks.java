@@ -17,6 +17,7 @@
 package com.contentful.java.cma;
 
 import com.contentful.java.cma.model.CMAArray;
+import com.contentful.java.cma.model.CMASystem;
 import com.contentful.java.cma.model.CMAWebhook;
 import com.contentful.java.cma.model.CMAWebhookCall;
 import com.contentful.java.cma.model.CMAWebhookCallDetail;
@@ -28,7 +29,7 @@ import retrofit2.Retrofit;
 
 /**
  * This module is intended to ease communication with the webhooks module from Contentful.
- *
+ * <p>
  * All methods here are available twice: Once synchronously and asynchronously through
  * {@link ModuleWebhooks#async()}.
  */
@@ -57,7 +58,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
 
   /**
    * Create a new webhook.
-   *
+   * <p>
    * This will create a new ID and return the newly created webhook as a return value.
    *
    * @param spaceId Which space should be used?
@@ -68,12 +69,18 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(webhook, "webook");
 
-    return service.create(spaceId, webhook).toBlocking().first();
+    final CMASystem system = webhook.getSystem();
+    webhook.setSystem(null);
+    try {
+      return service.create(spaceId, webhook).toBlocking().first();
+    } finally {
+      webhook.setSystem(system);
+    }
   }
 
   /**
    * Create a new webhook with specified ID.
-   *
+   * <p>
    * Similar to {@link ModuleWebhooks#create(String, CMAWebhook)} but uses an id for this Webhook.
    *
    * @param spaceId   the space, this Webhook should be created in.
@@ -86,7 +93,14 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
     assertNotNull(webhookId, "webookId");
     assertNotNull(webhook, "webook");
 
-    return service.create(spaceId, webhookId, webhook).toBlocking().first();
+    final CMASystem system = webhook.getSystem();
+    webhook.setSystem(null);
+
+    try {
+      return service.create(spaceId, webhookId, webhook).toBlocking().first();
+    } finally {
+      webhook.setSystem(system);
+    }
   }
 
   /**
@@ -131,7 +145,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
 
   /**
    * Change the content of a webhook.
-   *
+   * <p>
    * This will take the webhooks id and update it on the backend.
    *
    * @param webhook The webhook retrieved beforehand to be changed.
@@ -142,7 +156,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
 
     Integer version = webhook.getVersion();
     String spaceId = webhook.getSpaceId();
-    String webhookId = webhook.getResourceId();
+    String webhookId = webhook.getId();
 
     assertNotNull(version, "version");
     assertNotNull(spaceId, "spaceId");
@@ -210,7 +224,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
 
   /**
    * Async module.
-   *
+   * <p>
    * Use {@link ModuleWebhooks#async()} to retrieve this class, to be able to do asynchronous
    * requests to Contentful.
    */
@@ -218,8 +232,8 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
     /**
      * Asynchronous variant of {@link ModuleWebhooks#create(String, CMAWebhook)}
      *
-     * @param spaceId id of the space to be used.
-     * @param webhook data to be used for creation.
+     * @param spaceId  id of the space to be used.
+     * @param webhook  data to be used for creation.
      * @param callback the callback to be called once finished.
      */
     public CMACallback<CMAWebhook> create(final String spaceId, final CMAWebhook webhook,
@@ -234,10 +248,10 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
     /**
      * Asynchronous variant of {@link ModuleWebhooks#create(String, String, CMAWebhook)}
      *
-     * @param spaceId id of the space to be used.
+     * @param spaceId   id of the space to be used.
      * @param webhookId id for the webhook to be created/updated.
-     * @param webhook data to be used for creation.
-     * @param callback the callback to be called once finished.
+     * @param webhook   data to be used for creation.
+     * @param callback  the callback to be called once finished.
      */
     public CMACallback<CMAWebhook> create(final String spaceId,
                                           final String webhookId,
@@ -253,9 +267,9 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
     /**
      * Asynchronous variant of {@link ModuleWebhooks#delete(String, String)}
      *
-     * @param spaceId id of the space to be used.
+     * @param spaceId   id of the space to be used.
      * @param webhookId id of the webhook to be deleted.
-     * @param callback the callback to be called once finished.
+     * @param callback  the callback to be called once finished.
      */
     public CMACallback<String> delete(final String spaceId, final String webhookId,
                                       CMACallback<String> callback) {
@@ -269,7 +283,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
     /**
      * Asynchronous variant of {@link ModuleWebhooks#fetchAll(String)}
      *
-     * @param spaceId id of the space to be used.
+     * @param spaceId  id of the space to be used.
      * @param callback the callback to be called once finished.
      */
     public CMACallback<CMAArray<CMAWebhook>> fetchAll(final String spaceId,
@@ -284,9 +298,9 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
     /**
      * Asynchronous variant of {@link ModuleWebhooks#fetchOne(String, String)}
      *
-     * @param spaceId id of the space to be used.
+     * @param spaceId   id of the space to be used.
      * @param webhookId id of the webhook to be retrieved.
-     * @param callback the callback to be called once finished.
+     * @param callback  the callback to be called once finished.
      */
     public CMACallback<CMAWebhook> fetchOne(final String spaceId, final String webhookId,
                                             CMACallback<CMAWebhook> callback) {
@@ -300,7 +314,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
     /**
      * Asynchronous variant of {@link ModuleWebhooks#update(CMAWebhook)}
      *
-     * @param webhook data to be used for update.
+     * @param webhook  data to be used for update.
      * @param callback the callback to be called once finished.
      */
     public CMACallback<CMAWebhook> update(final CMAWebhook webhook,
@@ -315,9 +329,9 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
     /**
      * Asynchronous variant of {@link ModuleWebhooks#calls(String, String)}
      *
-     * @param spaceId id of the space to be used.
+     * @param spaceId   id of the space to be used.
      * @param webhookId id to be used to retrieve calls from.
-     * @param callback the callback to be called once finished.
+     * @param callback  the callback to be called once finished.
      */
     public CMACallback<CMAArray<CMAWebhookCall>> calls(final String spaceId,
                                                        final String webhookId,
@@ -333,10 +347,10 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
     /**
      * Asynchronous variant of {@link ModuleWebhooks#callDetails(String, String, String)}
      *
-     * @param spaceId id of the space to be used.
+     * @param spaceId   id of the space to be used.
      * @param webhookId id of webhook.
-     * @param callId id of call.
-     * @param callback the callback to be called once finished.
+     * @param callId    id of call.
+     * @param callback  the callback to be called once finished.
      */
     public CMACallback<CMAWebhookCallDetail> callDetails(final String spaceId,
                                                          final String webhookId,
@@ -353,9 +367,9 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
     /**
      * Asynchronous variant of {@link ModuleWebhooks#health(String, String)}
      *
-     * @param spaceId id of the space to be used.
+     * @param spaceId   id of the space to be used.
      * @param webhookId id to be used for healthy check.
-     * @param callback the callback to be called once finished.
+     * @param callback  the callback to be called once finished.
      */
     public CMACallback<CMAWebhookHealth> health(final String spaceId, final String webhookId,
                                                 CMACallback<CMAWebhookHealth> callback) {

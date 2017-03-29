@@ -16,7 +16,7 @@
 
 package com.contentful.java.cma
 
-import com.contentful.java.cma.model.CMAResource
+import com.contentful.java.cma.model.CMALink
 import retrofit2.Retrofit
 import java.util.concurrent.CountDownLatch
 import kotlin.test.assertEquals
@@ -49,7 +49,7 @@ class ModuleTests : BaseTest() {
     @test(expected = IllegalArgumentException::class)
     fun testResourceId() {
         try {
-            module!!.getResourceIdOrThrow(CMAResource(), "parameter")
+            module!!.getResourceIdOrThrow(CMALink(), "parameter")
         } catch (e: IllegalArgumentException) {
             assertEquals("parameter.setId() was not called.", e.message)
             throw e
@@ -59,7 +59,7 @@ class ModuleTests : BaseTest() {
     @test(expected = IllegalArgumentException::class)
     fun testSpaceId() {
         try {
-            module!!.getSpaceIdOrThrow(CMAResource(), "parameter")
+            module!!.getSpaceIdOrThrow(CMALink(), "parameter")
         } catch (e: IllegalArgumentException) {
             assertEquals("parameter must have a space associated.", e.message)
             throw e

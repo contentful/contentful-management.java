@@ -17,7 +17,6 @@
 package com.contentful.java.cma
 
 import com.contentful.java.cma.lib.TestCallback
-import com.contentful.java.cma.model.CMAResource
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import okhttp3.mockwebserver.MockWebServer
@@ -53,30 +52,6 @@ open class BaseTest {
 }
 
 // Extensions
-fun <T : CMAResource> T.setSpaceId(spaceId: String): T {
-    var sys = sys
-
-    if (sys == null) {
-        sys = hashMapOf()
-        setSys(sys)
-    }
-
-    sys.put("space", hashMapOf(Pair("sys", hashMapOf(Pair("id", spaceId)))))
-
-    return this@setSpaceId
-}
-
-fun <T : CMAResource> T.setVersion(version: Double): T {
-    var sys = sys
-    if (sys == null) {
-        sys = hashMapOf()
-        setSys(sys)
-    }
-
-    sys.put("version", version)
-    return this@setVersion
-}
-
 fun <T : Any> assertTestCallback(cb: TestCallback<T>): T? {
     cb.await()
     assertNull(cb.error)

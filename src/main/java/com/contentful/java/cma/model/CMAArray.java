@@ -39,6 +39,13 @@ public class CMAArray<T extends CMAResource> extends CMAResource {
   int limit;
 
   /**
+   * Create a new Asset, setting type and create a system.
+   */
+  public CMAArray() {
+    super(CMAType.Array);
+  }
+
+  /**
    * @return the list of resources for this array.
    */
   public List<T> getItems() {

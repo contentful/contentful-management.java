@@ -21,18 +21,101 @@ import java.util.LinkedHashMap;
 /**
  * Represents a resource of type Entry.
  */
-public class CMAEntry extends StatefulResource {
+public class CMAEntry extends CMAResource {
+  /**
+   * Localize all fields with a given locale.
+   * <p>
+   * Please use {@link CMAEntry#localize(String)} to see how to create an instance.
+   */
+  public class Localized {
+    private final String locale;
+
+    /**
+     * Internal method for creating the Localized fields.
+     *
+     * @param locale the locale, like 'en-US', to be used.
+     */
+    Localized(String locale) {
+      this.locale = locale;
+    }
+
+    /**
+     * Get a localized field.
+     *
+     * @param key the key of the value to be returned.
+     * @param <T> the type of the value to be returned.
+     * @return a value based on the key given here and the locale set earlier.
+     */
+    public <T> T getField(String key) {
+      return CMAEntry.this.getField(key, locale);
+    }
+
+    /**
+     * Change the value of a localized field.
+     *
+     * @param key   identifier of the field to be changed.
+     * @param value value of the new field.
+     * @param <T>   type of the field.
+     * @return an instance of the calling {@link Localized} instance, for easy chaining.
+     */
+    public <T> Localized setField(String key, T value) {
+      CMAEntry.this.setField(key, locale, value);
+      return this;
+    }
+  }
+
   // Map of fields
   LinkedHashMap<String, LinkedHashMap<String, Object>> fields;
 
   /**
-   * Sets the ID for this Entry.
-   *
-   * @param id the id to be set
-   * @return this {@code CMAEntry} instance
+   * Create an entry, filling the system property
    */
+  public CMAEntry() {
+    super(CMAType.Entry);
+  }
+
+  /**
+   * Sets the system field.
+   *
+   * @param system sets the system property.
+   */
+  @SuppressWarnings("unchecked")
+  public CMAEntry setSystem(CMASystem system) {
+    this.system = system;
+    return this;
+  }
+
+  /**
+   * Convenience: Update the id of this entry without going through {@link #getSystem()}.
+   *
+   * @param id to be set.
+   * @return the calling instance for chaining.
+   */
+  @SuppressWarnings("unchecked")
   @Override public CMAEntry setId(String id) {
     return (CMAEntry) super.setId(id);
+  }
+
+  /**
+   * Convenience: Update the version of this entry without going through {@link #getSystem()}.
+   *
+   * @param version to be set.
+   * @return the calling instance for chaining.
+   */
+  @SuppressWarnings("unchecked")
+  @Override public CMAEntry setVersion(Integer version) {
+    return (CMAEntry) super.setVersion(version);
+  }
+
+  /**
+   * Convenience: Update the space id of this entry without going through {@link #getSystem()}.
+   *
+   * @param spaceId to be set.
+   * @return the calling instance for chaining.
+   */
+  @SuppressWarnings("unchecked")
+  @Override public CMAEntry setSpaceId(String spaceId) {
+    return (CMAEntry) super.setSpaceId(spaceId);
   }
 
   /**
@@ -40,11 +123,11 @@ public class CMAEntry extends StatefulResource {
    * If a field named {@code key} already exists it will be replaced.
    *
    * @param key    field key
-   * @param value  value
    * @param locale locale
+   * @param value  value
    * @return this {@code CMAEntry}
    */
-  public CMAEntry setField(String key, Object value, String locale) {
+  public CMAEntry setField(String key, String locale, Object value) {
     if (fields == null) {
       fields = new LinkedHashMap<String, LinkedHashMap<String, Object>>();
     }
@@ -57,6 +140,28 @@ public class CMAEntry extends StatefulResource {
     field.put(locale, value);
     fields.put(key, field);
     return this;
+  }
+
+  /**
+   * Return a specific localized field.
+   *
+   * @param key    the key of the field
+   * @param locale the locale of the key
+   * @param <T>    the type of the return value
+   * @return the value requested or null, if something (fields, key, locale) was not found.
+   */
+  @SuppressWarnings("unchecked")
+  public <T> T getField(String key, String locale) {
+    if (fields == null) {
+      return null;
+    }
+
+    LinkedHashMap<String, Object> field = fields.get(key);
+    if (field == null) {
+      return null;
+    } else {
+      return (T) field.get(locale);
+    }
   }
 
   /**
@@ -75,5 +180,15 @@ public class CMAEntry extends StatefulResource {
   public CMAEntry setFields(LinkedHashMap<String, LinkedHashMap<String, Object>> fields) {
     this.fields = fields;
     return this;
+  }
+
+  /**
+   * Manipulate fields with the same locale.
+   *
+   * @param locale the locale to be used for accessing fields.
+   * @return an instance of {@link Localized} to be used for setting subsequent fields.
+   */
+  public Localized localize(String locale) {
+    return new Localized(locale);
   }
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.contentful.java.cma;
+package com.contentful.java.cma.gson;
 
 import com.contentful.java.cma.model.CMAField;
 import com.google.gson.JsonElement;
@@ -30,7 +30,7 @@ import java.util.Map;
 /**
  * FieldTypeAdapter.
  */
-final class FieldTypeAdapter implements JsonSerializer<CMAField> {
+public final class FieldTypeAdapter implements JsonSerializer<CMAField> {
   private static final String ATTR_ID = "id";
   private static final String ATTR_NAME = "name";
   private static final String ATTR_TYPE = "type";
@@ -42,6 +42,13 @@ final class FieldTypeAdapter implements JsonSerializer<CMAField> {
   private static final String ATTR_VALIDATIONS = "validations";
   private static final String ATTR_ARRAY_ITEMS = "items";
 
+  /**
+   * Serialize all fields for content types.
+   * @param field the content type field to be serialized
+   * @param type the type to be used.
+   * @param context the json context to be used.
+   * @return a json object representing the field.
+   */
   @Override
   public JsonElement serialize(CMAField field, Type type, JsonSerializationContext context) {
     JsonObject json = new JsonObject();
