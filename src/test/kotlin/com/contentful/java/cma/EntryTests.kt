@@ -69,7 +69,7 @@ class EntryTests : BaseTest() {
         val recordedRequest = server!!.takeRequest()
         assertEquals("POST", recordedRequest.method)
         assertEquals("/spaces/spaceid/entries", recordedRequest.path)
-        assertEquals(requestBody, recordedRequest.utf8Body)
+        assertEquals(requestBody, recordedRequest.body.readUtf8())
         assertEquals("ctid", recordedRequest.getHeader("X-Contentful-Content-Type"))
     }
 
@@ -90,7 +90,7 @@ class EntryTests : BaseTest() {
         val recordedRequest = server!!.takeRequest()
         assertEquals("PUT", recordedRequest.method)
         assertEquals("/spaces/spaceid/entries/entryid", recordedRequest.path)
-        assertEquals(requestBody, recordedRequest.utf8Body)
+        assertEquals(requestBody, recordedRequest.body.readUtf8())
         assertEquals("ctid", recordedRequest.getHeader("X-Contentful-Content-Type"))
     }
 
@@ -113,7 +113,7 @@ class EntryTests : BaseTest() {
 
         val requestBody = TestUtils.fileToString("entry_create_links_request.json")
         val request = server!!.takeRequest()
-        assertEquals(requestBody, request.utf8Body)
+        assertEquals(requestBody, request.body.readUtf8())
     }
 
     @test(expected = RuntimeException::class)
@@ -238,7 +238,7 @@ class EntryTests : BaseTest() {
         assertEquals("PUT", recordedRequest.method)
         assertEquals("/spaces/spaceid/entries/entryid", recordedRequest.path)
         assertNotNull(recordedRequest.getHeader("X-Contentful-Version"))
-        assertEquals(requestBody, recordedRequest.utf8Body)
+        assertEquals(requestBody, recordedRequest.body.readUtf8())
     }
 
     @test fun testPublish() {

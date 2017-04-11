@@ -44,7 +44,7 @@ class SpaceTests : BaseTest() {
         val recordedRequest = server!!.takeRequest()
         assertEquals("POST", recordedRequest.method)
         assertEquals("/spaces", recordedRequest.path)
-        assertEquals(requestBody, recordedRequest.utf8Body)
+        assertEquals(requestBody, recordedRequest.body.readUtf8())
     }
 
     @org.junit.Test fun testCreateInOrg() {
@@ -203,7 +203,7 @@ class SpaceTests : BaseTest() {
         assertEquals("PUT", recordedRequest.method)
         assertEquals("/spaces/spaceid", recordedRequest.path)
         assertNotNull(recordedRequest.getHeader("X-Contentful-Version"))
-        assertEquals(requestBody, recordedRequest.utf8Body)
+        assertEquals(requestBody, recordedRequest.body.readUtf8())
     }
 
     @org.junit.Test(expected = Exception::class)

@@ -48,7 +48,7 @@ class WebhookTests : BaseTest() {
         val recordedRequest = server!!.takeRequest()
         assertEquals("POST", recordedRequest.method)
         assertEquals("/spaces/spaceid/webhook_definitions", recordedRequest.path)
-        assertEquals(requestBody, recordedRequest.utf8Body)
+        assertEquals(requestBody, recordedRequest.body.readUtf8())
     }
 
     @test
@@ -72,7 +72,7 @@ class WebhookTests : BaseTest() {
         val recordedRequest = server!!.takeRequest()
         assertEquals("PUT", recordedRequest.method)
         assertEquals("/spaces/spaceid/webhook_definitions/webhookid", recordedRequest.path)
-        assertEquals(requestBody, recordedRequest.utf8Body)
+        assertEquals(requestBody, recordedRequest.body.readUtf8())
     }
 
     @test
