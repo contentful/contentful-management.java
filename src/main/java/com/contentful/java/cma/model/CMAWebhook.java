@@ -65,7 +65,7 @@ public class CMAWebhook extends CMAResource {
    */
   @SuppressWarnings("unchecked")
   @Override public CMAWebhook setId(String id) {
-    return (CMAWebhook) super.setId(id);
+    return super.setId(id);
   }
 
   /**
@@ -76,7 +76,7 @@ public class CMAWebhook extends CMAResource {
    */
   @SuppressWarnings("unchecked")
   @Override public CMAWebhook setVersion(Integer version) {
-    return (CMAWebhook) super.setVersion(version);
+    return super.setVersion(version);
   }
 
   /**
@@ -87,7 +87,7 @@ public class CMAWebhook extends CMAResource {
    */
   @SuppressWarnings("unchecked")
   @Override public CMAWebhook setSpaceId(String spaceId) {
-    return (CMAWebhook) super.setSpaceId(spaceId);
+    return super.setSpaceId(spaceId);
   }
 
   /**

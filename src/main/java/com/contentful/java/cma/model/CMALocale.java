@@ -58,7 +58,7 @@ public class CMALocale extends CMAResource {
    */
   @SuppressWarnings("unchecked")
   @Override public CMALocale setId(String id) {
-    return (CMALocale) super.setId(id);
+    return super.setId(id);
   }
 
   /**
@@ -69,7 +69,7 @@ public class CMALocale extends CMAResource {
    */
   @SuppressWarnings("unchecked")
   @Override public CMALocale setVersion(Integer version) {
-    return (CMALocale) super.setVersion(version);
+    return super.setVersion(version);
   }
 
   /**
@@ -80,7 +80,7 @@ public class CMALocale extends CMAResource {
    */
   @SuppressWarnings("unchecked")
   @Override public CMALocale setSpaceId(String spaceId) {
-    return (CMALocale) super.setSpaceId(spaceId);
+    return super.setSpaceId(spaceId);
   }
 
   /**

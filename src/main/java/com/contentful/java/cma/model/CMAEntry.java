@@ -93,7 +93,7 @@ public class CMAEntry extends CMAResource {
    */
   @SuppressWarnings("unchecked")
   @Override public CMAEntry setId(String id) {
-    return (CMAEntry) super.setId(id);
+    return super.setId(id);
   }
 
   /**
@@ -104,7 +104,7 @@ public class CMAEntry extends CMAResource {
    */
   @SuppressWarnings("unchecked")
   @Override public CMAEntry setVersion(Integer version) {
-    return (CMAEntry) super.setVersion(version);
+    return super.setVersion(version);
   }
 
   /**
@@ -115,7 +115,7 @@ public class CMAEntry extends CMAResource {
    */
   @SuppressWarnings("unchecked")
   @Override public CMAEntry setSpaceId(String spaceId) {
-    return (CMAEntry) super.setSpaceId(spaceId);
+    return super.setSpaceId(spaceId);
   }
 
   /**
