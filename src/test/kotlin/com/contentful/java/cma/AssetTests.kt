@@ -74,7 +74,7 @@ class AssetTests : BaseTest() {
         val recordedRequest = server!!.takeRequest()
         assertEquals("POST", recordedRequest.method)
         assertEquals("/spaces/spaceid/assets", recordedRequest.path)
-        assertEquals(requestBody, recordedRequest.utf8Body)
+        assertEquals(requestBody, recordedRequest.body.readUtf8())
     }
 
     @test
@@ -96,7 +96,7 @@ class AssetTests : BaseTest() {
         val recordedRequest = server!!.takeRequest()
         assertEquals("PUT", recordedRequest.method)
         assertEquals("/spaces/spaceid/assets/assetid", recordedRequest.path)
-        assertEquals(requestBody, recordedRequest.utf8Body)
+        assertEquals(requestBody, recordedRequest.body.readUtf8())
     }
 
     @test
@@ -264,7 +264,7 @@ class AssetTests : BaseTest() {
         assertEquals("PUT", recordedRequest.method)
         assertEquals("/spaces/spaceid/assets/assetid", recordedRequest.path)
         assertNotNull(recordedRequest.getHeader("X-Contentful-Version"))
-        assertEquals(requestBody, recordedRequest.utf8Body)
+        assertEquals(requestBody, recordedRequest.body.readUtf8())
     }
 
     @test
@@ -290,7 +290,7 @@ class AssetTests : BaseTest() {
         assertEquals("PUT", recordedRequest.method)
         assertEquals("/spaces/spaceid/assets/assetid", recordedRequest.path)
         assertNotNull(recordedRequest.getHeader("X-Contentful-Version"))
-        assertEquals(requestBody, recordedRequest.utf8Body)
+        assertEquals(requestBody, recordedRequest.body.readUtf8())
     }
 
     @org.junit.Test(expected = RuntimeException::class)
@@ -352,7 +352,7 @@ class AssetTests : BaseTest() {
 
         asset.fields.localize("en-US").file = CMAAssetFile()
                 .setContentType("image/jpeg")
-                .setUploadFrom(CMALink().setId<CMALink>("some_secret_keys"))
+                .setUploadFrom(CMALink().setId("some_secret_keys"))
                 .setFileName("example.jpg")
 
         assertTestCallback(client.assets().async()

@@ -257,7 +257,7 @@ public class CMAAsset extends CMAResource {
    */
   @SuppressWarnings("unchecked")
   @Override public CMAAsset setId(String id) {
-    return (CMAAsset) super.setId(id);
+    return super.setId(id);
   }
 
   /**
@@ -268,7 +268,7 @@ public class CMAAsset extends CMAResource {
    */
   @SuppressWarnings("unchecked")
   @Override public CMAAsset setVersion(Integer version) {
-    return (CMAAsset) super.setVersion(version);
+    return super.setVersion(version);
   }
 
   /**
@@ -288,6 +288,6 @@ public class CMAAsset extends CMAResource {
    */
   @SuppressWarnings("unchecked")
   @Override public CMAAsset setSpaceId(String spaceId) {
-    return (CMAAsset) super.setSpaceId(spaceId);
+    return super.setSpaceId(spaceId);
   }
 }

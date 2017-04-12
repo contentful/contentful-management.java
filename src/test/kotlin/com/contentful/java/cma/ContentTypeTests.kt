@@ -57,7 +57,7 @@ class ContentTypeTests : BaseTest() {
         val recordedRequest = server!!.takeRequest()
         assertEquals("POST", recordedRequest.method)
         assertEquals("/spaces/spaceid/content_types", recordedRequest.path)
-        assertJsonEquals(requestBody, recordedRequest.utf8Body)
+        assertJsonEquals(requestBody, recordedRequest.body.readUtf8())
         assertEquals(2, result.fields.size)
         assertTrue(result.fields[0].isRequired)
     }
@@ -88,7 +88,7 @@ class ContentTypeTests : BaseTest() {
         val recordedRequest = server!!.takeRequest()
         assertEquals("PUT", recordedRequest.method)
         assertEquals("/spaces/spaceid/content_types/contenttypeid", recordedRequest.path)
-        assertJsonEquals(requestBody, recordedRequest.utf8Body)
+        assertJsonEquals(requestBody, recordedRequest.body.readUtf8())
         assertEquals(2, result.fields.size)
         assertEquals("df", result.displayField)
         assertTrue(result.fields[0].isRequired)
@@ -111,7 +111,7 @@ class ContentTypeTests : BaseTest() {
         val recordedRequest = server!!.takeRequest()
         assertEquals("POST", recordedRequest.method)
         assertEquals("/spaces/spaceid/content_types", recordedRequest.path)
-        assertJsonEquals(requestBody, recordedRequest.utf8Body)
+        assertJsonEquals(requestBody, recordedRequest.body.readUtf8())
     }
 
     @test fun testUpdate() {
@@ -142,7 +142,7 @@ class ContentTypeTests : BaseTest() {
         val recordedRequest = server!!.takeRequest()
         assertEquals("PUT", recordedRequest.method)
         assertEquals("/spaces/spaceid/content_types/contenttypeid", recordedRequest.path)
-        assertJsonEquals(requestBody, recordedRequest.utf8Body)
+        assertJsonEquals(requestBody, recordedRequest.body.readUtf8())
         assertNotNull(recordedRequest.getHeader("X-Contentful-Version"))
         assertEquals(2, contentType.version)
     }

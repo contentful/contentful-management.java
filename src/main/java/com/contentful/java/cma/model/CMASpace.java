@@ -58,4 +58,47 @@ public class CMASpace extends CMAResource {
   public String getName() {
     return name;
   }
+
+  /**
+   * Sets the id of this space.
+   *
+   * @param id to be set.
+   * @return this instance for chaining.
+   */
+  @SuppressWarnings("unchecked") @Override public CMASpace setId(String id) {
+    return super.setId(id);
+  }
+
+  /**
+   * Set the version of this space.
+   *
+   * @param version the version to be set.
+   * @return this space instance for chaining.
+   */
+  @SuppressWarnings("unchecked") @Override
+  public CMASpace setVersion(Integer version) {
+    return super.setVersion(version);
+  }
+
+  /**
+   * Sets the id of this space.
+   *
+   * @param id the id to be set.
+   * @return this space instance for chaining.
+   * @see #setId(String)
+   */
+  @SuppressWarnings("unchecked") @Override
+  public CMASpace setSpaceId(String id) {
+    return super.setId(id);
+  }
+
+  /**
+   * This method returns the actual id of this space.
+   *
+   * @return the id of this space
+   * @see #getId()
+   */
+  @Override public String getSpaceId() {
+    return super.getId();
+  }
 }

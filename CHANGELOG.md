@@ -12,6 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - New: Replace maps with accessors and fields in entries and assets.
 - Changed: Order of arguments on `CMAEntry.setField` takes the `key` first, _then_ the `locale` and lastly the value.
 - Changed: Version numbers and version counters are of `Integer` type, not `Double`.
+- Changed: CMASpace: `getSpaceId` returns the `id` of the current space (aka `getId`), not the id of the space the space belongs to.
 - Removed: `StatefulResource` it is now part of the `CMAResource`.
 
 ## Version [1.3.0] - 2016-08-17
