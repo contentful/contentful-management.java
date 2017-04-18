@@ -1,8 +1,10 @@
 package com.contentful.java.cma
 
 import com.contentful.java.cma.lib.TestUtils
-import com.contentful.java.cma.model.*
-import com.google.gson.GsonBuilder
+import com.contentful.java.cma.model.CMAAsset
+import com.contentful.java.cma.model.CMAAssetFile
+import com.contentful.java.cma.model.CMALink
+import com.contentful.java.cma.model.CMAType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.junit.Assert.*

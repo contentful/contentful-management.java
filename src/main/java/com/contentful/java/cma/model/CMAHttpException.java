@@ -68,7 +68,7 @@ public class CMAHttpException extends RuntimeException {
   }
 
   /**
-   * @return the number of remaining requests that can be made for the current hour or -1 if header not send
+   * @return the number of remaining requests that can be made in the hour or -1 if header not send
    */
   public int rateLimitHourRemaining() {
     return parseRateLimitHeader(("X-Contentful-RateLimit-Hour-Remaining"));
@@ -89,7 +89,7 @@ public class CMAHttpException extends RuntimeException {
   }
 
   /**
-   * @return the number of seconds until the user can make their next request or -1 if header not send
+   * @return the number of seconds until the user can make a next request or -1 if header not send
    */
   public int rateLimitReset() {
     return parseRateLimitHeader(("X-Contentful-RateLimit-Reset"));

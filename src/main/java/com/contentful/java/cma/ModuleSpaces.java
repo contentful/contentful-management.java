@@ -55,6 +55,25 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
   }
 
   /**
+   * Create a Space.
+   *
+   * @param space CMASpace
+   * @return {@link CMASpace} result instance
+   */
+  public CMASpace create(CMASpace space) {
+    assertNotNull(space, "space");
+
+    final CMASystem system = space.getSystem();
+    space.setSystem(null);
+
+    try {
+      return service.create(space).toBlocking().first();
+    } finally {
+      space.setSystem(system);
+    }
+  }
+
+  /**
    * Create a Space in an Organization.
    *
    * @param spaceName      Space name
@@ -64,7 +83,30 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
   public CMASpace create(String spaceName, String organizationId) {
     assertNotNull(spaceName, "spaceName");
     assertNotNull(organizationId, "organizationId");
-    return service.create(organizationId, new CMASpace().setName(spaceName)).toBlocking().first();
+    return service.create(organizationId, new CMASpace().setName(spaceName).setSystem(null))
+        .toBlocking().first();
+  }
+
+  /**
+   * Create a Space in an organization.
+   *
+   * @param space          Space
+   * @param organizationId organization ID
+   * @return {@link CMASpace} result instance
+   */
+  public CMASpace create(CMASpace space, String organizationId) {
+    assertNotNull(space, "space");
+    assertNotNull(space.getName(), "spaceName");
+    assertNotNull(organizationId, "organizationId");
+
+    final CMASystem system = space.getSystem();
+    space.setSystem(null);
+
+    try {
+      return service.create(organizationId, space).toBlocking().first();
+    } finally {
+      space.setSystem(system);
+    }
   }
 
   /**
@@ -181,6 +223,21 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
     }
 
     /**
+     * Create a Space.
+     *
+     * @param space    CMASpace
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
+    public CMACallback<CMASpace> create(final CMASpace space, CMACallback<CMASpace> callback) {
+      return defer(new DefFunc<CMASpace>() {
+        @Override CMASpace method() {
+          return ModuleSpaces.this.create(space);
+        }
+      }, callback);
+    }
+
+    /**
      * Create a Space in an Organization.
      *
      * @param spaceName      Space name
@@ -193,6 +250,23 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
       return defer(new DefFunc<CMASpace>() {
         @Override CMASpace method() {
           return ModuleSpaces.this.create(spaceName, organizationId);
+        }
+      }, callback);
+    }
+
+    /**
+     * Create a Space in an Organization.
+     *
+     * @param space          CMASpace
+     * @param organizationId organization ID
+     * @param callback       Callback
+     * @return the given {@code CMACallback} instance
+     */
+    public CMACallback<CMASpace> create(final CMASpace space, final String organizationId,
+                                        CMACallback<CMASpace> callback) {
+      return defer(new DefFunc<CMASpace>() {
+        @Override CMASpace method() {
+          return ModuleSpaces.this.create(space, organizationId);
         }
       }, callback);
     }

@@ -60,6 +60,34 @@ class SpaceTests : BaseTest() {
         assertEquals("org", recordedRequest.getHeader("X-Contentful-Organization"))
     }
 
+    @org.junit.Test fun testCreateInOrgWithObject() {
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody("{}"))
+
+        assertTestCallback(client!!.spaces().async().create(
+                CMASpace().setName("foo"), "org", TestCallback()) as TestCallback)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("POST", recordedRequest.method)
+        assertEquals("/spaces", recordedRequest.path)
+        assertEquals("org", recordedRequest.getHeader("X-Contentful-Organization"))
+    }
+
+    @org.junit.Test fun testCreateWithObject() {
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody("{}"))
+
+        assertTestCallback(client!!.spaces().async().create(
+                CMASpace().setName("name").setDefaultLocale("my locale"),
+                "org", TestCallback()) as TestCallback)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("POST", recordedRequest.method)
+        assertEquals("/spaces", recordedRequest.path)
+        assertEquals("org", recordedRequest.getHeader("X-Contentful-Organization"))
+        assertEquals(32, recordedRequest.body.readUtf8().indexOf("my locale"))
+    }
+
     @org.junit.Test fun testDelete() {
         val requestBody = "203"
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(requestBody))

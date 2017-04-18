@@ -23,6 +23,9 @@ public class CMASpace extends CMAResource {
   // Name
   String name;
 
+  // Locale
+  String defaultLocale;
+
   /**
    * Create a space using the default types for the system property.
    */
@@ -100,5 +103,23 @@ public class CMASpace extends CMAResource {
    */
   @Override public String getSpaceId() {
     return super.getId();
+  }
+
+  /**
+   * @return the default locale of this space
+   */
+  public String getDefaultLocale() {
+    return defaultLocale;
+  }
+
+  /**
+   * Set the default locale of this space.
+   *
+   * @param defaultLocale which locale should be default?
+   * @return this space for ease of chaining.
+   */
+  public CMASpace setDefaultLocale(String defaultLocale) {
+    this.defaultLocale = defaultLocale;
+    return this;
   }
 }
