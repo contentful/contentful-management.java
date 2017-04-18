@@ -8,8 +8,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Version [2.0.0][unreleased] - (in development)
 - New: [`Upload` module](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/uploads).
 - New: Add convenience `default call factory` method in client builder.
-- New: Fluid interface for getting localized fields on entries and assets.
-- New: Replace maps with accessors and fields in entries and assets.
+- New: `Fluid interface` for getting localized fields on entries and assets.
+- New: `Replace hash maps` with accessors and fields in entries and assets.
+- New: `Add rate limit headers` once limit is hit.
+- New: Add `defaultLocale` accessors on CMASpace.
 - Changed: Order of arguments on `CMAEntry.setField` takes the `key` first, _then_ the `locale` and lastly the value.
 - Changed: Version numbers and version counters are of `Integer` type, not `Double`.
 - Changed: CMASpace: `getSpaceId` returns the `id` of the current space (aka `getId`), not the id of the space the space belongs to.
