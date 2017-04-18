@@ -13,9 +13,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - New: `Add rate limit headers` once limit is hit.
 - New: Add `defaultLocale` accessors on CMASpace.
 - Changed: Order of arguments on `CMAEntry.setField` takes the `key` first, _then_ the `locale` and lastly the value.
-- Changed: Version numbers and version counters are of `Integer` type, not `Double.
+- Changed: Version numbers and version counters are of `Integer` type, not `Double`.
 - Changed: CMASpace: `getSpaceId` returns the `id` of the current space (aka `getId`), not the id of the space the space belongs to.
-- Removed: `StatefulResource is now part of the `CMAResource.
+- Removed: `StatefulResource` is now part of the `CMAResource`.
 
 ## Version [1.3.0] - 2016-08-17
 - New: [`Webhooks` module](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/webhooks).
