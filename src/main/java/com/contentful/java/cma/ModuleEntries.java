@@ -51,8 +51,10 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
    */
   public CMAEntry archive(CMAEntry entry) {
     assertNotNull(entry, "entry");
-    String entryId = getResourceIdOrThrow(entry, "entry");
-    String spaceId = getSpaceIdOrThrow(entry, "entry");
+
+    final String entryId = getResourceIdOrThrow(entry, "entry");
+    final String spaceId = getSpaceIdOrThrow(entry, "entry");
+
     return service.archive(spaceId, entryId, new Byte[0]).toBlocking().first();
   }
 
@@ -158,8 +160,9 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
    */
   public CMAEntry publish(CMAEntry entry) {
     assertNotNull(entry, "entry");
-    String entryId = getResourceIdOrThrow(entry, "entry");
-    String spaceId = getSpaceIdOrThrow(entry, "entry");
+    final String entryId = getResourceIdOrThrow(entry, "entry");
+    final String spaceId = getSpaceIdOrThrow(entry, "entry");
+
     return service.publish(entry.getSystem().getVersion(), spaceId, entryId,
         new Byte[0]).toBlocking().first();
   }
@@ -175,8 +178,9 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
    */
   public CMAEntry unArchive(CMAEntry entry) {
     assertNotNull(entry, "entry");
-    String entryId = getResourceIdOrThrow(entry, "entry");
-    String spaceId = getSpaceIdOrThrow(entry, "entry");
+    final String entryId = getResourceIdOrThrow(entry, "entry");
+    final String spaceId = getSpaceIdOrThrow(entry, "entry");
+
     return service.unArchive(spaceId, entryId).toBlocking().first();
   }
 
@@ -191,8 +195,9 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
    */
   public CMAEntry unPublish(CMAEntry entry) {
     assertNotNull(entry, "entry");
-    String entryId = getResourceIdOrThrow(entry, "entry");
-    String spaceId = getSpaceIdOrThrow(entry, "entry");
+    final String entryId = getResourceIdOrThrow(entry, "entry");
+    final String spaceId = getSpaceIdOrThrow(entry, "entry");
+
     return service.entriesUnPublish(spaceId, entryId).toBlocking().first();
   }
 

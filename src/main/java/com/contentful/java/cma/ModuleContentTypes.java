@@ -144,8 +144,10 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
    */
   public CMAContentType publish(CMAContentType contentType) {
     assertNotNull(contentType, "contentType");
-    String contentTypeId = getResourceIdOrThrow(contentType, "contentType");
-    String spaceId = getSpaceIdOrThrow(contentType, "contentType");
+
+    final String contentTypeId = getResourceIdOrThrow(contentType, "contentType");
+    final String spaceId = getSpaceIdOrThrow(contentType, "contentType");
+
     return service.publish(
         contentType.getVersion(),
         spaceId,
@@ -165,8 +167,10 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
    */
   public CMAContentType unPublish(CMAContentType contentType) {
     assertNotNull(contentType, "contentType");
-    String contentTypeId = getResourceIdOrThrow(contentType, "contentType");
-    String spaceId = getSpaceIdOrThrow(contentType, "contentType");
+
+    final String contentTypeId = getResourceIdOrThrow(contentType, "contentType");
+    final String spaceId = getSpaceIdOrThrow(contentType, "contentType");
+
     return service.unPublish(spaceId, contentTypeId).toBlocking().first();
   }
 
@@ -185,9 +189,9 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
     assertNotNull(contentType, "contentType");
     assertNotNull(contentType.getName(), "contentType.name");
 
-    String contentTypeId = getResourceIdOrThrow(contentType, "contentType");
-    String spaceId = getSpaceIdOrThrow(contentType, "contentType");
-    Integer version = getVersionOrThrow(contentType, "update");
+    final String contentTypeId = getResourceIdOrThrow(contentType, "contentType");
+    final String spaceId = getSpaceIdOrThrow(contentType, "contentType");
+    final Integer version = getVersionOrThrow(contentType, "update");
 
     final CMASystem system = contentType.getSystem();
     contentType.setSystem(null);

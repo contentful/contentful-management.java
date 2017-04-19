@@ -53,8 +53,9 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
    */
   public CMAAsset archive(CMAAsset asset) {
     assertNotNull(asset, "asset");
-    String assetId = getResourceIdOrThrow(asset, "asset");
-    String spaceId = getSpaceIdOrThrow(asset, "asset");
+    final String assetId = getResourceIdOrThrow(asset, "asset");
+    final String spaceId = getSpaceIdOrThrow(asset, "asset");
+
     return service.archive(spaceId, assetId, new Byte[0]).toBlocking().first();
   }
 
@@ -164,8 +165,9 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
    */
   public String process(CMAAsset asset, String locale) {
     assertNotNull(asset, "asset");
-    String assetId = getResourceIdOrThrow(asset, "asset");
-    String spaceId = getSpaceIdOrThrow(asset, "asset");
+    final String assetId = getResourceIdOrThrow(asset, "asset");
+    final String spaceId = getSpaceIdOrThrow(asset, "asset");
+
     return service.process(spaceId, assetId, locale, new Byte[0]).toBlocking().first();
   }
 
@@ -180,8 +182,9 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
    */
   public CMAAsset publish(CMAAsset asset) {
     assertNotNull(asset, "asset");
-    String assetId = getResourceIdOrThrow(asset, "asset");
-    String spaceId = getSpaceIdOrThrow(asset, "asset");
+    final String assetId = getResourceIdOrThrow(asset, "asset");
+    final String spaceId = getSpaceIdOrThrow(asset, "asset");
+
     return service.publish(asset.getSystem().getVersion(), spaceId, assetId,
         new Byte[0]).toBlocking().first();
   }
@@ -197,8 +200,10 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
    */
   public CMAAsset unArchive(CMAAsset asset) {
     assertNotNull(asset, "asset");
-    String assetId = getResourceIdOrThrow(asset, "asset");
-    String spaceId = getSpaceIdOrThrow(asset, "asset");
+
+    final String assetId = getResourceIdOrThrow(asset, "asset");
+    final String spaceId = getSpaceIdOrThrow(asset, "asset");
+
     return service.unArchive(spaceId, assetId).toBlocking().first();
   }
 
@@ -213,8 +218,9 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
    */
   public CMAAsset unPublish(CMAAsset asset) {
     assertNotNull(asset, "asset");
-    String assetId = getResourceIdOrThrow(asset, "asset");
-    String spaceId = getSpaceIdOrThrow(asset, "asset");
+    final String assetId = getResourceIdOrThrow(asset, "asset");
+    final String spaceId = getSpaceIdOrThrow(asset, "asset");
+
     return service.unPublish(spaceId, assetId).toBlocking().first();
   }
 
@@ -230,9 +236,9 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
    */
   public CMAAsset update(CMAAsset asset) {
     assertNotNull(asset, "asset");
-    String assetId = getResourceIdOrThrow(asset, "asset");
-    String spaceId = getSpaceIdOrThrow(asset, "asset");
-    Integer version = getVersionOrThrow(asset, "update");
+    final String assetId = getResourceIdOrThrow(asset, "asset");
+    final String spaceId = getSpaceIdOrThrow(asset, "asset");
+    final Integer version = getVersionOrThrow(asset, "update");
 
     final CMASystem sys = asset.getSystem();
     asset.setSystem(null);
