@@ -48,6 +48,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
    *
    * @param spaceName Space name
    * @return {@link CMASpace} result instance
+   * @throws IllegalArgumentException if spaceName is null.
    */
   public CMASpace create(String spaceName) {
     assertNotNull(spaceName, "spaceName");
@@ -59,6 +60,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
    *
    * @param space CMASpace
    * @return {@link CMASpace} result instance
+   * @throws IllegalArgumentException if space is null.
    */
   public CMASpace create(CMASpace space) {
     assertNotNull(space, "space");
@@ -79,10 +81,13 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
    * @param spaceName      Space name
    * @param organizationId organization ID
    * @return {@link CMASpace} result instance
+   * @throws IllegalArgumentException if spaceName is null.
+   * @throws IllegalArgumentException if organizationId is null.
    */
   public CMASpace create(String spaceName, String organizationId) {
     assertNotNull(spaceName, "spaceName");
     assertNotNull(organizationId, "organizationId");
+
     return service.create(organizationId, new CMASpace().setName(spaceName).setSystem(null))
         .toBlocking().first();
   }
@@ -93,6 +98,9 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
    * @param space          Space
    * @param organizationId organization ID
    * @return {@link CMASpace} result instance
+   * @throws IllegalArgumentException if space is null.
+   * @throws IllegalArgumentException if space's name is null.
+   * @throws IllegalArgumentException if organizationId is null.
    */
   public CMASpace create(CMASpace space, String organizationId) {
     assertNotNull(space, "space");
@@ -114,6 +122,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
    *
    * @param spaceId Space ID
    * @return String representing the result (203, or an error code)
+   * @throws IllegalArgumentException if space's id is null.
    */
   public String delete(String spaceId) {
     assertNotNull(spaceId, "spaceId");
@@ -145,6 +154,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
    *
    * @param spaceId Space ID
    * @return {@link CMASpace} result instance
+   * @throws IllegalArgumentException if space's id is null.
    */
   public CMASpace fetchOne(String spaceId) {
     assertNotNull(spaceId, "spaceId");
@@ -156,6 +166,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
    *
    * @param spaceId Space ID
    * @return {@link CMAArray} result instance
+   * @throws IllegalArgumentException if space's id is null.
    */
   public CMAArray<CMALocale> fetchLocales(String spaceId) {
     return fetchLocales(spaceId, new HashMap<String, String>());
@@ -167,6 +178,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
    * @param spaceId Space ID
    * @param query   the filters to be applied for the locales to be fetched
    * @return {@link CMAArray} result instance
+   * @throws IllegalArgumentException if space's id is null.
    */
   public CMAArray<CMALocale> fetchLocales(String spaceId, Map<String, String> query) {
     assertNotNull(spaceId, "spaceId");
@@ -179,6 +191,10 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
    *
    * @param space Space
    * @return {@link CMASpace} result instance
+   * @throws IllegalArgumentException if space is null.
+   * @throws IllegalArgumentException if space's name is null.
+   * @throws IllegalArgumentException if space's space id is null.
+   * @throws IllegalArgumentException if space's version is null.
    */
   public CMASpace update(CMASpace space) {
     assertNotNull(space, "space");
@@ -213,6 +229,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
      * @param spaceName Space name
      * @param callback  Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if spaceName is null.
      */
     public CMACallback<CMASpace> create(final String spaceName, CMACallback<CMASpace> callback) {
       return defer(new DefFunc<CMASpace>() {
@@ -228,6 +245,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
      * @param space    CMASpace
      * @param callback Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if space is null.
      */
     public CMACallback<CMASpace> create(final CMASpace space, CMACallback<CMASpace> callback) {
       return defer(new DefFunc<CMASpace>() {
@@ -244,6 +262,8 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
      * @param organizationId organization ID
      * @param callback       Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if spaceName is null.
+     * @throws IllegalArgumentException if organizationId is null.
      */
     public CMACallback<CMASpace> create(final String spaceName, final String organizationId,
                                         CMACallback<CMASpace> callback) {
@@ -261,6 +281,9 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
      * @param organizationId organization ID
      * @param callback       Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if space is null.
+     * @throws IllegalArgumentException if space's name is null.
+     * @throws IllegalArgumentException if organizationId is null.
      */
     public CMACallback<CMASpace> create(final CMASpace space, final String organizationId,
                                         CMACallback<CMASpace> callback) {
@@ -277,6 +300,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
      * @param spaceId  Space ID
      * @param callback Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if space's id is null.
      */
     public CMACallback<String> delete(final String spaceId, CMACallback<String> callback) {
       return defer(new DefFunc<String>() {
@@ -321,6 +345,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
      * @param spaceId  Space ID
      * @param callback Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if space's id is null.
      */
     public CMACallback<CMAArray<CMALocale>> fetchLocales(final String spaceId,
                                                          CMACallback<
@@ -338,6 +363,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
      * @param spaceId  Space ID
      * @param callback Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if space's id is null.
      */
     public CMACallback<CMASpace> fetchOne(final String spaceId, CMACallback<CMASpace> callback) {
       return defer(new DefFunc<CMASpace>() {
@@ -353,6 +379,10 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
      * @param space    Space
      * @param callback Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if space is null.
+     * @throws IllegalArgumentException if space's name is null.
+     * @throws IllegalArgumentException if space's space id is null.
+     * @throws IllegalArgumentException if space's version is null.
      */
     public CMACallback<CMASpace> update(final CMASpace space, CMACallback<CMASpace> callback) {
       return defer(new DefFunc<CMASpace>() {

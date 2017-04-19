@@ -46,6 +46,8 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
    *
    * @param entry Entry
    * @return {@link CMAEntry} result instance
+   * @throws IllegalArgumentException if entry is null.
+   * @throws IllegalArgumentException if entry's id is null.
    */
   public CMAEntry archive(CMAEntry entry) {
     assertNotNull(entry, "entry");
@@ -65,6 +67,8 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
    * @param contentTypeId Content Type ID
    * @param entry         Entry
    * @return {@link CMAEntry} result instance
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if entry is null.
    */
   @SuppressWarnings("unchecked")
   public CMAEntry create(String spaceId, String contentTypeId, CMAEntry entry) {
@@ -72,6 +76,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     assertNotNull(entry, "entry");
 
     final String entryId = entry.getSystem().getId();
+
     final CMASystem sys = entry.getSystem();
     entry.setSystem(null);
 
@@ -92,10 +97,13 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
    * @param spaceId Space ID
    * @param entryId Entry ID
    * @return String representing the success (203) of the action
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if entry is null.
    */
   public String delete(String spaceId, String entryId) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(entryId, "entryId");
+
     return service.delete(spaceId, entryId).toBlocking().first();
   }
 
@@ -106,6 +114,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
    *
    * @param spaceId Space ID
    * @return {@link CMAArray} result instance
+   * @throws IllegalArgumentException if spaceId is null.
    */
   public CMAArray<CMAEntry> fetchAll(String spaceId) {
     return fetchAll(spaceId, new HashMap<String, String>());
@@ -117,6 +126,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
    * @param spaceId Space ID
    * @param query   Query
    * @return {@link CMAArray} result instance
+   * @throws IllegalArgumentException if spaceId is null.
    */
   public CMAArray<CMAEntry> fetchAll(String spaceId, Map<String, String> query) {
     assertNotNull(spaceId, "spaceId");
@@ -142,6 +152,9 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
    *
    * @param entry Entry
    * @return {@link CMAEntry} result instance
+   * @throws IllegalArgumentException if entry is null.
+   * @throws IllegalArgumentException if entry's id is null.
+   * @throws IllegalArgumentException if entry's space id is null.
    */
   public CMAEntry publish(CMAEntry entry) {
     assertNotNull(entry, "entry");
@@ -156,6 +169,9 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
    *
    * @param entry Entry
    * @return {@link CMAEntry} result instance
+   * @throws IllegalArgumentException if entry is null.
+   * @throws IllegalArgumentException if entry's id is null.
+   * @throws IllegalArgumentException if entry's space id is null.
    */
   public CMAEntry unArchive(CMAEntry entry) {
     assertNotNull(entry, "entry");
@@ -169,6 +185,9 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
    *
    * @param entry Entry
    * @return {@link CMAEntry} result instance
+   * @throws IllegalArgumentException if entry is null.
+   * @throws IllegalArgumentException if entry's id is null.
+   * @throws IllegalArgumentException if entry's space id is null.
    */
   public CMAEntry unPublish(CMAEntry entry) {
     assertNotNull(entry, "entry");
@@ -182,6 +201,10 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
    *
    * @param entry Entry
    * @return {@link CMAEntry} result instance
+   * @throws IllegalArgumentException if entry is null.
+   * @throws IllegalArgumentException if entry's id is null.
+   * @throws IllegalArgumentException if entry's space id is null.
+   * @throws IllegalArgumentException if entry's version is null.
    */
   public CMAEntry update(CMAEntry entry) {
     assertNotNull(entry, "entry");
@@ -215,6 +238,8 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
      * @param entry    Entry
      * @param callback Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if entry is null.
+     * @throws IllegalArgumentException if entry's id is null.
      */
     public CMACallback<CMAEntry> archive(final CMAEntry entry, CMACallback<CMAEntry> callback) {
       return defer(new RxExtensions.DefFunc<CMAEntry>() {
@@ -235,6 +260,8 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
      * @param entry         Entry
      * @param callback      Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if entry is null.
      */
     public CMACallback<CMAEntry> create(final String spaceId, final String contentTypeId,
                                         final CMAEntry entry, CMACallback<CMAEntry> callback) {
@@ -252,6 +279,8 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
      * @param entryId  Entry ID
      * @param callback Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if entry is null.
      */
     public CMACallback<String> delete(final String spaceId, final String entryId,
                                       CMACallback<String> callback) {
@@ -268,6 +297,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
      * @param spaceId  Space ID
      * @param callback Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if spaceId is null.
      */
     public CMACallback<CMAArray<CMAEntry>> fetchAll(final String spaceId,
                                                     CMACallback<CMAArray<CMAEntry>> callback) {
@@ -281,6 +311,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
      * @param query    Query
      * @param callback Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if spaceId is null.
      */
     public CMACallback<CMAArray<CMAEntry>> fetchAll(final String spaceId,
                                                     final Map<String, String> query,
@@ -316,6 +347,9 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
      * @param entry    Entry
      * @param callback Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if entry is null.
+     * @throws IllegalArgumentException if entry's id is null.
+     * @throws IllegalArgumentException if entry's space id is null.
      */
     public CMACallback<CMAEntry> publish(final CMAEntry entry, CMACallback<CMAEntry> callback) {
       return defer(new RxExtensions.DefFunc<CMAEntry>() {
@@ -331,6 +365,9 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
      * @param entry    Entry
      * @param callback Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if entry is null.
+     * @throws IllegalArgumentException if entry's id is null.
+     * @throws IllegalArgumentException if entry's space id is null.
      */
     public CMACallback<CMAEntry> unArchive(final CMAEntry entry, CMACallback<CMAEntry> callback) {
       return defer(new RxExtensions.DefFunc<CMAEntry>() {
@@ -346,6 +383,9 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
      * @param entry    Entry
      * @param callback Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if entry is null.
+     * @throws IllegalArgumentException if entry's id is null.
+     * @throws IllegalArgumentException if entry's space id is null.
      */
     public CMACallback<CMAEntry> unPublish(final CMAEntry entry, CMACallback<CMAEntry> callback) {
       return defer(new RxExtensions.DefFunc<CMAEntry>() {
