@@ -12,6 +12,14 @@ import static java.lang.String.format;
  * This class will represent known Contentful exceptions
  */
 public class CMAHttpException extends RuntimeException {
+  public static final String HEADER_RATE_LIMIT_HOUR_LIMIT = "X-Contentful-RateLimit-Hour-Limit";
+  public static final String HEADER_RATE_LIMIT_HOUR_REMAINING
+      = "X-Contentful-RateLimit-Hour-Remaining";
+  public static final String HEADER_RATE_LIMIT_SECOND_LIMIT = "X-Contentful-RateLimit-Second-Limit";
+  public static final String HEADER_RATE_LIMIT_SECOND_REMAINING
+      = "X-Contentful-RateLimit-Second-Remaining";
+  public static final String HEADER_RATE_LIMIT_RESET = "X-Contentful-RateLimit-Reset";
+
   private final Request request;
   private final Response response;
 
@@ -64,35 +72,35 @@ public class CMAHttpException extends RuntimeException {
    * @return the hourly rate limit or -1 if header not send
    */
   public int rateLimitHourLimit() {
-    return parseRateLimitHeader("X-Contentful-RateLimit-Hour-Limit");
+    return parseRateLimitHeader(HEADER_RATE_LIMIT_HOUR_LIMIT);
   }
 
   /**
    * @return the number of remaining requests that can be made in the hour or -1 if header not send
    */
   public int rateLimitHourRemaining() {
-    return parseRateLimitHeader("X-Contentful-RateLimit-Hour-Remaining");
+    return parseRateLimitHeader(HEADER_RATE_LIMIT_HOUR_REMAINING);
   }
 
   /**
    * @return the per second rate limit or -1 if header not send
    */
   public int rateLimitSecondLimit() {
-    return parseRateLimitHeader("X-Contentful-RateLimit-Second-Limit");
+    return parseRateLimitHeader(HEADER_RATE_LIMIT_SECOND_LIMIT);
   }
 
   /**
    * @return the number of remaining requests that can be made per second or -1 if header not send
    */
   public int rateLimitSecondRemaining() {
-    return parseRateLimitHeader("X-Contentful-RateLimit-Second-Remaining");
+    return parseRateLimitHeader(HEADER_RATE_LIMIT_SECOND_REMAINING);
   }
 
   /**
    * @return the number of seconds until the user can make a next request or -1 if header not send
    */
   public int rateLimitReset() {
-    return parseRateLimitHeader("X-Contentful-RateLimit-Reset");
+    return parseRateLimitHeader(HEADER_RATE_LIMIT_RESET);
   }
 
   private String headersToString(Headers headers) {
