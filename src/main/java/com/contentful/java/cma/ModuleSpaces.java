@@ -48,10 +48,31 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
    *
    * @param spaceName Space name
    * @return {@link CMASpace} result instance
+   * @throws IllegalArgumentException if spaceName is null.
    */
   public CMASpace create(String spaceName) {
     assertNotNull(spaceName, "spaceName");
     return service.create(new CMASpace().setName(spaceName).setSystem(null)).toBlocking().first();
+  }
+
+  /**
+   * Create a Space.
+   *
+   * @param space CMASpace
+   * @return {@link CMASpace} result instance
+   * @throws IllegalArgumentException if space is null.
+   */
+  public CMASpace create(CMASpace space) {
+    assertNotNull(space, "space");
+
+    final CMASystem system = space.getSystem();
+    space.setSystem(null);
+
+    try {
+      return service.create(space).toBlocking().first();
+    } finally {
+      space.setSystem(system);
+    }
   }
 
   /**
@@ -60,11 +81,40 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
    * @param spaceName      Space name
    * @param organizationId organization ID
    * @return {@link CMASpace} result instance
+   * @throws IllegalArgumentException if spaceName is null.
+   * @throws IllegalArgumentException if organizationId is null.
    */
   public CMASpace create(String spaceName, String organizationId) {
     assertNotNull(spaceName, "spaceName");
     assertNotNull(organizationId, "organizationId");
-    return service.create(organizationId, new CMASpace().setName(spaceName)).toBlocking().first();
+
+    return service.create(organizationId, new CMASpace().setName(spaceName).setSystem(null))
+        .toBlocking().first();
+  }
+
+  /**
+   * Create a Space in an organization.
+   *
+   * @param space          Space
+   * @param organizationId organization ID
+   * @return {@link CMASpace} result instance
+   * @throws IllegalArgumentException if space is null.
+   * @throws IllegalArgumentException if space's name is null.
+   * @throws IllegalArgumentException if organizationId is null.
+   */
+  public CMASpace create(CMASpace space, String organizationId) {
+    assertNotNull(space, "space");
+    assertNotNull(space.getName(), "spaceName");
+    assertNotNull(organizationId, "organizationId");
+
+    final CMASystem system = space.getSystem();
+    space.setSystem(null);
+
+    try {
+      return service.create(organizationId, space).toBlocking().first();
+    } finally {
+      space.setSystem(system);
+    }
   }
 
   /**
@@ -72,6 +122,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
    *
    * @param spaceId Space ID
    * @return String representing the result (203, or an error code)
+   * @throws IllegalArgumentException if space's id is null.
    */
   public String delete(String spaceId) {
     assertNotNull(spaceId, "spaceId");
@@ -103,6 +154,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
    *
    * @param spaceId Space ID
    * @return {@link CMASpace} result instance
+   * @throws IllegalArgumentException if space's id is null.
    */
   public CMASpace fetchOne(String spaceId) {
     assertNotNull(spaceId, "spaceId");
@@ -114,6 +166,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
    *
    * @param spaceId Space ID
    * @return {@link CMAArray} result instance
+   * @throws IllegalArgumentException if space's id is null.
    */
   public CMAArray<CMALocale> fetchLocales(String spaceId) {
     return fetchLocales(spaceId, new HashMap<String, String>());
@@ -125,6 +178,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
    * @param spaceId Space ID
    * @param query   the filters to be applied for the locales to be fetched
    * @return {@link CMAArray} result instance
+   * @throws IllegalArgumentException if space's id is null.
    */
   public CMAArray<CMALocale> fetchLocales(String spaceId, Map<String, String> query) {
     assertNotNull(spaceId, "spaceId");
@@ -137,12 +191,16 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
    *
    * @param space Space
    * @return {@link CMASpace} result instance
+   * @throws IllegalArgumentException if space is null.
+   * @throws IllegalArgumentException if space's name is null.
+   * @throws IllegalArgumentException if space's space id is null.
+   * @throws IllegalArgumentException if space's version is null.
    */
   public CMASpace update(CMASpace space) {
     assertNotNull(space, "space");
     assertNotNull(space.getName(), "space.name");
-    String spaceId = getResourceIdOrThrow(space, "space");
-    Integer version = getVersionOrThrow(space, "update");
+    final String spaceId = getResourceIdOrThrow(space, "space");
+    final Integer version = getVersionOrThrow(space, "update");
 
     final CMASystem system = space.getSystem();
     space.setSystem(null);
@@ -171,11 +229,28 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
      * @param spaceName Space name
      * @param callback  Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if spaceName is null.
      */
     public CMACallback<CMASpace> create(final String spaceName, CMACallback<CMASpace> callback) {
       return defer(new DefFunc<CMASpace>() {
         @Override CMASpace method() {
           return ModuleSpaces.this.create(spaceName);
+        }
+      }, callback);
+    }
+
+    /**
+     * Create a Space.
+     *
+     * @param space    CMASpace
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if space is null.
+     */
+    public CMACallback<CMASpace> create(final CMASpace space, CMACallback<CMASpace> callback) {
+      return defer(new DefFunc<CMASpace>() {
+        @Override CMASpace method() {
+          return ModuleSpaces.this.create(space);
         }
       }, callback);
     }
@@ -187,6 +262,8 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
      * @param organizationId organization ID
      * @param callback       Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if spaceName is null.
+     * @throws IllegalArgumentException if organizationId is null.
      */
     public CMACallback<CMASpace> create(final String spaceName, final String organizationId,
                                         CMACallback<CMASpace> callback) {
@@ -198,11 +275,32 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
     }
 
     /**
+     * Create a Space in an Organization.
+     *
+     * @param space          CMASpace
+     * @param organizationId organization ID
+     * @param callback       Callback
+     * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if space is null.
+     * @throws IllegalArgumentException if space's name is null.
+     * @throws IllegalArgumentException if organizationId is null.
+     */
+    public CMACallback<CMASpace> create(final CMASpace space, final String organizationId,
+                                        CMACallback<CMASpace> callback) {
+      return defer(new DefFunc<CMASpace>() {
+        @Override CMASpace method() {
+          return ModuleSpaces.this.create(space, organizationId);
+        }
+      }, callback);
+    }
+
+    /**
      * Delete a Space.
      *
      * @param spaceId  Space ID
      * @param callback Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if space's id is null.
      */
     public CMACallback<String> delete(final String spaceId, CMACallback<String> callback) {
       return defer(new DefFunc<String>() {
@@ -247,6 +345,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
      * @param spaceId  Space ID
      * @param callback Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if space's id is null.
      */
     public CMACallback<CMAArray<CMALocale>> fetchLocales(final String spaceId,
                                                          CMACallback<
@@ -259,11 +358,32 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
     }
 
     /**
+     * Fetch Locales for a Space, using a query.
+     *
+     * @param spaceId  Space ID
+     * @param query    the query to be used.
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if space's id is null.
+     */
+    public CMACallback<CMAArray<CMALocale>> fetchLocales(final String spaceId,
+                                                         final Map<String, String> query,
+                                                         CMACallback<
+                                                             CMAArray<CMALocale>> callback) {
+      return defer(new DefFunc<CMAArray<CMALocale>>() {
+        @Override CMAArray<CMALocale> method() {
+          return ModuleSpaces.this.fetchLocales(spaceId, query);
+        }
+      }, callback);
+    }
+
+    /**
      * Fetch a Space with a given {@code spaceId}.
      *
      * @param spaceId  Space ID
      * @param callback Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if space's id is null.
      */
     public CMACallback<CMASpace> fetchOne(final String spaceId, CMACallback<CMASpace> callback) {
       return defer(new DefFunc<CMASpace>() {
@@ -279,6 +399,10 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
      * @param space    Space
      * @param callback Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if space is null.
+     * @throws IllegalArgumentException if space's name is null.
+     * @throws IllegalArgumentException if space's space id is null.
+     * @throws IllegalArgumentException if space's version is null.
      */
     public CMACallback<CMASpace> update(final CMASpace space, CMACallback<CMASpace> callback) {
       return defer(new DefFunc<CMASpace>() {

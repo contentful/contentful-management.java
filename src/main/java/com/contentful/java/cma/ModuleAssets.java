@@ -47,11 +47,15 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
    *
    * @param asset Asset
    * @return {@link CMAAsset} result instance
+   * @throws IllegalArgumentException if asset is null.
+   * @throws IllegalArgumentException if asset id is null.
+   * @throws IllegalArgumentException if asset space id is null.
    */
   public CMAAsset archive(CMAAsset asset) {
     assertNotNull(asset, "asset");
-    String assetId = getResourceIdOrThrow(asset, "asset");
-    String spaceId = getSpaceIdOrThrow(asset, "asset");
+    final String assetId = getResourceIdOrThrow(asset, "asset");
+    final String spaceId = getSpaceIdOrThrow(asset, "asset");
+
     return service.archive(spaceId, assetId, new Byte[0]).toBlocking().first();
   }
 
@@ -64,6 +68,8 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
    * @param spaceId Space ID
    * @param asset   Asset
    * @return {@link CMAAsset} result instance
+   * @throws IllegalArgumentException if asset is null.
+   * @throws IllegalArgumentException if asset space id is null.
    */
   @SuppressWarnings("unchecked")
   public CMAAsset create(String spaceId, CMAAsset asset) {
@@ -71,6 +77,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     assertNotNull(asset, "asset");
 
     final String assetId = asset.getId();
+
     final CMASystem sys = asset.getSystem();
     asset.setSystem(null);
 
@@ -91,10 +98,13 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
    * @param spaceId Space ID
    * @param assetId Asset ID
    * @return A string representing the result of the delete operation
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if assetId is null.
    */
   public String delete(String spaceId, String assetId) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(assetId, "assetId");
+
     return service.delete(spaceId, assetId).toBlocking().first();
   }
 
@@ -105,6 +115,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
    *
    * @param spaceId Space ID
    * @return {@link CMAArray} result instance
+   * @throws IllegalArgumentException if spaceId is null.
    */
   public CMAArray<CMAAsset> fetchAll(String spaceId) {
     return fetchAll(spaceId, new HashMap<String, String>());
@@ -116,10 +127,12 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
    * @param spaceId Space ID
    * @param query   specifying details about which assets to fetch.
    * @return {@link CMAArray} result instance
+   * @throws IllegalArgumentException if spaceId is null.
    */
   public CMAArray<CMAAsset> fetchAll(String spaceId, Map<String, String> query) {
     assertNotNull(spaceId, "spaceId");
     DefaultQueryParameter.putIfNotSet(query, DefaultQueryParameter.FETCH);
+
     return service.fetchAll(spaceId, query).toBlocking().first();
   }
 
@@ -129,10 +142,13 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
    * @param spaceId Space ID
    * @param assetId Asset ID
    * @return {@link CMAAsset} result instance
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if assetId is null.
    */
   public CMAAsset fetchOne(String spaceId, String assetId) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(assetId, "assetId");
+
     return service.fetchOne(spaceId, assetId).toBlocking().first();
   }
 
@@ -142,11 +158,16 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
    * @param asset  Asset
    * @param locale Locale
    * @return String representing the success (203) of processing
+   * @throws IllegalArgumentException if asset is null.
+   * @throws IllegalArgumentException if asset has no id.
+   * @throws IllegalArgumentException if asset has no space.
+   * @throws IllegalArgumentException if locale is null.
    */
   public String process(CMAAsset asset, String locale) {
     assertNotNull(asset, "asset");
-    String assetId = getResourceIdOrThrow(asset, "asset");
-    String spaceId = getSpaceIdOrThrow(asset, "asset");
+    final String assetId = getResourceIdOrThrow(asset, "asset");
+    final String spaceId = getSpaceIdOrThrow(asset, "asset");
+
     return service.process(spaceId, assetId, locale, new Byte[0]).toBlocking().first();
   }
 
@@ -155,11 +176,15 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
    *
    * @param asset Asset
    * @return {@link CMAAsset} result instance
+   * @throws IllegalArgumentException if asset is null.
+   * @throws IllegalArgumentException if asset has no id.
+   * @throws IllegalArgumentException if asset has no space id.
    */
   public CMAAsset publish(CMAAsset asset) {
     assertNotNull(asset, "asset");
-    String assetId = getResourceIdOrThrow(asset, "asset");
-    String spaceId = getSpaceIdOrThrow(asset, "asset");
+    final String assetId = getResourceIdOrThrow(asset, "asset");
+    final String spaceId = getSpaceIdOrThrow(asset, "asset");
+
     return service.publish(asset.getSystem().getVersion(), spaceId, assetId,
         new Byte[0]).toBlocking().first();
   }
@@ -169,11 +194,16 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
    *
    * @param asset Asset
    * @return {@link CMAAsset} result instance
+   * @throws IllegalArgumentException if asset is null.
+   * @throws IllegalArgumentException if asset id is empty.
+   * @throws IllegalArgumentException if asset's space id is empty.
    */
   public CMAAsset unArchive(CMAAsset asset) {
     assertNotNull(asset, "asset");
-    String assetId = getResourceIdOrThrow(asset, "asset");
-    String spaceId = getSpaceIdOrThrow(asset, "asset");
+
+    final String assetId = getResourceIdOrThrow(asset, "asset");
+    final String spaceId = getSpaceIdOrThrow(asset, "asset");
+
     return service.unArchive(spaceId, assetId).toBlocking().first();
   }
 
@@ -182,11 +212,15 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
    *
    * @param asset Asset
    * @return {@link CMAAsset} result instance
+   * @throws IllegalArgumentException if asset is null.
+   * @throws IllegalArgumentException if asset's id is not set.
+   * @throws IllegalArgumentException if asset's space id is not set.
    */
   public CMAAsset unPublish(CMAAsset asset) {
     assertNotNull(asset, "asset");
-    String assetId = getResourceIdOrThrow(asset, "asset");
-    String spaceId = getSpaceIdOrThrow(asset, "asset");
+    final String assetId = getResourceIdOrThrow(asset, "asset");
+    final String spaceId = getSpaceIdOrThrow(asset, "asset");
+
     return service.unPublish(spaceId, assetId).toBlocking().first();
   }
 
@@ -195,12 +229,16 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
    *
    * @param asset Asset
    * @return {@link CMAAsset} result instance
+   * @throws IllegalArgumentException if asset is null.
+   * @throws IllegalArgumentException if asset's id is null.
+   * @throws IllegalArgumentException if asset's space id is null.
+   * @throws IllegalArgumentException if asset's version is null.
    */
   public CMAAsset update(CMAAsset asset) {
     assertNotNull(asset, "asset");
-    String assetId = getResourceIdOrThrow(asset, "asset");
-    String spaceId = getSpaceIdOrThrow(asset, "asset");
-    Integer version = getVersionOrThrow(asset, "update");
+    final String assetId = getResourceIdOrThrow(asset, "asset");
+    final String spaceId = getSpaceIdOrThrow(asset, "asset");
+    final Integer version = getVersionOrThrow(asset, "update");
 
     final CMASystem sys = asset.getSystem();
     asset.setSystem(null);
@@ -229,6 +267,9 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
      * @param asset    Asset
      * @param callback Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if asset is null.
+     * @throws IllegalArgumentException if asset id is null.
+     * @throws IllegalArgumentException if asset space id is null.
      */
     public CMACallback<CMAAsset> archive(final CMAAsset asset, CMACallback<CMAAsset> callback) {
       return defer(new DefFunc<CMAAsset>() {
@@ -248,6 +289,9 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
      * @param asset    Asset
      * @param callback Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if asset is null.
+     * @throws IllegalArgumentException if asset id is null.
+     * @throws IllegalArgumentException if asset space id is null.
      */
     public CMACallback<CMAAsset> create(final String spaceId, final CMAAsset asset,
                                         CMACallback<CMAAsset> callback) {
@@ -265,6 +309,8 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
      * @param assetId  Asset ID
      * @param callback Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if assetId is null.
      */
     public CMACallback<String> delete(final String spaceId, final String assetId,
                                       CMACallback<String> callback) {
@@ -294,6 +340,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
      * @param query    Query
      * @param callback Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if spaceId is null.
      */
     public CMACallback<CMAArray<CMAAsset>> fetchAll(final String spaceId,
                                                     final Map<String, String> query,
@@ -313,6 +360,8 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
      * @param assetId  Asset ID
      * @param callback Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if assetId is null.
      */
     public CMACallback<CMAAsset> fetchOne(final String spaceId, final String assetId,
                                           CMACallback<CMAAsset> callback) {
@@ -330,6 +379,10 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
      * @param locale   Locale
      * @param callback Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if asset is null.
+     * @throws IllegalArgumentException if asset has no id.
+     * @throws IllegalArgumentException if asset has no space.
+     * @throws IllegalArgumentException if locale is null.
      */
     public CMACallback<String> process(final CMAAsset asset, final String locale,
                                        CMACallback<String> callback) {
@@ -346,6 +399,9 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
      * @param asset    Asset
      * @param callback Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if asset is null.
+     * @throws IllegalArgumentException if asset has no id.
+     * @throws IllegalArgumentException if asset has no space id.
      */
     public CMACallback<CMAAsset> publish(final CMAAsset asset, CMACallback<CMAAsset> callback) {
       return defer(new DefFunc<CMAAsset>() {
@@ -361,6 +417,9 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
      * @param asset    Asset
      * @param callback Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if asset is null.
+     * @throws IllegalArgumentException if asset id is empty.
+     * @throws IllegalArgumentException if asset's space id is empty.
      */
     public CMACallback<CMAAsset> unArchive(final CMAAsset asset, CMACallback<CMAAsset> callback) {
       return defer(new DefFunc<CMAAsset>() {
@@ -376,6 +435,9 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
      * @param asset    Asset
      * @param callback Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if asset is null.
+     * @throws IllegalArgumentException if asset's id is not set.
+     * @throws IllegalArgumentException if asset's space id is not set.
      */
     public CMACallback<CMAAsset> unPublish(final CMAAsset asset, CMACallback<CMAAsset> callback) {
       return defer(new DefFunc<CMAAsset>() {
@@ -391,6 +453,10 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
      * @param asset    Asset
      * @param callback Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if asset is null.
+     * @throws IllegalArgumentException if asset's id is null.
+     * @throws IllegalArgumentException if asset's space id is null.
+     * @throws IllegalArgumentException if asset's version is null.
      */
     public CMACallback<CMAAsset> update(final CMAAsset asset, CMACallback<CMAAsset> callback) {
       return defer(new DefFunc<CMAAsset>() {

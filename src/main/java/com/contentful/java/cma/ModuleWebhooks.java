@@ -64,10 +64,12 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
    * @param spaceId Which space should be used?
    * @param webhook A representation of the Webhook to be used.
    * @return The webhook returned from the backend, containing created its ID and more.
+   * @throws IllegalArgumentException if space's id is null.
+   * @throws IllegalArgumentException if webhook is null.
    */
   public CMAWebhook create(String spaceId, CMAWebhook webhook) {
     assertNotNull(spaceId, "spaceId");
-    assertNotNull(webhook, "webook");
+    assertNotNull(webhook, "webhook");
 
     final CMASystem system = webhook.getSystem();
     webhook.setSystem(null);
@@ -87,11 +89,14 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
    * @param webhookId What id should be given to the new webhook?
    * @param webhook   Contains the actual data of the webhook to be created.
    * @return The webhook as returned from the backend, enriched by the backend.
+   * @throws IllegalArgumentException if space's id is null.
+   * @throws IllegalArgumentException if webhookId is null.
+   * @throws IllegalArgumentException if webhook is null.
    */
   public CMAWebhook create(String spaceId, String webhookId, CMAWebhook webhook) {
     assertNotNull(spaceId, "spaceId");
-    assertNotNull(webhookId, "webookId");
-    assertNotNull(webhook, "webook");
+    assertNotNull(webhookId, "webhookId");
+    assertNotNull(webhook, "webhook");
 
     final CMASystem system = webhook.getSystem();
     webhook.setSystem(null);
@@ -109,10 +114,12 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
    * @param spaceId   The id of the space hosting the webhook to be deleted.
    * @param webhookId The id of the actual webhook to be deleted.
    * @return null upon completion
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if webhookId is null.
    */
   public String delete(String spaceId, String webhookId) {
     assertNotNull(spaceId, "spaceId");
-    assertNotNull(webhookId, "webookId");
+    assertNotNull(webhookId, "webhookId");
 
     return service.delete(spaceId, webhookId).toBlocking().first();
   }
@@ -122,6 +129,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
    *
    * @param spaceId The id of the space to be asked for all of its spaces.
    * @return An {@link CMAArray} containing all found webhooks for this space.
+   * @throws IllegalArgumentException if spaceId is null.
    */
   public CMAArray<CMAWebhook> fetchAll(String spaceId) {
     assertNotNull(spaceId, "spaceId");
@@ -135,10 +143,12 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
    * @param spaceId   The id of the space to be hosting this webhook.
    * @param webhookId The id of the webhook to be returned.
    * @return The webhook found, or null, if no such webhook is available.
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if webhookId is null.
    */
   public CMAWebhook fetchOne(String spaceId, String webhookId) {
     assertNotNull(spaceId, "spaceId");
-    assertNotNull(webhookId, "webookId");
+    assertNotNull(webhookId, "webhookId");
 
     return service.fetchOne(spaceId, webhookId).toBlocking().first();
   }
@@ -150,18 +160,17 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
    *
    * @param webhook The webhook retrieved beforehand to be changed.
    * @return The from the backend returned, changed webhook.
+   * @throws IllegalArgumentException if webhook is null.
+   * @throws IllegalArgumentException if webhookId is null.
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if version is null.
    */
   public CMAWebhook update(CMAWebhook webhook) {
     assertNotNull(webhook, "webhook");
 
-    Integer version = webhook.getVersion();
-    String spaceId = webhook.getSpaceId();
-    String webhookId = webhook.getId();
-
-    assertNotNull(version, "version");
-    assertNotNull(spaceId, "spaceId");
-    assertNotNull(webhookId, "webookId");
-    assertNotNull(webhook, "webook");
+    final String webhookId = getResourceIdOrThrow(webhook, "webhook");
+    final String spaceId = getSpaceIdOrThrow(webhook, "webhook");
+    final Integer version = getVersionOrThrow(webhook, "webhook");
 
     return service.update(version, spaceId, webhookId, webhook).toBlocking().first();
   }
@@ -173,10 +182,12 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
    * @param webhookId The id of the webhook to be asked for more detail.
    * @return A detailed object for the given webhook.
    * @see CMAWebhookCall
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if webhook is null.
    */
   public CMAArray<CMAWebhookCall> calls(String spaceId, String webhookId) {
     assertNotNull(spaceId, "spaceId");
-    assertNotNull(webhookId, "webookId");
+    assertNotNull(webhookId, "webhookId");
 
     return service.calls(spaceId, webhookId).toBlocking().first();
   }
@@ -189,10 +200,13 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
    * @param webhookId A webhook id containing the webhook containing the call.
    * @param callId    A call id identifying the call to be informed about.
    * @return A Call Detail to be used to gather more information about this call.
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if webhook is null.
+   * @throws IllegalArgumentException if callId is null.
    */
   public CMAWebhookCallDetail callDetails(String spaceId, String webhookId, String callId) {
     assertNotNull(spaceId, "spaceId");
-    assertNotNull(webhookId, "webook");
+    assertNotNull(webhookId, "webhookId");
     assertNotNull(callId, "callId");
 
     return service.callDetails(spaceId, webhookId, callId).toBlocking().first();
@@ -204,10 +218,12 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
    * @param spaceId   Which space does host this webhook?
    * @param webhookId Which webhook should be asked for its health?
    * @return A health indicator summarizing healthy/total calls to the Webhook.
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if webhook is null.
    */
   public CMAWebhookHealth health(String spaceId, String webhookId) {
     assertNotNull(spaceId, "spaceId");
-    assertNotNull(webhookId, "webookId");
+    assertNotNull(webhookId, "webhookId");
 
     return service.health(spaceId, webhookId).toBlocking().first();
   }
@@ -235,6 +251,8 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
      * @param spaceId  id of the space to be used.
      * @param webhook  data to be used for creation.
      * @param callback the callback to be called once finished.
+     * @throws IllegalArgumentException if space's id is null.
+     * @throws IllegalArgumentException if webhook is null.
      */
     public CMACallback<CMAWebhook> create(final String spaceId, final CMAWebhook webhook,
                                           CMACallback<CMAWebhook> callback) {
@@ -252,6 +270,9 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
      * @param webhookId id for the webhook to be created/updated.
      * @param webhook   data to be used for creation.
      * @param callback  the callback to be called once finished.
+     * @throws IllegalArgumentException if space's id is null.
+     * @throws IllegalArgumentException if webhookId is null.
+     * @throws IllegalArgumentException if webhook is null.
      */
     public CMACallback<CMAWebhook> create(final String spaceId,
                                           final String webhookId,
@@ -270,6 +291,8 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
      * @param spaceId   id of the space to be used.
      * @param webhookId id of the webhook to be deleted.
      * @param callback  the callback to be called once finished.
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if webhookId is null.
      */
     public CMACallback<String> delete(final String spaceId, final String webhookId,
                                       CMACallback<String> callback) {
@@ -285,6 +308,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
      *
      * @param spaceId  id of the space to be used.
      * @param callback the callback to be called once finished.
+     * @throws IllegalArgumentException if spaceId is null.
      */
     public CMACallback<CMAArray<CMAWebhook>> fetchAll(final String spaceId,
                                                       CMACallback<CMAArray<CMAWebhook>> callback) {
@@ -301,6 +325,8 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
      * @param spaceId   id of the space to be used.
      * @param webhookId id of the webhook to be retrieved.
      * @param callback  the callback to be called once finished.
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if webhookId is null.
      */
     public CMACallback<CMAWebhook> fetchOne(final String spaceId, final String webhookId,
                                             CMACallback<CMAWebhook> callback) {
@@ -316,6 +342,10 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
      *
      * @param webhook  data to be used for update.
      * @param callback the callback to be called once finished.
+     * @throws IllegalArgumentException if webhook is null.
+     * @throws IllegalArgumentException if webhookId is null.
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if version is null.
      */
     public CMACallback<CMAWebhook> update(final CMAWebhook webhook,
                                           CMACallback<CMAWebhook> callback) {
@@ -332,6 +362,8 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
      * @param spaceId   id of the space to be used.
      * @param webhookId id to be used to retrieve calls from.
      * @param callback  the callback to be called once finished.
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if webhook is null.
      */
     public CMACallback<CMAArray<CMAWebhookCall>> calls(final String spaceId,
                                                        final String webhookId,
@@ -351,6 +383,9 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
      * @param webhookId id of webhook.
      * @param callId    id of call.
      * @param callback  the callback to be called once finished.
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if webhook is null.
+     * @throws IllegalArgumentException if callId is null.
      */
     public CMACallback<CMAWebhookCallDetail> callDetails(final String spaceId,
                                                          final String webhookId,
@@ -370,6 +405,8 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
      * @param spaceId   id of the space to be used.
      * @param webhookId id to be used for healthy check.
      * @param callback  the callback to be called once finished.
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if webhook is null.
      */
     public CMACallback<CMAWebhookHealth> health(final String spaceId, final String webhookId,
                                                 CMACallback<CMAWebhookHealth> callback) {

@@ -1,7 +1,8 @@
 package com.contentful.java.cma.interceptor;
 
+import com.contentful.java.cma.model.CMAHttpException;
+
 import java.io.IOException;
-import java.util.Locale;
 
 import okhttp3.Interceptor;
 import okhttp3.Request;
@@ -24,37 +25,9 @@ public class ErrorInterceptor implements Interceptor {
     final Response response = chain.proceed(request);
 
     if (!response.isSuccessful()) {
-      IOException ioException;
-      try {
-        ioException = createExceptionWithBody(request, response);
-      } catch (IOException e) {
-        ioException = createException(request, response);
-      }
-
-      throw ioException;
+      throw new CMAHttpException(request, response);
     }
+
     return response;
-  }
-
-  private IOException createExceptionWithBody(Request request, Response response)
-      throws IOException {
-    return new IOException(
-        String.format(
-            Locale.getDefault(),
-            "FAILED REQUEST: %s\n\t… %s\n\t… Body%s",
-            request.toString(),
-            response.toString(),
-            new String(response.body().bytes()))
-    );
-  }
-
-  private IOException createException(Request request, Response response) {
-    return new IOException(
-        String.format(
-            Locale.getDefault(),
-            "FAILED REQUEST: %s\n\t… %s",
-            request.toString(),
-            response.toString())
-    );
   }
 }

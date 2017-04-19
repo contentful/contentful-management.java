@@ -51,6 +51,8 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
    * @param spaceId     Space ID
    * @param contentType Content Type
    * @return {@link CMAContentType} result instance
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if contentType is null.
    */
   @SuppressWarnings("unchecked")
   public CMAContentType create(String spaceId,
@@ -59,6 +61,7 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
     assertNotNull(contentType, "contentType");
 
     final String contentTypeId = contentType.getId();
+
     final CMASystem sys = contentType.getSystem();
     contentType.setSystem(null);
 
@@ -79,6 +82,8 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
    * @param spaceId       Space ID
    * @param contentTypeId Content Type ID
    * @return String representing the result of the operation
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if contentTypeId is null.
    */
   public String delete(String spaceId, String contentTypeId) {
     assertNotNull(spaceId, "spaceId");
@@ -93,6 +98,7 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
    *
    * @param spaceId Space ID
    * @return {@link CMAArray} result instance
+   * @throws IllegalArgumentException if spaceId is null.
    */
   public CMAArray<CMAContentType> fetchAll(String spaceId) {
     return fetchAll(spaceId, new HashMap<String, String>());
@@ -104,6 +110,7 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
    * @param spaceId Space ID
    * @param query   Query to narrow down the content_types to be searched for
    * @return {@link CMAArray} result instance
+   * @throws IllegalArgumentException if spaceId is null.
    */
   public CMAArray<CMAContentType> fetchAll(String spaceId, Map<String, String> query) {
     assertNotNull(spaceId, "spaceId");
@@ -117,6 +124,8 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
    * @param spaceId       Space ID
    * @param contentTypeId Content Type ID
    * @return {@link CMAContentType} result instance
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if contentTypeId is null.
    */
   public CMAContentType fetchOne(String spaceId, String contentTypeId) {
     assertNotNull(spaceId, "spaceId");
@@ -129,11 +138,16 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
    *
    * @param contentType Content Type
    * @return {@link CMAContentType} result instance
+   * @throws IllegalArgumentException if contentType is null.
+   * @throws IllegalArgumentException if contentType's id is null.
+   * @throws IllegalArgumentException if contentType's space id is null.
    */
   public CMAContentType publish(CMAContentType contentType) {
     assertNotNull(contentType, "contentType");
-    String contentTypeId = getResourceIdOrThrow(contentType, "contentType");
-    String spaceId = getSpaceIdOrThrow(contentType, "contentType");
+
+    final String contentTypeId = getResourceIdOrThrow(contentType, "contentType");
+    final String spaceId = getSpaceIdOrThrow(contentType, "contentType");
+
     return service.publish(
         contentType.getVersion(),
         spaceId,
@@ -147,11 +161,16 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
    *
    * @param contentType Content Type
    * @return {@link CMAContentType} result instance
+   * @throws IllegalArgumentException if contentType is null.
+   * @throws IllegalArgumentException if contentType's id is null.
+   * @throws IllegalArgumentException if contentType's space id is null.
    */
   public CMAContentType unPublish(CMAContentType contentType) {
     assertNotNull(contentType, "contentType");
-    String contentTypeId = getResourceIdOrThrow(contentType, "contentType");
-    String spaceId = getSpaceIdOrThrow(contentType, "contentType");
+
+    final String contentTypeId = getResourceIdOrThrow(contentType, "contentType");
+    final String spaceId = getSpaceIdOrThrow(contentType, "contentType");
+
     return service.unPublish(spaceId, contentTypeId).toBlocking().first();
   }
 
@@ -160,14 +179,19 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
    *
    * @param contentType Content Type
    * @return {@link CMAContentType} result instance
+   * @throws IllegalArgumentException if contentType is null.
+   * @throws IllegalArgumentException if contentType's name is null.
+   * @throws IllegalArgumentException if contentType's id is null.
+   * @throws IllegalArgumentException if contentType's space id is null.
+   * @throws IllegalArgumentException if contentType's version is null.
    */
   public CMAContentType update(CMAContentType contentType) {
     assertNotNull(contentType, "contentType");
     assertNotNull(contentType.getName(), "contentType.name");
 
-    String contentTypeId = getResourceIdOrThrow(contentType, "contentType");
-    String spaceId = getSpaceIdOrThrow(contentType, "contentType");
-    Integer version = getVersionOrThrow(contentType, "update");
+    final String contentTypeId = getResourceIdOrThrow(contentType, "contentType");
+    final String spaceId = getSpaceIdOrThrow(contentType, "contentType");
+    final Integer version = getVersionOrThrow(contentType, "update");
 
     final CMASystem system = contentType.getSystem();
     contentType.setSystem(null);
@@ -205,6 +229,9 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
      * @param contentType Content Type
      * @param callback    Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if contentType is null.
+     * @throws IllegalArgumentException if contentTypeId is null.
      */
     public CMACallback<CMAContentType> create(final String spaceId,
                                               final CMAContentType contentType,
@@ -223,6 +250,8 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
      * @param contentTypeId Content Type ID
      * @param callback      Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if contentTypeId is null.
      */
     public CMACallback<String> delete(final String spaceId, final String contentTypeId,
                                       CMACallback<String> callback) {
@@ -239,6 +268,7 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
      * @param spaceId  Space ID
      * @param callback Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if spaceId is null.
      */
     public CMACallback<CMAArray<CMAContentType>> fetchAll(final String spaceId,
                                                           CMACallback<
@@ -253,6 +283,7 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
      * @param query    Query
      * @param callback Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if spaceId is null.
      */
     public CMACallback<CMAArray<CMAContentType>> fetchAll(final String spaceId,
                                                           final Map<String, String> query,
@@ -273,6 +304,8 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
      * @param contentTypeId Content Type ID
      * @param callback      Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if contentTypeId is null.
      */
     public CMACallback<CMAContentType> fetchOne(final String spaceId, final String contentTypeId,
                                                 CMACallback<CMAContentType> callback) {
@@ -289,6 +322,9 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
      * @param contentType Content Type
      * @param callback    Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if contentType is null.
+     * @throws IllegalArgumentException if contentType's id is null.
+     * @throws IllegalArgumentException if contentType's space id is null.
      */
     public CMACallback<CMAContentType> publish(final CMAContentType contentType,
                                                CMACallback<CMAContentType> callback) {
@@ -305,6 +341,9 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
      * @param contentType Content Type
      * @param callback    Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if contentType is null.
+     * @throws IllegalArgumentException if contentType's id is null.
+     * @throws IllegalArgumentException if contentType's space id is null.
      */
     public CMACallback<CMAContentType> unPublish(final CMAContentType contentType,
                                                  CMACallback<CMAContentType> callback) {
@@ -321,6 +360,11 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
      * @param contentType Content Type
      * @param callback    Callback
      * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if contentType is null.
+     * @throws IllegalArgumentException if contentType's name is null.
+     * @throws IllegalArgumentException if contentType's id is null.
+     * @throws IllegalArgumentException if contentType's space id is null.
+     * @throws IllegalArgumentException if contentType's version is null.
      */
     public CMACallback<CMAContentType> update(final CMAContentType contentType,
                                               CMACallback<CMAContentType> callback) {
