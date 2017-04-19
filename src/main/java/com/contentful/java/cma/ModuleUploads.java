@@ -66,7 +66,7 @@ public final class ModuleUploads extends AbsModule<ServiceUploads> {
    * @throws java.io.IOException      if the stream could not be read.
    */
   public CMAUpload create(String spaceId, InputStream stream) throws IOException {
-    assertNotNull(spaceId, "spaceid");
+    assertNotNull(spaceId, "spaceId");
     assertNotNull(stream, "stream");
 
     final byte[] content = readAllBytes(stream);

@@ -69,7 +69,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
    */
   public CMAWebhook create(String spaceId, CMAWebhook webhook) {
     assertNotNull(spaceId, "spaceId");
-    assertNotNull(webhook, "webook");
+    assertNotNull(webhook, "webhook");
 
     final CMASystem system = webhook.getSystem();
     webhook.setSystem(null);
@@ -95,8 +95,8 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
    */
   public CMAWebhook create(String spaceId, String webhookId, CMAWebhook webhook) {
     assertNotNull(spaceId, "spaceId");
-    assertNotNull(webhookId, "webookId");
-    assertNotNull(webhook, "webook");
+    assertNotNull(webhookId, "webhookId");
+    assertNotNull(webhook, "webhook");
 
     final CMASystem system = webhook.getSystem();
     webhook.setSystem(null);
@@ -119,7 +119,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
    */
   public String delete(String spaceId, String webhookId) {
     assertNotNull(spaceId, "spaceId");
-    assertNotNull(webhookId, "webookId");
+    assertNotNull(webhookId, "webhookId");
 
     return service.delete(spaceId, webhookId).toBlocking().first();
   }
@@ -148,7 +148,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
    */
   public CMAWebhook fetchOne(String spaceId, String webhookId) {
     assertNotNull(spaceId, "spaceId");
-    assertNotNull(webhookId, "webookId");
+    assertNotNull(webhookId, "webhookId");
 
     return service.fetchOne(spaceId, webhookId).toBlocking().first();
   }
@@ -192,7 +192,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
    */
   public CMAArray<CMAWebhookCall> calls(String spaceId, String webhookId) {
     assertNotNull(spaceId, "spaceId");
-    assertNotNull(webhookId, "webookId");
+    assertNotNull(webhookId, "webhookId");
 
     return service.calls(spaceId, webhookId).toBlocking().first();
   }
@@ -211,7 +211,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
    */
   public CMAWebhookCallDetail callDetails(String spaceId, String webhookId, String callId) {
     assertNotNull(spaceId, "spaceId");
-    assertNotNull(webhookId, "webook");
+    assertNotNull(webhookId, "webhookId");
     assertNotNull(callId, "callId");
 
     return service.callDetails(spaceId, webhookId, callId).toBlocking().first();
@@ -228,7 +228,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
    */
   public CMAWebhookHealth health(String spaceId, String webhookId) {
     assertNotNull(spaceId, "spaceId");
-    assertNotNull(webhookId, "webookId");
+    assertNotNull(webhookId, "webhookId");
 
     return service.health(spaceId, webhookId).toBlocking().first();
   }
