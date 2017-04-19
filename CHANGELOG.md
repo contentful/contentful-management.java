@@ -5,7 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Version [2.0.1][unreleased] - (in development)
 - Nothing to be announced yet.
 
-## Version [2.0.0][unreleased] - (in development)
+## Version [2.0.0] - 2017-04-19
 - New: [`Upload` module](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/uploads).
 - New: Add convenience `default call factory` method in client builder.
 - New: `Fluid interface` for getting localized fields on entries and assets.
@@ -88,8 +88,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 Initial release.
 
 [unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.0.0...HEAD
-[2.0.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-1.4.0...cma-sdk-2.0.0
-[1.4.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-1.3.0...cma-sdk-1.4.0
+[2.0.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-1.3.0...cma-sdk-2.0.0
 [1.3.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-1.2.0...cma-sdk-1.3.0
 [1.2.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-1.1.1...cma-sdk-1.2.0
 [1.1.1]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-1.1.0...cma-sdk-1.1.1
