@@ -23,7 +23,7 @@ import static com.contentful.java.cma.model.CMAType.Link;
  */
 public class EntrySerializer implements JsonSerializer<CMAEntry> {
   /**
-   * Make sure all fields are mapped in the locale->value way.
+   * Make sure all fields are mapped in the locale - value way.
    *
    * @param src     the source to be edited.
    * @param type    the type to be used.
