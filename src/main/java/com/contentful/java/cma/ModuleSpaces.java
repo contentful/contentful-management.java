@@ -358,6 +358,26 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
     }
 
     /**
+     * Fetch Locales for a Space, using a query.
+     *
+     * @param spaceId  Space ID
+     * @param query    the query to be used.
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if space's id is null.
+     */
+    public CMACallback<CMAArray<CMALocale>> fetchLocales(final String spaceId,
+                                                         final Map<String, String> query,
+                                                         CMACallback<
+                                                             CMAArray<CMALocale>> callback) {
+      return defer(new DefFunc<CMAArray<CMALocale>>() {
+        @Override CMAArray<CMALocale> method() {
+          return ModuleSpaces.this.fetchLocales(spaceId, query);
+        }
+      }, callback);
+    }
+
+    /**
      * Fetch a Space with a given {@code spaceId}.
      *
      * @param spaceId  Space ID
