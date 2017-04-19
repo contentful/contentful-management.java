@@ -168,14 +168,9 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
   public CMAWebhook update(CMAWebhook webhook) {
     assertNotNull(webhook, "webhook");
 
-    Integer version = webhook.getVersion();
-    String spaceId = webhook.getSpaceId();
-    String webhookId = webhook.getId();
-
-    assertNotNull(version, "version");
-    assertNotNull(spaceId, "spaceId");
-    assertNotNull(webhookId, "webookId");
-    assertNotNull(webhook, "webook");
+    final String webhookId = getResourceIdOrThrow(webhook, "webhook");
+    final String spaceId = getSpaceIdOrThrow(webhook, "webhook");
+    final Integer version = getVersionOrThrow(webhook, "webhook");
 
     return service.update(version, spaceId, webhookId, webhook).toBlocking().first();
   }
