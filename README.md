@@ -105,12 +105,12 @@ final CMAArray<CMASpace> array =
 
 Please note that the default `CMACallback` has an empty `onFailure()` implementation, which makes it optional to override it.
 
-If you want to see the SDK in action, please check with [our CMA documentation](docs), which offers snippets for all the relevant and supported parts, just select an endpoint and select the language java.
+If you want to see the SDK in action, please check with [our CMA documentation][docs], which offers snippets for all the relevant and supported parts, just select an endpoint and select the language java.
 
 Documentation
 =============
 
-Javadoc reference documentation is is available [here][javadoc]. If you want to get more information, please refer to [our CMA documentation](docs). In case of anything still unclear, please feel free to [open issues on this github repository](../issues)).
+[Javadoc reference documentation][4] is is available, but if you want to get more information, please refer to [our CMA documentation][docs]. In case of anything still unclear, please feel free to [open issues on this github repository](../../issues)).
 
 License
 =======
@@ -124,5 +124,4 @@ Copyright (c) 2017 Contentful GmbH. See [LICENSE.txt][5] for further details.
  [4]: https://contentful.github.io/contentful-management.java
  [5]: LICENSE.txt
  [snap]: https://oss.sonatype.org/content/repositories/snapshots/
- [javadoc]: https://contentful.github.io/contentful-management.java
- [docs]: https://www.contentful.com/developers/docs/references/content-management-api/#/reference/spaces/spaces-collection
+ [docs]: https://www.contentful.com/developers/docs/references/content-management-api/
