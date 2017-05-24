@@ -16,6 +16,8 @@
 
 package com.contentful.java.cma;
 
+//BEGIN TO LONG CODE LINES
+
 import com.contentful.java.cma.gson.EntrySerializer;
 import com.contentful.java.cma.gson.FieldTypeAdapter;
 import com.contentful.java.cma.interceptor.AuthorizationHeaderInterceptor;
@@ -49,6 +51,7 @@ import static com.contentful.java.cma.interceptor.ContentfulUserAgentHeaderInter
 import static com.contentful.java.cma.interceptor.ContentfulUserAgentHeaderInterceptor.Section.os;
 import static com.contentful.java.cma.interceptor.ContentfulUserAgentHeaderInterceptor.Section.platform;
 import static com.contentful.java.cma.interceptor.ContentfulUserAgentHeaderInterceptor.Section.sdk;
+//END TO LONG CODE LINES
 
 /**
  * The CMAClient is used to request information from the server. Contrary to the delivery

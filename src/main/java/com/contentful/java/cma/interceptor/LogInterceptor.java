@@ -11,7 +11,7 @@ import okhttp3.Response;
 /**
  * Simple interceptor to log a request and its response.
  *
- * @see <a href="https://github.com/square/okhttp/wiki/Interceptors">https://github.com/square/okhttp/wiki/Interceptors</a>
+ * @see Interceptor
  */
 public class LogInterceptor implements Interceptor {
   private final Logger logger;
