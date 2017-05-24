@@ -1,57 +1,82 @@
-/*
- * Copyright (C) 2017 Contentful GmbH
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.contentful.java.cma;
 
-import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 
+import java.lang.reflect.Field;
 import java.util.concurrent.Executor;
 
 /**
- * Platform.
+ * An platform abstraction layer singleton providing information about the underlying system.
  */
-abstract class Platform {
-  private static final Platform PLATFORM = findPlatform();
+public abstract class Platform {
+  private static Platform PLATFORM = null;
 
-  static Platform get() {
-    return PLATFORM;
+  /**
+   * @return the current platform.
+   */
+  public static Platform get() {
+    return PLATFORM == null ? PLATFORM = findPlatform() : PLATFORM;
   }
 
+  /**
+   * Return an executor for this platform.
+   *
+   * @return an executor for this platform.
+   */
+  public abstract Executor callbackExecutor();
+
+  /**
+   * How do you call this platform?
+   * <p>
+   * Valid values are "Windows", "Linux", "Mac OS" and "Android".
+   *
+   * @return a string identifying this platform by name.
+   */
+  public abstract String name();
+
+  /**
+   * Which version of the platform is executing this app?
+   *
+   * @return "1.4", "4.4", "10.1" …
+   */
+  public abstract String version();
+
+  /**
+   * @return the platform identified.
+   */
   private static Platform findPlatform() {
-    try {
-      Class.forName("android.os.Build");
-      if (Build.VERSION.SDK_INT != 0) {
-        return new Android();
-      }
-    } catch (ClassNotFoundException ignored) {
+    if (tryGettingAndroidSDKNumber() > 0) {
+      return new Android();
+    } else {
+      return new Base();
     }
-
-    return new Base();
   }
-
-  abstract Executor callbackExecutor();
 
   /**
    * Provides sane defaults for operation on the JVM.
    */
   private static class Base extends Platform {
-    @Override Executor callbackExecutor() {
+    /**
+     * @return a synchronous executor.
+     * @see SynchronousExecutor
+     */
+    @Override public Executor callbackExecutor() {
       return new SynchronousExecutor();
+    }
+
+    /**
+     * @return name of operating system.
+     */
+    @Override public String name() {
+      return System.getProperty("os.name", "");
+    }
+
+    /**
+     * @return version of operating system.
+     */
+    @Override public String version() {
+      return System.getProperty("os.version", "");
     }
   }
 
@@ -59,7 +84,10 @@ abstract class Platform {
    * Provides sane defaults for operation on Android.
    */
   private static class Android extends Platform {
-    @Override Executor callbackExecutor() {
+    /**
+     * @return a new executor.
+     */
+    @Override public Executor callbackExecutor() {
       return new Executor() {
         private final Handler handler = new Handler(Looper.getMainLooper());
 
@@ -67,6 +95,44 @@ abstract class Platform {
           handler.post(command);
         }
       };
+    }
+
+    /**
+     * @return Android, indicating that a build class was found.
+     */
+    @Override public String name() {
+      return "Android";
+    }
+
+    /**
+     * Ask the Android build classes for its version number.
+     *
+     * @return the version number of the android os, if set. Otherwise null.
+     */
+    @Override public String version() {
+      return tryGettingAndroidReleaseVersionString();
+    }
+  }
+
+  private static String tryGettingAndroidReleaseVersionString() {
+    try {
+      final Class<?> buildsVersionClass = Class.forName("android.os.Build$VERSION");
+      final Field releaseField = buildsVersionClass.getField("RELEASE");
+      return (String) releaseField.get(null);
+    } catch (Exception ignored) {
+      // if exception is thrown, ignore it and provide no version.
+      return null;
+    }
+  }
+
+  private static int tryGettingAndroidSDKNumber() {
+    try {
+      final Class<?> buildsVersionClass = Class.forName("android.os.Build$VERSION");
+      final Field versionInt = buildsVersionClass.getField("SDK_INT");
+      return (Integer) versionInt.get(null);
+    } catch (Exception ignored) {
+      // if exception is thrown, ignore it and provide no version.
+      return 0;
     }
   }
 }

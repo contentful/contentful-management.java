@@ -103,7 +103,7 @@ class ClientTests : BaseTest() {
 
         // Request
         val recordedRequest = server!!.takeRequest()
-        assertEquals(AuthorizationHeaderInterceptor.HEADER_BEARER + " token",
+        assertEquals("Bearer token",
                 recordedRequest.getHeader(AuthorizationHeaderInterceptor.HEADER_NAME))
     }
 
@@ -119,6 +119,20 @@ class ClientTests : BaseTest() {
         val recordedRequest = server!!.takeRequest()
 
         assertEquals("$prefix$versionName", recordedRequest.getHeader("User-Agent"))
+    }
+
+    @test fun testCustomUserAgentHeader() {
+        val responseBody = TestUtils.fileToString("asset_publish_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+        client!!.spaces().fetchAll()
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+
+        val actual = recordedRequest.getHeader("X-Contentful-User-Agent")
+        assertTrue(actual.contains("sdk contentful-management.java/"))
+        assertTrue(actual.contains("platform java/"))
+        assertTrue(actual.contains("os"))
     }
 
     @test(expected = IllegalArgumentException::class)

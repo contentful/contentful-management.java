@@ -1,5 +1,6 @@
 package com.contentful.java.cma.interceptor;
 
+
 import com.contentful.java.cma.model.CMAHttpException;
 
 import java.io.IOException;
