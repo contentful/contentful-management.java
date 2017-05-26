@@ -16,10 +16,16 @@
 
 package com.contentful.java.cma;
 
+//BEGIN TO LONG CODE LINES
+
 import com.contentful.java.cma.gson.EntrySerializer;
 import com.contentful.java.cma.gson.FieldTypeAdapter;
 import com.contentful.java.cma.interceptor.AuthorizationHeaderInterceptor;
 import com.contentful.java.cma.interceptor.ContentTypeInterceptor;
+import com.contentful.java.cma.interceptor.ContentfulUserAgentHeaderInterceptor;
+import com.contentful.java.cma.interceptor.ContentfulUserAgentHeaderInterceptor.Section;
+import com.contentful.java.cma.interceptor.ContentfulUserAgentHeaderInterceptor.Section.OperatingSystem;
+import com.contentful.java.cma.interceptor.ContentfulUserAgentHeaderInterceptor.Section.Version;
 import com.contentful.java.cma.interceptor.ErrorInterceptor;
 import com.contentful.java.cma.interceptor.LogInterceptor;
 import com.contentful.java.cma.interceptor.UserAgentHeaderInterceptor;
@@ -29,6 +35,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
+import java.util.Properties;
 import java.util.concurrent.Executor;
 
 import okhttp3.Call;
@@ -40,6 +47,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import static com.contentful.java.cma.Constants.DEFAULT_CONTENT_TYPE;
 import static com.contentful.java.cma.Constants.OCTET_STREAM_CONTENT_TYPE;
 import static com.contentful.java.cma.Logger.Level.NONE;
+import static com.contentful.java.cma.interceptor.ContentfulUserAgentHeaderInterceptor.Section.Version.parse;
+import static com.contentful.java.cma.interceptor.ContentfulUserAgentHeaderInterceptor.Section.os;
+import static com.contentful.java.cma.interceptor.ContentfulUserAgentHeaderInterceptor.Section.platform;
+import static com.contentful.java.cma.interceptor.ContentfulUserAgentHeaderInterceptor.Section.sdk;
+//END TO LONG CODE LINES
 
 /**
  * The CMAClient is used to request information from the server. Contrary to the delivery
@@ -194,6 +206,8 @@ public class CMAClient {
     Logger.Level logLevel = NONE;
     String coreEndpoint;
     String uploadEndpoint;
+    Section application;
+    Section integration;
     Executor callbackExecutor;
     PropertiesReader propertiesReader = new PropertiesReader();
 
@@ -321,6 +335,33 @@ public class CMAClient {
       return this;
     }
 
+
+    /**
+     * Tell the client which application this is.
+     * <p>
+     * It might be used for internal tracking of Contentfuls tools.
+     *
+     * @param name    the name of the app.
+     * @param version the version in semver of the app.
+     * @return this builder for chaining.
+     */
+    public Builder setApplication(String name, String version) {
+      this.application = Section.app(name, parse(version));
+      return this;
+    }
+
+    /**
+     * Which integration is used.
+     *
+     * @param name    name of the integration.
+     * @param version the version of the integration.
+     * @return this builder for chaining.
+     */
+    public Builder setIntegration(String name, String version) {
+      this.integration = Section.integration(name, parse(version));
+      return this;
+    }
+
     /**
      * @return a {@link CMAClient} out of this {@link Builder}.
      */
@@ -328,24 +369,61 @@ public class CMAClient {
       return new CMAClient(this);
     }
 
+    /**
+     * @return default core call factory builder, used by the sdk.
+     */
     public OkHttpClient.Builder defaultCoreCallFactoryBuilder() {
       final OkHttpClient.Builder okBuilder = new OkHttpClient.Builder()
           .addInterceptor(new AuthorizationHeaderInterceptor(accessToken))
-          .addInterceptor(new UserAgentHeaderInterceptor(getUserAgent(propertiesReader)))
+          .addInterceptor(new UserAgentHeaderInterceptor(getUserAgent()))
+          .addInterceptor(new ContentfulUserAgentHeaderInterceptor(
+              createCustomHeaderSections(application, integration))
+          )
           .addInterceptor(new ContentTypeInterceptor(DEFAULT_CONTENT_TYPE))
           .addInterceptor(new ErrorInterceptor());
 
       return setLogger(okBuilder);
     }
 
+    /**
+     * @return default update api call factory builder, used by the sdk.
+     */
     public OkHttpClient.Builder defaultUploadCallFactoryBuilder() {
       final OkHttpClient.Builder okBuilder = new OkHttpClient.Builder()
           .addInterceptor(new AuthorizationHeaderInterceptor(accessToken))
-          .addInterceptor(new UserAgentHeaderInterceptor(getUserAgent(propertiesReader)))
+          .addInterceptor(new UserAgentHeaderInterceptor(getUserAgent()))
+          .addInterceptor(new ContentfulUserAgentHeaderInterceptor(
+              createCustomHeaderSections(application, integration))
+          )
           .addInterceptor(new ContentTypeInterceptor(OCTET_STREAM_CONTENT_TYPE))
           .addInterceptor(new ErrorInterceptor());
 
       return setLogger(okBuilder);
+    }
+
+    Section[] createCustomHeaderSections(Section application, Section integration) {
+      final Properties properties = System.getProperties();
+
+      Section sdk;
+      try {
+        sdk = sdk("contentful-management.java", parse(getSDKVersionName()));
+      } catch (IOException e) {
+        sdk = sdk("contentful-management.java", new Version(0, 0, 0, "INVALID"));
+      }
+
+      return new Section[]{
+          sdk,
+          platform(
+              "java",
+              parse(properties.getProperty("java.runtime.version"))
+          ),
+          os(
+              OperatingSystem.parse(properties.getProperty("os.name")),
+              Version.parse(properties.getProperty("os.version"))
+          ),
+          application,
+          integration
+      };
     }
 
     private OkHttpClient.Builder setLogger(OkHttpClient.Builder okBuilder) {
@@ -368,16 +446,20 @@ public class CMAClient {
       return okBuilder;
     }
 
-    String getUserAgent(PropertiesReader reader) {
+    String getUserAgent() {
       if (sUserAgent == null) {
         try {
-          String versionName = reader.getField(Constants.PROP_VERSION_NAME);
+          String versionName = getSDKVersionName();
           sUserAgent = String.format("contentful-management.java/%s", versionName);
         } catch (IOException e) {
           throw new RuntimeException("Unable to retrieve version name.", e);
         }
       }
       return sUserAgent;
+    }
+
+    private String getSDKVersionName() throws IOException {
+      return propertiesReader.getField(Constants.PROP_VERSION_NAME);
     }
 
   }
