@@ -1,0 +1,16 @@
+{
+  "firstName":"Mario",
+  "lastName":"Bodemann",
+  "avatarUrl":"https://avatars.githubusercontent.com/u/1162562?v=3",
+  "email":"mario@contentful.com",
+  "activated":true,
+  "signInCount":345,
+  "confirmed":true,
+  "sys":{
+    "type":"User",
+    "id":"7uJNojWP0gbuP7Pplz7Syo",
+    "version":125,
+    "createdAt":"2015-12-15T13:09:13Z",
+    "updatedAt":"2017-05-09T20:45:13Z"
+  }
+}
