@@ -2,8 +2,8 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Version [2.0.1][unreleased] - (in development)
-- Nothing to be announced yet.
+## Version [2.1.0][unreleased] - (in development)
+- Add: Custom user agent header.
 
 ## Version [2.0.0] - 2017-04-19
 - New: [`Upload` module](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/uploads).
