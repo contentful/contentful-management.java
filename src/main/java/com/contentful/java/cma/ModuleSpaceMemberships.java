@@ -136,7 +136,7 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
    *
    * @param spaceId    the id of the space to be used.
    * @param membership the membership fetched from contentful, updated by caller, to be deleted.
-   * @return an empty string on success.
+   * @return the code of the response (200 means success).
    * @throws IllegalArgumentException if space id is null.
    * @throws IllegalArgumentException if membership id is null.
    */
@@ -171,8 +171,7 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
      */
     public CMACallback<CMAArray<CMASpaceMembership>> fetchAll(
         final String spaceId,
-        final CMACallback<CMAArray<CMASpaceMembership>> callback
-    ) {
+        final CMACallback<CMAArray<CMASpaceMembership>> callback) {
       return defer(new DefFunc<CMAArray<CMASpaceMembership>>() {
         @Override CMAArray<CMASpaceMembership> method() {
           return ModuleSpaceMemberships.this.fetchAll(spaceId);
@@ -193,8 +192,7 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
     public CMACallback<CMASpaceMembership> fetchOne(
         final String spaceId,
         final String membershipId,
-        final CMACallback<CMASpaceMembership> callback
-    ) {
+        final CMACallback<CMASpaceMembership> callback) {
       return defer(new DefFunc<CMASpaceMembership>() {
         @Override CMASpaceMembership method() {
           return ModuleSpaceMemberships.this.fetchOne(
@@ -217,8 +215,7 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
     public CMACallback<CMASpaceMembership> create(
         final String spaceId,
         final CMASpaceMembership membership,
-        final CMACallback<CMASpaceMembership> callback
-    ) {
+        final CMACallback<CMASpaceMembership> callback) {
       return defer(new DefFunc<CMASpaceMembership>() {
         @Override CMASpaceMembership method() {
           return ModuleSpaceMemberships.this.create(
@@ -246,8 +243,7 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
     public CMACallback<CMASpaceMembership> update(
         final String spaceId,
         final CMASpaceMembership membership,
-        final CMACallback<CMASpaceMembership> callback
-    ) {
+        final CMACallback<CMASpaceMembership> callback) {
       return defer(new DefFunc<CMASpaceMembership>() {
         @Override CMASpaceMembership method() {
           return ModuleSpaceMemberships.this.update(
@@ -273,8 +269,7 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
     public CMACallback<Integer> delete(
         final String spaceId,
         final CMASpaceMembership membership,
-        final CMACallback<Integer> callback
-    ) {
+        final CMACallback<Integer> callback) {
       return defer(new DefFunc<Integer>() {
         @Override Integer method() {
           return ModuleSpaceMemberships.this.delete(

@@ -14,7 +14,7 @@ import retrofit2.http.Path;
 import rx.Observable;
 
 /**
- * Service class to define the rest interface to Contentful.
+ * Service class to define the REST interface to Contentful.
  */
 public interface ServiceSpaceMemberships {
   @GET("/spaces/{spaceId}/space_memberships/")
