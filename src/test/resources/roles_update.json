@@ -1,0 +1,67 @@
+{
+  "name":"DELETE ME!!",
+  "description":"Test role",
+  "policies":[
+    {
+      "effect":"allow",
+      "actions":[
+        "read",
+        "create",
+        "update",
+        "delete",
+        "publish",
+        "unpublish",
+        "archive",
+        "unarchive"
+      ],
+      "constraint":{
+        "and":[
+          {
+            "equals":[
+              {
+                "doc":"sys.type"
+              },
+              "Entry"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "permissions":{
+    "ContentModel":[
+      "read"
+    ],
+    "Settings":[],
+    "ContentDelivery":"all"
+  },
+  "sys":{
+    "type":"Role",
+    "id":"3h44ENEEpAA9XNx52dRDs0",
+    "version":1,
+    "space":{
+      "sys":{
+        "type":"Link",
+        "linkType":"Space",
+        "id":"arqlnkt58eul"
+      }
+    },
+    "createdBy":{
+      "sys":{
+        "type":"Link",
+        "linkType":"User",
+        "id":"7uJNojWP0gbuP7Pplz7Syo"
+      }
+    },
+    "createdAt":"2017-06-01T10:10:10Z",
+    "updatedBy":{
+      "sys":{
+        "type":"Link",
+        "linkType":"User",
+        "id":"7uJNojWP0gbuP7Pplz7Syo"
+      }
+    },
+    "updatedAt":"2017-06-01T11:22:12Z"
+  }
+}
+

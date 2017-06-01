@@ -1,0 +1,39 @@
+{
+  "name":"Manage Settings Role is actually all",
+  "description":"Test role",
+  "policies":[],
+  "permissions":{
+    "ContentModel":[],
+    "Settings":"all",
+    "ContentDelivery":[]
+  },
+  "sys":{
+    "type":"Role",
+    "id":"0g3FcTwbFicqZuoaY288Qe",
+    "version":0,
+    "space":{
+      "sys":{
+        "type":"Link",
+        "linkType":"Space",
+        "id":"arqlnkt58eul"
+      }
+    },
+    "createdBy":{
+      "sys":{
+        "type":"Link",
+        "linkType":"User",
+        "id":"7uJNojWP0gbuP7Pplz7Syo"
+      }
+    },
+    "createdAt":"2017-06-01T12:23:25Z",
+    "updatedBy":{
+      "sys":{
+        "type":"Link",
+        "linkType":"User",
+        "id":"7uJNojWP0gbuP7Pplz7Syo"
+      }
+    },
+    "updatedAt":"2017-06-01T12:23:25Z"
+  }
+}
+
