@@ -12,6 +12,7 @@ public enum CMAType {
   Link,
   Locale,
   Space,
+  SpaceMembership,
   Upload,
   User,
   Webhook,

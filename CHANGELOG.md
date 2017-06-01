@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Version [2.1.0][unreleased] - (in development)
 - Add: Custom user agent header.
+- Add: [`/users/me` module](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/users).
+- Add: [SpaceMembership module](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/space-memberships).
 
 ## Version [2.0.0] - 2017-04-19
 - New: [`Upload` module](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/uploads).
