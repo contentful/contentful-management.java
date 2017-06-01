@@ -68,6 +68,7 @@ public class CMAClient {
   private final ModuleSpaces moduleSpaces;
   private final ModuleWebhooks moduleWebhooks;
   private final ModuleUsers moduleUsers;
+  private final ModuleSpaceMemberships moduleSpaceMemberships;
   private final ModuleUploads moduleUploads;
 
   // Executors
@@ -112,6 +113,7 @@ public class CMAClient {
     this.moduleSpaces = new ModuleSpaces(retrofit, callbackExecutor);
     this.moduleWebhooks = new ModuleWebhooks(retrofit, callbackExecutor);
     this.moduleUsers = new ModuleUsers(retrofit, callbackExecutor);
+    this.moduleSpaceMemberships = new ModuleSpaceMemberships(retrofit, callbackExecutor);
 
     this.moduleUploads = new ModuleUploads(uploadRetrofit, callbackExecutor);
   }
@@ -192,6 +194,13 @@ public class CMAClient {
    */
   public ModuleUsers users() {
     return moduleUsers;
+  }
+
+  /**
+   * @return the SpaceMembership module.
+   */
+  public ModuleSpaceMemberships spaceMemberships() {
+    return moduleSpaceMemberships;
   }
 
   /**
