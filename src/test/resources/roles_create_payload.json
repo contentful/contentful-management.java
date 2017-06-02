@@ -1,9 +1,7 @@
 {
-  "name": "Manage Settings Role is actually all",
+  "name": "Foo",
   "description": "Test role",
   "permissions": {
-    "Settings": [
-      "manage"
-    ]
+    "Settings": ["manage"]
   }
 }
