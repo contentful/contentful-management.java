@@ -183,4 +183,15 @@ public class CMAContentType extends CMAResource {
     return super.setSpaceId(spaceId);
   }
 
+  /**
+   * @return a human readable string, representing the object.
+   */
+  @Override public String toString() {
+    return "CMAContentType { " + super.toString() + " "
+        + "description = " + getDescription() + ", "
+        + "displayField = " + getDisplayField() + ", "
+        + "fields = " + getFields() + ", "
+        + "name = " + getName() + " "
+        + "}";
+  }
 }

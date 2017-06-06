@@ -193,4 +193,16 @@ public class CMASpaceMembership extends CMAResource {
   @Override public String getSpaceId() {
     return super.getId();
   }
+
+  /**
+   * @return a human readable string, representing the object.
+   */
+  @Override public String toString() {
+    return "CMASpaceMembership { " + super.toString() + " "
+        + "admin = " + isAdmin() + ", "
+        + "email = " + getEmail() + ", "
+        + "roles = " + getRoles() + ", "
+        + "user = " + getUser() + " "
+        + "}";
+  }
 }

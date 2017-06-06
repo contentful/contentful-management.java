@@ -54,4 +54,16 @@ public class CMAWebhookRequest {
   public String getJSONBody() {
     return body;
   }
+
+  /**
+   * @return a human readable string, representing the object.
+   */
+  @Override public String toString() {
+    return "CMAWebhookRequest { "
+        + "body = " + getJSONBody() + ", "
+        + "headers = " + getHeaders() + ", "
+        + "method = " + getMethod() + ", "
+        + "url = " + getUrl() + " "
+        + "}";
+  }
 }

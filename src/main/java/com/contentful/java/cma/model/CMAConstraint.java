@@ -33,12 +33,12 @@ public class CMAConstraint {
     }
 
     /**
-     * @return Human readable representation of this instance.
+     * @return a human readable string, representing the object.
      */
     @Override public String toString() {
-      return "Path{"
-          + "doc='" + doc + '\''
-          + '}';
+      return "Path { "
+          + "doc = " + getDoc() + " "
+          + "}";
     }
   }
 
@@ -119,10 +119,10 @@ public class CMAConstraint {
      * @return Human readable representation of this instance.
      */
     @Override public String toString() {
-      return "Equals{"
-          + "doc='" + getPath() != null ? getPath().doc : "<null>" + "\',"
-          + "value='" + getValue() + '\''
-          + '}';
+      return "Equals {"
+          + "doc = " + getPath() != null ? getPath().doc : "<null>" + ", "
+          + "value = " + getValue() + " "
+          + "}";
     }
   }
 
@@ -231,15 +231,15 @@ public class CMAConstraint {
   }
 
   /**
-   * @return Human readable representation of this instance.
+   * @return a human readable string, representing the object.
    */
   @Override public String toString() {
-    return "CMAConstraint{"
-        + "and=" + Arrays.toString(and)
-        + ", or=" + Arrays.toString(or)
-        + ", not=" + Arrays.toString(not)
-        + ", equals=" + equals
-        + ", paths=" + Arrays.toString(paths)
-        + '}';
+    return "CMAConstraint { "
+        + "and = " + Arrays.toString(getAnd()) + ", "
+        + "equals = " + getEquals() + ", "
+        + "not = " + Arrays.toString(getNot()) + ", "
+        + "or = " + Arrays.toString(getOr()) + ", "
+        + "paths = " + Arrays.toString(getPaths()) + " "
+        + "}";
   }
 }

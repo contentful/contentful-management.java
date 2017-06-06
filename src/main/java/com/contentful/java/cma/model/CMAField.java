@@ -242,4 +242,22 @@ public class CMAField {
   public boolean isLocalized() {
     return localized;
   }
+
+  /**
+   * @return a human readable string, representing the object.
+   */
+  @Override public String toString() {
+    return "CMAField { "
+        + "arrayItems = " + getArrayItems() + ", "
+        + "disabled = " + isDisabled() + ", "
+        + "id = " + getId() + ", "
+        + "linkType = " + getLinkType() + ", "
+        + "localized = " + isLocalized() + ", "
+        + "name = " + getName() + ", "
+        + "omitted = " + isOmitted() + ", "
+        + "required = " + isRequired() + ", "
+        + "type = " + getType() + ", "
+        + "validations = " + getValidations() + " "
+        + "}";
+  }
 }

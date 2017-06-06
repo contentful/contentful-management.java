@@ -69,4 +69,11 @@ public class CMALink extends CMAResource {
   @Override public CMALink setSpaceId(String spaceId) {
     return super.setSpaceId(spaceId);
   }
+
+  /**
+   * @return a human readable string, representing the object.
+   */
+  @Override public String toString() {
+    return "CMALink { " + super.toString() + " }";
+  }
 }

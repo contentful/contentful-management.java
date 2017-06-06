@@ -1,5 +1,7 @@
 package com.contentful.java.cma.model;
 
+import java.util.HashMap;
+
 /**
  * Record of all system properties a resource can have.
  * <p>
@@ -203,5 +205,46 @@ public class CMASystem {
    */
   public Integer getArchivedVersion() {
     return archivedVersion;
+  }
+
+  /**
+   * @return a human readable string, representing the object.
+   */
+  @Override public String toString() {
+    final HashMap<String, Object> map = new HashMap<String, Object>();
+
+    map.put("archivedVersion", getArchivedVersion());
+    map.put("contentType", getContentType());
+    map.put("createdAt", getCreatedAt());
+    map.put("createdBy", getCreatedBy());
+    map.put("firstPublishedAt", getFirstPublishedAt());
+    map.put("id", getId());
+    map.put("linkType", getLinkType());
+    map.put("publishedAt", getPublishedAt());
+    map.put("publishedBy", getPublishedBy());
+    map.put("publishedCounter", getPublishedCounter());
+    map.put("publishedVersion", getPublishedVersion());
+    map.put("space", getSpace());
+    map.put("type", getType());
+    map.put("updatedAt", getUpdatedAt());
+    map.put("updatedBy", getUpdatedBy());
+    map.put("version", getVersion());
+
+    final StringBuilder builder = new StringBuilder("CMASystem { ");
+    String separator = "";
+    for (final String key : map.keySet()) {
+      final Object value = map.get(key);
+      if (value != null) {
+        builder
+            .append(separator)
+            .append(key)
+            .append(" = ")
+            .append(value);
+        separator = ", ";
+      }
+    }
+
+    builder.append(" }");
+    return builder.toString();
   }
 }

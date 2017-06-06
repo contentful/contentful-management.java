@@ -72,13 +72,13 @@ public class CMAPermissions {
   }
 
   /**
-   * @return Human readable representation of this instance.
+   * @return a human readable string, representing the object.
    */
   @Override public String toString() {
-    return "CMAPermissions{"
-        + "contentModel=" + contentModel
-        + ", contentDelivery=" + contentDelivery
-        + ", settings=" + settings
-        + '}';
+    return "CMAPermissions { "
+        + "contentDelivery = " + getContentDelivery() + ", "
+        + "contentModel = " + getContentModel() + ", "
+        + "settings = " + getSettings() + " "
+        + "}";
   }
 }

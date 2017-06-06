@@ -51,7 +51,7 @@ public class CMAUser extends CMAResource {
   /**
    * @return is this user activated?
    */
-  public Boolean getActivated() {
+  public Boolean isActivated() {
     return activated;
   }
 
@@ -65,21 +65,22 @@ public class CMAUser extends CMAResource {
   /**
    * @return true if the user is confirmed, false otherwise.
    */
-  public Boolean getConfirmed() {
+  public Boolean isConfirmed() {
     return confirmed;
   }
 
   /**
-   * @return a human readable string, representing the user's information.
+   * @return a human readable string, representing the object.
    */
   @Override public String toString() {
-    return "CMAUser{"
-        + "firstName='" + firstName + '\'' + ", "
-        + "lastName='" + lastName + '\'' + ", "
-        + "avatarUrl='" + avatarUrl + '\'' + ", "
-        + "email='" + email + '\'' + ", "
-        + "activated=" + activated + ", "
-        + "signInCount=" + signInCount + ", "
-        + "confirmed=" + confirmed + '}';
+    return "CMAUser { " + super.toString() + " "
+        + "activated = " + isActivated() + ", "
+        + "avatarUrl = " + getAvatarUrl() + ", "
+        + "confirmed = " + isConfirmed() + ", "
+        + "email = " + getEmail() + ", "
+        + "firstName = " + getFirstName() + ", "
+        + "lastName = " + getLastName() + ", "
+        + "signInCount = " + getSignInCount() + " "
+        + "}";
   }
 }

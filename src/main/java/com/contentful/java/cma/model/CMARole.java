@@ -153,14 +153,14 @@ public class CMARole extends CMAResource {
   }
 
   /**
-   * @return Human readable representation of this instance.
+   * @return a human readable string, representing the object.
    */
   @Override public String toString() {
-    return "CMARole{"
-        + "name='" + name + '\''
-        + ", description='" + description + '\''
-        + ", policies=" + policies
-        + ", permissions=" + permissions
-        + "} " + super.toString();
+    return "CMARole { " + super.toString() + " "
+        + "description = " + getDescription() + ", "
+        + "name = " + getName() + ", "
+        + "permissions = " + getPermissions() + ", "
+        + "policies = " + getPolicies() + " "
+        + "}";
   }
 }

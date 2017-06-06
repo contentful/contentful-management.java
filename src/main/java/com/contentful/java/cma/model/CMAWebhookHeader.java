@@ -46,4 +46,14 @@ public class CMAWebhookHeader {
   public String getValue() {
     return value;
   }
+
+  /**
+   * @return a human readable string, representing the object.
+   */
+  @Override public String toString() {
+    return "CMAWebhookHeader { "
+        + "key = " + getKey() + ", "
+        + "value = " + getValue() + " "
+        + "}";
+  }
 }

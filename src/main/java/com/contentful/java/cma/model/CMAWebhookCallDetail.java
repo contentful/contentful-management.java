@@ -93,4 +93,20 @@ public class CMAWebhookCallDetail extends CMAResource {
   public List<String> getErrors() {
     return errors;
   }
+
+  /**
+   * @return a human readable string, representing the object.
+   */
+  @Override public String toString() {
+    return "CMAWebhookCallDetail { " + super.toString() + " "
+        + "errors = " + getErrors() + ", "
+        + "eventType = " + getEventType() + ", "
+        + "request = " + getRequest() + ", "
+        + "requestAt = " + getRequestAt() + ", "
+        + "response = " + getResponse() + ", "
+        + "responseAt = " + getResponseAt() + ", "
+        + "statusCode = " + getStatusCode() + ", "
+        + "url = " + getUrl() + " "
+        + "}";
+  }
 }

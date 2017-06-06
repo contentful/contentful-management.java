@@ -34,9 +34,9 @@ class UserTests : BaseTest() {
         assertEquals("Bodemann", result.lastName)
         assertEquals("https://avatars.githubusercontent.com/u/1162562?v=3", result.avatarUrl)
         assertEquals("mario@contentful.com", result.email)
-        assertEquals(true, result.activated)
+        assertEquals(true, result.isActivated)
         assertEquals(345, result.signInCount)
-        assertEquals(true, result.confirmed)
+        assertEquals(true, result.isConfirmed)
 
         // Request
         val recordedRequest = server!!.takeRequest()

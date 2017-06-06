@@ -182,13 +182,13 @@ public class CMAPolicy {
   }
 
   /**
-   * @return Human readable representation of this instance.
+   * @return a human readable string, representing the object.
    */
   @Override public String toString() {
-    return "CMAPolicy{"
-        + "effect='" + effect + '\''
-        + ", constraint=" + constraint
-        + ", actions=" + actions
-        + '}';
+    return "CMAPolicy { "
+        + "actions = " + getActions() + ", "
+        + "constraint = " + getConstraint() + ", "
+        + "effect = " + getEffect() + " "
+        + "}";
   }
 }

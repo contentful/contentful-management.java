@@ -28,6 +28,16 @@ public class CMAAssetFile {
       public Long getHeight() {
         return height;
       }
+
+      /**
+       * @return a human readable string, representing the object.
+       */
+      @Override public String toString() {
+        return "ImageMeta { "
+            + "height = " + getHeight() + ", "
+            + "width = " + getWidth() + " "
+            + "}";
+      }
     }
 
     Long size;
@@ -45,6 +55,16 @@ public class CMAAssetFile {
      */
     public ImageMeta getImageMeta() {
       return imageMeta;
+    }
+
+    /**
+     * @return a human readable string, representing the object.
+     */
+    @Override public String toString() {
+      return "Details { "
+          + "imageMeta = " + getImageMeta() + ", "
+          + "size = " + getSize() + " "
+          + "}";
     }
   }
 
@@ -149,5 +169,19 @@ public class CMAAssetFile {
   public CMAAssetFile setContentType(String contentType) {
     this.contentType = contentType;
     return this;
+  }
+
+  /**
+   * @return a human readable string, representing the object.
+   */
+  @Override public String toString() {
+    return "CMAAssetFile { "
+        + "contentType = " + getContentType() + ", "
+        + "details = " + getDetails() + ", "
+        + "fileName = " + getFileName() + ", "
+        + "uploadUrl = " + getUploadUrl() + ", "
+        + "uploadFrom = " + getUploadFrom() + ", "
+        + "url = " + getUrl() + " "
+        + "}";
   }
 }
