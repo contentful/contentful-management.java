@@ -20,6 +20,7 @@ import com.contentful.java.cma.lib.TestCallback
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import okhttp3.mockwebserver.MockWebServer
+import java.util.logging.LogManager
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
@@ -44,6 +45,7 @@ open class BaseTest {
                 .build()
 
         gson = CMAClient.createGson()
+        LogManager.getLogManager().reset()
     }
 
     @after fun tearDown() {
