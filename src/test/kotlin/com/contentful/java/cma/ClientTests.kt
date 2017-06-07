@@ -21,6 +21,7 @@ import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAArray
 import com.contentful.java.cma.model.CMASpace
+import com.contentful.java.cma.model.CMAUpload
 import okhttp3.mockwebserver.MockResponse
 import org.mockito.Mockito
 import rx.Observable
@@ -29,6 +30,7 @@ import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNull
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 import org.junit.Test as test
@@ -60,7 +62,7 @@ class ClientTests : BaseTest() {
         assertFalse(called)
     }
 
-    @test fun testCallbackRetrofitError() {
+    @test fun testCoreCallbackRetrofitError() {
         val badClient = CMAClient.Builder()
                 .setAccessToken("accesstoken")
                 .setCoreCallFactory { throw RuntimeException(it.url().toString(), IOException()) }
@@ -70,6 +72,29 @@ class ClientTests : BaseTest() {
         badClient.spaces().async().fetchAll(cb)
         cb.await()
         assertNotNull(cb.error)
+    }
+
+    @test(expected = RuntimeException::class)
+    fun testUploadCallbackRetrofitError() {
+        val badClient = CMAClient.Builder()
+                .setAccessToken("accesstoken")
+                .setUploadCallFactory { throw RuntimeException(it.url().toString(), IOException()) }
+                .build()
+
+        val cb = TestCallback<CMAUpload>()
+        badClient.uploads().async().fetchOne("spaceid", "uploadid", cb)
+        cb.await()
+
+        assertNotNull(cb.error)
+        throw cb.error!!
+    }
+
+    @test(expected = IllegalArgumentException::class)
+    fun testUploadCallbackWithNull() {
+        CMAClient.Builder()
+                .setAccessToken("accesstoken")
+                .setUploadCallFactory(null)
+                .build()
     }
 
     @test fun testCallbackGeneralError() {
@@ -211,5 +236,127 @@ class ClientTests : BaseTest() {
             assertEquals("Unable to retrieve version name.", e.message)
             throw e
         }
+    }
+
+    @test fun testSetBasicLogger() {
+        val responseBody = TestUtils.fileToString("space_fetch_one_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val builder = StringBuilder()
+        val client = CMAClient
+                .Builder()
+                .setAccessToken("token")
+                .setCoreEndpoint(server!!.url("/").toString())
+                .setUploadEndpoint(server!!.url("/").toString())
+                .setLogLevel(Logger.Level.BASIC)
+                .setLogger {
+                    builder.append(it)
+                }
+                .build()
+
+        val cb = TestCallback<CMASpace>()
+        client.spaces().async().fetchOne("spaceid", cb)
+
+        assertNull(cb.error)
+
+        // Request
+        server!!.takeRequest()
+        assertTrue(builder.startsWith("Sending request http://localhost:"))
+    }
+
+    @test fun testSetNoneLogger() {
+        val responseBody = TestUtils.fileToString("space_fetch_one_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val builder = StringBuilder()
+        val client = CMAClient
+                .Builder()
+                .setAccessToken("token")
+                .setCoreEndpoint(server!!.url("/").toString())
+                .setUploadEndpoint(server!!.url("/").toString())
+                .setLogLevel(Logger.Level.NONE)
+                .setLogger {
+                    builder.append(it)
+                }
+                .build()
+
+        val cb = TestCallback<CMASpace>()
+        client.spaces().async().fetchOne("spaceid", cb)
+
+        assertNull(cb.error)
+
+        // Request
+        server!!.takeRequest()
+        assertTrue(builder.isEmpty())
+    }
+
+    @test fun testSetNetworkLogger() {
+        val responseBody = TestUtils.fileToString("space_fetch_one_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val builder = StringBuilder()
+        val client = CMAClient
+                .Builder()
+                .setAccessToken("token")
+                .setCoreEndpoint(server!!.url("/").toString())
+                .setUploadEndpoint(server!!.url("/").toString())
+                .setLogLevel(Logger.Level.FULL)
+                .setLogger {
+                    builder.append(it)
+                }
+                .build()
+
+        val cb = TestCallback<CMASpace>()
+        client.spaces().async().fetchOne("spaceid", cb)
+
+        assertNull(cb.error)
+
+        // Request
+        server!!.takeRequest()
+        assertTrue(builder.contains("Accept-Encoding: gzip"))
+    }
+
+    @test fun testAddContentfulApplicationHeader() {
+        val responseBody = TestUtils.fileToString("space_fetch_one_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val client = CMAClient
+                .Builder()
+                .setAccessToken("token")
+                .setApplication("UNIT_TEST", "0.0.1-PATCH")
+                .setCoreEndpoint(server!!.url("/").toString())
+                .setUploadEndpoint(server!!.url("/").toString())
+                .build()
+
+        val cb = TestCallback<CMASpace>()
+        client.spaces().async().fetchOne("spaceid", cb)
+
+        assertNull(cb.error)
+
+        // Request
+        val customUserHeader = server!!.takeRequest().headers.get("X-Contentful-User-Agent")
+        assertTrue(customUserHeader.contains("app unit_test/0.0.1-PATCH"))
+    }
+
+    @test fun testAddContentfulIntegrationHeader() {
+        val responseBody = TestUtils.fileToString("space_fetch_one_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val client = CMAClient
+                .Builder()
+                .setAccessToken("token")
+                .setIntegration("UNIT_TEST", "0.0.1-PATCH")
+                .setCoreEndpoint(server!!.url("/").toString())
+                .setUploadEndpoint(server!!.url("/").toString())
+                .build()
+
+        val cb = TestCallback<CMASpace>()
+        client.spaces().async().fetchOne("spaceid", cb)
+
+        assertNull(cb.error)
+
+        // Request
+        val customUserHeader = server!!.takeRequest().headers.get("X-Contentful-User-Agent")
+        assertTrue(customUserHeader.contains("integration UNIT_TEST/0.0.1-PATCH"))
     }
 }

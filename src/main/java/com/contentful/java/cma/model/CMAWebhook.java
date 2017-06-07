@@ -187,8 +187,31 @@ public class CMAWebhook extends CMAResource {
 
   /**
    * @return the http basic auth user set.
+   * @see #setBasicAuthorization(String, String)
    */
   public String getUser() {
     return user;
+  }
+
+  /**
+   * @return the http basic auth password set (only valid while creating the hook on contentful).
+   * @see #setBasicAuthorization(String, String)
+   */
+  public String getPassword() {
+    return password;
+  }
+
+  /**
+   * @return a human readable string, representing the object.
+   */
+  @Override public String toString() {
+    return "CMAWebhook { " + super.toString() + " "
+        + "url = " + getUrl() + ", "
+        + "name = " + getName() + ", "
+        + "password = " + getPassword() + ", "
+        + "user = " + getUser() + ", "
+        + (topics == null ? "" : "topics = " + getTopics() + ", ")
+        + (headers == null ? "" : "headers = " + getHeaders() + " ")
+        + "}";
   }
 }

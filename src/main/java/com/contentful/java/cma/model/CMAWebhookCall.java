@@ -77,4 +77,18 @@ public class CMAWebhookCall extends CMAResource {
   public String getRequestAt() {
     return requestAt;
   }
+
+  /**
+   * @return a human readable string, representing the object.
+   */
+  @Override public String toString() {
+    return "CMAWebhookCall { " + super.toString() + " "
+        + "errors = " + getErrors() + ", "
+        + "eventType = " + getEventType() + ", "
+        + "requestAt = " + getRequestAt() + ", "
+        + "responseAt = " + getResponseAt() + ", "
+        + "statusCode = " + getStatusCode() + ", "
+        + "url = " + getUrl() + " "
+        + "}";
+  }
 }

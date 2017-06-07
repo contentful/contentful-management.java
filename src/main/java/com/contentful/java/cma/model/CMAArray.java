@@ -79,4 +79,17 @@ public class CMAArray<T extends CMAResource> extends CMAResource {
   public Map getIncludes() {
     return includes;
   }
+
+  /**
+   * @return a human readable string, representing the object.
+   */
+  @Override public String toString() {
+    return "CMAArray { " + super.toString() + " "
+        + "includes = " + getIncludes() + ", "
+        + "items = " + getItems() + ", "
+        + "limit = " + getLimit() + ", "
+        + "skip = " + getSkip() + ", "
+        + "total = " + getTotal() + " "
+        + "}";
+  }
 }

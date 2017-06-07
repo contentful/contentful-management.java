@@ -1,0 +1,7 @@
+{
+  "name": "Foo",
+  "description": "Test role",
+  "permissions": {
+    "Settings": ["manage"]
+  }
+}

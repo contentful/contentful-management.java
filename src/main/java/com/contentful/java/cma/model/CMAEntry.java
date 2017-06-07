@@ -62,6 +62,16 @@ public class CMAEntry extends CMAResource {
       CMAEntry.this.setField(key, locale, value);
       return this;
     }
+
+    /**
+     * @return a human readable string, representing the object.
+     */
+    @Override public String toString() {
+      return "Localized { "
+          + "locale = " + locale + ", "
+          + "fields = " + fields + " "
+          + "}";
+    }
   }
 
   // Map of fields
@@ -190,5 +200,14 @@ public class CMAEntry extends CMAResource {
    */
   public Localized localize(String locale) {
     return new Localized(locale);
+  }
+
+  /**
+   * @return a human readable string, representing the object.
+   */
+  @Override public String toString() {
+    return "CMAEntry { " + super.toString() + " "
+        + "fields = " + getFields() + " "
+        + "}";
   }
 }

@@ -1,0 +1,37 @@
+{
+  "name": "DELETE ME!!",
+  "description": "Test role",
+  "policies": [
+    {
+      "effect": "allow",
+      "actions": [
+        "read",
+        "create",
+        "update",
+        "delete",
+        "publish",
+        "unpublish",
+        "archive",
+        "unarchive"
+      ],
+      "constraint": {
+        "and": [
+          {
+            "equals": [
+              {
+                "doc": "sys.type"
+              },
+              "Entry"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "permissions": {
+    "ContentModel": [
+      "read"
+    ],
+    "ContentDelivery": "all"
+  }
+}

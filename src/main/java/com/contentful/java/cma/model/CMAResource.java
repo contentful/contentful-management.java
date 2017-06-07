@@ -130,4 +130,13 @@ public class CMAResource {
   public Boolean isPublished() {
     return system != null && system.getPublishedVersion() != null;
   }
+
+  /**
+   * @return a human readable string, representing the object.
+   */
+  @Override public String toString() {
+    return "CMAResource { "
+        + "system = " + getSystem() + " "
+        + "}";
+  }
 }

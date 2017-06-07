@@ -40,6 +40,16 @@ public class CMAWebhookHealth extends CMAResource {
     public Integer getHealthy() {
       return healthy;
     }
+
+    /**
+     * @return a human readable string, representing the object.
+     */
+    @Override public String toString() {
+      return "CMAWebhookHealthCall {"
+          + "healthy = " + getHealthy() + ", "
+          + "total = " + getTotal()
+          + "}";
+    }
   }
 
   CMAWebhookHealthCall calls;
@@ -56,5 +66,14 @@ public class CMAWebhookHealth extends CMAResource {
    */
   public CMAWebhookHealthCall getCalls() {
     return calls;
+  }
+
+  /**
+   * @return a human readable string, representing the object.
+   */
+  @Override public String toString() {
+    return "CMAWebhookHealth { " + super.toString() + " "
+        + "calls = " + getCalls() + " "
+        + "}";
   }
 }

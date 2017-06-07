@@ -207,6 +207,40 @@ public class CMAAsset extends CMAResource {
         Fields.this.setFile(locale, value);
         return this;
       }
+
+      /**
+       * @return a human readable string, representing the object.
+       */
+      @Override public String toString() {
+        return "Localized {"
+            + "locale = " + locale + ", "
+            + "description = " + getDescription() + ", "
+            + "file = " + getFile() + ", "
+            + "title = " + getTitle() + " "
+            + "}";
+      }
+    }
+
+    /**
+     * @param locale the locale to be used for converting.
+     * @return a human readable string, representing the object.
+     */
+    public String toString(String locale) {
+      return "CMAAsset.Fields {"
+          + "description = " + getDescription(locale) + ", "
+          + "file = " + getFile(locale) + ", "
+          + "title = " + getTitle(locale)
+          + "}";
+    }
+
+    /**
+     * For debugging, it returns only the en-US locales!
+     *
+     * @return a human readable string, representing the object.
+     * @see #toString(String)
+     */
+    @Override public String toString() {
+      return toString("en-US");
     }
   }
 
@@ -289,5 +323,14 @@ public class CMAAsset extends CMAResource {
   @SuppressWarnings("unchecked")
   @Override public CMAAsset setSpaceId(String spaceId) {
     return super.setSpaceId(spaceId);
+  }
+
+  /**
+   * @return a human readable string, representing the object.
+   */
+  @Override public String toString() {
+    return "CMAAsset {" + super.toString()
+        + "fields = " + getFields()
+        + "}";
   }
 }

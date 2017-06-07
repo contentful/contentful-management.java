@@ -54,4 +54,11 @@ public class CMAUpload extends CMAResource {
   @Override public CMAUpload setSpaceId(String spaceId) {
     return super.setSpaceId(spaceId);
   }
+
+  /**
+   * @return a human readable string, representing the object.
+   */
+  @Override public String toString() {
+    return "CMAUpload { " + super.toString() + " }";
+  }
 }

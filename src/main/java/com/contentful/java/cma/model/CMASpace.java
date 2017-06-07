@@ -122,4 +122,14 @@ public class CMASpace extends CMAResource {
     this.defaultLocale = defaultLocale;
     return this;
   }
+
+  /**
+   * @return a human readable string, representing the object.
+   */
+  @Override public String toString() {
+    return "CMASpace { " + super.toString() + " "
+        + "defaultLocale = " + getDefaultLocale() + ", "
+        + "name = " + getName() + " "
+        + "}";
+  }
 }

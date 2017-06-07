@@ -180,5 +180,18 @@ public class CMALocale extends CMAResource {
     this.isDefault = isDefault;
     return this;
   }
+
+  /**
+   * @return a human readable string, representing the object.
+   */
+  @Override public String toString() {
+    return "CMALocale { " + super.toString() + " "
+        + "code = " + getCode() + ", "
+        + "fallbackCode = " + getFallbackCode() + ", "
+        + "isDefault = " + isDefault() + ", "
+        + "name = " + getName() + ", "
+        + "optional = " + isOptional() + " "
+        + "}";
+  }
 }
 
