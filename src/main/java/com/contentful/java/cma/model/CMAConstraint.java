@@ -12,7 +12,7 @@ public class CMAConstraint {
   /**
    * Define a path to a field.
    */
-  public static class Path {
+  public static class FieldKeyPath {
     private String doc;
 
     /**
@@ -20,7 +20,7 @@ public class CMAConstraint {
      *
      * @param doc the path to the document, like "fields.name.nopenotok".
      **/
-    public Path setDoc(String doc) {
+    public FieldKeyPath setDoc(String doc) {
       this.doc = doc;
       return this;
     }
@@ -36,48 +36,48 @@ public class CMAConstraint {
      * @return a human readable string, representing the object.
      */
     @Override public String toString() {
-      return "Path { "
+      return "FieldKeyPath { "
           + "doc = " + getDoc() + " "
           + "}";
     }
   }
 
   /**
-   * Create an equals object. Used for deciding whether the path to a field containts a given value.
+   * Create an equals deciding whether the path to a field constraints a given value.
    */
   public static class Equals extends ArrayList<Object> {
     /**
      * @return which path this equals is targeting.
      */
-    public Path getPath() {
+    public FieldKeyPath getPath() {
       if (size() == 2) {
         final Object path = this.get(0);
-        if (path instanceof Path) {
-          return (Path) path;
+        if (path instanceof FieldKeyPath) {
+          return (FieldKeyPath) path;
         } else if (path instanceof Map) {
           Map mappedPath = (Map) path;
-          final Path objectivicedPath = new Path().setDoc((String) mappedPath.get("doc"));
-          setPath(objectivicedPath);
-          return objectivicedPath;
+          final FieldKeyPath objectifiedPath = new FieldKeyPath()
+              .setDoc((String) mappedPath.get("doc"));
+          setPath(objectifiedPath);
+          return objectifiedPath;
         }
-        // missing else for if type is different.
+        // missing else: fall through to return `null`, not a valid state.
       }
 
       return null;
     }
 
     /**
-     * Update the path component.
+     * Update the fieldKeyPath component.
      *
-     * @param path the new path to be applied.
+     * @param fieldKeyPath the new fieldKeyPath to be applied.
      * @return this instance for chaining
      */
-
-    public Equals setPath(Path path) {
+    public Equals setPath(FieldKeyPath fieldKeyPath) {
       if (size() == 0) {
-        add(path);
+        add(fieldKeyPath);
       } else {
-        set(0, path);
+        set(0, fieldKeyPath);
       }
       return this;
     }
@@ -130,7 +130,7 @@ public class CMAConstraint {
   private CMAConstraint[] or;
   private CMAConstraint[] not;
   private Equals equals;
-  private Path[] paths;
+  private FieldKeyPath[] fieldKeyPaths;
 
   /**
    * Which constraints have to be all satisfied?
@@ -211,22 +211,22 @@ public class CMAConstraint {
   }
 
   /**
-   * On which paths does this constraint act?
+   * On which fieldKeyPaths does this constraint act?
    *
-   * @return a array of paths to be act upon.
+   * @return a array of fieldKeyPaths to be act upon.
    */
-  public Path[] getPaths() {
-    return paths;
+  public FieldKeyPath[] getFieldKeyPaths() {
+    return fieldKeyPaths;
   }
 
   /**
-   * Set the array of paths to be used.
+   * Set the array of fieldKeyPaths to be used.
    *
-   * @param paths the new paths to be set.
+   * @param fieldKeyPaths the new fieldKeyPaths to be set.
    * @return this instance for chaining.
    */
-  public CMAConstraint setPaths(Path... paths) {
-    this.paths = paths;
+  public CMAConstraint setFieldKeyPaths(FieldKeyPath... fieldKeyPaths) {
+    this.fieldKeyPaths = fieldKeyPaths;
     return this;
   }
 
@@ -239,7 +239,7 @@ public class CMAConstraint {
         + "equals = " + getEquals() + ", "
         + "not = " + Arrays.toString(getNot()) + ", "
         + "or = " + Arrays.toString(getOr()) + ", "
-        + "paths = " + Arrays.toString(getPaths()) + " "
+        + "fieldKeyPaths = " + Arrays.toString(getFieldKeyPaths()) + " "
         + "}";
   }
 }

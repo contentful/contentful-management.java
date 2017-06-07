@@ -71,7 +71,7 @@ class ModelTests : BaseTest() {
 
     @test fun testCMAConstraintToString() {
         assertEquals("CMAConstraint { and = null, equals = null, not = null, or = null, "
-                + "paths = null }",
+                + "fieldKeyPaths = null }",
                 CMAConstraint().toString())
     }
 

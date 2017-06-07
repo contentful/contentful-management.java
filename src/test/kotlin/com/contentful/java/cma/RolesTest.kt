@@ -20,7 +20,7 @@ import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAConstraint
 import com.contentful.java.cma.model.CMAConstraint.Equals
-import com.contentful.java.cma.model.CMAConstraint.Path
+import com.contentful.java.cma.model.CMAConstraint.FieldKeyPath
 import com.contentful.java.cma.model.CMAPermissions
 import com.contentful.java.cma.model.CMAPolicy
 import com.contentful.java.cma.model.CMAPolicy.ALLOW
@@ -150,7 +150,7 @@ class RolesTest : BaseTest() {
                                                         CMAConstraint()
                                                                 .setEquals(
                                                                         Equals()
-                                                                                .setPath(Path()
+                                                                                .setPath(FieldKeyPath()
                                                                                         .setDoc("fields.foo"))
                                                                                 .setValue("something")
                                                                 )

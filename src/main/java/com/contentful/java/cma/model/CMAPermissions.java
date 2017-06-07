@@ -24,9 +24,8 @@ public class CMAPermissions {
 
   /**
    * Set the permission to change the content model.
-   * <p>
-   * Currently only a string of 'all' is allowed.
    *
+   * @param contentModel only a string of `"all"` or an array like `["manage"]` is allowed.
    * @return this instance for chaining.
    */
   public CMAPermissions setContentModel(Object contentModel) {
