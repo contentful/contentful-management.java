@@ -227,4 +227,9 @@ class ModelTests : BaseTest() {
                 + "headers = null, statusCode = null, url = null }",
                 CMAWebhookResponse().toString())
     }
+
+    @test fun testOrganizationsToString() {
+        assertEquals("CMAOrganizations { CMAResource { system = CMASystem { type = Organization } } name = foo }",
+                CMAOrganization().setName("foo").toString())
+    }
 }

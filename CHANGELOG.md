@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Add: [`/users/me` module](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/users).
 - Add: [SpaceMembership module](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/space-memberships).
 - Add: [Roles module](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/roles).
+- Add: [Organizations module](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/organizations).
 
 ## Version [2.0.0] - 2017-04-19
 - New: [`Upload` module](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/uploads).

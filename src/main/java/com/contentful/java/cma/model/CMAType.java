@@ -11,6 +11,7 @@ public enum CMAType {
   Entry,
   Link,
   Locale,
+  Organization,
   Role,
   Space,
   SpaceMembership,
