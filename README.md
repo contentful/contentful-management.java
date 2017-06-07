@@ -63,7 +63,7 @@ final CMAClient client =
         .build();
 ```
 
-The access token can easily be obtained through the [management API documentation](https://www.contentful.com/developers/documentation/content-management-api/#getting-started).
+The access token can easily be obtained through the [management API documentation](https://www.contentful.com/developers/docs/references/authentication/#getting-a-personal-access-token).
 
 A client can perform various operations on different types of resources (Assets, Content Types, Entries, Spaces, etc). Every type of resource is represented by a module in the `CMAClient` class, for example:
 
