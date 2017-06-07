@@ -65,6 +65,7 @@ public class CMAClient {
   private final ModuleAssets moduleAssets;
   private final ModuleContentTypes moduleContentTypes;
   private final ModuleEntries moduleEntries;
+  private final ModuleOrganizations moduleOrganizations;
   private final ModuleRoles moduleRoles;
   private final ModuleSpaceMemberships moduleSpaceMemberships;
   private final ModuleSpaces moduleSpaces;
@@ -111,6 +112,7 @@ public class CMAClient {
     this.moduleAssets = new ModuleAssets(retrofit, callbackExecutor);
     this.moduleContentTypes = new ModuleContentTypes(retrofit, callbackExecutor);
     this.moduleEntries = new ModuleEntries(retrofit, callbackExecutor);
+    this.moduleOrganizations = new ModuleOrganizations(retrofit, callbackExecutor);
     this.moduleRoles = new ModuleRoles(retrofit, callbackExecutor);
     this.moduleSpaces = new ModuleSpaces(retrofit, callbackExecutor);
     this.moduleWebhooks = new ModuleWebhooks(retrofit, callbackExecutor);
@@ -175,6 +177,13 @@ public class CMAClient {
    */
   public ModuleEntries entries() {
     return moduleEntries;
+  }
+
+  /**
+   * @return the Organizations module.
+   */
+  public ModuleOrganizations organizations() {
+    return moduleOrganizations;
   }
 
   /**

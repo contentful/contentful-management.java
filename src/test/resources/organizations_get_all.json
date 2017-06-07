@@ -1,0 +1,51 @@
+{
+  "total":4,
+  "limit":25,
+  "skip":0,
+  "sys":{
+    "type":"Array"
+  },
+  "items":[
+    {
+      "name":"Contentful",
+      "sys":{
+        "type":"Organization",
+        "id":"781CC83AZAPo72ADSs1BR1",
+        "version":3,
+        "createdAt":"2013-05-06T07:53:34Z",
+        "updatedAt":"2016-06-28T08:58:32Z"
+      }
+    },
+    {
+      "name":"Space Templates",
+      "sys":{
+        "type":"Organization",
+        "id":"781CC83AZAPo72ADSs1BR2",
+        "version":22,
+        "createdAt":"2015-01-07T16:26:56Z",
+        "updatedAt":"2016-06-28T08:58:37Z"
+      }
+    },
+    {
+      "name":"Marios Org",
+      "sys":{
+        "type":"Organization",
+        "id":"781CC83AZAPo72ADSs1BR3",
+        "version":4,
+        "createdAt":"2015-12-15T13:09:13Z",
+        "updatedAt":"2016-01-27T17:17:30Z"
+      }
+    },
+    {
+      "name":"Contentful-SDK-Tests",
+      "sys":{
+        "type":"Organization",
+        "id":"781CC83AZAPo72ADSs1BR4",
+        "version":0,
+        "createdAt":"2017-04-19T08:59:40Z",
+        "updatedAt":"2017-04-19T08:59:40Z"
+      }
+    }
+  ]
+}
+

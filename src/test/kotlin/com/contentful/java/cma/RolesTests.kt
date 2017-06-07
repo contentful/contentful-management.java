@@ -32,7 +32,7 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import org.junit.Test as test
 
-class RolesTest : BaseTest() {
+class RolesTests : BaseTest() {
     @test fun testFetchOne() {
         val responseBody = TestUtils.fileToString("roles_get_one.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))

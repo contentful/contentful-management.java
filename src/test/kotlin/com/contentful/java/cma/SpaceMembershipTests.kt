@@ -24,7 +24,7 @@ import okhttp3.mockwebserver.MockResponse
 import kotlin.test.assertEquals
 import org.junit.Test as test
 
-class SpaceMembershipTest : BaseTest() {
+class SpaceMembershipTests : BaseTest() {
     @test fun testFetchAll() {
         val responseBody = TestUtils.fileToString("space_memberships_fetch_all.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
