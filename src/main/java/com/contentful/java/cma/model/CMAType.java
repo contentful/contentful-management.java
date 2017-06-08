@@ -5,6 +5,7 @@ package com.contentful.java.cma.model;
  * set to null.
  */
 public enum CMAType {
+  ApiKey,
   Array,
   Asset,
   ContentType,
