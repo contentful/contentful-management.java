@@ -62,6 +62,7 @@ public class CMAClient {
   private static Gson gson;
 
   // Modules
+  private final ModuleApiKeys moduleApiKeys;
   private final ModuleAssets moduleAssets;
   private final ModuleContentTypes moduleContentTypes;
   private final ModuleEntries moduleEntries;
@@ -109,6 +110,7 @@ public class CMAClient {
     Retrofit uploadRetrofit = retrofitBuilder.build();
 
     // Modules
+    this.moduleApiKeys = new ModuleApiKeys(retrofit, callbackExecutor);
     this.moduleAssets = new ModuleAssets(retrofit, callbackExecutor);
     this.moduleContentTypes = new ModuleContentTypes(retrofit, callbackExecutor);
     this.moduleEntries = new ModuleEntries(retrofit, callbackExecutor);
@@ -156,6 +158,13 @@ public class CMAClient {
     }
 
     return gson;
+  }
+
+  /**
+   * @return the api keys module.
+   */
+  public ModuleApiKeys apiKeys() {
+    return moduleApiKeys;
   }
 
   /**

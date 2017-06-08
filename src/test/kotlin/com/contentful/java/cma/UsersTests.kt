@@ -22,9 +22,9 @@ import okhttp3.mockwebserver.MockResponse
 import kotlin.test.assertEquals
 import org.junit.Test as test
 
-class UserTests : BaseTest() {
+class UsersTests : BaseTest() {
     @test fun testFetchMe() {
-        val responseBody = TestUtils.fileToString("user_fetch_me.json")
+        val responseBody = TestUtils.fileToString("users_get_me.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val result = assertTestCallback(client!!.users().async()
@@ -35,7 +35,7 @@ class UserTests : BaseTest() {
         assertEquals("https://avatars.githubusercontent.com/u/1162562?v=3", result.avatarUrl)
         assertEquals("mario@contentful.com", result.email)
         assertEquals(true, result.isActivated)
-        assertEquals(345, result.signInCount)
+        assertEquals(68, result.signInCount)
         assertEquals(true, result.isConfirmed)
 
         // Request

@@ -1,0 +1,47 @@
+{
+  "name":"Test",
+  "description":"Some Description",
+  "accessToken":"<token>",
+  "policies":[
+    {
+      "effect":"allow",
+      "actions":"all"
+    }
+  ],
+  "sys":{
+    "type":"ApiKey",
+    "id":"3iaYyIZdC1YyXaAmvm1oRE",
+    "version":0,
+    "space":{
+      "sys":{
+        "type":"Link",
+        "linkType":"Space",
+        "id":"arqlnkt58eul"
+      }
+    },
+    "createdBy":{
+      "sys":{
+        "type":"Link",
+        "linkType":"User",
+        "id":"7uJNojWP0gbuP7Pplz7Syo"
+      }
+    },
+    "createdAt":"2017-06-07T14:13:37Z",
+    "updatedBy":{
+      "sys":{
+        "type":"Link",
+        "linkType":"User",
+        "id":"7uJNojWP0gbuP7Pplz7Syo"
+      }
+    },
+    "updatedAt":"2017-06-07T14:13:37Z"
+  },
+  "preview_api_key":{
+    "sys":{
+      "type":"Link",
+      "linkType":"PreviewApiKey",
+      "id":"3ic3lbeOZIffgpNvgKJ0Ym"
+    }
+  }
+}
+

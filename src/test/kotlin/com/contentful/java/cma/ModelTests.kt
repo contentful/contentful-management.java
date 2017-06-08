@@ -229,7 +229,14 @@ class ModelTests : BaseTest() {
     }
 
     @test fun testOrganizationsToString() {
-        assertEquals("CMAOrganizations { CMAResource { system = CMASystem { type = Organization } } name = foo }",
+        assertEquals("CMAOrganizations { CMAResource { system = CMASystem { "
+                + "type = Organization } } name = foo }",
                 CMAOrganization().setName("foo").toString())
+    }
+
+    @test fun testApiKeyToString() {
+        assertEquals("CMAApiKey { CMAResource { system = CMASystem { type = ApiKey } } "
+                + "accessToken = null, description = bar, name = foo, previewApiKey = null }",
+                CMAApiKey().setName("foo").setDescription("bar").toString())
     }
 }
