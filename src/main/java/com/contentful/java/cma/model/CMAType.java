@@ -13,6 +13,7 @@ public enum CMAType {
   Link,
   Locale,
   Organization,
+  PersonalAccessToken,
   Role,
   Space,
   SpaceMembership,

@@ -1,0 +1,38 @@
+{
+  "total": 2,
+  "limit": 25,
+  "skip": 0,
+  "sys": {
+    "type": "Array"
+  },
+  "items": [
+    {
+      "name": "Test Token",
+      "revokedAt": null,
+      "sys": {
+        "type": "PersonalAccessToken",
+        "id": "7inecgCPc1wuNefg1o1lem",
+        "createdAt": "2017-06-26T11:45:55Z",
+        "updatedAt": "2017-06-26T11:45:55Z"
+      },
+      "scopes": [
+        "content_management_manage"
+      ]
+    },
+    {
+      "name": "Test Token",
+      "revokedAt": null,
+      "sys": {
+        "type": "PersonalAccessToken",
+        "id": "4AHhB3m4tzdOFylCh1SlcG",
+        "createdAt": "2017-06-26T11:50:35Z",
+        "updatedAt": "2017-06-26T11:50:35Z"
+      },
+      "scopes": [
+        "content_management_manage",
+        "content_management_read"
+      ]
+    }
+  ]
+}
+
