@@ -65,6 +65,7 @@ public class CMAClient {
   private final ModuleApiKeys moduleApiKeys;
   private final ModuleAssets moduleAssets;
   private final ModuleContentTypes moduleContentTypes;
+  private final ModuleEditorInterfaces moduleEditorInterfaces;
   private final ModuleEntries moduleEntries;
   private final ModuleOrganizations moduleOrganizations;
   private final ModulePersonalAccessTokens modulePersonalAccessTokens;
@@ -114,6 +115,7 @@ public class CMAClient {
     this.moduleApiKeys = new ModuleApiKeys(retrofit, callbackExecutor);
     this.moduleAssets = new ModuleAssets(retrofit, callbackExecutor);
     this.moduleContentTypes = new ModuleContentTypes(retrofit, callbackExecutor);
+    this.moduleEditorInterfaces = new ModuleEditorInterfaces(retrofit, callbackExecutor);
     this.moduleEntries = new ModuleEntries(retrofit, callbackExecutor);
     this.moduleOrganizations = new ModuleOrganizations(retrofit, callbackExecutor);
     this.modulePersonalAccessTokens = new ModulePersonalAccessTokens(retrofit, callbackExecutor);
@@ -181,6 +183,13 @@ public class CMAClient {
    */
   public ModuleContentTypes contentTypes() {
     return moduleContentTypes;
+  }
+
+  /**
+   * @return the Editor Interface module.
+   */
+  public ModuleEditorInterfaces editorInterfaces() {
+    return moduleEditorInterfaces;
   }
 
   /**

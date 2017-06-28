@@ -1,0 +1,82 @@
+{
+  "controls": [
+    {
+      "fieldId": "name",
+      "widgetId": "singleLine"
+    },
+    {
+      "fieldId": "media",
+      "widgetId": "assetLinkEditor"
+    },
+    {
+      "fieldId": "link",
+      "widgetId": "entryLinkEditor"
+    },
+    {
+      "fieldId": "fields",
+      "widgetId": "listInput"
+    },
+    {
+      "fieldId": "sys",
+      "widgetId": "listInput"
+    },
+    {
+      "fieldId": "date",
+      "widgetId": "datePicker",
+      "settings": {
+        "format": "timeZ",
+        "ampm": "24"
+      }
+    },
+    {
+      "fieldId": "location",
+      "widgetId": "locationEditor"
+    },
+    {
+      "fieldId": "slug",
+      "widgetId": "singleLine"
+    },
+    {
+      "fieldId": "custom",
+      "widgetId": "custom_ui_extension",
+      "settings": {
+        "helpText": "Help!"
+      }
+    }
+  ],
+  "sys": {
+    "id": "default",
+    "type": "EditorInterface",
+    "version": 150,
+    "createdAt": "2016-08-30T12:52:59.554Z",
+    "createdBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "7uJNojWP0gbuP7Pplz7Syo"
+      }
+    },
+    "space": {
+      "sys": {
+        "type": "Link",
+        "linkType": "Space",
+        "id": "arqlnkt58eul"
+      }
+    },
+    "contentType": {
+      "sys": {
+        "type": "Link",
+        "linkType": "ContentType",
+        "id": "deleteme"
+      }
+    },
+    "updatedAt": "2017-06-28T09:21:14.710Z",
+    "updatedBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "7uJNojWP0gbuP7Pplz7Syo"
+      }
+    }
+  }
+}

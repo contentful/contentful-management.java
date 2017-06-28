@@ -9,6 +9,7 @@ public enum CMAType {
   Array,
   Asset,
   ContentType,
+  EditorInterface,
   Entry,
   Link,
   Locale,
