@@ -114,8 +114,7 @@ public class CMAPersonalAccessToken extends CMAResource {
     return "CMAPersonalAccessToken { " + super.toString() + " "
         + "name = " + getName() + ", "
         + "revokedAt = " + getRevokedAt() + ", "
-        + "scopes = " + getScopes() + ", "
-        + "token = " + getToken() + " "
+        + "scopes = " + getScopes() + " "
         + "}";
   }
 }
