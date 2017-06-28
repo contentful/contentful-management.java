@@ -1,0 +1,12 @@
+{
+  "name":"Test Token",
+  "revokedAt":null,
+  "sys":{
+    "type":"PersonalAccessToken",
+    "id":"04HUtX5O7XsNFdKX7BrJvo",
+    "createdAt":"2017-06-27T08:46:17Z",
+    "updatedAt":"2017-06-27T08:46:17Z"
+  },
+  "scopes":["content_management_read"],
+  "token":"CFPAT-TOKEN"
+}

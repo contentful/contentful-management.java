@@ -67,6 +67,7 @@ public class CMAClient {
   private final ModuleContentTypes moduleContentTypes;
   private final ModuleEntries moduleEntries;
   private final ModuleOrganizations moduleOrganizations;
+  private final ModulePersonalAccessTokens modulePersonalAccessTokens;
   private final ModuleRoles moduleRoles;
   private final ModuleSpaceMemberships moduleSpaceMemberships;
   private final ModuleSpaces moduleSpaces;
@@ -115,6 +116,7 @@ public class CMAClient {
     this.moduleContentTypes = new ModuleContentTypes(retrofit, callbackExecutor);
     this.moduleEntries = new ModuleEntries(retrofit, callbackExecutor);
     this.moduleOrganizations = new ModuleOrganizations(retrofit, callbackExecutor);
+    this.modulePersonalAccessTokens = new ModulePersonalAccessTokens(retrofit, callbackExecutor);
     this.moduleRoles = new ModuleRoles(retrofit, callbackExecutor);
     this.moduleSpaces = new ModuleSpaces(retrofit, callbackExecutor);
     this.moduleWebhooks = new ModuleWebhooks(retrofit, callbackExecutor);
@@ -193,6 +195,13 @@ public class CMAClient {
    */
   public ModuleOrganizations organizations() {
     return moduleOrganizations;
+  }
+
+  /**
+   * @return the Personal Access Token module.
+   */
+  public ModulePersonalAccessTokens personalAccessTokens() {
+    return modulePersonalAccessTokens;
   }
 
   /**

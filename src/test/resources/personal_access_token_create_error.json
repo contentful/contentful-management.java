@@ -1,0 +1,9 @@
+{
+  "requestId": "631c49efc019fb403306e5c49b99133b",
+  "message": "Provided scopes for the personal access token are invalid",
+  "sys": {
+    "type": "Error",
+    "id": "PersonalAccessTokenInvalidScopes"
+  }
+}
+

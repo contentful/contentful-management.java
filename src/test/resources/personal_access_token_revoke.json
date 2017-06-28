@@ -1,0 +1,14 @@
+{
+  "name": "Test Token",
+  "revokedAt": "2017-06-26T12:01:04Z",
+  "sys": {
+    "type": "PersonalAccessToken",
+    "id": "0LYG3uP7KihkEwsRsYijTo",
+    "createdAt": "2017-06-26T11:54:14Z",
+    "updatedAt": "2017-06-26T11:54:14Z"
+  },
+  "scopes": [
+    "content_management_read"
+  ]
+}
+
