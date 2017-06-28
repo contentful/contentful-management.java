@@ -1,0 +1,51 @@
+{
+  "controls": [
+    {
+      "fieldId": "name",
+      "widgetId": "singleLine"
+    },
+    {
+      "fieldId": "media",
+      "widgetId": "assetLinkEditor"
+    },
+    {
+      "fieldId": "link",
+      "widgetId": "entryLinkEditor"
+    },
+    {
+      "fieldId": "fields",
+      "widgetId": "listInput"
+    },
+    {
+      "fieldId": "sys",
+      "widgetId": "listInput"
+    },
+    {
+      "fieldId": "date",
+      "widgetId": "datePicker",
+      "settings": {
+        "format": "timeZ",
+        "ampm": "24"
+      }
+    },
+    {
+      "fieldId": "location",
+      "widgetId": "locationEditor"
+    },
+    {
+      "fieldId": "not_existing",
+      "widgetId": "locationEditor"
+    },
+    {
+      "fieldId": "slug",
+      "widgetId": "singleLine"
+    },
+    {
+      "fieldId": "custom",
+      "widgetId": "custom_ui_extension",
+      "settings": {
+        "helpText": "Help!"
+      }
+    }
+  ]
+}
