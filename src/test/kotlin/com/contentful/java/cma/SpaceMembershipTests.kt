@@ -93,14 +93,17 @@ class SpaceMembershipTests : BaseTest() {
         val responseBody = TestUtils.fileToString("space_memberships_update.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
+        // DO NOT USE THIS IN PRODUCTION: FETCH TO UPDATE FIRST!
+
         val membership = CMASpaceMembership()
+                .setSpaceId("SPACE_ID")
                 .setEmail("👸@contentful.com")
                 .setIsAdmin(false)
                 .setVersion(123)
                 .setId("sampleid")
 
         val result = assertTestCallback(client!!.spaceMemberships().async()
-                .update("SPACE_ID", membership, TestCallback()) as TestCallback)!!
+                .update(membership, TestCallback()) as TestCallback)!!
 
         assertEquals(false, result.isAdmin)
         assertEquals("sampleid", result.id)
@@ -129,11 +132,12 @@ class SpaceMembershipTests : BaseTest() {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val membership = CMASpaceMembership()
+                .setSpaceId("SPACE_ID")
                 .setEmail("luigi")
                 .setIsAdmin(false)
 
         assertTestCallback(client!!.spaceMemberships().async()
-                .update("SPACE_ID", membership, TestCallback()) as TestCallback)!!
+                .update(membership, TestCallback()) as TestCallback)!!
     }
 
     @test(expected = IllegalArgumentException::class)
@@ -158,13 +162,14 @@ class SpaceMembershipTests : BaseTest() {
 
         val membership = CMASpaceMembership()
                 .setId("sampleid")
+                .setSpaceId("SPACE_ID")
                 .setEmail("luigi@contentful.com")
                 .setIsAdmin(false)
                 .setVersion(3)
                 .setRoles(CMALink())
 
         val result = assertTestCallback(client!!.spaceMemberships().async()
-                .update("SPACE_ID", membership, TestCallback()) as TestCallback)!!
+                .update(membership, TestCallback()) as TestCallback)!!
 
         assertEquals(false, result.isAdmin)
         assertEquals("sampleid", result.id)
