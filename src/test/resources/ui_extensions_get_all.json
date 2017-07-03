@@ -1,0 +1,261 @@
+{
+  "sys": {
+    "type": "Array"
+  },
+  "total": 6,
+  "skip": 0,
+  "limit": 0,
+  "items": [
+    {
+      "extension": {
+        "srcdoc": "<!doctype html><html lang='en'><head><meta charset='UTF-8'/><title>Sample Editor Extension</title><link rel='stylesheet' href='https://contentful.github.io/ui-extensions-sdk/cf-extension.css'><script src='https://contentful.github.io/ui-extensions-sdk/cf-extension-api.js'></script></head><body><div id='content'></div><script>window.contentfulExtension.init(function (extension) {window.alert(extension);var value = extension.field.getValue();extension.field.setValue('Hello world!');extension.field.onValueChanged(function(value) {if (value !== currentValue) {extension.field.setValue('Hello world!');}});});</script></body></html>",
+        "name": "My awesome extension by srcDoc",
+        "fieldTypes": [
+          {
+            "type": "Symbol"
+          },
+          {
+            "type": "Text"
+          }
+        ],
+        "sidebar": false
+      },
+      "sys": {
+        "id": "2ZJduY1pKEma6G8Y2ImqYU",
+        "type": "Extension",
+        "version": 1,
+        "createdAt": "2017-06-29T11:04:33.874Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "7uJNojWP0gbuP7Pplz7Syo"
+          }
+        },
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "arqlnkt58eul"
+          }
+        },
+        "updatedAt": "2017-06-29T11:04:33.874Z",
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "7uJNojWP0gbuP7Pplz7Syo"
+          }
+        }
+      }
+    },
+    {
+      "extension": {
+        "srcdoc": "<!doctype html> <html lang='en'> <head> <meta charset='UTF-8'/> <title>Sample Editor Extension<itle> <link rel='stylesheet' href='https://contentful.github.io/ui-extensions-sdk/cf-extension.css'> <script src='https://contentful.github.io/ui-extensions-sdk/cf-extension-api.js'></script> </head> <body> <div id='content'></div> <script> window.contentfulExtension.init(function (extension) { var value = extension.field.getValue() extension.field.setValue('Hello world!')extension.field.onValueChanged(function(value) { if (value !== currentValue) { extension.field.setValue('Hello world!') } }) }) </script> </body> </html>",
+        "name": "My awesome extension by srcDoc",
+        "fieldTypes": [
+          {
+            "type": "Symbol"
+          },
+          {
+            "type": "Text"
+          }
+        ],
+        "sidebar": false
+      },
+      "sys": {
+        "id": "3MdkEVBQvmAo4qU8egwyM8",
+        "type": "Extension",
+        "version": 1,
+        "createdAt": "2017-06-29T10:12:07.835Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "7uJNojWP0gbuP7Pplz7Syo"
+          }
+        },
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "arqlnkt58eul"
+          }
+        },
+        "updatedAt": "2017-06-29T10:12:07.835Z",
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "7uJNojWP0gbuP7Pplz7Syo"
+          }
+        }
+      }
+    },
+    {
+      "extension": {
+        "srcdoc": "<!doctype html> <html lang='en'> <head> <meta charset='UTF-8'/> <title>Sample Editor Extension<itle> <link rel='stylesheet' href='https://contentful.github.io/ui-extensions-sdk/cf-extension.css'> <script src='https://contentful.github.io/ui-extensions-sdk/cf-extension-api.js'></script> </head> <body> <div id='content'></div> <script> window.contentfulExtension.init(function (extension) { var value = extension.field.getValue() extension.field.setValue('Hello world!')extension.field.onValueChanged(function(value) { if (value !== currentValue) { extension.field.setValue('Hello world!') } }) }) </script> </body> </html>",
+        "name": "My awesome extension by srcDoc",
+        "fieldTypes": [
+          {
+            "type": "Symbol"
+          },
+          {
+            "type": "Text"
+          }
+        ],
+        "sidebar": false
+      },
+      "sys": {
+        "id": "4dBWHpKhao8AuYAMcosSyw",
+        "type": "Extension",
+        "version": 1,
+        "createdAt": "2017-06-29T10:07:47.689Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "7uJNojWP0gbuP7Pplz7Syo"
+          }
+        },
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "arqlnkt58eul"
+          }
+        },
+        "updatedAt": "2017-06-29T10:07:47.690Z",
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "7uJNojWP0gbuP7Pplz7Syo"
+          }
+        }
+      }
+    },
+    {
+      "extension": {
+        "src": "http://localhost:3000/",
+        "name": "Hello World Editor",
+        "fieldTypes": [
+          {
+            "type": "Text"
+          }
+        ]
+      },
+      "sys": {
+        "id": "hello-world",
+        "type": "Extension",
+        "version": 3,
+        "createdAt": "2017-06-29T09:35:33.707Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "7uJNojWP0gbuP7Pplz7Syo"
+          }
+        },
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "arqlnkt58eul"
+          }
+        },
+        "updatedAt": "2017-06-29T09:51:02.179Z",
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "7uJNojWP0gbuP7Pplz7Syo"
+          }
+        }
+      }
+    },
+    {
+      "extension": {
+        "src": "https://example.com/my",
+        "name": "My awesome extension",
+        "fieldTypes": [
+          {
+            "type": "Symbol"
+          },
+          {
+            "type": "Text"
+          }
+        ],
+        "sidebar": false
+      },
+      "sys": {
+        "id": "n0KKahl78cWGay6cEAoeq",
+        "type": "Extension",
+        "version": 1,
+        "createdAt": "2017-06-29T10:05:52.592Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "7uJNojWP0gbuP7Pplz7Syo"
+          }
+        },
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "arqlnkt58eul"
+          }
+        },
+        "updatedAt": "2017-06-29T10:05:52.592Z",
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "7uJNojWP0gbuP7Pplz7Syo"
+          }
+        }
+      }
+    },
+    {
+      "extension": {
+        "src": "https://mariobodemann.github.io/contentful-extensions-3d-model-viewer/index.html",
+        "name": "3D Model Viewer",
+        "fieldTypes": [
+          {
+            "type": "Link",
+            "linkType": "Asset"
+          }
+        ]
+      },
+      "sys": {
+        "id": "threed-model-viewer",
+        "type": "Extension",
+        "version": 5,
+        "createdAt": "2016-07-29T10:16:24.730Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "7uJNojWP0gbuP7Pplz7Syo"
+          }
+        },
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "arqlnkt58eul"
+          }
+        },
+        "updatedAt": "2016-07-29T10:19:38.653Z",
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "7uJNojWP0gbuP7Pplz7Syo"
+          }
+        }
+      }
+    }
+  ]
+}
