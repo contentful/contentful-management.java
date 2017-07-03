@@ -67,7 +67,7 @@ public final class ModuleEditorInterfaces extends AbsModule<ServiceEditorInterfa
       throw new IllegalArgumentException("ContentType of editor interface may not be null!");
     }
     if (editor.getSystem().getContentType().getId() == null) {
-      throw new IllegalArgumentException("Id of ContentType of editor interface  may not be null!");
+      throw new IllegalArgumentException("Id of ContentType of editor interface may not be null!");
     }
     final String contentTypeId = editor.getSystem().getContentType().getId();
     final Integer version = getVersionOrThrow(editor, "update");
