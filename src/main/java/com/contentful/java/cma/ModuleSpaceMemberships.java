@@ -103,7 +103,6 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
    * Please make sure that the instance provided is fetched from Contentful. Otherwise you will
    * get an exception thrown.
    *
-   * @param spaceId    the id of the space to be used.
    * @param membership the membership fetched from contentful, updated by caller, to be updated.
    * @return the updated membership.
    * @throws IllegalArgumentException if space id is null.
@@ -111,11 +110,11 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
    * @throws IllegalArgumentException if membership id is null.
    * @throws IllegalArgumentException if membership does not have a version attached.
    */
-  public CMASpaceMembership update(String spaceId, CMASpaceMembership membership) {
-    assertNotNull(spaceId, "spaceId");
+  public CMASpaceMembership update(CMASpaceMembership membership) {
     assertNotNull(membership, "membership");
 
     final String id = getResourceIdOrThrow(membership, "membership");
+    final String spaceId = getSpaceIdOrThrow(membership, "membership");
     final Integer version = getVersionOrThrow(membership, "update");
 
     final CMASystem sys = membership.getSystem();
@@ -231,23 +230,21 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
      * Please make sure that the instance provided is fetched from Contentful. Otherwise you will
      * get an exception thrown.
      *
-     * @param spaceId    the id of the space to be used.
      * @param membership the membership fetched from contentful, updated by caller, to be updated.
      * @return the updated membership callback.
      * @throws IllegalArgumentException if space id is null.
      * @throws IllegalArgumentException if membership is null.
      * @throws IllegalArgumentException if membership id is null.
      * @throws IllegalArgumentException if membership does not have a version attached.
-     * @see ModuleSpaceMemberships#update(String, CMASpaceMembership)
+     * @see ModuleSpaceMemberships#update(CMASpaceMembership)
      */
     public CMACallback<CMASpaceMembership> update(
-        final String spaceId,
         final CMASpaceMembership membership,
         final CMACallback<CMASpaceMembership> callback) {
       return defer(new DefFunc<CMASpaceMembership>() {
         @Override CMASpaceMembership method() {
           return ModuleSpaceMemberships.this.update(
-              spaceId, membership
+              membership
           );
         }
       }, callback);

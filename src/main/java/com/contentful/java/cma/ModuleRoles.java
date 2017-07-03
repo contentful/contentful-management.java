@@ -103,19 +103,18 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
    * Please make sure that the instance provided is fetched from Contentful. Otherwise you will
    * get an exception thrown.
    *
-   * @param spaceId the id of the space to be used.
-   * @param role    the role fetched from contentful, updated by caller, to be updated.
+   * @param role the role fetched from contentful, updated by caller, to be updated.
    * @return the updated role.
    * @throws IllegalArgumentException if space id is null.
    * @throws IllegalArgumentException if role is null.
    * @throws IllegalArgumentException if role id is null.
    * @throws IllegalArgumentException if role does not have a version attached.
    */
-  public CMARole update(String spaceId, CMARole role) {
-    assertNotNull(spaceId, "spaceId");
+  public CMARole update(CMARole role) {
     assertNotNull(role, "role");
 
     final String id = getResourceIdOrThrow(role, "role");
+    final String spaceId = getSpaceIdOrThrow(role, "role");
     final Integer version = getVersionOrThrow(role, "update");
 
     final CMASystem sys = role.getSystem();
@@ -234,7 +233,6 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
      * Please make sure that the instance provided is fetched from Contentful. Otherwise you will
      * get an exception thrown.
      *
-     * @param spaceId  the id of the space to be used.
      * @param role     the role fetched from contentful, updated by caller, to be updated.
      * @param callback a callback to be called, once the results are present.
      * @return the updated role callback.
@@ -242,16 +240,15 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
      * @throws IllegalArgumentException if role is null.
      * @throws IllegalArgumentException if role id is null.
      * @throws IllegalArgumentException if role does not have a version attached.
-     * @see ModuleRoles#update(String, CMARole)
+     * @see ModuleRoles#update(CMARole)
      */
     public CMACallback<CMARole> update(
-        final String spaceId,
         final CMARole role,
         final CMACallback<CMARole> callback) {
       return defer(new DefFunc<CMARole>() {
         @Override CMARole method() {
           return ModuleRoles.this.update(
-              spaceId, role
+              role
           );
         }
       }, callback);
