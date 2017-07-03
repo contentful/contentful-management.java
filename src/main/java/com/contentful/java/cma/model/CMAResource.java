@@ -59,8 +59,8 @@ public class CMAResource {
   /**
    * Sets the ID for this CMAResource.
    *
-   * @param id to be set
-   * @return this {@code CMAResource} instance
+   * @param id to be set.
+   * @return this {@code CMAResource} instance.
    */
   @SuppressWarnings("unchecked")
   public <T extends CMAResource> T setId(String id) {
