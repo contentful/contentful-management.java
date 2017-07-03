@@ -181,17 +181,7 @@ public class CMASpaceMembership extends CMAResource {
    */
   @SuppressWarnings("unchecked") @Override
   public CMASpaceMembership setSpaceId(String id) {
-    return super.setId(id);
-  }
-
-  /**
-   * This method returns the actual id of this space.
-   *
-   * @return the id of this space
-   * @see #getId()
-   */
-  @Override public String getSpaceId() {
-    return super.getId();
+    return super.setSpaceId(id);
   }
 
   /**

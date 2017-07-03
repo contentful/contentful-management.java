@@ -199,7 +199,7 @@ public class CMAEditorInterface extends CMAResource {
    * <p>
    * You cannot create and upload new editor interfaces to Contentful. Please consider updating
    * an existing one by fetching it first and then using
-   * {@link ModuleEditorInterfaces#update(String, String, CMAEditorInterface)} on it.
+   * {@link ModuleEditorInterfaces#update(CMAEditorInterface)} on it.
    */
   public CMAEditorInterface() {
     super(CMAType.EditorInterface);

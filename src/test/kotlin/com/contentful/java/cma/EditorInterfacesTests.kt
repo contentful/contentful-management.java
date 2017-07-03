@@ -20,6 +20,9 @@ import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAEditorInterface
 import com.contentful.java.cma.model.CMAEditorInterface.Control
+import com.contentful.java.cma.model.CMALink
+import com.contentful.java.cma.model.CMASystem
+import com.contentful.java.cma.model.CMAType
 import okhttp3.mockwebserver.MockResponse
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -49,7 +52,25 @@ class EditorInterfacesTests : BaseTest() {
         val responseBody = TestUtils.fileToString("editor_interfaces_update.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
+        // ALWAYS DO AN UPDATE ON FETCHED entries. THIS IS JUST FOR TESTING!
+
         val payload = CMAEditorInterface()
+
+        payload
+                .setSystem<CMAEditorInterface>(
+                        CMASystem()
+                                .setContentType(
+                                        CMALink(
+                                                CMAType.ContentType
+                                        )
+                                                .setId("contentTypeId")
+                                )
+                )
+
+
+        payload
+                .setSpaceId<CMAEditorInterface>("spaceId")
+                .setVersion<CMAEditorInterface>(1243)
                 .addControl(
                         Control()
                                 .setFieldId("name")
@@ -102,7 +123,7 @@ class EditorInterfacesTests : BaseTest() {
         assertEditorInterface(payload)
 
         val result = assertTestCallback(client!!.editorInterfaces().async()
-                .update("spaceId", "contentTypeId", payload, TestCallback()) as TestCallback)!!
+                .update(payload, TestCallback()) as TestCallback)!!
 
         assertEditorInterface(result)
 

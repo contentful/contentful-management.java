@@ -74,6 +74,7 @@ public class CMAClient {
   private final ModuleSpaces moduleSpaces;
   private final ModuleUsers moduleUsers;
   private final ModuleWebhooks moduleWebhooks;
+  private final ModuleUiExtensions moduleUiExtensions;
   private final ModuleUploads moduleUploads;
 
   // Executors
@@ -120,10 +121,11 @@ public class CMAClient {
     this.moduleOrganizations = new ModuleOrganizations(retrofit, callbackExecutor);
     this.modulePersonalAccessTokens = new ModulePersonalAccessTokens(retrofit, callbackExecutor);
     this.moduleRoles = new ModuleRoles(retrofit, callbackExecutor);
-    this.moduleSpaces = new ModuleSpaces(retrofit, callbackExecutor);
-    this.moduleWebhooks = new ModuleWebhooks(retrofit, callbackExecutor);
-    this.moduleUsers = new ModuleUsers(retrofit, callbackExecutor);
     this.moduleSpaceMemberships = new ModuleSpaceMemberships(retrofit, callbackExecutor);
+    this.moduleSpaces = new ModuleSpaces(retrofit, callbackExecutor);
+    this.moduleUiExtensions = new ModuleUiExtensions(retrofit, callbackExecutor);
+    this.moduleUsers = new ModuleUsers(retrofit, callbackExecutor);
+    this.moduleWebhooks = new ModuleWebhooks(retrofit, callbackExecutor);
 
     this.moduleUploads = new ModuleUploads(uploadRetrofit, callbackExecutor);
   }
@@ -239,6 +241,13 @@ public class CMAClient {
    */
   public ModuleUsers users() {
     return moduleUsers;
+  }
+
+  /**
+   * @return the Users module.
+   */
+  public ModuleUiExtensions uiExtensions() {
+    return moduleUiExtensions;
   }
 
   /**

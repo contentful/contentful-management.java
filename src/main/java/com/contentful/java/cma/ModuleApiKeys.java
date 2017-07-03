@@ -43,8 +43,10 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
    * Fetch all delivery api keys.
    *
    * @return a list of delivery api keys.
+   * @throws IllegalArgumentException if spaceId is null.
    */
   public CMAArray<CMAApiKey> fetchAll(String spaceId) {
+    assertNotNull(spaceId, "spaceId");
     return service.fetchAll(spaceId).toBlocking().first();
   }
 
@@ -52,8 +54,13 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
    * Fetch only one delivery api key.
    *
    * @return one delivery api key.
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if keyId is null.
    */
   public CMAApiKey fetchOne(String spaceId, String keyId) {
+    assertNotNull(spaceId, "entry");
+    assertNotNull(keyId, "keyId");
+
     return service.fetchOne(spaceId, keyId).toBlocking().first();
   }
 
@@ -61,8 +68,13 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
    * Create a new delivery api key.
    *
    * @return the just created key, containing the delivery token.
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if key is null.
    */
   public CMAApiKey create(String spaceId, CMAApiKey key) {
+    assertNotNull(spaceId, "spaceId");
+    assertNotNull(key, "key");
+
     return service.create(spaceId, key).toBlocking().first();
   }
 
@@ -81,6 +93,7 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
      * Fetch all delivery api keys.
      *
      * @return the callback to be informed about success or failure.
+     * @throws IllegalArgumentException if spaceId is null.
      */
     public CMACallback<CMAArray<CMAApiKey>> fetchAll(final String spaceId,
                                                      CMACallback<CMAArray<CMAApiKey>> callback) {
@@ -95,6 +108,8 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
      * Fetch only one delivery api key.
      *
      * @return the callback to be informed about success or failure.
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if keyId is null.
      */
     public CMACallback<CMAApiKey> fetchOne(final String spaceId,
                                            final String keyId,
@@ -110,6 +125,8 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
      * Create a new delivery api key.
      *
      * @return the callback to be informed about success or failure.
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if key is null.
      */
     public CMACallback<CMAApiKey> create(final String spaceId,
                                          final CMAApiKey key,

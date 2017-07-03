@@ -1,0 +1,43 @@
+{
+  "extension": {
+    "src": "http://example.com/my",
+    "name": "My awesome extension by srcUrl",
+    "fieldTypes": [
+      {
+        "type": "Symbol"
+      },
+      {
+        "type": "Text"
+      }
+    ],
+    "sidebar": false
+  },
+  "sys": {
+    "id": "2ZJduY1pKEma6G8Y2ImqYU",
+    "type": "Extension",
+    "version": 1,
+    "createdAt": "2017-06-29T11:04:33.874Z",
+    "createdBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "7uJNojWP0gbuP7Pplz7Syo"
+      }
+    },
+    "space": {
+      "sys": {
+        "type": "Link",
+        "linkType": "Space",
+        "id": "arqlnkt58eul"
+      }
+    },
+    "updatedAt": "2017-06-29T11:04:33.874Z",
+    "updatedBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "7uJNojWP0gbuP7Pplz7Syo"
+      }
+    }
+  }
+}

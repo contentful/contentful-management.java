@@ -1,0 +1,15 @@
+{
+  "extension": {
+    "src": "https://example.com/my",
+    "name": "My awesome extension",
+    "fieldTypes": [
+      {
+        "type": "Symbol"
+      },
+      {
+        "type": "Text"
+      }
+    ],
+    "sidebar": false
+  }
+}

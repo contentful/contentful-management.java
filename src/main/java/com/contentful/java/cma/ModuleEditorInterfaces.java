@@ -18,6 +18,7 @@ package com.contentful.java.cma;
 
 import com.contentful.java.cma.RxExtensions.DefFunc;
 import com.contentful.java.cma.model.CMAEditorInterface;
+import com.contentful.java.cma.model.CMASystem;
 
 import java.util.concurrent.Executor;
 
@@ -55,12 +56,30 @@ public final class ModuleEditorInterfaces extends AbsModule<ServiceEditorInterfa
    * Update an editor interface.
    *
    * @return the updated editor interface.
+   * @throws IllegalArgumentException if editors spaceId is null.
+   * @throws IllegalArgumentException if editors contentType is null.
+   * @throws IllegalArgumentException if editors contentTypeId is null.
+   * @throws IllegalArgumentException if editors version is not set.
    */
-  public CMAEditorInterface update(String spaceId,
-                                   String contentTypeId,
-                                   CMAEditorInterface editor) {
-    final Integer version = editor.getVersion();
-    return service.update(spaceId, contentTypeId, editor, version).toBlocking().first();
+  public CMAEditorInterface update(CMAEditorInterface editor) {
+    final String spaceId = getSpaceIdOrThrow(editor, "editor");
+    if (editor.getSystem().getContentType() == null) {
+      throw new IllegalArgumentException("ContentType of editor interface may not be null!");
+    }
+    if (editor.getSystem().getContentType().getId() == null) {
+      throw new IllegalArgumentException("Id of ContentType of editor interface may not be null!");
+    }
+    final String contentTypeId = editor.getSystem().getContentType().getId();
+    final Integer version = getVersionOrThrow(editor, "update");
+
+    CMASystem old = editor.getSystem();
+    editor.setSystem(null);
+
+    try {
+      return service.update(spaceId, contentTypeId, editor, version).toBlocking().first();
+    } finally {
+      editor.setSystem(old);
+    }
   }
 
   /**
@@ -94,15 +113,16 @@ public final class ModuleEditorInterfaces extends AbsModule<ServiceEditorInterfa
      * Update the given editor interface.
      *
      * @return the callback to be informed about success or failure.
+     * @throws IllegalArgumentException if editors spaceId is null.
+     * @throws IllegalArgumentException if editors contentTypeId is null.
+     * @throws IllegalArgumentException if editors version is not set.
      */
     public CMACallback<CMAEditorInterface> update(
-        final String spaceId,
-        final String contentTypeId,
         final CMAEditorInterface editor,
         CMACallback<CMAEditorInterface> callback) {
       return defer(new DefFunc<CMAEditorInterface>() {
         @Override CMAEditorInterface method() {
-          return ModuleEditorInterfaces.this.update(spaceId, contentTypeId, editor);
+          return ModuleEditorInterfaces.this.update(editor);
         }
       }, callback);
     }

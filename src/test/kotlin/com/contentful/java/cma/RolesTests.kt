@@ -128,8 +128,11 @@ class RolesTests : BaseTest() {
         val responseBody = TestUtils.fileToString("roles_update.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
+        // DO NOT USE IN PRODUCTION: USE A FETCH FIRST!
+
         val role = CMARole()
                 .setId("sampleId")
+                .setSpaceId("SPACE_ID")
                 .setVersion(3)
                 .setName("DELETE ME!!")
                 .setDescription("Test role")
@@ -164,7 +167,7 @@ class RolesTests : BaseTest() {
                 )
 
         val result = assertTestCallback(client!!.roles().async()
-                .update("SPACE_ID", role, TestCallback()) as TestCallback)!!
+                .update(role, TestCallback()) as TestCallback)!!
 
         assertEquals("3h44ENEEpAA9XNx52dRDs0", result.id)
         assertEquals("DELETE ME!!", result.name)

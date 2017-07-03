@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Add: [Organizations module](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/organizations).
 - Add: [Api Keys module](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/api-keys).
 - Add: [Editor Interfaces](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/editor-interface).
+- Add: [UI Extensions](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/ui-extensions).
 
 ## Version [2.0.0] - 2017-04-19
 - New: [`Upload` module](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/uploads).
