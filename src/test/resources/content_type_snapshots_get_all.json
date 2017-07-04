@@ -1,0 +1,325 @@
+{
+  "sys": {
+    "type": "Array"
+  },
+  "items": [
+    {
+      "sys": {
+        "type": "Snapshot",
+        "snapshotType": "publish",
+        "snapshotEntityType": "ContentType",
+        "id": "2fBAIYLYAgJcG0VRwg1MO7",
+        "createdAt": "2017-06-29T11:32:22.055Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "7uJNojWP0gbuP7Pplz7Syo"
+          }
+        },
+        "updatedAt": "2017-06-29T11:32:22.055Z",
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "7uJNojWP0gbuP7Pplz7Syo"
+          }
+        },
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "arqlnkt58eul"
+          }
+        }
+      },
+      "snapshot": {
+        "name": "DELETEME",
+        "fields": [
+          {
+            "id": "name",
+            "name": "name",
+            "type": "Symbol",
+            "localized": true,
+            "required": true,
+            "validations": [
+              {
+                "size": {
+                  "min": 3,
+                  "max": 1024345678965432300
+                },
+                "message": "Please do specify more then 3 characters!"
+              }
+            ],
+            "disabled": false,
+            "omitted": false
+          },
+          {
+            "name": "media",
+            "id": "media",
+            "type": "Link",
+            "linkType": "Asset",
+            "validations": []
+          },
+          {
+            "name": "link",
+            "id": "link",
+            "type": "Link",
+            "linkType": "Entry",
+            "validations": [
+              {
+                "linkContentType": [
+                  "deleteme"
+                ],
+                "message": "This is a custom error message!"
+              }
+            ]
+          },
+          {
+            "name": "fields",
+            "id": "fields",
+            "type": "Array",
+            "items": {
+              "type": "Symbol",
+              "validations": []
+            },
+            "validations": []
+          },
+          {
+            "name": "sys",
+            "id": "sys",
+            "type": "Array",
+            "items": {
+              "type": "Symbol",
+              "validations": []
+            },
+            "validations": []
+          },
+          {
+            "name": "date",
+            "id": "date",
+            "type": "Date",
+            "validations": []
+          },
+          {
+            "name": "location",
+            "id": "location",
+            "type": "Location"
+          },
+          {
+            "name": "slug",
+            "id": "slug",
+            "type": "Symbol",
+            "required": false,
+            "validations": [
+              {
+                "unique": true
+              }
+            ]
+          }
+        ],
+        "sys": {
+          "id": "deleteme",
+          "type": "ContentType",
+          "createdAt": "2016-08-30T12:52:58.823Z",
+          "createdBy": {
+            "sys": {
+              "type": "Link",
+              "linkType": "User",
+              "id": "7uJNojWP0gbuP7Pplz7Syo"
+            }
+          },
+          "space": {
+            "sys": {
+              "type": "Link",
+              "linkType": "Space",
+              "id": "arqlnkt58eul"
+            }
+          },
+          "version": 152,
+          "updatedAt": "2017-06-29T11:32:21.932Z",
+          "updatedBy": {
+            "sys": {
+              "type": "Link",
+              "linkType": "User",
+              "id": "7uJNojWP0gbuP7Pplz7Syo"
+            }
+          },
+          "firstPublishedAt": "2016-08-30T12:52:59.115Z",
+          "publishedCounter": 76,
+          "publishedAt": "2017-06-29T11:32:21.932Z",
+          "publishedBy": {
+            "sys": {
+              "type": "Link",
+              "linkType": "User",
+              "id": "7uJNojWP0gbuP7Pplz7Syo"
+            }
+          },
+          "publishedVersion": 151
+        },
+        "description": "Type for checking stuff.",
+        "displayField": "name"
+      }
+    },
+    {
+      "sys": {
+        "type": "Snapshot",
+        "snapshotType": "publish",
+        "snapshotEntityType": "ContentType",
+        "id": "3tw2v8jkplbxShNl9zGVMk",
+        "createdAt": "2017-06-29T11:30:40.219Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "7uJNojWP0gbuP7Pplz7Syo"
+          }
+        },
+        "updatedAt": "2017-06-29T11:30:40.219Z",
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "7uJNojWP0gbuP7Pplz7Syo"
+          }
+        },
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "arqlnkt58eul"
+          }
+        }
+      },
+      "snapshot": {
+        "name": "DELETEME",
+        "fields": [
+          {
+            "id": "name",
+            "name": "name",
+            "type": "Symbol",
+            "localized": true,
+            "required": true,
+            "validations": [
+              {
+                "size": {
+                  "min": 3,
+                  "max": 1024345678965432300
+                },
+                "message": "Please do specify more then 3 characters!"
+              }
+            ],
+            "disabled": false,
+            "omitted": false
+          },
+          {
+            "name": "media",
+            "id": "media",
+            "type": "Link",
+            "linkType": "Asset",
+            "validations": []
+          },
+          {
+            "name": "link",
+            "id": "link",
+            "type": "Link",
+            "linkType": "Entry",
+            "validations": [
+              {
+                "linkContentType": [
+                  "deleteme"
+                ],
+                "message": "This is a custom error message!"
+              }
+            ]
+          },
+          {
+            "name": "fields",
+            "id": "fields",
+            "type": "Array",
+            "items": {
+              "type": "Symbol",
+              "validations": []
+            },
+            "validations": []
+          },
+          {
+            "name": "sys",
+            "id": "sys",
+            "type": "Array",
+            "items": {
+              "type": "Symbol",
+              "validations": []
+            },
+            "validations": []
+          },
+          {
+            "name": "date",
+            "id": "date",
+            "type": "Date",
+            "validations": []
+          },
+          {
+            "name": "location",
+            "id": "location",
+            "type": "Location"
+          },
+          {
+            "name": "slug",
+            "id": "slug",
+            "type": "Symbol",
+            "required": false,
+            "validations": [
+              {
+                "unique": true
+              }
+            ]
+          }
+        ],
+        "sys": {
+          "id": "deleteme",
+          "type": "ContentType",
+          "createdAt": "2016-08-30T12:52:58.823Z",
+          "createdBy": {
+            "sys": {
+              "type": "Link",
+              "linkType": "User",
+              "id": "7uJNojWP0gbuP7Pplz7Syo"
+            }
+          },
+          "space": {
+            "sys": {
+              "type": "Link",
+              "linkType": "Space",
+              "id": "arqlnkt58eul"
+            }
+          },
+          "version": 150,
+          "updatedAt": "2017-06-29T11:30:40.061Z",
+          "updatedBy": {
+            "sys": {
+              "type": "Link",
+              "linkType": "User",
+              "id": "7uJNojWP0gbuP7Pplz7Syo"
+            }
+          },
+          "firstPublishedAt": "2016-08-30T12:52:59.115Z",
+          "publishedCounter": 75,
+          "publishedAt": "2017-06-29T11:30:40.061Z",
+          "publishedBy": {
+            "sys": {
+              "type": "Link",
+              "linkType": "User",
+              "id": "7uJNojWP0gbuP7Pplz7Syo"
+            }
+          },
+          "publishedVersion": 149
+        },
+        "description": "Type for checking stuff.",
+        "displayField": "name"
+      }
+    }
+  ],
+  "skip": 0,
+  "limit": 100
+}

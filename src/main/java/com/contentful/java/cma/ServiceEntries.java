@@ -18,6 +18,7 @@ package com.contentful.java.cma;
 
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAEntry;
+import com.contentful.java.cma.model.CMASnapshot;
 
 import java.util.Map;
 
@@ -64,10 +65,21 @@ interface ServiceEntries {
       @Path("space") String spaceId,
       @Path("entry") String entryId);
 
+  @GET("/spaces/{spaceId}/entries/{entryId}/snapshots/{snapshotId}")
+  Observable<CMASnapshot> fetchOneSnapshot(
+      @Path("spaceId") String spaceId,
+      @Path("entryId") String entryId,
+      @Path("snapshotId") String snapshotId);
+
   @GET("/spaces/{space}/entries")
   Observable<CMAArray<CMAEntry>> fetchAll(
       @Path("space") String spaceId,
       @QueryMap Map<String, String> query);
+
+  @GET("/spaces/{spaceId}/entries/{entryId}/snapshots")
+  Observable<CMAArray<CMASnapshot>> fetchAllSnapshots(
+      @Path("spaceId") String spaceId,
+      @Path("entryId") String entryId);
 
   @PUT("/spaces/{space}/entries/{entry}/published")
   Observable<CMAEntry> publish(
