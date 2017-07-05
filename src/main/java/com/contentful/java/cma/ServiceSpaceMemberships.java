@@ -20,7 +20,7 @@ import rx.Observable;
  * Service class to define the REST interface to Contentful.
  */
 public interface ServiceSpaceMemberships {
-  @GET("/spaces/{spaceId}/space_memberships/")
+  @GET("/spaces/{spaceId}/space_memberships")
   Observable<CMAArray<CMASpaceMembership>> fetchAll(@Path("spaceId") String spaceId);
 
   @GET("/spaces/{spaceId}/space_memberships")
@@ -35,7 +35,7 @@ public interface ServiceSpaceMemberships {
       @Path("membershipId") String membershipId
   );
 
-  @POST("/spaces/{spaceId}/space_memberships/")
+  @POST("/spaces/{spaceId}/space_memberships")
   Observable<CMASpaceMembership> create(
       @Path("spaceId") String spaceId,
       @Body CMASpaceMembership membership

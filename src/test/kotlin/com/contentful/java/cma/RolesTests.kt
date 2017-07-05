@@ -96,7 +96,7 @@ class RolesTests : BaseTest() {
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("GET", recordedRequest.method)
-        assertEquals("/spaces/SPACE_ID/roles/", recordedRequest.path)
+        assertEquals("/spaces/SPACE_ID/roles", recordedRequest.path)
     }
 
     @test fun testFetchAllWithQuery() {

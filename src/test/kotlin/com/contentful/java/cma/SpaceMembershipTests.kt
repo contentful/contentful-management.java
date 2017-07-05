@@ -45,7 +45,7 @@ class SpaceMembershipTests : BaseTest() {
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("GET", recordedRequest.method)
-        assertEquals("/spaces/SPACE_ID/space_memberships/", recordedRequest.path)
+        assertEquals("/spaces/SPACE_ID/space_memberships", recordedRequest.path)
     }
 
     @test fun testFetchAllWithQuery() {
@@ -102,7 +102,7 @@ class SpaceMembershipTests : BaseTest() {
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("POST", recordedRequest.method)
-        assertEquals("/spaces/SPACE_ID/space_memberships/", recordedRequest.path)
+        assertEquals("/spaces/SPACE_ID/space_memberships", recordedRequest.path)
     }
 
     @test fun testUpdate() {
