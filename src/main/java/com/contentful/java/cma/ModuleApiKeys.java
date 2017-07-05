@@ -43,6 +43,7 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
   /**
    * Fetch all delivery api keys.
    *
+   * @param spaceId the id of the space to host the api keys.
    * @return a list of delivery api keys.
    * @throws IllegalArgumentException if spaceId is null.
    */

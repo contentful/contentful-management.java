@@ -77,7 +77,7 @@ public final class ModuleOrganizations extends AbsModule<ServiceOrganizations> {
     /**
      * Fetch all organizations accessible.
      *
-     * @return {@link CMAOrganization} result instance
+     * @return {@link CMAOrganization} result callback.
      */
     public CMACallback<CMAArray<CMAOrganization>> fetchAll(
         CMACallback<CMAArray<CMAOrganization>> callback) {

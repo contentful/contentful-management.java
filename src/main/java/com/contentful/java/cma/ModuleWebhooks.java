@@ -200,9 +200,9 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
    * @param spaceId   The id of the space hosting the webhook
    * @param webhookId The id of the webhook to be asked for more detail.
    * @return A detailed object for the given webhook.
-   * @see CMAWebhookCall
    * @throws IllegalArgumentException if spaceId is null.
    * @throws IllegalArgumentException if webhook is null.
+   * @see CMAWebhookCall
    */
   public CMAArray<CMAWebhookCall> calls(String spaceId, String webhookId) {
     assertNotNull(spaceId, "spaceId");
