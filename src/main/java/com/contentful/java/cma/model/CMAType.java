@@ -18,6 +18,7 @@ public enum CMAType {
   Organization,
   PersonalAccessToken,
   Role,
+  Snapshot,
   Space,
   SpaceMembership,
   Upload,

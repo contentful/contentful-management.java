@@ -1,0 +1,116 @@
+{
+  "sys": {
+    "type": "Snapshot",
+    "snapshotType": "publish",
+    "snapshotEntityType": "Entry",
+    "id": "3v5AOdklBfe7preLva5OeZ",
+    "createdAt": "2017-04-25T09:13:31.601Z",
+    "createdBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "7uJNojWP0gbuP7Pplz7Syo"
+      }
+    },
+    "updatedAt": "2017-04-25T09:13:31.601Z",
+    "updatedBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "7uJNojWP0gbuP7Pplz7Syo"
+      }
+    },
+    "space": {
+      "sys": {
+        "type": "Link",
+        "linkType": "Space",
+        "id": "arqlnkt58eul"
+      }
+    }
+  },
+  "snapshot": {
+    "fields": {
+      "name": {
+        "en-US": "A new entry",
+        "no-No": "Should not work!",
+        "blafoo": "That should also not work!"
+      },
+      "media": {
+        "en-US": {
+          "sys": {
+            "id": "2rz0d827SsUuUS40cEQcke",
+            "linkType": "Asset",
+            "type": "Link"
+          }
+        }
+      },
+      "link": {
+        "en-US": {
+          "sys": {
+            "id": "del_000000000000000000000000000000000000000000000000000000000000",
+            "linkType": "Entry",
+            "type": "Link"
+          }
+        }
+      },
+      "fields": {
+        "en-US": [
+          "as",
+          "df"
+        ]
+      },
+      "sys": {
+        "en-US": [
+          "tl",
+          "dr"
+        ]
+      }
+    },
+    "sys": {
+      "id": "34MftYTFmoOoKCqM48wcc8",
+      "type": "Entry",
+      "createdAt": "2017-04-24T10:42:08.851Z",
+      "createdBy": {
+        "sys": {
+          "type": "Link",
+          "linkType": "User",
+          "id": "7uJNojWP0gbuP7Pplz7Syo"
+        }
+      },
+      "space": {
+        "sys": {
+          "type": "Link",
+          "linkType": "Space",
+          "id": "arqlnkt58eul"
+        }
+      },
+      "contentType": {
+        "sys": {
+          "type": "Link",
+          "linkType": "ContentType",
+          "id": "deleteme"
+        }
+      },
+      "version": 49,
+      "updatedAt": "2017-04-25T09:13:31.586Z",
+      "updatedBy": {
+        "sys": {
+          "type": "Link",
+          "linkType": "User",
+          "id": "7uJNojWP0gbuP7Pplz7Syo"
+        }
+      },
+      "firstPublishedAt": "2017-04-24T10:42:51.814Z",
+      "publishedCounter": 2,
+      "publishedAt": "2017-04-25T09:13:31.586Z",
+      "publishedBy": {
+        "sys": {
+          "type": "Link",
+          "linkType": "User",
+          "id": "7uJNojWP0gbuP7Pplz7Syo"
+        }
+      },
+      "publishedVersion": 48
+    }
+  }
+}

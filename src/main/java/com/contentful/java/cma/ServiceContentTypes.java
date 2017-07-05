@@ -18,6 +18,7 @@ package com.contentful.java.cma;
 
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAContentType;
+import com.contentful.java.cma.model.CMASnapshot;
 
 import java.util.Map;
 
@@ -56,10 +57,21 @@ interface ServiceContentTypes {
       @Path("space") String spaceId,
       @QueryMap Map<String, String> query);
 
+  @GET("/spaces/{spaceId}/content_types/{contentTypeId}/snapshots")
+  Observable<CMAArray<CMASnapshot>> fetchAllSnapshots(
+      @Path("spaceId") String spaceId,
+      @Path("contentTypeId") String contentTypeId);
+
   @GET("/spaces/{space}/content_types/{content_type}")
   Observable<CMAContentType> fetchOne(
       @Path("space") String spaceId,
       @Path("content_type") String contentTypeId);
+
+  @GET("/spaces/{spaceId}/content_types/{contentTypeId}/snapshots/{snapshotId}")
+  Observable<CMASnapshot> fetchOneSnapshot(
+      @Path("spaceId") String spaceId,
+      @Path("contentTypeId") String contentTypeId,
+      @Path("snapshotId") String snapshotId);
 
   @PUT("/spaces/{space}/content_types/{content_type}/published")
   Observable<CMAContentType> publish(

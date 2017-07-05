@@ -18,6 +18,7 @@ package com.contentful.java.cma;
 
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAEntry;
+import com.contentful.java.cma.model.CMASnapshot;
 import com.contentful.java.cma.model.CMASystem;
 
 import java.util.HashMap;
@@ -227,6 +228,46 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
   }
 
   /**
+   * Fetch all snapshots of an entry.
+   *
+   * @param entry the entry whose snapshots to be returned.
+   * @return an array of snapshots.
+   * @throws IllegalArgumentException if entry is null.
+   * @throws IllegalArgumentException if entry's id is null.
+   * @throws IllegalArgumentException if entry's space id is null.
+   */
+  public CMAArray<CMASnapshot> fetchAllSnapshots(CMAEntry entry) {
+    assertNotNull(entry, "entry");
+
+    final String entryId = getResourceIdOrThrow(entry, "entry");
+    final String spaceId = getSpaceIdOrThrow(entry, "entry");
+
+    return service.fetchAllSnapshots(spaceId, entryId).toBlocking().first();
+  }
+
+  /**
+   * Fetch a specific snapshot of an entry.
+   *
+   * @param entry      the entry whose snapshot to be returned.
+   * @param snapshotId the snapshot to be returned.
+   * @return an array of snapshots.
+   * @throws IllegalArgumentException if entry is null.
+   * @throws IllegalArgumentException if entry's id is null.
+   * @throws IllegalArgumentException if entry's space id is null.
+   * @throws IllegalArgumentException if snapshotId is null.
+   */
+  public CMASnapshot fetchOneSnapshot(CMAEntry entry,
+                                      String snapshotId) {
+    assertNotNull(entry, "entry");
+    assertNotNull(snapshotId, "snapshotId");
+
+    final String entryId = getResourceIdOrThrow(entry, "entry");
+    final String spaceId = getSpaceIdOrThrow(entry, "entry");
+
+    return service.fetchOneSnapshot(spaceId, entryId, snapshotId).toBlocking().first();
+  }
+
+  /**
    * @return a module with a set of asynchronous methods.
    */
   public Async async() {
@@ -411,6 +452,48 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
       return defer(new RxExtensions.DefFunc<CMAEntry>() {
         @Override CMAEntry method() {
           return ModuleEntries.this.update(entry);
+        }
+      }, callback);
+    }
+
+
+    /**
+     * Fetch all snapshots of an entry.
+     *
+     * @param entry the entry whose snapshots to be returned.
+     * @return an array of snapshots.
+     * @throws IllegalArgumentException if entry is null.
+     * @throws IllegalArgumentException if entry's id is null.
+     * @throws IllegalArgumentException if entry's space id is null.
+     */
+    public CMACallback<CMAArray<CMASnapshot>> fetchAllSnapshots(
+        final CMAEntry entry,
+        CMACallback<CMAArray<CMASnapshot>> callback) {
+      return defer(new RxExtensions.DefFunc<CMAArray<CMASnapshot>>() {
+        @Override CMAArray<CMASnapshot> method() {
+          return ModuleEntries.this.fetchAllSnapshots(entry);
+        }
+      }, callback);
+    }
+
+    /**
+     * Fetch a specific snapshot of an entry.
+     *
+     * @param entry      the entry whose snapshot to be returned.
+     * @param snapshotId the snapshot to be returned.
+     * @return an array of snapshots.
+     * @throws IllegalArgumentException if entry is null.
+     * @throws IllegalArgumentException if entry's id is null.
+     * @throws IllegalArgumentException if entry's space id is null.
+     * @throws IllegalArgumentException if snapshotId is null.
+     */
+    public CMACallback<CMASnapshot> fetchOneSnapshot(
+        final CMAEntry entry,
+        final String snapshotId,
+        CMACallback<CMASnapshot> callback) {
+      return defer(new RxExtensions.DefFunc<CMASnapshot>() {
+        @Override CMASnapshot method() {
+          return ModuleEntries.this.fetchOneSnapshot(entry, snapshotId);
         }
       }, callback);
     }

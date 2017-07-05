@@ -19,6 +19,7 @@ package com.contentful.java.cma;
 import com.contentful.java.cma.RxExtensions.DefFunc;
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAContentType;
+import com.contentful.java.cma.model.CMASnapshot;
 import com.contentful.java.cma.model.CMASystem;
 
 import java.util.HashMap;
@@ -209,6 +210,46 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
   }
 
   /**
+   * Fetch all snapshots of this content type.
+   *
+   * @param contentType the contentType whose snapshots to be returned.
+   * @return an array of snapshots.
+   * @throws IllegalArgumentException if contentType is null.
+   * @throws IllegalArgumentException if contentType's id is null.
+   * @throws IllegalArgumentException if contentType's space id is null.
+   */
+  public CMAArray<CMASnapshot> fetchAllSnapshots(CMAContentType contentType) {
+    assertNotNull(contentType, "contentType");
+
+    final String contentTypeId = getResourceIdOrThrow(contentType, "contentType");
+    final String spaceId = getSpaceIdOrThrow(contentType, "contentType");
+
+    return service.fetchAllSnapshots(spaceId, contentTypeId).toBlocking().first();
+  }
+
+  /**
+   * Fetch a specific snapshot of this content type.
+   *
+   * @param contentType the contentType whose snapshot to be returned.
+   * @param snapshotId  the snapshot to be returned.
+   * @return an array of snapshots.
+   * @throws IllegalArgumentException if contentType is null.
+   * @throws IllegalArgumentException if contentType's id is null.
+   * @throws IllegalArgumentException if contentType's space id is null.
+   * @throws IllegalArgumentException if snapshotId is null.
+   */
+  public CMASnapshot fetchOneSnapshot(CMAContentType contentType,
+                                       String snapshotId) {
+    assertNotNull(contentType, "contentType");
+    assertNotNull(snapshotId, "snapshotId");
+
+    final String contentTypeId = getResourceIdOrThrow(contentType, "contentType");
+    final String spaceId = getSpaceIdOrThrow(contentType, "contentType");
+
+    return service.fetchOneSnapshot(spaceId, contentTypeId, snapshotId).toBlocking().first();
+  }
+
+  /**
    * @return a module with a set of asynchronous methods.
    */
   public Async async() {
@@ -371,6 +412,47 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
       return defer(new DefFunc<CMAContentType>() {
         @Override CMAContentType method() {
           return ModuleContentTypes.this.update(contentType);
+        }
+      }, callback);
+    }
+
+    /**
+     * Fetch all snapshots of this content type.
+     *
+     * @param contentType the contentType whose snapshots to be returned.
+     * @return the callback.
+     * @throws IllegalArgumentException if contentType is null.
+     * @throws IllegalArgumentException if contentType's id is null.
+     * @throws IllegalArgumentException if contentType's space id is null.
+     */
+    public CMACallback<CMAArray<CMASnapshot>> fetchAllSnapshots(
+        final CMAContentType contentType,
+        CMACallback<CMAArray<CMASnapshot>> callback) {
+      return defer(new DefFunc<CMAArray<CMASnapshot>>() {
+        @Override CMAArray<CMASnapshot> method() {
+          return ModuleContentTypes.this.fetchAllSnapshots(contentType);
+        }
+      }, callback);
+    }
+
+    /**
+     * Fetch a specific snapshot of this content type.
+     *
+     * @param contentType the contentType whose snapshot to be returned.
+     * @param snapshotId  the snapshot to be returned.
+     * @return a callback to inform about transaction results.
+     * @throws IllegalArgumentException if contentType is null.
+     * @throws IllegalArgumentException if contentType's id is null.
+     * @throws IllegalArgumentException if contentType's space id is null.
+     * @throws IllegalArgumentException if snapshotId is null.
+     */
+    public CMACallback<CMASnapshot> fetchOneSnapshot(
+        final CMAContentType contentType,
+        final String snapshotId,
+        CMACallback<CMASnapshot> callback) {
+      return defer(new DefFunc<CMASnapshot>() {
+        @Override CMASnapshot method() {
+          return ModuleContentTypes.this.fetchOneSnapshot(contentType, snapshotId);
         }
       }, callback);
     }

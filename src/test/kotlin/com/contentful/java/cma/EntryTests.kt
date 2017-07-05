@@ -323,4 +323,50 @@ class EntryTests : BaseTest() {
 
         assertEquals("baz", entry.getField("foo", "en-US"))
     }
+
+    @test fun testFetchAllSnapshots() {
+        val responseBody = TestUtils.fileToString("entry_snapshots_get_all.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val entry = CMAEntry()
+                .setId("entryId")
+                .setSpaceId("spaceId")
+
+        val result = assertTestCallback(client!!.entries().async().fetchAllSnapshots(
+                entry, TestCallback()) as TestCallback)!!
+
+        val items = result.items
+        assertEquals(2, items.size)
+
+        // Assert first item
+        val first = items[0]
+        assertEquals(CMAType.Snapshot, first.system.type)
+        assertEquals(CMAType.Entry, first.snapshot.system.type)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/spaceId/entries/entryId/snapshots", recordedRequest.path)
+    }
+
+    @test fun testFetchOneSnapshot() {
+        val responseBody = TestUtils.fileToString("entry_snapshots_get_one.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val entry = CMAEntry()
+                .setId("entryId")
+                .setSpaceId("spaceId")
+
+        val result = assertTestCallback(client!!.entries().async().fetchOneSnapshot(
+                entry, "snapShotId", TestCallback()) as TestCallback)!!
+
+        assertEquals(CMAType.Snapshot, result.system.type)
+        assertEquals(CMAType.Entry, result.snapshot.system.type)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/spaceId/entries/entryId/snapshots/snapShotId",
+                recordedRequest.path)
+    }
 }
