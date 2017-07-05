@@ -80,7 +80,7 @@ class WebhookTests : BaseTest() {
     fun testDelete() {
         server!!.enqueue(MockResponse().setResponseCode(204))
 
-        val callback : TestCallback<String> = TestCallback(true)
+        val callback: TestCallback<String> = TestCallback(true)
         assertTestCallback(client!!.webhooks().async().delete(
                 "spaceid", "webhookid", callback) as TestCallback)
 
@@ -118,6 +118,21 @@ class WebhookTests : BaseTest() {
         val request = server!!.takeRequest()
         assertEquals("GET", request.method)
         assertEquals("/spaces/spaceid/webhook_definitions", request.path)
+    }
+
+    @test
+    fun testFetchAllWithQuery() {
+        val responseBody = TestUtils.fileToString("webhook_fetch_all_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val result = assertTestCallback(client!!.webhooks().async().fetchAll(
+                "spaceid",
+                hashMapOf("limit" to "3"),
+                TestCallback()) as TestCallback)!!
+
+        val request = server!!.takeRequest()
+        assertEquals("GET", request.method)
+        assertEquals("/spaces/spaceid/webhook_definitions?limit=3", request.path)
     }
 
     @test

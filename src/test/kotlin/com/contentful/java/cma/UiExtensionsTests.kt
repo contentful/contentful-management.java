@@ -52,6 +52,23 @@ class UiExtensionsTests : BaseTest() {
                 recordedRequest.path)
     }
 
+    @test fun testFetchAllWithQuery() {
+        val responseBody = TestUtils.fileToString("ui_extensions_get_all.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.uiExtensions().async()
+                .fetchAll(
+                        "spaceId",
+                        hashMapOf("skip" to "3"),
+                        TestCallback()) as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/spaceId/extensions?skip=3",
+                recordedRequest.path)
+    }
+
     @test fun testFetchOne() {
         val responseBody = TestUtils.fileToString("ui_extensions_get_one.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))

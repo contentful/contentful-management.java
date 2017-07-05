@@ -21,6 +21,7 @@ import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAPersonalAccessToken;
 import com.contentful.java.cma.model.CMASystem;
 
+import java.util.Map;
 import java.util.concurrent.Executor;
 
 import retrofit2.Retrofit;
@@ -51,6 +52,17 @@ public final class ModulePersonalAccessTokens extends AbsModule<ServicePersonalA
    */
   public CMAArray<CMAPersonalAccessToken> fetchAll() {
     return service.fetchAll().toBlocking().first();
+  }
+
+  /**
+   * @return a list of specific personal access tokens.
+   */
+  public CMAArray<CMAPersonalAccessToken> fetchAll(Map<String, String> query) {
+    if (query == null) {
+      return service.fetchAll().toBlocking().first();
+    } else {
+      return service.fetchAll(query).toBlocking().first();
+    }
   }
 
   /**
@@ -110,6 +122,22 @@ public final class ModulePersonalAccessTokens extends AbsModule<ServicePersonalA
       return defer(new DefFunc<CMAArray<CMAPersonalAccessToken>>() {
         @Override CMAArray<CMAPersonalAccessToken> method() {
           return ModulePersonalAccessTokens.this.fetchAll();
+        }
+      }, callback);
+    }
+
+    /**
+     * Fetch a list of specific personal access tokens.
+     *
+     * @param query the definition on what to look for.
+     * @return a callback to be informed about success.
+     */
+    public CMACallback<CMAArray<CMAPersonalAccessToken>> fetchAll(
+        final Map<String, String> query,
+        CMACallback<CMAArray<CMAPersonalAccessToken>> callback) {
+      return defer(new DefFunc<CMAArray<CMAPersonalAccessToken>>() {
+        @Override CMAArray<CMAPersonalAccessToken> method() {
+          return ModulePersonalAccessTokens.this.fetchAll(query);
         }
       }, callback);
     }

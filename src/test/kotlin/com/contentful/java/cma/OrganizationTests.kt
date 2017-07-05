@@ -51,4 +51,18 @@ class OrganizationTests : BaseTest() {
         assertEquals("GET", recordedRequest.method)
         assertEquals("/organizations", recordedRequest.path)
     }
+
+    @test fun testFetchAllWithQuery() {
+        val responseBody = TestUtils.fileToString("organizations_get_all.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.organizations().async()
+                .fetchAll(hashMapOf("skip" to "4"),
+                        TestCallback()) as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/organizations?skip=4", recordedRequest.path)
+    }
 }

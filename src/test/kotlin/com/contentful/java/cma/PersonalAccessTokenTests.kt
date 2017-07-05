@@ -53,6 +53,19 @@ class PersonalAccessTokenTests : BaseTest() {
         assertEquals("/users/me/access_tokens", recordedRequest.path)
     }
 
+    @test fun testFetchAllWithQuery() {
+        val responseBody = TestUtils.fileToString("personal_access_token_get_all.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.personalAccessTokens().async()
+                .fetchAll(hashMapOf("limit" to "3"), TestCallback()) as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/users/me/access_tokens?limit=3", recordedRequest.path)
+    }
+
     @test fun testFetchOne() {
         val responseBody = TestUtils.fileToString("personal_access_token_get_one.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))

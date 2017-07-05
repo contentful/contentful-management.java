@@ -98,4 +98,18 @@ class ApiKeysTests : BaseTest() {
         assertEquals("POST", recordedRequest.method)
         assertEquals("/spaces/spaceid/api_keys", recordedRequest.path)
     }
+
+    @test fun testQueryForAll() {
+        val responseBody = TestUtils.fileToString("apikeys_get_all.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val query = hashMapOf("skip" to "6")
+        assertTestCallback(client!!.apiKeys().async()
+                .fetchAll("spaceid", query, TestCallback()) as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/spaceid/api_keys?skip=6", recordedRequest.path)
+    }
 }

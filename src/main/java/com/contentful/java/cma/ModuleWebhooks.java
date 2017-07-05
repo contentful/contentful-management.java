@@ -23,6 +23,7 @@ import com.contentful.java.cma.model.CMAWebhookCall;
 import com.contentful.java.cma.model.CMAWebhookCallDetail;
 import com.contentful.java.cma.model.CMAWebhookHealth;
 
+import java.util.Map;
 import java.util.concurrent.Executor;
 
 import retrofit2.Retrofit;
@@ -135,6 +136,24 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
     assertNotNull(spaceId, "spaceId");
 
     return service.fetchAll(spaceId).toBlocking().first();
+  }
+
+  /**
+   * Retrieve specific webhooks matching a query for this space.
+   *
+   * @param spaceId The id of the space to be asked for all of its spaces.
+   * @param query   Specifying the criteria on which webhooks to return.
+   * @return An {@link CMAArray} containing all found webhooks for this space.
+   * @throws IllegalArgumentException if spaceId is null.
+   */
+  public CMAArray<CMAWebhook> fetchAll(String spaceId, Map<String, String> query) {
+    assertNotNull(spaceId, "spaceId");
+
+    if (query == null) {
+      return service.fetchAll(spaceId).toBlocking().first();
+    } else {
+      return service.fetchAll(spaceId, query).toBlocking().first();
+    }
   }
 
   /**
@@ -315,6 +334,24 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
       return defer(new RxExtensions.DefFunc<CMAArray<CMAWebhook>>() {
         @Override CMAArray<CMAWebhook> method() {
           return ModuleWebhooks.this.fetchAll(spaceId);
+        }
+      }, callback);
+    }
+
+    /**
+     * Asynchronous variant of {@link ModuleWebhooks#fetchAll(String, Map)}
+     *
+     * @param spaceId  id of the space to be used.
+     * @param query    description map of which webhooks to be returned.
+     * @param callback the callback to be called once finished.
+     * @throws IllegalArgumentException if spaceId is null.
+     */
+    public CMACallback<CMAArray<CMAWebhook>> fetchAll(final String spaceId,
+                                                      final Map<String, String> query,
+                                                      CMACallback<CMAArray<CMAWebhook>> callback) {
+      return defer(new RxExtensions.DefFunc<CMAArray<CMAWebhook>>() {
+        @Override CMAArray<CMAWebhook> method() {
+          return ModuleWebhooks.this.fetchAll(spaceId, query);
         }
       }, callback);
     }

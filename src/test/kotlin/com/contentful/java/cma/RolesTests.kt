@@ -99,6 +99,21 @@ class RolesTests : BaseTest() {
         assertEquals("/spaces/SPACE_ID/roles/", recordedRequest.path)
     }
 
+    @test fun testFetchAllWithQuery() {
+        val responseBody = TestUtils.fileToString("roles_get_all.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.roles().async()
+                .fetchAll("SPACE_ID",
+                        hashMapOf("skip" to "3"),
+                        TestCallback()) as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/SPACE_ID/roles?skip=3", recordedRequest.path)
+    }
+
     @test fun testCreateNew() {
         val responseBody = TestUtils.fileToString("roles_create.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))

@@ -20,6 +20,7 @@ import com.contentful.java.cma.RxExtensions.DefFunc;
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAOrganization;
 
+import java.util.Map;
 import java.util.concurrent.Executor;
 
 import retrofit2.Retrofit;
@@ -49,6 +50,20 @@ public final class ModuleOrganizations extends AbsModule<ServiceOrganizations> {
   }
 
   /**
+   * Fetch specific organizations the token has access to.
+   *
+   * @param query the criteria to narrow down the search result.
+   * @return {@link CMAOrganization} result instance
+   */
+  public CMAArray<CMAOrganization> fetchAll(Map<String, String> query) {
+    if (query == null) {
+      return service.fetchAll().toBlocking().first();
+    } else {
+      return service.fetchAll(query).toBlocking().first();
+    }
+  }
+
+  /**
    * @return a module with a set of asynchronous methods.
    */
   public Async async() {
@@ -69,6 +84,22 @@ public final class ModuleOrganizations extends AbsModule<ServiceOrganizations> {
       return defer(new DefFunc<CMAArray<CMAOrganization>>() {
         @Override CMAArray<CMAOrganization> method() {
           return ModuleOrganizations.this.fetchAll();
+        }
+      }, callback);
+    }
+
+    /**
+     * Fetch specific organizations accessible.
+     *
+     * @param query the definition of organizations to be returned.
+     * @return {@link CMAOrganization} result callback.
+     */
+    public CMACallback<CMAArray<CMAOrganization>> fetchAll(
+        final Map<String, String> query,
+        CMACallback<CMAArray<CMAOrganization>> callback) {
+      return defer(new DefFunc<CMAArray<CMAOrganization>>() {
+        @Override CMAArray<CMAOrganization> method() {
+          return ModuleOrganizations.this.fetchAll(query);
         }
       }, callback);
     }

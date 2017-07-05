@@ -19,10 +19,13 @@ package com.contentful.java.cma;
 import com.contentful.java.cma.model.CMAApiKey;
 import com.contentful.java.cma.model.CMAArray;
 
+import java.util.Map;
+
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.QueryMap;
 import rx.Observable;
 
 /**
@@ -31,6 +34,12 @@ import rx.Observable;
 interface ServiceApiKeys {
   @GET("/spaces/{spaceId}/api_keys")
   Observable<CMAArray<CMAApiKey>> fetchAll(@Path("spaceId") String spaceId);
+
+  @GET("/spaces/{spaceId}/api_keys")
+  Observable<CMAArray<CMAApiKey>> fetchAll(
+      @Path("spaceId") String spaceId,
+      @QueryMap Map<String, String> query
+  );
 
   @GET("/spaces/{spaceId}/api_keys/{keyId}")
   Observable<CMAApiKey> fetchOne(@Path("spaceId") String spaceId,

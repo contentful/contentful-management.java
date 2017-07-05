@@ -48,6 +48,22 @@ class SpaceMembershipTests : BaseTest() {
         assertEquals("/spaces/SPACE_ID/space_memberships/", recordedRequest.path)
     }
 
+    @test fun testFetchAllWithQuery() {
+        val responseBody = TestUtils.fileToString("space_memberships_fetch_all.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.spaceMemberships().async()
+                .fetchAll(
+                        "SPACE_ID",
+                        hashMapOf("limit" to "foo"),
+                        TestCallback()) as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/SPACE_ID/space_memberships?limit=foo", recordedRequest.path)
+    }
+
     @test fun testFetchOne() {
         val responseBody = TestUtils.fileToString("space_memberships_fetch_one.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
