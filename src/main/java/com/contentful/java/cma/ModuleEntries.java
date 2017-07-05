@@ -233,8 +233,8 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
    * @param entry the entry whose snapshots to be returned.
    * @return an array of snapshots.
    * @throws IllegalArgumentException if entry is null.
-   * @throws IllegalArgumentException if entry 's id is null.
-   * @throws IllegalArgumentException if entry 's space id is null.
+   * @throws IllegalArgumentException if entry's id is null.
+   * @throws IllegalArgumentException if entry's space id is null.
    */
   public CMAArray<CMASnapshot> fetchAllSnapshots(CMAEntry entry) {
     assertNotNull(entry, "entry");
@@ -463,8 +463,8 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
      * @param entry the entry whose snapshots to be returned.
      * @return an array of snapshots.
      * @throws IllegalArgumentException if entry is null.
-     * @throws IllegalArgumentException if entry 's id is null.
-     * @throws IllegalArgumentException if entry 's space id is null.
+     * @throws IllegalArgumentException if entry's id is null.
+     * @throws IllegalArgumentException if entry's space id is null.
      */
     public CMACallback<CMAArray<CMASnapshot>> fetchAllSnapshots(
         final CMAEntry entry,
