@@ -20,6 +20,7 @@ import com.contentful.java.cma.RxExtensions.DefFunc;
 import com.contentful.java.cma.model.CMAApiKey;
 import com.contentful.java.cma.model.CMAArray;
 
+import java.util.Map;
 import java.util.concurrent.Executor;
 
 import retrofit2.Retrofit;
@@ -42,12 +43,30 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
   /**
    * Fetch all delivery api keys.
    *
+   * @param spaceId the id of the space to host the api keys.
    * @return a list of delivery api keys.
    * @throws IllegalArgumentException if spaceId is null.
    */
   public CMAArray<CMAApiKey> fetchAll(String spaceId) {
     assertNotNull(spaceId, "spaceId");
     return service.fetchAll(spaceId).toBlocking().first();
+  }
+
+  /**
+   * Query for specific api keys.
+   *
+   * @param spaceId the id of the space to host the api keys.
+   * @param query   the terms to query for specific keys.
+   * @return a list of delivery api keys.
+   * @throws IllegalArgumentException if spaceId is null.
+   */
+  public CMAArray<CMAApiKey> fetchAll(String spaceId, Map<String, String> query) {
+    assertNotNull(spaceId, "spaceId");
+    if (query == null) {
+      return service.fetchAll(spaceId).toBlocking().first();
+    } else {
+      return service.fetchAll(spaceId, query).toBlocking().first();
+    }
   }
 
   /**
@@ -100,6 +119,24 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
       return defer(new DefFunc<CMAArray<CMAApiKey>>() {
         @Override CMAArray<CMAApiKey> method() {
           return ModuleApiKeys.this.fetchAll(spaceId);
+        }
+      }, callback);
+    }
+
+    /**
+     * Query for specific api keys.
+     *
+     * @param spaceId the id of the space to host the api keys.
+     * @param query   the terms to query for specific keys.
+     * @return a list of delivery api keys.
+     * @throws IllegalArgumentException if spaceId is null.
+     */
+    public CMACallback<CMAArray<CMAApiKey>> fetchAll(final String spaceId,
+                                                     final Map<String, String> query,
+                                                     CMACallback<CMAArray<CMAApiKey>> callback) {
+      return defer(new DefFunc<CMAArray<CMAApiKey>>() {
+        @Override CMAArray<CMAApiKey> method() {
+          return ModuleApiKeys.this.fetchAll(spaceId, query);
         }
       }, callback);
     }

@@ -5,6 +5,7 @@ import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMARole;
 import com.contentful.java.cma.model.CMASystem;
 
+import java.util.Map;
 import java.util.concurrent.Executor;
 
 import retrofit2.Response;
@@ -56,6 +57,23 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
   public CMAArray<CMARole> fetchAll(String spaceId) {
     assertNotNull(spaceId, "spaceId");
     return service.fetchAll(spaceId).toBlocking().first();
+  }
+
+  /**
+   * Fetch specific roles of this space.
+   *
+   * @param spaceId the space identifier identifying the space.
+   * @param query   the search criteria to search for.
+   * @return the array of roles.
+   * @throws IllegalArgumentException if spaceId is null.
+   */
+  public CMAArray<CMARole> fetchAll(String spaceId, Map<String, String> query) {
+    assertNotNull(spaceId, "spaceId");
+    if (query == null) {
+      return service.fetchAll(spaceId).toBlocking().first();
+    } else {
+      return service.fetchAll(spaceId, query).toBlocking().first();
+    }
   }
 
   /**
@@ -175,6 +193,26 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
       return defer(new DefFunc<CMAArray<CMARole>>() {
         @Override CMAArray<CMARole> method() {
           return ModuleRoles.this.fetchAll(spaceId);
+        }
+      }, callback);
+    }
+
+    /**
+     * Fetch specific roles of this space.
+     *
+     * @param spaceId the space identifier identifying the space.
+     * @param query   the search criteria to search for.
+     * @return a callback for the array fetched.
+     * @throws IllegalArgumentException if spaceId is null.
+     * @see ModuleRoles#fetchAll(String)
+     */
+    public CMACallback<CMAArray<CMARole>> fetchAll(
+        final String spaceId,
+        final Map<String, String> query,
+        final CMACallback<CMAArray<CMARole>> callback) {
+      return defer(new DefFunc<CMAArray<CMARole>>() {
+        @Override CMAArray<CMARole> method() {
+          return ModuleRoles.this.fetchAll(spaceId, query);
         }
       }, callback);
     }

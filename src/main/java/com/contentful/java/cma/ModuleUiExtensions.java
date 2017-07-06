@@ -21,6 +21,7 @@ import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMASystem;
 import com.contentful.java.cma.model.CMAUiExtension;
 
+import java.util.Map;
 import java.util.concurrent.Executor;
 
 import retrofit2.Retrofit;
@@ -66,6 +67,20 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
     assertNotNull(spaceId, "spaceId");
 
     return service.fetchAll(spaceId).toBlocking().first();
+  }
+
+  /**
+   * @return specific ui extensions for a specific space.
+   * @throws IllegalArgumentException if spaceId is null.
+   */
+  public CMAArray<CMAUiExtension> fetchAll(String spaceId, Map<String, String> query) {
+    assertNotNull(spaceId, "spaceId");
+
+    if (query == null) {
+      return service.fetchAll(spaceId).toBlocking().first();
+    } else {
+      return service.fetchAll(spaceId, query).toBlocking().first();
+    }
   }
 
   /**
@@ -191,6 +206,25 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
       return defer(new DefFunc<CMAArray<CMAUiExtension>>() {
         @Override CMAArray<CMAUiExtension> method() {
           return ModuleUiExtensions.this.fetchAll(spaceId);
+        }
+      }, callback);
+    }
+
+    /**
+     * Fetch specific ui extensions in a given space.
+     *
+     * @param spaceId the id of the space to search in.
+     * @param query   the query identifying specific ui extensions.
+     * @return the callback to be informed about success or failure.
+     * @throws IllegalArgumentException if spaceId is null.
+     */
+    public CMACallback<CMAArray<CMAUiExtension>> fetchAll(
+        final String spaceId,
+        final Map<String, String> query,
+        CMACallback<CMAArray<CMAUiExtension>> callback) {
+      return defer(new DefFunc<CMAArray<CMAUiExtension>>() {
+        @Override CMAArray<CMAUiExtension> method() {
+          return ModuleUiExtensions.this.fetchAll(spaceId, query);
         }
       }, callback);
     }

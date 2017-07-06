@@ -13,6 +13,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Add: [Editor Interfaces](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/editor-interface).
 - Add: [UI Extensions](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/ui-extensions).
 - Add: [Snapshots](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/snapshots/entry-snapshots-collection).
+- Add: Query parameter for all collection endpoints. (skip and limit your responses)
 
 ## Version [2.0.0] - 2017-04-19
 - New: [`Upload` module](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/uploads).

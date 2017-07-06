@@ -19,7 +19,10 @@ package com.contentful.java.cma;
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAOrganization;
 
+import java.util.Map;
+
 import retrofit2.http.GET;
+import retrofit2.http.QueryMap;
 import rx.Observable;
 
 /**
@@ -28,5 +31,8 @@ import rx.Observable;
 interface ServiceOrganizations {
   @GET("/organizations")
   Observable<CMAArray<CMAOrganization>> fetchAll();
+
+  @GET("/organizations")
+  Observable<CMAArray<CMAOrganization>> fetchAll(@QueryMap Map<String, String> query);
 }
 

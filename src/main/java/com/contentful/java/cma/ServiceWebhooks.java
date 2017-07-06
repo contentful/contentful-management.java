@@ -22,6 +22,8 @@ import com.contentful.java.cma.model.CMAWebhookCall;
 import com.contentful.java.cma.model.CMAWebhookCallDetail;
 import com.contentful.java.cma.model.CMAWebhookHealth;
 
+import java.util.Map;
+
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -29,6 +31,7 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.QueryMap;
 import rx.Observable;
 
 /**
@@ -56,6 +59,12 @@ interface ServiceWebhooks {
   @GET("spaces/{space}/webhook_definitions")
   Observable<CMAArray<CMAWebhook>> fetchAll(
       @Path("space") String spaceId);
+
+  @GET("spaces/{space}/webhook_definitions")
+  Observable<CMAArray<CMAWebhook>> fetchAll(
+      @Path("space") String spaceId,
+      @QueryMap Map<String, String> query
+  );
 
   @GET("spaces/{space}/webhook_definitions/{webhook}")
   Observable<CMAWebhook> fetchOne(

@@ -19,6 +19,8 @@ package com.contentful.java.cma;
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAUiExtension;
 
+import java.util.Map;
+
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -27,6 +29,7 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.QueryMap;
 import rx.Observable;
 
 /**
@@ -35,6 +38,12 @@ import rx.Observable;
 interface ServiceUiExtensions {
   @GET("/spaces/{spaceId}/extensions")
   Observable<CMAArray<CMAUiExtension>> fetchAll(@Path("spaceId") String spaceId);
+
+  @GET("/spaces/{spaceId}/extensions")
+  Observable<CMAArray<CMAUiExtension>> fetchAll(
+      @Path("spaceId") String spaceId,
+      @QueryMap Map<String, String> query
+  );
 
   @GET("/spaces/{spaceId}/extensions/{extensionId}")
   Observable<CMAUiExtension> fetchOne(

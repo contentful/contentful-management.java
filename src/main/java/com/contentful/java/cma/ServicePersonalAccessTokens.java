@@ -19,11 +19,14 @@ package com.contentful.java.cma;
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAPersonalAccessToken;
 
+import java.util.Map;
+
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.QueryMap;
 import rx.Observable;
 
 /**
@@ -32,6 +35,9 @@ import rx.Observable;
 interface ServicePersonalAccessTokens {
   @GET("/users/me/access_tokens")
   Observable<CMAArray<CMAPersonalAccessToken>> fetchAll();
+
+  @GET("/users/me/access_tokens")
+  Observable<CMAArray<CMAPersonalAccessToken>> fetchAll(@QueryMap Map<String, String> query);
 
   @GET("/users/me/access_tokens/{tokenId}")
   Observable<CMAPersonalAccessToken> fetchOne(@Path("tokenId") String tokenId);

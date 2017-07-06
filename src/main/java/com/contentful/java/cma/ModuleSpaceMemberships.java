@@ -5,6 +5,7 @@ import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMASpaceMembership;
 import com.contentful.java.cma.model.CMASystem;
 
+import java.util.Map;
 import java.util.concurrent.Executor;
 
 import retrofit2.Response;
@@ -56,6 +57,23 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
   public CMAArray<CMASpaceMembership> fetchAll(String spaceId) {
     assertNotNull(spaceId, "spaceId");
     return service.fetchAll(spaceId).toBlocking().first();
+  }
+
+  /**
+   * Fetch all memberships of this space.
+   *
+   * @param spaceId the space identifier identifying the space.
+   * @param query   define which space memberships to return.
+   * @return the array of memberships.
+   * @throws IllegalArgumentException if spaceId is null.
+   */
+  public CMAArray<CMASpaceMembership> fetchAll(String spaceId, Map<String, String> query) {
+    assertNotNull(spaceId, "spaceId");
+    if (query == null) {
+      return service.fetchAll(spaceId).toBlocking().first();
+    } else {
+      return service.fetchAll(spaceId, query).toBlocking().first();
+    }
   }
 
   /**
@@ -174,6 +192,26 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
       return defer(new DefFunc<CMAArray<CMASpaceMembership>>() {
         @Override CMAArray<CMASpaceMembership> method() {
           return ModuleSpaceMemberships.this.fetchAll(spaceId);
+        }
+      }, callback);
+    }
+
+    /**
+     * Fetch all memberships of this space, asynchronously.
+     *
+     * @param spaceId the space identifier identifying the space.
+     * @param query   define which space memberships to return.
+     * @return a callback for the array fetched.
+     * @throws IllegalArgumentException if spaceId is null.
+     * @see ModuleSpaceMemberships#fetchAll(String)
+     */
+    public CMACallback<CMAArray<CMASpaceMembership>> fetchAll(
+        final String spaceId,
+        final Map<String, String> query,
+        final CMACallback<CMAArray<CMASpaceMembership>> callback) {
+      return defer(new DefFunc<CMAArray<CMASpaceMembership>>() {
+        @Override CMAArray<CMASpaceMembership> method() {
+          return ModuleSpaceMemberships.this.fetchAll(spaceId, query);
         }
       }, callback);
     }
