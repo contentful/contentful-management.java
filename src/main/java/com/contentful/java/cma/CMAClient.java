@@ -28,6 +28,8 @@ import com.contentful.java.cma.interceptor.ContentfulUserAgentHeaderInterceptor.
 import com.contentful.java.cma.interceptor.ContentfulUserAgentHeaderInterceptor.Section.Version;
 import com.contentful.java.cma.interceptor.ErrorInterceptor;
 import com.contentful.java.cma.interceptor.LogInterceptor;
+import com.contentful.java.cma.interceptor.RateLimitInterceptor;
+import com.contentful.java.cma.interceptor.RateLimitsListener;
 import com.contentful.java.cma.interceptor.UserAgentHeaderInterceptor;
 import com.contentful.java.cma.model.CMAEntry;
 import com.contentful.java.cma.model.CMAField;
@@ -281,6 +283,7 @@ public class CMAClient {
     Section application;
     Section integration;
     Executor callbackExecutor;
+    RateLimitsListener rateLimitListener;
     PropertiesReader propertiesReader = new PropertiesReader();
 
     /**
@@ -435,6 +438,14 @@ public class CMAClient {
     }
 
     /**
+     * Add a listener to receive information about rate limits.
+     */
+    public Builder setRateLimitListener(RateLimitsListener listener) {
+      this.rateLimitListener = listener;
+      return this;
+    }
+
+    /**
      * @return a {@link CMAClient} out of this {@link Builder}.
      */
     public CMAClient build() {
@@ -453,6 +464,13 @@ public class CMAClient {
           )
           .addInterceptor(new ContentTypeInterceptor(DEFAULT_CONTENT_TYPE))
           .addInterceptor(new ErrorInterceptor());
+
+      if (rateLimitListener != null) {
+        okBuilder
+            .addInterceptor(
+                new RateLimitInterceptor(rateLimitListener)
+            );
+      }
 
       return setLogger(okBuilder);
     }
