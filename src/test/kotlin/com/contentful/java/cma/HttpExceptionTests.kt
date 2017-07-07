@@ -1,12 +1,17 @@
 package com.contentful.java.cma
 
 import com.contentful.java.cma.model.CMAHttpException
-import com.contentful.java.cma.model.CMAHttpException.*
 import okhttp3.*
 import kotlin.test.assertEquals
 import org.junit.Test as test
 
 class HttpExceptionTests : BaseTest() {
+    val HEADER_RATE_LIMIT_HOUR_LIMIT = "X-Contentful-RateLimit-Hour-Limit"
+    val HEADER_RATE_LIMIT_HOUR_REMAINING = "X-Contentful-RateLimit-Hour-Remaining"
+    val HEADER_RATE_LIMIT_SECOND_LIMIT = "X-Contentful-RateLimit-Second-Limit"
+    val HEADER_RATE_LIMIT_SECOND_REMAINING = "X-Contentful-RateLimit-Second-Remaining"
+    val HEADER_RATE_LIMIT_RESET = "X-Contentful-RateLimit-Reset"
+
     @test fun testHeadersParsing() {
         val request = Request.Builder().url("https://example.com/foo").build()
 

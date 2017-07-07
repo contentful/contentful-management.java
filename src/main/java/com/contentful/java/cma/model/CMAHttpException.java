@@ -1,6 +1,10 @@
 package com.contentful.java.cma.model;
 
+import com.contentful.java.cma.model.RateLimits.DefaultParser;
+
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import okhttp3.Headers;
 import okhttp3.Request;
@@ -12,16 +16,10 @@ import static java.lang.String.format;
  * This class will represent known Contentful exceptions
  */
 public class CMAHttpException extends RuntimeException {
-  public static final String HEADER_RATE_LIMIT_HOUR_LIMIT = "X-Contentful-RateLimit-Hour-Limit";
-  public static final String HEADER_RATE_LIMIT_HOUR_REMAINING
-      = "X-Contentful-RateLimit-Hour-Remaining";
-  public static final String HEADER_RATE_LIMIT_SECOND_LIMIT = "X-Contentful-RateLimit-Second-Limit";
-  public static final String HEADER_RATE_LIMIT_SECOND_REMAINING
-      = "X-Contentful-RateLimit-Second-Remaining";
-  public static final String HEADER_RATE_LIMIT_RESET = "X-Contentful-RateLimit-Reset";
-
   private final Request request;
   private final Response response;
+
+  private final RateLimits ratelimits;
 
   /**
    * Construct an error response.
@@ -36,6 +34,9 @@ public class CMAHttpException extends RuntimeException {
   public CMAHttpException(Request request, Response response) {
     this.request = request;
     this.response = response;
+
+    final Map<String, List<String>> headers = response.headers().toMultimap();
+    this.ratelimits = new DefaultParser().parse(headers);
   }
 
   /**
@@ -72,35 +73,35 @@ public class CMAHttpException extends RuntimeException {
    * @return the hourly rate limit or -1 if header not send
    */
   public int rateLimitHourLimit() {
-    return parseRateLimitHeader(HEADER_RATE_LIMIT_HOUR_LIMIT);
+    return ratelimits.getHourLimit();
   }
 
   /**
    * @return the number of remaining requests that can be made in the hour or -1 if header not send
    */
   public int rateLimitHourRemaining() {
-    return parseRateLimitHeader(HEADER_RATE_LIMIT_HOUR_REMAINING);
+    return ratelimits.getHourRemaining();
   }
 
   /**
    * @return the per second rate limit or -1 if header not send
    */
   public int rateLimitSecondLimit() {
-    return parseRateLimitHeader(HEADER_RATE_LIMIT_SECOND_LIMIT);
+    return ratelimits.getSecondLimit();
   }
 
   /**
    * @return the number of remaining requests that can be made per second or -1 if header not send
    */
   public int rateLimitSecondRemaining() {
-    return parseRateLimitHeader(HEADER_RATE_LIMIT_SECOND_REMAINING);
+    return ratelimits.getSecondRemaining();
   }
 
   /**
    * @return the number of seconds until the user can make a next request or -1 if header not send
    */
   public int rateLimitReset() {
-    return parseRateLimitHeader(HEADER_RATE_LIMIT_RESET);
+    return ratelimits.getReset();
   }
 
   private String headersToString(Headers headers) {
@@ -120,13 +121,5 @@ public class CMAHttpException extends RuntimeException {
     }
 
     return builder.toString();
-  }
-
-  private int parseRateLimitHeader(String name) {
-    try {
-      return Integer.parseInt(response.header(name));
-    } catch (NumberFormatException e) {
-      return -1;
-    }
   }
 }

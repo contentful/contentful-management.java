@@ -14,6 +14,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Add: [UI Extensions](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/ui-extensions).
 - Add: [Snapshots](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/snapshots/entry-snapshots-collection).
 - Add: Query parameter for all collection endpoints. (skip and limit your responses)
+- Add: Ability to track rate limit headers.
 
 ## Version [2.0.0] - 2017-04-19
 - New: [`Upload` module](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/uploads).

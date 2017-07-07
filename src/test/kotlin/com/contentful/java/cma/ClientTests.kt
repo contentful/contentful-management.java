@@ -28,11 +28,7 @@ import rx.Observable
 import java.io.IOException
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertNull
-import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
+import kotlin.test.*
 import org.junit.Test as test
 
 class ClientTests : BaseTest() {
@@ -358,5 +354,33 @@ class ClientTests : BaseTest() {
         // Request
         val customUserHeader = server!!.takeRequest().headers.get("X-Contentful-User-Agent")
         assertTrue(customUserHeader.contains("integration UNIT_TEST/0.0.1-PATCH"))
+    }
+
+    @test fun testAddRateLimitListener() {
+        val responseBody = TestUtils.fileToString("space_fetch_one_response.json")
+        server!!
+                .enqueue(
+                        MockResponse()
+                                .setResponseCode(200)
+                                .setBody(responseBody)
+                                .setHeader("X-Contentful-RateLimit-Hour-Limit", "123")
+                )
+
+        val client = CMAClient
+                .Builder()
+                .setCoreEndpoint(server!!.url("/").toString())
+                .setUploadEndpoint(server!!.url("/").toString())
+                .setAccessToken("token")
+                .setRateLimitListener {
+                    limits ->
+                    assertEquals(123, limits.hourLimit)
+                }
+                .build()
+
+        val cb = TestCallback<CMASpace>()
+        client.spaces().async().fetchOne("spaceid", cb)
+        cb.await()
+
+        assertNull(cb.error)
     }
 }
