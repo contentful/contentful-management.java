@@ -75,7 +75,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
     final CMASystem system = webhook.getSystem();
     webhook.setSystem(null);
     try {
-      return service.create(spaceId, webhook).toBlocking().first();
+      return service.create(spaceId, webhook).blockingFirst();
     } finally {
       webhook.setSystem(system);
     }
@@ -103,7 +103,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
     webhook.setSystem(null);
 
     try {
-      return service.create(spaceId, webhookId, webhook).toBlocking().first();
+      return service.create(spaceId, webhookId, webhook).blockingFirst();
     } finally {
       webhook.setSystem(system);
     }
@@ -114,15 +114,15 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
    *
    * @param spaceId   The id of the space hosting the webhook to be deleted.
    * @param webhookId The id of the actual webhook to be deleted.
-   * @return null upon completion
+   * @return the response code of the request (aka 200 if successful)
    * @throws IllegalArgumentException if spaceId is null.
    * @throws IllegalArgumentException if webhookId is null.
    */
-  public String delete(String spaceId, String webhookId) {
+  public Integer delete(String spaceId, String webhookId) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(webhookId, "webhookId");
 
-    return service.delete(spaceId, webhookId).toBlocking().first();
+    return service.delete(spaceId, webhookId).blockingFirst().code();
   }
 
   /**
@@ -135,7 +135,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
   public CMAArray<CMAWebhook> fetchAll(String spaceId) {
     assertNotNull(spaceId, "spaceId");
 
-    return service.fetchAll(spaceId).toBlocking().first();
+    return service.fetchAll(spaceId).blockingFirst();
   }
 
   /**
@@ -150,9 +150,9 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
     assertNotNull(spaceId, "spaceId");
 
     if (query == null) {
-      return service.fetchAll(spaceId).toBlocking().first();
+      return service.fetchAll(spaceId).blockingFirst();
     } else {
-      return service.fetchAll(spaceId, query).toBlocking().first();
+      return service.fetchAll(spaceId, query).blockingFirst();
     }
   }
 
@@ -169,7 +169,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(webhookId, "webhookId");
 
-    return service.fetchOne(spaceId, webhookId).toBlocking().first();
+    return service.fetchOne(spaceId, webhookId).blockingFirst();
   }
 
   /**
@@ -191,7 +191,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
     final String spaceId = getSpaceIdOrThrow(webhook, "webhook");
     final Integer version = getVersionOrThrow(webhook, "webhook");
 
-    return service.update(version, spaceId, webhookId, webhook).toBlocking().first();
+    return service.update(version, spaceId, webhookId, webhook).blockingFirst();
   }
 
   /**
@@ -208,7 +208,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(webhookId, "webhookId");
 
-    return service.calls(spaceId, webhookId).toBlocking().first();
+    return service.calls(spaceId, webhookId).blockingFirst();
   }
 
   /**
@@ -228,7 +228,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
     assertNotNull(webhookId, "webhookId");
     assertNotNull(callId, "callId");
 
-    return service.callDetails(spaceId, webhookId, callId).toBlocking().first();
+    return service.callDetails(spaceId, webhookId, callId).blockingFirst();
   }
 
   /**
@@ -244,7 +244,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(webhookId, "webhookId");
 
-    return service.health(spaceId, webhookId).toBlocking().first();
+    return service.health(spaceId, webhookId).blockingFirst();
   }
 
   /**
@@ -313,10 +313,10 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if webhookId is null.
      */
-    public CMACallback<String> delete(final String spaceId, final String webhookId,
-                                      CMACallback<String> callback) {
-      return defer(new RxExtensions.DefFunc<String>() {
-        @Override String method() {
+    public CMACallback<Integer> delete(final String spaceId, final String webhookId,
+                                       CMACallback<Integer> callback) {
+      return defer(new RxExtensions.DefFunc<Integer>() {
+        @Override Integer method() {
           return ModuleWebhooks.this.delete(spaceId, webhookId);
         }
       }, callback);
