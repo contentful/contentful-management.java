@@ -218,7 +218,7 @@ class ContentTypeTests : BaseTest() {
 
         // Request
         val request = server!!.takeRequest()
-        val url = HttpUrl.parse(server!!.url(request.path).toString())
+        val url = HttpUrl.parse(server!!.url(request.path).toString())!!
         assertEquals("1", url.queryParameter("skip"))
         assertEquals("2", url.queryParameter("limit"))
         assertEquals("bar", url.queryParameter("foo"))

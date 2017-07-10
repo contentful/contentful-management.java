@@ -43,7 +43,7 @@ import java.util.concurrent.Executor;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.contentful.java.cma.Constants.DEFAULT_CONTENT_TYPE;
@@ -91,7 +91,7 @@ public class CMAClient {
     Retrofit.Builder retrofitBuilder =
         new Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create(createGson()))
-            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .baseUrl(Constants.ENDPOINT_CMA);
 
     retrofitBuilder = setEndpoint(retrofitBuilder, cmaBuilder.coreEndpoint);

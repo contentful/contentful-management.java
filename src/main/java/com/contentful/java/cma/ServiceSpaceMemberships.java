@@ -14,35 +14,35 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
-import rx.Observable;
+import io.reactivex.Flowable;
 
 /**
  * Service class to define the REST interface to Contentful.
  */
 public interface ServiceSpaceMemberships {
   @GET("/spaces/{spaceId}/space_memberships")
-  Observable<CMAArray<CMASpaceMembership>> fetchAll(@Path("spaceId") String spaceId);
+  Flowable<CMAArray<CMASpaceMembership>> fetchAll(@Path("spaceId") String spaceId);
 
   @GET("/spaces/{spaceId}/space_memberships")
-  Observable<CMAArray<CMASpaceMembership>> fetchAll(
+  Flowable<CMAArray<CMASpaceMembership>> fetchAll(
       @Path("spaceId") String spaceId,
       @QueryMap Map<String, String> query
   );
 
   @GET("/spaces/{spaceId}/space_memberships/{membershipId}")
-  Observable<CMASpaceMembership> fetchOne(
+  Flowable<CMASpaceMembership> fetchOne(
       @Path("spaceId") String spaceId,
       @Path("membershipId") String membershipId
   );
 
   @POST("/spaces/{spaceId}/space_memberships")
-  Observable<CMASpaceMembership> create(
+  Flowable<CMASpaceMembership> create(
       @Path("spaceId") String spaceId,
       @Body CMASpaceMembership membership
   );
 
   @PUT("/spaces/{spaceId}/space_memberships/{membershipId}")
-  Observable<CMASpaceMembership> update(
+  Flowable<CMASpaceMembership> update(
       @Path("spaceId") String spaceId,
       @Path("membershipId") String membershipId,
       @Body CMASpaceMembership membership,
@@ -50,7 +50,7 @@ public interface ServiceSpaceMemberships {
   );
 
   @DELETE("/spaces/{spaceId}/space_memberships/{membershipId}")
-  Observable<Response<Void>> delete(
+  Flowable<Response<Void>> delete(
       @Path("spaceId") String spaceId,
       @Path("membershipId") String membershipId
   );

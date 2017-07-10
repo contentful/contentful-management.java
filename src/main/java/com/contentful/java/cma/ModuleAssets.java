@@ -56,7 +56,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     final String assetId = getResourceIdOrThrow(asset, "asset");
     final String spaceId = getSpaceIdOrThrow(asset, "asset");
 
-    return service.archive(spaceId, assetId, new Byte[0]).toBlocking().first();
+    return service.archive(spaceId, assetId).blockingFirst();
   }
 
   /**
@@ -83,9 +83,9 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
 
     try {
       if (assetId == null) {
-        return service.create(spaceId, asset).toBlocking().first();
+        return service.create(spaceId, asset).blockingFirst();
       } else {
-        return service.create(spaceId, assetId, asset).toBlocking().first();
+        return service.create(spaceId, assetId, asset).blockingFirst();
       }
     } finally {
       asset.setSystem(sys);
@@ -105,7 +105,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(assetId, "assetId");
 
-    return service.delete(spaceId, assetId).toBlocking().first();
+    return service.delete(spaceId, assetId).blockingFirst();
   }
 
   /**
@@ -133,7 +133,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     assertNotNull(spaceId, "spaceId");
     DefaultQueryParameter.putIfNotSet(query, DefaultQueryParameter.FETCH);
 
-    return service.fetchAll(spaceId, query).toBlocking().first();
+    return service.fetchAll(spaceId, query).blockingFirst();
   }
 
   /**
@@ -149,7 +149,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(assetId, "assetId");
 
-    return service.fetchOne(spaceId, assetId).toBlocking().first();
+    return service.fetchOne(spaceId, assetId).blockingFirst();
   }
 
   /**
@@ -168,7 +168,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     final String assetId = getResourceIdOrThrow(asset, "asset");
     final String spaceId = getSpaceIdOrThrow(asset, "asset");
 
-    return service.process(spaceId, assetId, locale, new Byte[0]).toBlocking().first();
+    return service.process(spaceId, assetId, locale).blockingFirst();
   }
 
   /**
@@ -185,8 +185,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     final String assetId = getResourceIdOrThrow(asset, "asset");
     final String spaceId = getSpaceIdOrThrow(asset, "asset");
 
-    return service.publish(asset.getSystem().getVersion(), spaceId, assetId,
-        new Byte[0]).toBlocking().first();
+    return service.publish(asset.getSystem().getVersion(), spaceId, assetId).blockingFirst();
   }
 
   /**
@@ -204,7 +203,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     final String assetId = getResourceIdOrThrow(asset, "asset");
     final String spaceId = getSpaceIdOrThrow(asset, "asset");
 
-    return service.unArchive(spaceId, assetId).toBlocking().first();
+    return service.unArchive(spaceId, assetId).blockingFirst();
   }
 
   /**
@@ -221,7 +220,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     final String assetId = getResourceIdOrThrow(asset, "asset");
     final String spaceId = getSpaceIdOrThrow(asset, "asset");
 
-    return service.unPublish(spaceId, assetId).toBlocking().first();
+    return service.unPublish(spaceId, assetId).blockingFirst();
   }
 
   /**
@@ -244,7 +243,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     asset.setSystem(null);
 
     try {
-      return service.update(version, spaceId, assetId, asset).toBlocking().first();
+      return service.update(version, spaceId, assetId, asset).blockingFirst();
     } finally {
       asset.setSystem(sys);
     }

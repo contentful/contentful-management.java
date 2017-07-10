@@ -30,42 +30,42 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
-import rx.Observable;
+import io.reactivex.Flowable;
 
 /**
  * Spaces Service.
  */
 interface ServiceSpaces {
   @POST("/spaces")
-  Observable<CMASpace> create(
+  Flowable<CMASpace> create(
       @Body CMASpace space);
 
   @POST("/spaces")
-  Observable<CMASpace> create(
+  Flowable<CMASpace> create(
       @Header("X-Contentful-Organization") String organization,
       @Body CMASpace space);
 
   @DELETE("/spaces/{space}")
-  Observable<String> delete(
+  Flowable<String> delete(
       @Path("space") String spaceId);
 
   @GET("/spaces")
-  Observable<CMAArray<CMASpace>> fetchAll(
+  Flowable<CMAArray<CMASpace>> fetchAll(
       @QueryMap Map<String, String> query
   );
 
   @GET("/spaces/{space}")
-  Observable<CMASpace> fetchOne(
+  Flowable<CMASpace> fetchOne(
       @Path("space") String spaceId);
 
   @GET("/spaces/{space}/locales")
-  Observable<CMAArray<CMALocale>> fetchLocales(
+  Flowable<CMAArray<CMALocale>> fetchLocales(
       @Path("space") String spaceId,
       @QueryMap Map<String, String> query
   );
 
   @PUT("/spaces/{space}")
-  Observable<CMASpace> update(
+  Flowable<CMASpace> update(
       @Header("X-Contentful-Version") Integer version,
       @Path("space") String spaceId,
       @Body CMASpace space);

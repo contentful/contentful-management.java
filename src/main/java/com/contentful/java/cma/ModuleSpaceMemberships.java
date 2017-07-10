@@ -56,7 +56,7 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
    */
   public CMAArray<CMASpaceMembership> fetchAll(String spaceId) {
     assertNotNull(spaceId, "spaceId");
-    return service.fetchAll(spaceId).toBlocking().first();
+    return service.fetchAll(spaceId).blockingFirst();
   }
 
   /**
@@ -70,9 +70,9 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
   public CMAArray<CMASpaceMembership> fetchAll(String spaceId, Map<String, String> query) {
     assertNotNull(spaceId, "spaceId");
     if (query == null) {
-      return service.fetchAll(spaceId).toBlocking().first();
+      return service.fetchAll(spaceId).blockingFirst();
     } else {
-      return service.fetchAll(spaceId, query).toBlocking().first();
+      return service.fetchAll(spaceId, query).blockingFirst();
     }
   }
 
@@ -89,7 +89,7 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(membershipId, "membershipId");
 
-    return service.fetchOne(spaceId, membershipId).toBlocking().first();
+    return service.fetchOne(spaceId, membershipId).blockingFirst();
   }
 
   /**
@@ -109,7 +109,7 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
     membership.setSystem(null);
 
     try {
-      return service.create(spaceId, membership).toBlocking().first();
+      return service.create(spaceId, membership).blockingFirst();
     } finally {
       membership.setSystem(sys);
     }
@@ -139,7 +139,7 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
     membership.setSystem(null);
 
     try {
-      return service.update(spaceId, id, membership, version).toBlocking().first();
+      return service.update(spaceId, id, membership, version).blockingFirst();
     } finally {
       membership.setSystem(sys);
     }
@@ -167,7 +167,7 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
     membership.setSystem(null);
 
     try {
-      final Response<Void> response = service.delete(spaceId, id).toBlocking().first();
+      final Response<Void> response = service.delete(spaceId, id).blockingFirst();
       return response.code();
     } finally {
       membership.setSystem(sys);

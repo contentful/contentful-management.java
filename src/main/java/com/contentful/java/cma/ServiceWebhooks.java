@@ -32,7 +32,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
-import rx.Observable;
+import io.reactivex.Flowable;
 
 /**
  * Webhooks Service.
@@ -41,12 +41,12 @@ import rx.Observable;
  */
 interface ServiceWebhooks {
   @POST("spaces/{space}/webhook_definitions")
-  Observable<CMAWebhook> create(
+  Flowable<CMAWebhook> create(
       @Path("space") String spaceId,
       @Body CMAWebhook webhook);
 
   @PUT("spaces/{space}/webhook_definitions/{webhook}")
-  Observable<CMAWebhook> create(
+  Flowable<CMAWebhook> create(
       @Path("space") String spaceId,
       @Path("webhook") String webhookId,
       @Body CMAWebhook webhook);
@@ -57,40 +57,40 @@ interface ServiceWebhooks {
       @Path("webhook") String webhookId);
 
   @GET("spaces/{space}/webhook_definitions")
-  Observable<CMAArray<CMAWebhook>> fetchAll(
+  Flowable<CMAArray<CMAWebhook>> fetchAll(
       @Path("space") String spaceId);
 
   @GET("spaces/{space}/webhook_definitions")
-  Observable<CMAArray<CMAWebhook>> fetchAll(
+  Flowable<CMAArray<CMAWebhook>> fetchAll(
       @Path("space") String spaceId,
       @QueryMap Map<String, String> query
   );
 
   @GET("spaces/{space}/webhook_definitions/{webhook}")
-  Observable<CMAWebhook> fetchOne(
+  Flowable<CMAWebhook> fetchOne(
       @Path("space") String spaceId,
       @Path("webhook") String webhookId);
 
   @PUT("spaces/{space}/webhook_definitions/{webhook}")
-  Observable<CMAWebhook> update(
+  Flowable<CMAWebhook> update(
       @Header("X-Contentful-Version") Integer version,
       @Path("space") String spaceId,
       @Path("webhook") String webhookId,
       @Body CMAWebhook webhook);
 
   @GET("spaces/{space}/webhooks/{webhook}/calls")
-  Observable<CMAArray<CMAWebhookCall>> calls(
+  Flowable<CMAArray<CMAWebhookCall>> calls(
       @Path("space") String spaceId,
       @Path("webhook") String webhookId);
 
   @GET("spaces/{space}/webhooks/{webhook}/calls/{call}")
-  Observable<CMAWebhookCallDetail> callDetails(
+  Flowable<CMAWebhookCallDetail> callDetails(
       @Path("space") String spaceId,
       @Path("webhook") String webhookId,
       @Path("call") String callId);
 
   @GET("spaces/{space}/webhooks/{webhook}/health")
-  Observable<CMAWebhookHealth> health(
+  Flowable<CMAWebhookHealth> health(
       @Path("space") String spaceId,
       @Path("webhook") String webhookId);
 }

@@ -23,16 +23,16 @@ import java.util.Map;
 
 import retrofit2.http.GET;
 import retrofit2.http.QueryMap;
-import rx.Observable;
+import io.reactivex.Flowable;
 
 /**
  * Organizations Service.
  */
 interface ServiceOrganizations {
   @GET("/organizations")
-  Observable<CMAArray<CMAOrganization>> fetchAll();
+  Flowable<CMAArray<CMAOrganization>> fetchAll();
 
   @GET("/organizations")
-  Observable<CMAArray<CMAOrganization>> fetchAll(@QueryMap Map<String, String> query);
+  Flowable<CMAArray<CMAOrganization>> fetchAll(@QueryMap Map<String, String> query);
 }
 

@@ -27,24 +27,24 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
-import rx.Observable;
+import io.reactivex.Flowable;
 
 /**
  * Personal Access Token Service.
  */
 interface ServicePersonalAccessTokens {
   @GET("/users/me/access_tokens")
-  Observable<CMAArray<CMAPersonalAccessToken>> fetchAll();
+  Flowable<CMAArray<CMAPersonalAccessToken>> fetchAll();
 
   @GET("/users/me/access_tokens")
-  Observable<CMAArray<CMAPersonalAccessToken>> fetchAll(@QueryMap Map<String, String> query);
+  Flowable<CMAArray<CMAPersonalAccessToken>> fetchAll(@QueryMap Map<String, String> query);
 
   @GET("/users/me/access_tokens/{tokenId}")
-  Observable<CMAPersonalAccessToken> fetchOne(@Path("tokenId") String tokenId);
+  Flowable<CMAPersonalAccessToken> fetchOne(@Path("tokenId") String tokenId);
 
   @POST("/users/me/access_tokens")
-  Observable<CMAPersonalAccessToken> create(@Body CMAPersonalAccessToken token);
+  Flowable<CMAPersonalAccessToken> create(@Body CMAPersonalAccessToken token);
 
   @PUT("/users/me/access_tokens/{tokenId}/revoked")
-  Observable<CMAPersonalAccessToken> revoke(@Path("tokenId") String tokenId);
+  Flowable<CMAPersonalAccessToken> revoke(@Path("tokenId") String tokenId);
 }

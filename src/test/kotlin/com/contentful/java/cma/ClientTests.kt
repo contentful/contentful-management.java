@@ -22,9 +22,9 @@ import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAArray
 import com.contentful.java.cma.model.CMASpace
 import com.contentful.java.cma.model.CMAUpload
+import io.reactivex.Observable
 import okhttp3.mockwebserver.MockResponse
 import org.mockito.Mockito
-import rx.Observable
 import java.io.IOException
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
@@ -330,7 +330,7 @@ class ClientTests : BaseTest() {
         assertNull(cb.error)
 
         // Request
-        val customUserHeader = server!!.takeRequest().headers.get("X-Contentful-User-Agent")
+        val customUserHeader = server!!.takeRequest().headers.get("X-Contentful-User-Agent")!!
         assertTrue(customUserHeader.contains("app unit_test/0.0.1-PATCH"))
     }
 
@@ -352,7 +352,7 @@ class ClientTests : BaseTest() {
         assertNull(cb.error)
 
         // Request
-        val customUserHeader = server!!.takeRequest().headers.get("X-Contentful-User-Agent")
+        val customUserHeader = server!!.takeRequest().headers.get("X-Contentful-User-Agent")!!
         assertTrue(customUserHeader.contains("integration UNIT_TEST/0.0.1-PATCH"))
     }
 

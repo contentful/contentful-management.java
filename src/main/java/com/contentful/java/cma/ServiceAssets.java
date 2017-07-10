@@ -29,70 +29,67 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
-import rx.Observable;
+import io.reactivex.Flowable;
 
 /**
  * Assets Service.
  */
 interface ServiceAssets {
   @PUT("spaces/{space}/assets/{asset}/archived")
-  Observable<CMAAsset> archive(
+  Flowable<CMAAsset> archive(
       @Path("space") String spaceId,
-      @Path("asset") String assetId,
-      @Body Object body);
+      @Path("asset") String assetId);
 
   @POST("spaces/{space}/assets")
-  Observable<CMAAsset> create(
+  Flowable<CMAAsset> create(
       @Path("space") String spaceId,
       @Body CMAAsset asset);
 
   @PUT("spaces/{space}/assets/{asset}")
-  Observable<CMAAsset> create(
+  Flowable<CMAAsset> create(
       @Path("space") String spaceId,
       @Path("asset") String assetId,
       @Body CMAAsset asset);
 
   @DELETE("spaces/{space}/assets/{asset}")
-  Observable<String> delete(
+  Flowable<String> delete(
       @Path("space") String spaceId,
       @Path("asset") String assetId);
 
   @GET("spaces/{space}/assets")
-  Observable<CMAArray<CMAAsset>> fetchAll(
+  Flowable<CMAArray<CMAAsset>> fetchAll(
       @Path("space") String spaceId,
       @QueryMap Map<String, String> query);
 
   @GET("spaces/{space}/assets/{asset}")
-  Observable<CMAAsset> fetchOne(
+  Flowable<CMAAsset> fetchOne(
       @Path("space") String spaceId,
       @Path("asset") String assetId);
 
   @PUT("spaces/{space}/assets/{asset}/files/{locale}/process")
-  Observable<String> process(
+  Flowable<String> process(
       @Path("space") String spaceId,
       @Path("asset") String assetId,
-      @Path("locale") String locale,
-      @Body Object body);
+      @Path("locale") String locale);
 
   @PUT("spaces/{space}/assets/{asset}/published")
-  Observable<CMAAsset> publish(
+  Flowable<CMAAsset> publish(
       @Header("X-Contentful-Version") Integer version,
       @Path("space") String spaceId,
-      @Path("asset") String assetId,
-      @Body Object body);
+      @Path("asset") String assetId);
 
   @DELETE("spaces/{space}/assets/{asset}/archived")
-  Observable<CMAAsset> unArchive(
+  Flowable<CMAAsset> unArchive(
       @Path("space") String spaceId,
       @Path("asset") String assetId);
 
   @DELETE("spaces/{space}/assets/{asset}/published")
-  Observable<CMAAsset> unPublish(
+  Flowable<CMAAsset> unPublish(
       @Path("space") String spaceId,
       @Path("asset") String assetId);
 
   @PUT("spaces/{space}/assets/{asset}")
-  Observable<CMAAsset> update(
+  Flowable<CMAAsset> update(
       @Header("X-Contentful-Version") Integer version,
       @Path("space") String spaceId,
       @Path("asset") String assetId,

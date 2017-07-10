@@ -19,12 +19,12 @@ package com.contentful.java.cma;
 import com.contentful.java.cma.model.CMAUser;
 
 import retrofit2.http.GET;
-import rx.Observable;
+import io.reactivex.Flowable;
 
 /**
  * Spaces Service.
  */
 interface ServiceUsers {
   @GET("/users/me")
-  Observable<CMAUser> fetchMe();
+  Flowable<CMAUser> fetchMe();
 }

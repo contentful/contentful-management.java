@@ -49,7 +49,7 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
    */
   public CMAArray<CMAApiKey> fetchAll(String spaceId) {
     assertNotNull(spaceId, "spaceId");
-    return service.fetchAll(spaceId).toBlocking().first();
+    return service.fetchAll(spaceId).blockingFirst();
   }
 
   /**
@@ -63,9 +63,9 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
   public CMAArray<CMAApiKey> fetchAll(String spaceId, Map<String, String> query) {
     assertNotNull(spaceId, "spaceId");
     if (query == null) {
-      return service.fetchAll(spaceId).toBlocking().first();
+      return service.fetchAll(spaceId).blockingFirst();
     } else {
-      return service.fetchAll(spaceId, query).toBlocking().first();
+      return service.fetchAll(spaceId, query).blockingFirst();
     }
   }
 
@@ -80,7 +80,7 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
     assertNotNull(spaceId, "entry");
     assertNotNull(keyId, "keyId");
 
-    return service.fetchOne(spaceId, keyId).toBlocking().first();
+    return service.fetchOne(spaceId, keyId).blockingFirst();
   }
 
   /**
@@ -94,7 +94,7 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(key, "key");
 
-    return service.create(spaceId, key).toBlocking().first();
+    return service.create(spaceId, key).blockingFirst();
   }
 
   /**

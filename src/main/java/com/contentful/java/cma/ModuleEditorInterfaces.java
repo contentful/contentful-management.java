@@ -49,7 +49,7 @@ public final class ModuleEditorInterfaces extends AbsModule<ServiceEditorInterfa
    * @return the editor interface for a specific content type on a specific space.
    */
   public CMAEditorInterface fetchOne(String spaceId, String contentTypeId) {
-    return service.fetchOne(spaceId, contentTypeId).toBlocking().first();
+    return service.fetchOne(spaceId, contentTypeId).blockingFirst();
   }
 
   /**
@@ -76,7 +76,7 @@ public final class ModuleEditorInterfaces extends AbsModule<ServiceEditorInterfa
     editor.setSystem(null);
 
     try {
-      return service.update(spaceId, contentTypeId, editor, version).toBlocking().first();
+      return service.update(spaceId, contentTypeId, editor, version).blockingFirst();
     } finally {
       editor.setSystem(old);
     }

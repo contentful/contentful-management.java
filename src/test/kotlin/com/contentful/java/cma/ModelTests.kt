@@ -108,12 +108,14 @@ class ModelTests : BaseTest() {
                 .request(request)
                 .protocol(Protocol.HTTP_1_1)
                 .code(200)
+                .message("")
                 .build()
+
         assertEquals("FAILED REQUEST:\n"
                 + "\tRequest{method=GET, url=https://example.com/, tag=null}\n"
                 + "\t↳ Header{}\n"
                 + "\tResponse{"
-                + "protocol=http/1.1, code=200, message=null, url=https://example.com/}\n"
+                + "protocol=http/1.1, code=200, message=, url=https://example.com/}\n"
                 + "\t↳ Header{}",
                 CMAHttpException(request, response).toString())
     }

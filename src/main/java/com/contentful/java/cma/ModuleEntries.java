@@ -56,7 +56,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     final String entryId = getResourceIdOrThrow(entry, "entry");
     final String spaceId = getSpaceIdOrThrow(entry, "entry");
 
-    return service.archive(spaceId, entryId, new Byte[0]).toBlocking().first();
+    return service.archive(spaceId, entryId).blockingFirst();
   }
 
   /**
@@ -85,9 +85,9 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
 
     try {
       if (entryId == null) {
-        return service.create(spaceId, contentTypeId, entry).toBlocking().first();
+        return service.create(spaceId, contentTypeId, entry).blockingFirst();
       } else {
-        return service.create(spaceId, contentTypeId, entryId, entry).toBlocking().first();
+        return service.create(spaceId, contentTypeId, entryId, entry).blockingFirst();
       }
     } finally {
       entry.setSystem(sys);
@@ -107,7 +107,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(entryId, "entryId");
 
-    return service.delete(spaceId, entryId).toBlocking().first();
+    return service.delete(spaceId, entryId).blockingFirst();
   }
 
   /**
@@ -134,7 +134,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
   public CMAArray<CMAEntry> fetchAll(String spaceId, Map<String, String> query) {
     assertNotNull(spaceId, "spaceId");
     DefaultQueryParameter.putIfNotSet(query, DefaultQueryParameter.FETCH);
-    return service.fetchAll(spaceId, query).toBlocking().first();
+    return service.fetchAll(spaceId, query).blockingFirst();
   }
 
   /**
@@ -147,7 +147,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
   public CMAEntry fetchOne(String spaceId, String entryId) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(entryId, "entryId");
-    return service.fetchOne(spaceId, entryId).toBlocking().first();
+    return service.fetchOne(spaceId, entryId).blockingFirst();
   }
 
   /**
@@ -164,8 +164,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     final String entryId = getResourceIdOrThrow(entry, "entry");
     final String spaceId = getSpaceIdOrThrow(entry, "entry");
 
-    return service.publish(entry.getSystem().getVersion(), spaceId, entryId,
-        new Byte[0]).toBlocking().first();
+    return service.publish(entry.getSystem().getVersion(), spaceId, entryId).blockingFirst();
   }
 
   /**
@@ -182,7 +181,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     final String entryId = getResourceIdOrThrow(entry, "entry");
     final String spaceId = getSpaceIdOrThrow(entry, "entry");
 
-    return service.unArchive(spaceId, entryId).toBlocking().first();
+    return service.unArchive(spaceId, entryId).blockingFirst();
   }
 
   /**
@@ -199,7 +198,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     final String entryId = getResourceIdOrThrow(entry, "entry");
     final String spaceId = getSpaceIdOrThrow(entry, "entry");
 
-    return service.entriesUnPublish(spaceId, entryId).toBlocking().first();
+    return service.entriesUnPublish(spaceId, entryId).blockingFirst();
   }
 
   /**
@@ -221,7 +220,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     final CMASystem system = entry.getSystem();
     entry.setSystem(null);
     try {
-      return service.update(version, spaceId, entryId, entry).toBlocking().first();
+      return service.update(version, spaceId, entryId, entry).blockingFirst();
     } finally {
       entry.setSystem(system);
     }
@@ -242,7 +241,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     final String entryId = getResourceIdOrThrow(entry, "entry");
     final String spaceId = getSpaceIdOrThrow(entry, "entry");
 
-    return service.fetchAllSnapshots(spaceId, entryId).toBlocking().first();
+    return service.fetchAllSnapshots(spaceId, entryId).blockingFirst();
   }
 
   /**
@@ -264,7 +263,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     final String entryId = getResourceIdOrThrow(entry, "entry");
     final String spaceId = getSpaceIdOrThrow(entry, "entry");
 
-    return service.fetchOneSnapshot(spaceId, entryId, snapshotId).toBlocking().first();
+    return service.fetchOneSnapshot(spaceId, entryId, snapshotId).blockingFirst();
   }
 
   /**

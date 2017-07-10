@@ -30,42 +30,42 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
-import rx.Observable;
+import io.reactivex.Flowable;
 
 /**
  * Ui Extensions Service.
  */
 interface ServiceUiExtensions {
   @GET("/spaces/{spaceId}/extensions")
-  Observable<CMAArray<CMAUiExtension>> fetchAll(@Path("spaceId") String spaceId);
+  Flowable<CMAArray<CMAUiExtension>> fetchAll(@Path("spaceId") String spaceId);
 
   @GET("/spaces/{spaceId}/extensions")
-  Observable<CMAArray<CMAUiExtension>> fetchAll(
+  Flowable<CMAArray<CMAUiExtension>> fetchAll(
       @Path("spaceId") String spaceId,
       @QueryMap Map<String, String> query
   );
 
   @GET("/spaces/{spaceId}/extensions/{extensionId}")
-  Observable<CMAUiExtension> fetchOne(
+  Flowable<CMAUiExtension> fetchOne(
       @Path("spaceId") String spaceId,
       @Path("extensionId") String extensionId
   );
 
   @POST("/spaces/{spaceId}/extensions")
-  Observable<CMAUiExtension> create(
+  Flowable<CMAUiExtension> create(
       @Path("spaceId") String spaceId,
       @Body CMAUiExtension extension
   );
 
   @PUT("/spaces/{spaceId}/extensions/{extensionId}")
-  Observable<CMAUiExtension> create(
+  Flowable<CMAUiExtension> create(
       @Path("spaceId") String spaceId,
       @Path("extensionId") String extensionId,
       @Body CMAUiExtension extension
   );
 
   @PUT("/spaces/{spaceId}/extensions/{extensionId}")
-  Observable<CMAUiExtension> update(
+  Flowable<CMAUiExtension> update(
       @Path("spaceId") String spaceId,
       @Path("extensionId") String extensionId,
       @Body CMAUiExtension extension,
@@ -73,7 +73,7 @@ interface ServiceUiExtensions {
   );
 
   @DELETE("/spaces/{spaceId}/extensions/{extensionId}")
-  Observable<Response<Void>> delete(
+  Flowable<Response<Void>> delete(
       @Path("spaceId") String spaceId,
       @Path("extensionId") String extensionId,
       @Header("X-Contentful-Version") Integer version

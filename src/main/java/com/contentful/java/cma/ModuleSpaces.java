@@ -52,7 +52,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
    */
   public CMASpace create(String spaceName) {
     assertNotNull(spaceName, "spaceName");
-    return service.create(new CMASpace().setName(spaceName).setSystem(null)).toBlocking().first();
+    return service.create(new CMASpace().setName(spaceName).setSystem(null)).blockingFirst();
   }
 
   /**
@@ -69,7 +69,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
     space.setSystem(null);
 
     try {
-      return service.create(space).toBlocking().first();
+      return service.create(space).blockingFirst();
     } finally {
       space.setSystem(system);
     }
@@ -89,7 +89,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
     assertNotNull(organizationId, "organizationId");
 
     return service.create(organizationId, new CMASpace().setName(spaceName).setSystem(null))
-        .toBlocking().first();
+        .blockingFirst();
   }
 
   /**
@@ -111,7 +111,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
     space.setSystem(null);
 
     try {
-      return service.create(organizationId, space).toBlocking().first();
+      return service.create(organizationId, space).blockingFirst();
     } finally {
       space.setSystem(system);
     }
@@ -126,7 +126,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
    */
   public String delete(String spaceId) {
     assertNotNull(spaceId, "spaceId");
-    return service.delete(spaceId).toBlocking().first();
+    return service.delete(spaceId).blockingFirst();
   }
 
   /**
@@ -146,7 +146,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
    */
   public CMAArray<CMASpace> fetchAll(Map<String, String> query) {
     DefaultQueryParameter.putIfNotSet(query, DefaultQueryParameter.FETCH);
-    return service.fetchAll(query).toBlocking().first();
+    return service.fetchAll(query).blockingFirst();
   }
 
   /**
@@ -158,7 +158,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
    */
   public CMASpace fetchOne(String spaceId) {
     assertNotNull(spaceId, "spaceId");
-    return service.fetchOne(spaceId).toBlocking().first();
+    return service.fetchOne(spaceId).blockingFirst();
   }
 
   /**
@@ -183,7 +183,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
   public CMAArray<CMALocale> fetchLocales(String spaceId, Map<String, String> query) {
     assertNotNull(spaceId, "spaceId");
     DefaultQueryParameter.putIfNotSet(query, DefaultQueryParameter.FETCH);
-    return service.fetchLocales(spaceId, query).toBlocking().first();
+    return service.fetchLocales(spaceId, query).blockingFirst();
   }
 
   /**
@@ -206,7 +206,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
     space.setSystem(null);
 
     try {
-      return service.update(version, spaceId, space).toBlocking().first();
+      return service.update(version, spaceId, space).blockingFirst();
     } finally {
       space.setSystem(system);
     }

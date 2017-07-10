@@ -44,7 +44,7 @@ public final class ModuleUsers extends AbsModule<ServiceUsers> {
    * @return {@link CMAUser} result instance
    */
   public CMAUser fetchMe() {
-    return service.fetchMe().toBlocking().first();
+    return service.fetchMe().blockingFirst();
   }
 
   /**

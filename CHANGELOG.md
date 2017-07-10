@@ -15,6 +15,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Add: [Snapshots](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/snapshots/entry-snapshots-collection).
 - Add: Query parameter for all collection endpoints. (skip and limit your responses)
 - Add: Ability to track rate limit headers.
+- Polishing: Update dependencies
+  - commonsio 2.5 (was 2.4)
+  - junit: 4.12 (was 4.11)
+  - okhttp: 3.8.1 (was 3.2.0)
+  - rxjava: 2.1.1 (was 1.0.13)
+  - mockito: 2.8.47 (was 1.10.8)
 
 ## Version [2.0.0] - 2017-04-19
 - New: [`Upload` module](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/uploads).
