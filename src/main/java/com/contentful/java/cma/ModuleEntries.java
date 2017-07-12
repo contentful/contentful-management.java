@@ -99,15 +99,15 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
    *
    * @param spaceId Space ID
    * @param entryId Entry ID
-   * @return String representing the success (203) of the action
+   * @return Integer representing the success (204) of the action
    * @throws IllegalArgumentException if spaceId is null.
    * @throws IllegalArgumentException if entry is null.
    */
-  public String delete(String spaceId, String entryId) {
+  public Integer delete(String spaceId, String entryId) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(entryId, "entryId");
 
-    return service.delete(spaceId, entryId).blockingFirst();
+    return service.delete(spaceId, entryId).blockingFirst().code();
   }
 
   /**
@@ -198,7 +198,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     final String entryId = getResourceIdOrThrow(entry, "entry");
     final String spaceId = getSpaceIdOrThrow(entry, "entry");
 
-    return service.entriesUnPublish(spaceId, entryId).blockingFirst();
+    return service.unPublish(spaceId, entryId).blockingFirst();
   }
 
   /**
@@ -327,10 +327,11 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if entry is null.
      */
-    public CMACallback<String> delete(final String spaceId, final String entryId,
-                                      CMACallback<String> callback) {
-      return defer(new RxExtensions.DefFunc<String>() {
-        @Override String method() {
+    public CMACallback<Integer> delete(final String spaceId,
+                                       final String entryId,
+                                       CMACallback<Integer> callback) {
+      return defer(new RxExtensions.DefFunc<Integer>() {
+        @Override Integer method() {
           return ModuleEntries.this.delete(spaceId, entryId);
         }
       }, callback);

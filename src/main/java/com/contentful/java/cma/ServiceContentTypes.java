@@ -22,6 +22,7 @@ import com.contentful.java.cma.model.CMASnapshot;
 
 import java.util.Map;
 
+import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -48,7 +49,7 @@ interface ServiceContentTypes {
       @Body CMAContentType contentType);
 
   @DELETE("/spaces/{space}/content_types/{content_type}")
-  Flowable<String> delete(
+  Flowable<Response<Void>> delete(
       @Path("space") String spaceId,
       @Path("content_type") String contentTypeId);
 

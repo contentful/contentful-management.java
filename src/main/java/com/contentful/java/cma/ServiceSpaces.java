@@ -22,6 +22,7 @@ import com.contentful.java.cma.model.CMASpace;
 
 import java.util.Map;
 
+import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -46,7 +47,7 @@ interface ServiceSpaces {
       @Body CMASpace space);
 
   @DELETE("/spaces/{space}")
-  Flowable<String> delete(
+  Flowable<Response<Void>> delete(
       @Path("space") String spaceId);
 
   @GET("/spaces")

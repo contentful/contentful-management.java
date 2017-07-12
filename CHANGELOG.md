@@ -15,6 +15,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Add: [Snapshots](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/snapshots/entry-snapshots-collection).
 - Add: Query parameter for all collection endpoints. (skip and limit your responses)
 - Add: Ability to track rate limit headers.
+- Fix: Return HTTP Code of no content methods.
 - Polishing: Update dependencies
   - commonsio 2.5 (was 2.4)
   - junit: 4.12 (was 4.11)

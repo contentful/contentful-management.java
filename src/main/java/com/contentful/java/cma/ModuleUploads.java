@@ -168,7 +168,7 @@ public final class ModuleUploads extends AbsModule<ServiceUploads> {
      *
      * @param spaceId  space id of the upload.
      * @param uploadId id of the upload
-     * @return the response code, 203, if successful.
+     * @return the response code, 204, if successful.
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if uploadId is null.
      */
