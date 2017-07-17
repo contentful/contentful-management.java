@@ -92,18 +92,18 @@ public class EntrySerializer implements JsonSerializer<CMAEntry> {
       throw new IllegalArgumentException("Entry contains link to draft resource (has no ID).");
     }
 
-    CMAType type = resource.getSystem().getType();
-    if (type == null) {
+    CMAType linkedType = resource.getSystem().getLinkType();
+    if (linkedType == null) {
       if (resource instanceof CMAAsset) {
-        type = CMAType.Asset;
+        linkedType = CMAType.Asset;
       } else if (resource instanceof CMAEntry) {
-        type = CMAType.Entry;
+        linkedType = CMAType.Entry;
       }
     }
 
     JsonObject sys = new JsonObject();
     sys.addProperty("type", Link.toString());
-    sys.addProperty("linkType", type.toString());
+    sys.addProperty("linkType", linkedType.toString());
     sys.addProperty("id", id);
 
     JsonObject result = new JsonObject();
