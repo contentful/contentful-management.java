@@ -121,12 +121,12 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
    * Delete a Space.
    *
    * @param spaceId Space ID
-   * @return String representing the result (203, or an error code)
+   * @return Integer representing the result (204, or an error code)
    * @throws IllegalArgumentException if space's id is null.
    */
-  public String delete(String spaceId) {
+  public Integer delete(String spaceId) {
     assertNotNull(spaceId, "spaceId");
-    return service.delete(spaceId).blockingFirst();
+    return service.delete(spaceId).blockingFirst().code();
   }
 
   /**
@@ -302,9 +302,10 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
      * @return the given {@code CMACallback} instance
      * @throws IllegalArgumentException if space's id is null.
      */
-    public CMACallback<String> delete(final String spaceId, CMACallback<String> callback) {
-      return defer(new DefFunc<String>() {
-        @Override String method() {
+    public CMACallback<Integer> delete(final String spaceId,
+                                       CMACallback<Integer> callback) {
+      return defer(new DefFunc<Integer>() {
+        @Override Integer method() {
           return ModuleSpaces.this.delete(spaceId);
         }
       }, callback);

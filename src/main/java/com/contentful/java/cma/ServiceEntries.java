@@ -22,6 +22,7 @@ import com.contentful.java.cma.model.CMASnapshot;
 
 import java.util.Map;
 
+import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -41,6 +42,11 @@ interface ServiceEntries {
       @Path("space") String spaceId,
       @Path("entry") String entryId);
 
+  @DELETE("/spaces/{space}/entries/{entry}/archived")
+  Flowable<CMAEntry> unArchive(
+      @Path("space") String spaceId,
+      @Path("entry") String entryId);
+
   @POST("/spaces/{space}/entries")
   Flowable<CMAEntry> create(
       @Path("space") String spaceId,
@@ -55,7 +61,7 @@ interface ServiceEntries {
       @Body CMAEntry entry);
 
   @DELETE("/spaces/{space}/entries/{entry}")
-  Flowable<String> delete(
+  Flowable<Response<Void>> delete(
       @Path("space") String spaceId,
       @Path("entry") String entryId);
 
@@ -86,13 +92,8 @@ interface ServiceEntries {
       @Path("space") String spaceId,
       @Path("entry") String entryId);
 
-  @DELETE("/spaces/{space}/entries/{entry}/archived")
-  Flowable<CMAEntry> unArchive(
-      @Path("space") String spaceId,
-      @Path("entry") String entryId);
-
   @DELETE("/spaces/{space}/entries/{entry}/published")
-  Flowable<CMAEntry> entriesUnPublish(
+  Flowable<CMAEntry> unPublish(
       @Path("space") String spaceId,
       @Path("entry") String entryId);
 

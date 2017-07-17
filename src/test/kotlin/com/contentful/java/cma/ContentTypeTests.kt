@@ -148,8 +148,8 @@ class ContentTypeTests : BaseTest() {
     }
 
     @test fun testDelete() {
-        val requestBody = "203"
-        server!!.enqueue(MockResponse().setResponseCode(200).setBody(requestBody))
+        val requestBody = ""
+        server!!.enqueue(MockResponse().setResponseCode(204).setBody(requestBody))
 
         assertTestCallback(client!!.contentTypes().async().delete(
                 "spaceid", "contenttypeid", TestCallback()) as TestCallback)

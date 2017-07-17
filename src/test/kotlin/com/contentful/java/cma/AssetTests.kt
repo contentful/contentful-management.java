@@ -101,8 +101,8 @@ class AssetTests : BaseTest() {
 
     @test
     fun testDelete() {
-        val responseBody = "203"
-        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+        val responseBody = ""
+        server!!.enqueue(MockResponse().setResponseCode(204).setBody(responseBody))
         assertTestCallback(client!!.assets().async().delete(
                 "spaceid", "assetid", TestCallback()) as TestCallback)
 
@@ -169,8 +169,8 @@ class AssetTests : BaseTest() {
 
     @test
     fun testProcess() {
-        val responseBody = "203"
-        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+        val responseBody = ""
+        server!!.enqueue(MockResponse().setResponseCode(204).setBody(responseBody))
 
         val asset = CMAAsset()
                 .setId("assetid")

@@ -21,6 +21,7 @@ import com.contentful.java.cma.model.CMAAsset;
 
 import java.util.Map;
 
+import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -52,7 +53,7 @@ interface ServiceAssets {
       @Body CMAAsset asset);
 
   @DELETE("spaces/{space}/assets/{asset}")
-  Flowable<String> delete(
+  Flowable<Response<Void>> delete(
       @Path("space") String spaceId,
       @Path("asset") String assetId);
 
@@ -67,7 +68,7 @@ interface ServiceAssets {
       @Path("asset") String assetId);
 
   @PUT("spaces/{space}/assets/{asset}/files/{locale}/process")
-  Flowable<String> process(
+  Flowable<Response<Void>> process(
       @Path("space") String spaceId,
       @Path("asset") String assetId,
       @Path("locale") String locale);

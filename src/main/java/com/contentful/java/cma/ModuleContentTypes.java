@@ -82,14 +82,14 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
    *
    * @param spaceId       Space ID
    * @param contentTypeId Content Type ID
-   * @return String representing the result of the operation
+   * @return Integer representing the result of the operation
    * @throws IllegalArgumentException if spaceId is null.
    * @throws IllegalArgumentException if contentTypeId is null.
    */
-  public String delete(String spaceId, String contentTypeId) {
+  public Integer delete(String spaceId, String contentTypeId) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(contentTypeId, "contentTypeId");
-    return service.delete(spaceId, contentTypeId).blockingFirst();
+    return service.delete(spaceId, contentTypeId).blockingFirst().code();
   }
 
   /**
@@ -238,7 +238,7 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
    * @throws IllegalArgumentException if snapshotId is null.
    */
   public CMASnapshot fetchOneSnapshot(CMAContentType contentType,
-                                       String snapshotId) {
+                                      String snapshotId) {
     assertNotNull(contentType, "contentType");
     assertNotNull(snapshotId, "snapshotId");
 
@@ -293,10 +293,11 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if contentTypeId is null.
      */
-    public CMACallback<String> delete(final String spaceId, final String contentTypeId,
-                                      CMACallback<String> callback) {
-      return defer(new DefFunc<String>() {
-        @Override String method() {
+    public CMACallback<Integer> delete(final String spaceId,
+                                       final String contentTypeId,
+                                       CMACallback<Integer> callback) {
+      return defer(new DefFunc<Integer>() {
+        @Override Integer method() {
           return ModuleContentTypes.this.delete(spaceId, contentTypeId);
         }
       }, callback);
