@@ -47,8 +47,8 @@ class RolesTests : BaseTest() {
         assertEquals(9, result.policies.size)
         val policy = result.policies[0]
         assertEquals("allow", policy.effect)
-        assertEquals(1, (policy.actions as List<String>).size)
-        assertEquals("read", (policy.actions as List<String>)[0])
+        assertEquals(1, (policy.actions as List<*>).size)
+        assertEquals("read", (policy.actions as List<*>)[0])
 
         assertNotNull(policy.constraint)
         assertNull(policy.constraint.or)
@@ -60,9 +60,9 @@ class RolesTests : BaseTest() {
 
         assertNotNull(result.permissions)
         assertNotNull(result.permissions.contentModel)
-        assertEquals(1, (result.permissions.contentModel as List<String>).size)
+        assertEquals(1, (result.permissions.contentModel as List<*>).size)
         assertNotNull(result.permissions.settings)
-        assertEquals(0, (result.permissions.settings as List<String>).size)
+        assertEquals(0, (result.permissions.settings as List<*>).size)
         assertNotNull(result.permissions.contentDelivery)
         assertNotNull("all", result.permissions.contentDelivery as String?)
 
@@ -189,7 +189,7 @@ class RolesTests : BaseTest() {
         assertEquals("Test role", result.description)
         assertEquals(1, result.policies.size)
         assertEquals(ALLOW, result.policies[0].effect)
-        val actions = result.policies[0].actions as List<String>
+        val actions = result.policies[0].actions as List<*>
         assertTrue(actions.contains("read"))
         assertTrue(actions.contains("create"))
         assertTrue(actions.contains("update"))

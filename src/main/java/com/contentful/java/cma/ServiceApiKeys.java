@@ -26,27 +26,27 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
-import rx.Observable;
+import io.reactivex.Flowable;
 
 /**
  * Api Token Service.
  */
 interface ServiceApiKeys {
   @GET("/spaces/{spaceId}/api_keys")
-  Observable<CMAArray<CMAApiKey>> fetchAll(@Path("spaceId") String spaceId);
+  Flowable<CMAArray<CMAApiKey>> fetchAll(@Path("spaceId") String spaceId);
 
   @GET("/spaces/{spaceId}/api_keys")
-  Observable<CMAArray<CMAApiKey>> fetchAll(
+  Flowable<CMAArray<CMAApiKey>> fetchAll(
       @Path("spaceId") String spaceId,
       @QueryMap Map<String, String> query
   );
 
   @GET("/spaces/{spaceId}/api_keys/{keyId}")
-  Observable<CMAApiKey> fetchOne(@Path("spaceId") String spaceId,
+  Flowable<CMAApiKey> fetchOne(@Path("spaceId") String spaceId,
                                  @Path("keyId") String keyId);
 
   @POST("/spaces/{spaceId}/api_keys")
-  Observable<CMAApiKey> create(@Path("spaceId") String spaceId,
+  Flowable<CMAApiKey> create(@Path("spaceId") String spaceId,
                                @Body CMAApiKey key);
 
 }

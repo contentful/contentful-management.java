@@ -25,7 +25,6 @@ import okhttp3.mockwebserver.MockResponse
 import java.io.IOException
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
-import kotlin.test.assertNull
 import org.junit.Test as test
 
 class WebhookTests : BaseTest() {
@@ -78,13 +77,13 @@ class WebhookTests : BaseTest() {
 
     @test
     fun testDelete() {
-        server!!.enqueue(MockResponse().setResponseCode(204))
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody("200"))
 
-        val callback: TestCallback<String> = TestCallback(true)
+        val callback: TestCallback<Int> = TestCallback(true)
         assertTestCallback(client!!.webhooks().async().delete(
                 "spaceid", "webhookid", callback) as TestCallback)
 
-        assertNull(callback.value)
+        assertEquals(200, callback.value)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -125,7 +124,7 @@ class WebhookTests : BaseTest() {
         val responseBody = TestUtils.fileToString("webhook_fetch_all_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
-        val result = assertTestCallback(client!!.webhooks().async().fetchAll(
+        assertTestCallback(client!!.webhooks().async().fetchAll(
                 "spaceid",
                 hashMapOf("limit" to "3"),
                 TestCallback()) as TestCallback)!!

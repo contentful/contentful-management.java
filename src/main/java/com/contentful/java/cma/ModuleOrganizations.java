@@ -46,7 +46,7 @@ public final class ModuleOrganizations extends AbsModule<ServiceOrganizations> {
    * @return {@link CMAOrganization} result instance
    */
   public CMAArray<CMAOrganization> fetchAll() {
-    return service.fetchAll().toBlocking().first();
+    return service.fetchAll().blockingFirst();
   }
 
   /**
@@ -57,9 +57,9 @@ public final class ModuleOrganizations extends AbsModule<ServiceOrganizations> {
    */
   public CMAArray<CMAOrganization> fetchAll(Map<String, String> query) {
     if (query == null) {
-      return service.fetchAll().toBlocking().first();
+      return service.fetchAll().blockingFirst();
     } else {
-      return service.fetchAll(query).toBlocking().first();
+      return service.fetchAll(query).blockingFirst();
     }
   }
 

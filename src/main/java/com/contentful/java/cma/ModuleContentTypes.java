@@ -68,9 +68,9 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
 
     try {
       if (contentTypeId == null) {
-        return service.create(spaceId, contentType).toBlocking().first();
+        return service.create(spaceId, contentType).blockingFirst();
       } else {
-        return service.create(spaceId, contentTypeId, contentType).toBlocking().first();
+        return service.create(spaceId, contentTypeId, contentType).blockingFirst();
       }
     } finally {
       contentType.setSystem(sys);
@@ -82,14 +82,14 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
    *
    * @param spaceId       Space ID
    * @param contentTypeId Content Type ID
-   * @return String representing the result of the operation
+   * @return Integer representing the result of the operation
    * @throws IllegalArgumentException if spaceId is null.
    * @throws IllegalArgumentException if contentTypeId is null.
    */
-  public String delete(String spaceId, String contentTypeId) {
+  public Integer delete(String spaceId, String contentTypeId) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(contentTypeId, "contentTypeId");
-    return service.delete(spaceId, contentTypeId).toBlocking().first();
+    return service.delete(spaceId, contentTypeId).blockingFirst().code();
   }
 
   /**
@@ -116,7 +116,7 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
   public CMAArray<CMAContentType> fetchAll(String spaceId, Map<String, String> query) {
     assertNotNull(spaceId, "spaceId");
     DefaultQueryParameter.putIfNotSet(query, DefaultQueryParameter.FETCH);
-    return service.fetchAll(spaceId, query).toBlocking().first();
+    return service.fetchAll(spaceId, query).blockingFirst();
   }
 
   /**
@@ -131,7 +131,7 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
   public CMAContentType fetchOne(String spaceId, String contentTypeId) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(contentTypeId, "contentTypeId");
-    return service.fetchOne(spaceId, contentTypeId).toBlocking().first();
+    return service.fetchOne(spaceId, contentTypeId).blockingFirst();
   }
 
   /**
@@ -152,9 +152,8 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
     return service.publish(
         contentType.getVersion(),
         spaceId,
-        contentTypeId,
-        new Byte[0]
-    ).toBlocking().first();
+        contentTypeId
+    ).blockingFirst();
   }
 
   /**
@@ -172,7 +171,7 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
     final String contentTypeId = getResourceIdOrThrow(contentType, "contentType");
     final String spaceId = getSpaceIdOrThrow(contentType, "contentType");
 
-    return service.unPublish(spaceId, contentTypeId).toBlocking().first();
+    return service.unPublish(spaceId, contentTypeId).blockingFirst();
   }
 
   /**
@@ -203,7 +202,7 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
           spaceId,
           contentTypeId,
           contentType
-      ).toBlocking().first();
+      ).blockingFirst();
     } finally {
       contentType.setSystem(system);
     }
@@ -224,7 +223,7 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
     final String contentTypeId = getResourceIdOrThrow(contentType, "contentType");
     final String spaceId = getSpaceIdOrThrow(contentType, "contentType");
 
-    return service.fetchAllSnapshots(spaceId, contentTypeId).toBlocking().first();
+    return service.fetchAllSnapshots(spaceId, contentTypeId).blockingFirst();
   }
 
   /**
@@ -239,14 +238,14 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
    * @throws IllegalArgumentException if snapshotId is null.
    */
   public CMASnapshot fetchOneSnapshot(CMAContentType contentType,
-                                       String snapshotId) {
+                                      String snapshotId) {
     assertNotNull(contentType, "contentType");
     assertNotNull(snapshotId, "snapshotId");
 
     final String contentTypeId = getResourceIdOrThrow(contentType, "contentType");
     final String spaceId = getSpaceIdOrThrow(contentType, "contentType");
 
-    return service.fetchOneSnapshot(spaceId, contentTypeId, snapshotId).toBlocking().first();
+    return service.fetchOneSnapshot(spaceId, contentTypeId, snapshotId).blockingFirst();
   }
 
   /**
@@ -294,10 +293,11 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if contentTypeId is null.
      */
-    public CMACallback<String> delete(final String spaceId, final String contentTypeId,
-                                      CMACallback<String> callback) {
-      return defer(new DefFunc<String>() {
-        @Override String method() {
+    public CMACallback<Integer> delete(final String spaceId,
+                                       final String contentTypeId,
+                                       CMACallback<Integer> callback) {
+      return defer(new DefFunc<Integer>() {
+        @Override Integer method() {
           return ModuleContentTypes.this.delete(spaceId, contentTypeId);
         }
       }, callback);

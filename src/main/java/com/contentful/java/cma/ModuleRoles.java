@@ -56,7 +56,7 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
    */
   public CMAArray<CMARole> fetchAll(String spaceId) {
     assertNotNull(spaceId, "spaceId");
-    return service.fetchAll(spaceId).toBlocking().first();
+    return service.fetchAll(spaceId).blockingFirst();
   }
 
   /**
@@ -70,9 +70,9 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
   public CMAArray<CMARole> fetchAll(String spaceId, Map<String, String> query) {
     assertNotNull(spaceId, "spaceId");
     if (query == null) {
-      return service.fetchAll(spaceId).toBlocking().first();
+      return service.fetchAll(spaceId).blockingFirst();
     } else {
-      return service.fetchAll(spaceId, query).toBlocking().first();
+      return service.fetchAll(spaceId, query).blockingFirst();
     }
   }
 
@@ -89,7 +89,7 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(roleId, "roleId");
 
-    return service.fetchOne(spaceId, roleId).toBlocking().first();
+    return service.fetchOne(spaceId, roleId).blockingFirst();
   }
 
   /**
@@ -109,7 +109,7 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
     role.setSystem(null);
 
     try {
-      return service.create(spaceId, role).toBlocking().first();
+      return service.create(spaceId, role).blockingFirst();
     } finally {
       role.setSystem(sys);
     }
@@ -139,7 +139,7 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
     role.setSystem(null);
 
     try {
-      return service.update(spaceId, id, role, version).toBlocking().first();
+      return service.update(spaceId, id, role, version).blockingFirst();
     } finally {
       role.setSystem(sys);
     }
@@ -167,7 +167,7 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
     role.setSystem(null);
 
     try {
-      final Response<Void> response = service.delete(spaceId, id).toBlocking().first();
+      final Response<Void> response = service.delete(spaceId, id).blockingFirst();
       return response.code();
     } finally {
       role.setSystem(sys);

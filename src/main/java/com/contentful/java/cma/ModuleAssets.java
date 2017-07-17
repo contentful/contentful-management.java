@@ -56,7 +56,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     final String assetId = getResourceIdOrThrow(asset, "asset");
     final String spaceId = getSpaceIdOrThrow(asset, "asset");
 
-    return service.archive(spaceId, assetId, new Byte[0]).toBlocking().first();
+    return service.archive(spaceId, assetId).blockingFirst();
   }
 
   /**
@@ -83,9 +83,9 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
 
     try {
       if (assetId == null) {
-        return service.create(spaceId, asset).toBlocking().first();
+        return service.create(spaceId, asset).blockingFirst();
       } else {
-        return service.create(spaceId, assetId, asset).toBlocking().first();
+        return service.create(spaceId, assetId, asset).blockingFirst();
       }
     } finally {
       asset.setSystem(sys);
@@ -97,15 +97,15 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
    *
    * @param spaceId Space ID
    * @param assetId Asset ID
-   * @return A string representing the result of the delete operation
+   * @return An integer representing the result of the delete operation
    * @throws IllegalArgumentException if spaceId is null.
    * @throws IllegalArgumentException if assetId is null.
    */
-  public String delete(String spaceId, String assetId) {
+  public Integer delete(String spaceId, String assetId) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(assetId, "assetId");
 
-    return service.delete(spaceId, assetId).toBlocking().first();
+    return service.delete(spaceId, assetId).blockingFirst().code();
   }
 
   /**
@@ -133,7 +133,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     assertNotNull(spaceId, "spaceId");
     DefaultQueryParameter.putIfNotSet(query, DefaultQueryParameter.FETCH);
 
-    return service.fetchAll(spaceId, query).toBlocking().first();
+    return service.fetchAll(spaceId, query).blockingFirst();
   }
 
   /**
@@ -149,7 +149,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(assetId, "assetId");
 
-    return service.fetchOne(spaceId, assetId).toBlocking().first();
+    return service.fetchOne(spaceId, assetId).blockingFirst();
   }
 
   /**
@@ -157,18 +157,18 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
    *
    * @param asset  Asset
    * @param locale Locale
-   * @return String representing the success (203) of processing
+   * @return integer representing the success (204 = no content) of processing
    * @throws IllegalArgumentException if asset is null.
    * @throws IllegalArgumentException if asset has no id.
    * @throws IllegalArgumentException if asset has no space.
    * @throws IllegalArgumentException if locale is null.
    */
-  public String process(CMAAsset asset, String locale) {
+  public Integer process(CMAAsset asset, String locale) {
     assertNotNull(asset, "asset");
     final String assetId = getResourceIdOrThrow(asset, "asset");
     final String spaceId = getSpaceIdOrThrow(asset, "asset");
 
-    return service.process(spaceId, assetId, locale, new Byte[0]).toBlocking().first();
+    return service.process(spaceId, assetId, locale).blockingFirst().code();
   }
 
   /**
@@ -185,8 +185,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     final String assetId = getResourceIdOrThrow(asset, "asset");
     final String spaceId = getSpaceIdOrThrow(asset, "asset");
 
-    return service.publish(asset.getSystem().getVersion(), spaceId, assetId,
-        new Byte[0]).toBlocking().first();
+    return service.publish(asset.getSystem().getVersion(), spaceId, assetId).blockingFirst();
   }
 
   /**
@@ -204,7 +203,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     final String assetId = getResourceIdOrThrow(asset, "asset");
     final String spaceId = getSpaceIdOrThrow(asset, "asset");
 
-    return service.unArchive(spaceId, assetId).toBlocking().first();
+    return service.unArchive(spaceId, assetId).blockingFirst();
   }
 
   /**
@@ -221,7 +220,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     final String assetId = getResourceIdOrThrow(asset, "asset");
     final String spaceId = getSpaceIdOrThrow(asset, "asset");
 
-    return service.unPublish(spaceId, assetId).toBlocking().first();
+    return service.unPublish(spaceId, assetId).blockingFirst();
   }
 
   /**
@@ -244,7 +243,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     asset.setSystem(null);
 
     try {
-      return service.update(version, spaceId, assetId, asset).toBlocking().first();
+      return service.update(version, spaceId, assetId, asset).blockingFirst();
     } finally {
       asset.setSystem(sys);
     }
@@ -312,10 +311,11 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if assetId is null.
      */
-    public CMACallback<String> delete(final String spaceId, final String assetId,
-                                      CMACallback<String> callback) {
-      return defer(new DefFunc<String>() {
-        @Override String method() {
+    public CMACallback<Integer> delete(final String spaceId,
+                                       final String assetId,
+                                       CMACallback<Integer> callback) {
+      return defer(new DefFunc<Integer>() {
+        @Override Integer method() {
           return ModuleAssets.this.delete(spaceId, assetId);
         }
       }, callback);
@@ -384,10 +384,10 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
      * @throws IllegalArgumentException if asset has no space.
      * @throws IllegalArgumentException if locale is null.
      */
-    public CMACallback<String> process(final CMAAsset asset, final String locale,
-                                       CMACallback<String> callback) {
-      return defer(new DefFunc<String>() {
-        @Override String method() {
+    public CMACallback<Integer> process(final CMAAsset asset, final String locale,
+                                        CMACallback<Integer> callback) {
+      return defer(new DefFunc<Integer>() {
+        @Override Integer method() {
           return ModuleAssets.this.process(asset, locale);
         }
       }, callback);

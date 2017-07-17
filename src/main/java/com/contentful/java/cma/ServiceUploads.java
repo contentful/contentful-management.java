@@ -25,7 +25,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
-import rx.Observable;
+import io.reactivex.Flowable;
 
 /**
  * UploadsService.
@@ -34,17 +34,17 @@ import rx.Observable;
  */
 interface ServiceUploads {
   @POST("spaces/{spaceId}/uploads")
-  Observable<CMAUpload> create(
+  Flowable<CMAUpload> create(
       @Path("spaceId") String spaceId,
       @Body RequestBody payload);
 
   @GET("spaces/{spaceId}/uploads/{uploadId}")
-  Observable<CMAUpload> fetchOne(
+  Flowable<CMAUpload> fetchOne(
       @Path("spaceId") String spaceId,
       @Path("uploadId") String uploadId);
 
   @DELETE("spaces/{spaceId}/uploads/{uploadId}")
-  Observable<Response<Void>> delete(
+  Flowable<Response<Void>> delete(
       @Path("spaceId") String spaceId,
       @Path("uploadId") String uploadId);
 }

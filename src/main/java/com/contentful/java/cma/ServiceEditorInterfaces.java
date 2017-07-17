@@ -23,20 +23,20 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
-import rx.Observable;
+import io.reactivex.Flowable;
 
 /**
  * Editor Interfaces Service.
  */
 interface ServiceEditorInterfaces {
   @GET("/spaces/{spaceId}/content_types/{contentTypeId}/editor_interface")
-  Observable<CMAEditorInterface> fetchOne(
+  Flowable<CMAEditorInterface> fetchOne(
       @Path("spaceId") String spaceId,
       @Path("contentTypeId") String contentTypeId
   );
 
   @PUT("/spaces/{spaceId}/content_types/{contentTypeId}/editor_interface")
-  Observable<CMAEditorInterface> update(
+  Flowable<CMAEditorInterface> update(
       @Path("spaceId") String spaceId,
       @Path("contentTypeId") String contentTypeId,
       @Body CMAEditorInterface editor,

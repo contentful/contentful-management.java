@@ -56,7 +56,7 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(extensionId, "extensionId");
 
-    return service.fetchOne(spaceId, extensionId).toBlocking().first();
+    return service.fetchOne(spaceId, extensionId).blockingFirst();
   }
 
   /**
@@ -66,7 +66,7 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
   public CMAArray<CMAUiExtension> fetchAll(String spaceId) {
     assertNotNull(spaceId, "spaceId");
 
-    return service.fetchAll(spaceId).toBlocking().first();
+    return service.fetchAll(spaceId).blockingFirst();
   }
 
   /**
@@ -77,9 +77,9 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
     assertNotNull(spaceId, "spaceId");
 
     if (query == null) {
-      return service.fetchAll(spaceId).toBlocking().first();
+      return service.fetchAll(spaceId).blockingFirst();
     } else {
-      return service.fetchAll(spaceId, query).toBlocking().first();
+      return service.fetchAll(spaceId, query).blockingFirst();
     }
   }
 
@@ -102,7 +102,7 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
     extension.setSystem(null);
 
     try {
-      return service.update(spaceId, id, extension, version).toBlocking().first();
+      return service.update(spaceId, id, extension, version).blockingFirst();
     } finally {
       extension.setSystem(system);
     }
@@ -127,7 +127,7 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
     extension.setSystem(null);
 
     try {
-      return service.delete(spaceId, extensionId, version).toBlocking().first().code();
+      return service.delete(spaceId, extensionId, version).blockingFirst().code();
     } finally {
       extension.setSystem(system);
     }
@@ -156,9 +156,9 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
 
     try {
       if (id == null) {
-        return service.create(spaceId, extension).toBlocking().first();
+        return service.create(spaceId, extension).blockingFirst();
       } else {
-        return service.create(spaceId, id, extension).toBlocking().first();
+        return service.create(spaceId, id, extension).blockingFirst();
       }
     } finally {
       extension.setSystem(system);

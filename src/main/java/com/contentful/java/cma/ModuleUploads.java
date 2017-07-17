@@ -72,7 +72,7 @@ public final class ModuleUploads extends AbsModule<ServiceUploads> {
     final byte[] content = readAllBytes(stream);
 
     final RequestBody payload = RequestBody.create(parse(OCTET_STREAM_CONTENT_TYPE), content);
-    return service.create(spaceId, payload).toBlocking().first();
+    return service.create(spaceId, payload).blockingFirst();
   }
 
   /**
@@ -88,7 +88,7 @@ public final class ModuleUploads extends AbsModule<ServiceUploads> {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(uploadId, "uploadId");
 
-    return service.fetchOne(spaceId, uploadId).toBlocking().first();
+    return service.fetchOne(spaceId, uploadId).blockingFirst();
   }
 
   /**
@@ -104,7 +104,7 @@ public final class ModuleUploads extends AbsModule<ServiceUploads> {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(uploadId, "uploadId");
 
-    final Response<Void> response = service.delete(spaceId, uploadId).toBlocking().first();
+    final Response<Void> response = service.delete(spaceId, uploadId).blockingFirst();
     return response.code();
   }
 
@@ -168,7 +168,7 @@ public final class ModuleUploads extends AbsModule<ServiceUploads> {
      *
      * @param spaceId  space id of the upload.
      * @param uploadId id of the upload
-     * @return the response code, 203, if successful.
+     * @return the response code, 204, if successful.
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if uploadId is null.
      */

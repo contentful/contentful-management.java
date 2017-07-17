@@ -51,7 +51,7 @@ public final class ModulePersonalAccessTokens extends AbsModule<ServicePersonalA
    * @return a list of personal access tokens.
    */
   public CMAArray<CMAPersonalAccessToken> fetchAll() {
-    return service.fetchAll().toBlocking().first();
+    return service.fetchAll().blockingFirst();
   }
 
   /**
@@ -59,9 +59,9 @@ public final class ModulePersonalAccessTokens extends AbsModule<ServicePersonalA
    */
   public CMAArray<CMAPersonalAccessToken> fetchAll(Map<String, String> query) {
     if (query == null) {
-      return service.fetchAll().toBlocking().first();
+      return service.fetchAll().blockingFirst();
     } else {
-      return service.fetchAll(query).toBlocking().first();
+      return service.fetchAll(query).blockingFirst();
     }
   }
 
@@ -69,7 +69,7 @@ public final class ModulePersonalAccessTokens extends AbsModule<ServicePersonalA
    * @return one personal access token.
    */
   public CMAPersonalAccessToken fetchOne(String tokenId) {
-    return service.fetchOne(tokenId).toBlocking().first();
+    return service.fetchOne(tokenId).blockingFirst();
   }
 
   /**
@@ -86,7 +86,7 @@ public final class ModulePersonalAccessTokens extends AbsModule<ServicePersonalA
     token.setSystem(null);
 
     try {
-      return service.create(token).toBlocking().first();
+      return service.create(token).blockingFirst();
     } finally {
       token.setSystem(sys);
     }
@@ -98,7 +98,7 @@ public final class ModulePersonalAccessTokens extends AbsModule<ServicePersonalA
    * @return the just revoked key.
    */
   public CMAPersonalAccessToken revoke(CMAPersonalAccessToken token) {
-    return service.revoke(token.getId()).toBlocking().first();
+    return service.revoke(token.getId()).blockingFirst();
   }
 
   /**

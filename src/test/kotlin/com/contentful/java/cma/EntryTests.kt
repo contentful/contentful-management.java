@@ -129,8 +129,8 @@ class EntryTests : BaseTest() {
     }
 
     @test fun testDelete() {
-        val requestBody = "203"
-        server!!.enqueue(MockResponse().setResponseCode(200).setBody(requestBody))
+        val requestBody = ""
+        server!!.enqueue(MockResponse().setResponseCode(204).setBody(requestBody))
         assertTestCallback(client!!.entries().async().delete(
                 "spaceid", "entryid", TestCallback()) as TestCallback)
 
@@ -174,7 +174,7 @@ class EntryTests : BaseTest() {
 
         // Request
         val request = server!!.takeRequest()
-        val url = HttpUrl.parse(server!!.url(request.path).toString())
+        val url = HttpUrl.parse(server!!.url(request.path).toString())!!
         assertEquals("1", url.queryParameter("skip"))
         assertEquals("2", url.queryParameter("limit"))
         assertEquals("foo", url.queryParameter("content_type"))

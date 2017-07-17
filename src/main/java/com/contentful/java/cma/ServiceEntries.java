@@ -22,6 +22,7 @@ import com.contentful.java.cma.model.CMASnapshot;
 
 import java.util.Map;
 
+import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -30,76 +31,74 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
-import rx.Observable;
+import io.reactivex.Flowable;
 
 /**
  * Entries Service.
  */
 interface ServiceEntries {
   @PUT("/spaces/{space}/entries/{entry}/archived")
-  Observable<CMAEntry> archive(
+  Flowable<CMAEntry> archive(
       @Path("space") String spaceId,
-      @Path("entry") String entryId,
-      @Body Object body);
+      @Path("entry") String entryId);
+
+  @DELETE("/spaces/{space}/entries/{entry}/archived")
+  Flowable<CMAEntry> unArchive(
+      @Path("space") String spaceId,
+      @Path("entry") String entryId);
 
   @POST("/spaces/{space}/entries")
-  Observable<CMAEntry> create(
+  Flowable<CMAEntry> create(
       @Path("space") String spaceId,
       @Header("X-Contentful-Content-Type") String contentType,
       @Body CMAEntry entry);
 
   @PUT("/spaces/{space}/entries/{entry}")
-  Observable<CMAEntry> create(
+  Flowable<CMAEntry> create(
       @Path("space") String spaceId,
       @Header("X-Contentful-Content-Type") String contentType,
       @Path("entry") String entryId,
       @Body CMAEntry entry);
 
   @DELETE("/spaces/{space}/entries/{entry}")
-  Observable<String> delete(
+  Flowable<Response<Void>> delete(
       @Path("space") String spaceId,
       @Path("entry") String entryId);
 
   @GET("/spaces/{space}/entries/{entry}")
-  Observable<CMAEntry> fetchOne(
+  Flowable<CMAEntry> fetchOne(
       @Path("space") String spaceId,
       @Path("entry") String entryId);
 
   @GET("/spaces/{spaceId}/entries/{entryId}/snapshots/{snapshotId}")
-  Observable<CMASnapshot> fetchOneSnapshot(
+  Flowable<CMASnapshot> fetchOneSnapshot(
       @Path("spaceId") String spaceId,
       @Path("entryId") String entryId,
       @Path("snapshotId") String snapshotId);
 
   @GET("/spaces/{space}/entries")
-  Observable<CMAArray<CMAEntry>> fetchAll(
+  Flowable<CMAArray<CMAEntry>> fetchAll(
       @Path("space") String spaceId,
       @QueryMap Map<String, String> query);
 
   @GET("/spaces/{spaceId}/entries/{entryId}/snapshots")
-  Observable<CMAArray<CMASnapshot>> fetchAllSnapshots(
+  Flowable<CMAArray<CMASnapshot>> fetchAllSnapshots(
       @Path("spaceId") String spaceId,
       @Path("entryId") String entryId);
 
   @PUT("/spaces/{space}/entries/{entry}/published")
-  Observable<CMAEntry> publish(
+  Flowable<CMAEntry> publish(
       @Header("X-Contentful-Version") Integer version,
-      @Path("space") String spaceId,
-      @Path("entry") String entryId,
-      @Body Object body);
-
-  @DELETE("/spaces/{space}/entries/{entry}/archived")
-  Observable<CMAEntry> unArchive(
       @Path("space") String spaceId,
       @Path("entry") String entryId);
 
   @DELETE("/spaces/{space}/entries/{entry}/published")
-  Observable<CMAEntry> entriesUnPublish(
+  Flowable<CMAEntry> unPublish(
       @Path("space") String spaceId,
       @Path("entry") String entryId);
 
   @PUT("/spaces/{space}/entries/{entry}")
-  Observable<CMAEntry> update(
+  Flowable<CMAEntry> update(
       @Header("X-Contentful-Version") Integer version,
       @Path("space") String spaceId,
       @Path("entry") String entryId,

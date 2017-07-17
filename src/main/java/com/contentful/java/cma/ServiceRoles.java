@@ -14,35 +14,35 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
-import rx.Observable;
+import io.reactivex.Flowable;
 
 /**
  * Service class to define the REST interface to Contentful.
  */
 public interface ServiceRoles {
   @GET("/spaces/{spaceId}/roles")
-  Observable<CMAArray<CMARole>> fetchAll(@Path("spaceId") String spaceId);
+  Flowable<CMAArray<CMARole>> fetchAll(@Path("spaceId") String spaceId);
 
   @GET("/spaces/{spaceId}/roles")
-  Observable<CMAArray<CMARole>> fetchAll(
+  Flowable<CMAArray<CMARole>> fetchAll(
       @Path("spaceId") String spaceId,
       @QueryMap Map<String, String> query
   );
 
   @GET("/spaces/{spaceId}/roles/{roleId}")
-  Observable<CMARole> fetchOne(
+  Flowable<CMARole> fetchOne(
       @Path("spaceId") String spaceId,
       @Path("roleId") String roleId
   );
 
   @POST("/spaces/{spaceId}/roles/")
-  Observable<CMARole> create(
+  Flowable<CMARole> create(
       @Path("spaceId") String spaceId,
       @Body CMARole role
   );
 
   @PUT("/spaces/{spaceId}/roles/{roleId}")
-  Observable<CMARole> update(
+  Flowable<CMARole> update(
       @Path("spaceId") String spaceId,
       @Path("roleId") String roleId,
       @Body CMARole role,
@@ -50,7 +50,7 @@ public interface ServiceRoles {
   );
 
   @DELETE("/spaces/{spaceId}/roles/{roleId}")
-  Observable<Response<Void>> delete(
+  Flowable<Response<Void>> delete(
       @Path("spaceId") String spaceId,
       @Path("roleId") String roleId
   );

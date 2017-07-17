@@ -16,11 +16,11 @@
 
 package com.contentful.java.cma;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
 
-import rx.Observable;
-import rx.functions.Action1;
-import rx.functions.Func0;
+import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
 
 /**
  * RxJava Extensions.
@@ -33,7 +33,7 @@ final class RxExtensions {
   /**
    * Base Action.
    */
-  abstract static class AbsAction<T> implements Action1<T> {
+  abstract static class AbsAction<T> implements Consumer<T> {
     final Executor executor;
     final CMACallback<T> callback;
 
@@ -51,7 +51,7 @@ final class RxExtensions {
       super(executor, callback);
     }
 
-    @Override public void call(final T t) {
+    @Override public void accept(final T t) throws Exception {
       if (!callback.isCancelled()) {
         executor.execute(new Runnable() {
           @Override public void run() {
@@ -71,7 +71,7 @@ final class RxExtensions {
       super(executor, callback);
     }
 
-    @Override public void call(final Throwable t) {
+    @Override public void accept(final Throwable t) throws Exception {
       final RuntimeException exception;
 
       if (t instanceof RuntimeException) {
@@ -93,8 +93,8 @@ final class RxExtensions {
   /**
    * DefFunc.
    */
-  abstract static class DefFunc<T> implements Func0<Observable<T>> {
-    @Override public final Observable<T> call() {
+  abstract static class DefFunc<T> implements Callable<Observable<T>> {
+    @Override public final Observable<T> call() throws Exception {
       return Observable.just(method());
     }
 
