@@ -18,6 +18,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Fix: Return HTTP Code of no content methods.
 - Fix: Assets: Do not send `url` and `details` if `uploadUrl` or `uploadFrom` is changed.
 - Polishing: Update dependencies
+  - retrofit 2.3.0 (was 2.0.1)
   - commonsio 2.5 (was 2.4)
   - junit: 4.12 (was 4.11)
   - okhttp: 3.8.1 (was 3.2.0)
