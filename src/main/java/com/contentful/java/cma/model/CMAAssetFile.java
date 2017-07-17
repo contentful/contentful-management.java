@@ -87,6 +87,15 @@ public class CMAAssetFile {
     return url;
   }
 
+  /*
+   * Internal testing method for setting the url to an arbitrary value. (Only accessible from
+   * inside this repository.)
+   */
+  CMAAssetFile setUrl(String url) {
+    this.url = url;
+    return this;
+  }
+
   /**
    * @return a url the asset will get downloaded from Contentful from.
    */
@@ -96,11 +105,17 @@ public class CMAAssetFile {
 
   /**
    * Set a public accessible url to be used for processing the binary data from.
+   * <p>
+   * Warning: Setting an upload url will also erase the {@link #url}, {@link #details} and
+   * {@link #uploadFrom}, until the asset got processed again.
    *
    * @return the calling instance for chaining.
    */
   public CMAAssetFile setUploadUrl(String upload) {
     this.upload = upload;
+    this.url = null;
+    this.uploadFrom = null;
+    this.details = null;
     return this;
   }
 
@@ -113,12 +128,18 @@ public class CMAAssetFile {
 
   /**
    * Set a link to a Contentful Upload entry, to be used for processing the binary data from.
+   * <p>
+   * Warning: Setting an upload from will also erase the {@link #url}, {@link #details} and
+   * {@link #upload}, until the asset got processed again.
    *
    * @return the calling instance for chaining.
    * @see com.contentful.java.cma.ModuleUploads
    */
   public CMAAssetFile setUploadFrom(CMALink uploadFrom) {
     this.uploadFrom = uploadFrom;
+    this.upload = null;
+    this.url = null;
+    this.details = null;
     return this;
   }
 
