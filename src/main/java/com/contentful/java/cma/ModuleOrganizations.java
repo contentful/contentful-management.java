@@ -77,6 +77,7 @@ public final class ModuleOrganizations extends AbsModule<ServiceOrganizations> {
     /**
      * Fetch all organizations accessible.
      *
+     * @param callback the callback to be informed about success or failure.
      * @return {@link CMAOrganization} result callback.
      */
     public CMACallback<CMAArray<CMAOrganization>> fetchAll(
@@ -91,7 +92,8 @@ public final class ModuleOrganizations extends AbsModule<ServiceOrganizations> {
     /**
      * Fetch specific organizations accessible.
      *
-     * @param query the definition of organizations to be returned.
+     * @param query    the definition of organizations to be returned.
+     * @param callback the callback to be informed about success or failure.
      * @return {@link CMAOrganization} result callback.
      */
     public CMACallback<CMAArray<CMAOrganization>> fetchAll(

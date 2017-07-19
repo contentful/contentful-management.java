@@ -27,33 +27,33 @@ public class CMAEditorInterface extends CMAResource {
      * {@link #setWidgetId(String)}
      */
     public enum BuildInWidgetId {
-      @SerializedName("assetGalleryEditor")AssetGalleryEditor,
-      @SerializedName("assetLinkEditor")AssetLinkEditor,
-      @SerializedName("assetLinksEditor")AssetLinksEditor,
-      @SerializedName("boolean")Boolean,
-      @SerializedName("checkbox")Checkbox,
-      @SerializedName("datePicker")DatePicker,
-      @SerializedName("dropdown")Dropdown,
-      @SerializedName("entryCardEditor")EntryCardEditor,
-      @SerializedName("entryCardsEditor")EntryCardsEditor,
-      @SerializedName("entryLinkEditor")EntryLinkEditor,
-      @SerializedName("entryLinksEditor")EntryLinksEditor,
-      @SerializedName("kalturaEditor")KalturaEditor,
-      @SerializedName("kalturaMultiVideoEditor")KalturaMultiVideoEditor,
-      @SerializedName("listInput")ListInput,
-      @SerializedName("locationEditor")LocationEditor,
-      @SerializedName("markdown")Markdown,
-      @SerializedName("multipleLine")MultipleLine,
-      @SerializedName("numberEditor")NumberEditor,
-      @SerializedName("objectEditor")ObjectEditor,
-      @SerializedName("ooyalaEditor")OoyalaEditor,
-      @SerializedName("ooyalaMultiAssetEditor")OoyalaMultiAssetEditor,
-      @SerializedName("radio")Radio,
-      @SerializedName("rating")Rating,
-      @SerializedName("singleLine")SingleLine,
-      @SerializedName("slugEditor")SlugEditor,
-      @SerializedName("tagEditor")TagEditor,
-      @SerializedName("urlEditor")UrlEditor
+      @SerializedName("assetGalleryEditor") AssetGalleryEditor,
+      @SerializedName("assetLinkEditor") AssetLinkEditor,
+      @SerializedName("assetLinksEditor") AssetLinksEditor,
+      @SerializedName("boolean") Boolean,
+      @SerializedName("checkbox") Checkbox,
+      @SerializedName("datePicker") DatePicker,
+      @SerializedName("dropdown") Dropdown,
+      @SerializedName("entryCardEditor") EntryCardEditor,
+      @SerializedName("entryCardsEditor") EntryCardsEditor,
+      @SerializedName("entryLinkEditor") EntryLinkEditor,
+      @SerializedName("entryLinksEditor") EntryLinksEditor,
+      @SerializedName("kalturaEditor") KalturaEditor,
+      @SerializedName("kalturaMultiVideoEditor") KalturaMultiVideoEditor,
+      @SerializedName("listInput") ListInput,
+      @SerializedName("locationEditor") LocationEditor,
+      @SerializedName("markdown") Markdown,
+      @SerializedName("multipleLine") MultipleLine,
+      @SerializedName("numberEditor") NumberEditor,
+      @SerializedName("objectEditor") ObjectEditor,
+      @SerializedName("ooyalaEditor") OoyalaEditor,
+      @SerializedName("ooyalaMultiAssetEditor") OoyalaMultiAssetEditor,
+      @SerializedName("radio") Radio,
+      @SerializedName("rating") Rating,
+      @SerializedName("singleLine") SingleLine,
+      @SerializedName("slugEditor") SlugEditor,
+      @SerializedName("tagEditor") TagEditor,
+      @SerializedName("urlEditor") UrlEditor
     }
 
     String fieldId;
@@ -211,6 +211,7 @@ public class CMAEditorInterface extends CMAResource {
    * It might create a new list of controls, if no list is created.
    *
    * @param control to be added to the list.
+   * @return this instance for chaining.
    */
   public CMAEditorInterface addControl(Control control) {
     if (controls == null) {

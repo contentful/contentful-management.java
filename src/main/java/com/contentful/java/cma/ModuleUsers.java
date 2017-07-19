@@ -29,6 +29,12 @@ import retrofit2.Retrofit;
 public final class ModuleUsers extends AbsModule<ServiceUsers> {
   final Async async;
 
+  /**
+   * Create module.
+   *
+   * @param retrofit         the retrofit instance to be used to create the service.
+   * @param callbackExecutor to tell on which thread it should run.
+   */
   public ModuleUsers(Retrofit retrofit, Executor callbackExecutor) {
     super(retrofit, callbackExecutor);
     this.async = new Async();
@@ -61,7 +67,8 @@ public final class ModuleUsers extends AbsModule<ServiceUsers> {
     /**
      * Fetch your user information.
      *
-     * @return {@link CMAUser} result instance
+     * @param callback the callback to be informed about success or failure.
+     * @return the callback passed in.
      */
     public CMACallback<CMAUser> fetchMe(CMACallback<CMAUser> callback) {
       return defer(new DefFunc<CMAUser>() {

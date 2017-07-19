@@ -420,6 +420,7 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
      * Fetch all snapshots of this content type.
      *
      * @param contentType the contentType whose snapshots to be returned.
+     * @param callback the callback to be informed about success or failure.
      * @return the callback.
      * @throws IllegalArgumentException if contentType is null.
      * @throws IllegalArgumentException if contentType's id is null.
@@ -440,6 +441,7 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
      *
      * @param contentType the contentType whose snapshot to be returned.
      * @param snapshotId  the snapshot to be returned.
+     * @param callback the callback to be informed about success or failure.
      * @return a callback to inform about transaction results.
      * @throws IllegalArgumentException if contentType is null.
      * @throws IllegalArgumentException if contentType's id is null.

@@ -164,6 +164,7 @@ public class CMAAsset extends CMAResource {
       /**
        * Change the localized version of the description.
        *
+       * @param value the description to be set.
        * @return the Localized Fields instance calling this method.
        * @see Fields#setDescription(String, String)
        */
@@ -182,6 +183,7 @@ public class CMAAsset extends CMAResource {
       /**
        * Change the localized version of the title.
        *
+       * @param value the title to be set.
        * @return the Localized Fields instance calling this method.
        * @see Fields#setTitle(String, String)
        */
@@ -200,6 +202,7 @@ public class CMAAsset extends CMAResource {
       /**
        * Change the localized version of the file.
        *
+       * @param value the file to be set.
        * @return the Localized Fields instance calling this method.
        * @see Fields#setFile(String, CMAAssetFile)
        */
@@ -276,6 +279,7 @@ public class CMAAsset extends CMAResource {
    * Sets the system field.
    *
    * @param system sets the system property.
+   * @return this instance for chaining.
    */
   @SuppressWarnings("unchecked")
   public CMAAsset setSystem(CMASystem system) {

@@ -48,6 +48,8 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
   }
 
   /**
+   * @param spaceId     the id of the space this is valid on.
+   * @param extensionId the id of the extension to be fetched.
    * @return the ui extension for a specific space.
    * @throws IllegalArgumentException if spaceId is null.
    * @throws IllegalArgumentException if extensionId is null.
@@ -60,6 +62,9 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
   }
 
   /**
+   * Fetch ui extensions from a given space.
+   *
+   * @param spaceId the id of the space this is valid on.
    * @return all the ui extensions for a specific space.
    * @throws IllegalArgumentException if spaceId is null.
    */
@@ -70,6 +75,10 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
   }
 
   /**
+   * Fetch all ui extensions from a given space.
+   *
+   * @param spaceId the id of the space this is valid on.
+   * @param query   controls what to return.
    * @return specific ui extensions for a specific space.
    * @throws IllegalArgumentException if spaceId is null.
    */
@@ -86,6 +95,7 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
   /**
    * Update a ui extension.
    *
+   * @param extension the ui extension to be updated.
    * @return the updated ui extension.
    * @throws IllegalArgumentException if extension is null.
    * @throws IllegalArgumentException if extension's version is null.
@@ -111,6 +121,7 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
   /**
    * Delete a ui extension.
    *
+   * @param extension the extension to be deleted.
    * @return the http code of the action.
    * @throws IllegalArgumentException if extension is null.
    * @throws IllegalArgumentException if extension's id is null.
@@ -177,27 +188,32 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
    */
   public final class Async {
     /**
-     * Fetch ui extension to given content type in a given space.
+     * Fetch ui extension to given content type from a given space.
      *
-     * @return the callback to be informed about success or failure.
+     * @param spaceId     the id of the space this is valid on.
+     * @param extensionId the id of the extension to be fetched.
+     * @param callback    the callback to be informed about success or failure.
+     * @return the callback passed in.
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if extensionId is null.
      */
     public CMACallback<CMAUiExtension> fetchOne(
         final String spaceId,
-        final String contentTypeId,
+        final String extensionId,
         CMACallback<CMAUiExtension> callback) {
       return defer(new DefFunc<CMAUiExtension>() {
         @Override CMAUiExtension method() {
-          return ModuleUiExtensions.this.fetchOne(spaceId, contentTypeId);
+          return ModuleUiExtensions.this.fetchOne(spaceId, extensionId);
         }
       }, callback);
     }
 
     /**
-     * Fetch ui extensions in a given space.
+     * Fetch ui extensions from a given space.
      *
-     * @return the callback to be informed about success or failure.
+     * @param spaceId  the id of the space this is valid on.
+     * @param callback the callback to be informed about success or failure.
+     * @return the callback passed in.
      * @throws IllegalArgumentException if spaceId is null.
      */
     public CMACallback<CMAArray<CMAUiExtension>> fetchAll(
@@ -211,11 +227,12 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
     }
 
     /**
-     * Fetch specific ui extensions in a given space.
+     * Fetch specific ui extensions from a given space.
      *
-     * @param spaceId the id of the space to search in.
-     * @param query   the query identifying specific ui extensions.
-     * @return the callback to be informed about success or failure.
+     * @param spaceId  the id of the space to search in.
+     * @param query    the query identifying specific ui extensions.
+     * @param callback the callback to be informed about success or failure.
+     * @return the callback passed in.
      * @throws IllegalArgumentException if spaceId is null.
      */
     public CMACallback<CMAArray<CMAUiExtension>> fetchAll(
@@ -232,7 +249,9 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
     /**
      * Update a ui extension.
      *
-     * @return the callback to be informed about success or failure.
+     * @param extension the ui extension to be updated.
+     * @param callback  the callback to be informed about success or failure.
+     * @return the callback passed in.
      * @throws IllegalArgumentException if extension is null.
      * @throws IllegalArgumentException if extension's version is null.
      * @throws IllegalArgumentException if extension's id is null.
@@ -253,7 +272,8 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
      *
      * @param spaceId   the id of the space this ui extension should be created in.
      * @param extension the ui extension to be added.
-     * @return the callback to be informed about success or failure.
+     * @param callback  the callback to be informed about success or failure.
+     * @return the callback passed in.
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if extension is null.
      * @throws IllegalArgumentException if extension's version is null.
@@ -274,7 +294,9 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
     /**
      * Delete a ui extension.
      *
-     * @return the callback to be informed about success or failure.
+     * @param extension the ui extension to be deleted.
+     * @param callback  the callback to be informed about success or failure.
+     * @return the callback passed in.
      * @throws IllegalArgumentException if extension is null.
      * @throws IllegalArgumentException if extension's id is null.
      * @throws IllegalArgumentException if extension's version is null.

@@ -125,9 +125,10 @@ public final class ModuleUploads extends AbsModule<ServiceUploads> {
      * Once an upload is created, you can use it in CMAClient#assets for creating an asset
      * based on a local file.
      *
-     * @param spaceId a nonnull id representing the space to add the upload to.
-     * @param stream  the actual binary representation of the upload. Cannot be null.
-     * @return the upload created, containing the id to be used further on.
+     * @param spaceId  a nonnull id representing the space to add the upload to.
+     * @param stream   the actual binary representation of the upload. Cannot be null.
+     * @param callback the callback to be informed about success or failure.
+     * @return the callback passed in.
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if file is null.
      * @throws IllegalStateException    if something in the transmittal went wrong.
@@ -150,7 +151,8 @@ public final class ModuleUploads extends AbsModule<ServiceUploads> {
      *
      * @param spaceId  which space is this upload hosted under?
      * @param uploadId what id does the upload have?
-     * @return an CMAUpload based on this id and space combination.
+     * @param callback the callback to be informed about success or failure.
+     * @return the callback passed in.
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if uploadId is null.
      */
@@ -168,7 +170,8 @@ public final class ModuleUploads extends AbsModule<ServiceUploads> {
      *
      * @param spaceId  space id of the upload.
      * @param uploadId id of the upload
-     * @return the response code, 204, if successful.
+     * @param callback the callback to be informed about success or failure.
+     * @return the callback passed in.
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if uploadId is null.
      */

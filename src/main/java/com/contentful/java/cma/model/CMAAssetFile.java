@@ -109,6 +109,7 @@ public class CMAAssetFile {
    * Warning: Setting an upload url will also erase the {@link #url}, {@link #details} and
    * {@link #uploadFrom}, until the asset got processed again.
    *
+   * @param upload the remote url of the upload.
    * @return the calling instance for chaining.
    */
   public CMAAssetFile setUploadUrl(String upload) {
@@ -132,6 +133,7 @@ public class CMAAssetFile {
    * Warning: Setting an upload from will also erase the {@link #url}, {@link #details} and
    * {@link #upload}, until the asset got processed again.
    *
+   * @param uploadFrom a link to an uploaded resource.
    * @return the calling instance for chaining.
    * @see com.contentful.java.cma.ModuleUploads
    */

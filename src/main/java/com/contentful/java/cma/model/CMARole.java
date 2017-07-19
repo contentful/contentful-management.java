@@ -80,7 +80,7 @@ public class CMARole extends CMAResource {
    * Add a new policy to the existing ones, creating a new list if needed.
    *
    * @param policy the policy to be added.
-   * @returns this instance for chaining.
+   * @return this instance for chaining.
    */
   public CMARole addPolicy(CMAPolicy policy) {
     if (policies == null) {

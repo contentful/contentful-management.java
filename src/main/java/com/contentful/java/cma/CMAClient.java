@@ -439,6 +439,9 @@ public class CMAClient {
 
     /**
      * Add a listener to receive information about rate limits.
+     *
+     * @param listener a listener interface to be informed, as soon as a rate limit header is found.
+     * @return this builder for chaining.
      */
     public Builder setRateLimitListener(RateLimitsListener listener) {
       this.rateLimitListener = listener;

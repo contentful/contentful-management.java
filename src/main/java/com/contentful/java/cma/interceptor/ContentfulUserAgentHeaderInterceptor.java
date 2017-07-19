@@ -31,7 +31,7 @@ public class ContentfulUserAgentHeaderInterceptor extends HeaderInterceptor {
        *
        * @param osName the name of the os, as returned from the platform.
        * @return one of the {@link OperatingSystem} fields closely matching, or null if unknown.
-       * @see Platform
+       * @see com.contentful.java.cma.Platform
        */
       public static OperatingSystem parse(String osName) {
         if (osName.startsWith("Windows")) {

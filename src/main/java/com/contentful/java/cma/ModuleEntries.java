@@ -460,8 +460,9 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     /**
      * Fetch all snapshots of an entry.
      *
-     * @param entry the entry whose snapshots to be returned.
-     * @return an array of snapshots.
+     * @param entry    the entry whose snapshots to be returned.
+     * @param callback the callback to be informed about success or failure.
+     * @return a callback for an array of snapshots.
      * @throws IllegalArgumentException if entry is null.
      * @throws IllegalArgumentException if entry's id is null.
      * @throws IllegalArgumentException if entry's space id is null.
@@ -481,7 +482,8 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
      *
      * @param entry      the entry whose snapshot to be returned.
      * @param snapshotId the snapshot to be returned.
-     * @return an array of snapshots.
+     * @param callback   the callback to be informed about success or failure.
+     * @return a callback for an array of snapshots.
      * @throws IllegalArgumentException if entry is null.
      * @throws IllegalArgumentException if entry's id is null.
      * @throws IllegalArgumentException if entry's space id is null.

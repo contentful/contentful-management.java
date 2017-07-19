@@ -42,6 +42,8 @@ public class CMAResource {
    * Sets the system field.
    *
    * @param system sets the system property.
+   * @param <T>    resource type to be returned.
+   * @return this, as casted to a resource, for the ease of chaining.
    */
   @SuppressWarnings("unchecked")
   public <T extends CMAResource> T setSystem(CMASystem system) {
@@ -59,7 +61,8 @@ public class CMAResource {
   /**
    * Sets the ID for this CMAResource.
    *
-   * @param id to be set.
+   * @param id  to be set.
+   * @param <T> resource type to be returned.
    * @return this {@code CMAResource} instance.
    */
   @SuppressWarnings("unchecked")

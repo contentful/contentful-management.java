@@ -270,6 +270,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
      * @param spaceId  id of the space to be used.
      * @param webhook  data to be used for creation.
      * @param callback the callback to be called once finished.
+     * @return the callback passed in.
      * @throws IllegalArgumentException if space's id is null.
      * @throws IllegalArgumentException if webhook is null.
      */
@@ -289,6 +290,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
      * @param webhookId id for the webhook to be created/updated.
      * @param webhook   data to be used for creation.
      * @param callback  the callback to be called once finished.
+     * @return the callback passed in.
      * @throws IllegalArgumentException if space's id is null.
      * @throws IllegalArgumentException if webhookId is null.
      * @throws IllegalArgumentException if webhook is null.
@@ -310,6 +312,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
      * @param spaceId   id of the space to be used.
      * @param webhookId id of the webhook to be deleted.
      * @param callback  the callback to be called once finished.
+     * @return the callback passed in.
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if webhookId is null.
      */
@@ -327,6 +330,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
      *
      * @param spaceId  id of the space to be used.
      * @param callback the callback to be called once finished.
+     * @return the callback passed in.
      * @throws IllegalArgumentException if spaceId is null.
      */
     public CMACallback<CMAArray<CMAWebhook>> fetchAll(final String spaceId,
@@ -344,6 +348,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
      * @param spaceId  id of the space to be used.
      * @param query    description map of which webhooks to be returned.
      * @param callback the callback to be called once finished.
+     * @return the callback passed in.
      * @throws IllegalArgumentException if spaceId is null.
      */
     public CMACallback<CMAArray<CMAWebhook>> fetchAll(final String spaceId,
@@ -362,6 +367,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
      * @param spaceId   id of the space to be used.
      * @param webhookId id of the webhook to be retrieved.
      * @param callback  the callback to be called once finished.
+     * @return the callback passed in.
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if webhookId is null.
      */
@@ -379,6 +385,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
      *
      * @param webhook  data to be used for update.
      * @param callback the callback to be called once finished.
+     * @return the callback passed in.
      * @throws IllegalArgumentException if webhook is null.
      * @throws IllegalArgumentException if webhookId is null.
      * @throws IllegalArgumentException if spaceId is null.
@@ -399,6 +406,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
      * @param spaceId   id of the space to be used.
      * @param webhookId id to be used to retrieve calls from.
      * @param callback  the callback to be called once finished.
+     * @return the callback passed in.
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if webhook is null.
      */
@@ -420,6 +428,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
      * @param webhookId id of webhook.
      * @param callId    id of call.
      * @param callback  the callback to be called once finished.
+     * @return the callback passed in.
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if webhook is null.
      * @throws IllegalArgumentException if callId is null.
@@ -442,6 +451,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
      * @param spaceId   id of the space to be used.
      * @param webhookId id to be used for healthy check.
      * @param callback  the callback to be called once finished.
+     * @return the callback passed in.
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if webhook is null.
      */

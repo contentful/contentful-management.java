@@ -72,6 +72,8 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
   /**
    * Fetch only one delivery api key.
    *
+   * @param spaceId the id of the space this is valid on.
+   * @param keyId   the id of the key itself.
    * @return one delivery api key.
    * @throws IllegalArgumentException if spaceId is null.
    * @throws IllegalArgumentException if keyId is null.
@@ -86,6 +88,8 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
   /**
    * Create a new delivery api key.
    *
+   * @param spaceId the id of the space this is valid on.
+   * @param key     the key to be created.
    * @return the just created key, containing the delivery token.
    * @throws IllegalArgumentException if spaceId is null.
    * @throws IllegalArgumentException if key is null.
@@ -111,6 +115,8 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
     /**
      * Fetch all delivery api keys.
      *
+     * @param spaceId  the id of the space this is valid on.
+     * @param callback the callback to be informed about success or failure.
      * @return the callback to be informed about success or failure.
      * @throws IllegalArgumentException if spaceId is null.
      */
@@ -128,7 +134,8 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
      *
      * @param spaceId the id of the space to host the api keys.
      * @param query   the terms to query for specific keys.
-     * @return a list of delivery api keys.
+     * @param callback the callback to be informed about success or failure.
+     * @return the callback to be informed about success of failure.
      * @throws IllegalArgumentException if spaceId is null.
      */
     public CMACallback<CMAArray<CMAApiKey>> fetchAll(final String spaceId,
@@ -144,6 +151,9 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
     /**
      * Fetch only one delivery api key.
      *
+     * @param spaceId  the id of the space this is valid on.
+     * @param keyId    the id of the key itself.
+     * @param callback the callback to be called once the key is available.
      * @return the callback to be informed about success or failure.
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if keyId is null.
@@ -161,6 +171,9 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
     /**
      * Create a new delivery api key.
      *
+     * @param spaceId  the id of the space this is valid on.
+     * @param key      the key to be created.
+     * @param callback the callback to be called once the key is available.
      * @return the callback to be informed about success or failure.
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if key is null.

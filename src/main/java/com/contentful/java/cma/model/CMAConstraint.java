@@ -19,6 +19,7 @@ public class CMAConstraint {
      * Set the path.
      *
      * @param doc the path to the document, like "fields.name.nopenotok".
+     * @return this instance for chaining.
      **/
     public FieldKeyPath setDoc(String doc) {
       this.doc = doc;
@@ -144,6 +145,7 @@ public class CMAConstraint {
   /**
    * Set a new constraints which have all to be satisfied.
    *
+   * @param and constraints to be satisfied.
    * @return this constraint to for chaining.
    */
   public CMAConstraint setAnd(CMAConstraint... and) {
@@ -163,6 +165,7 @@ public class CMAConstraint {
   /**
    * Set a new list of constraints where only one be satisfied.
    *
+   * @param or constraints of which one needs to be satisfied.
    * @return this constraint to for chaining.
    */
   public CMAConstraint setOr(CMAConstraint... or) {
@@ -184,6 +187,7 @@ public class CMAConstraint {
   /**
    * Set a new array of constraints which must not be satisfied.
    *
+   * @param not a constraint not to be true.
    * @return this constraint to for chaining.
    */
   public CMAConstraint setNot(CMAConstraint... not) {
@@ -203,6 +207,7 @@ public class CMAConstraint {
   /**
    * Update the condition to be satisfied to satisfy this constraint.
    *
+   * @param equals the equals constraint.
    * @return this instance for chaining.
    */
   public CMAConstraint setEquals(Equals equals) {

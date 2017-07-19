@@ -46,6 +46,8 @@ public final class ModuleEditorInterfaces extends AbsModule<ServiceEditorInterfa
   }
 
   /**
+   * @param spaceId       the id of the space this editor interface is valid on.
+   * @param contentTypeId the contentTypeId this editor interface is valid on.
    * @return the editor interface for a specific content type on a specific space.
    */
   public CMAEditorInterface fetchOne(String spaceId, String contentTypeId) {
@@ -55,6 +57,7 @@ public final class ModuleEditorInterfaces extends AbsModule<ServiceEditorInterfa
   /**
    * Update an editor interface.
    *
+   * @param editor the editor interface to be updated on Contentful.
    * @return the updated editor interface.
    * @throws IllegalArgumentException if editors spaceId is null.
    * @throws IllegalArgumentException if editors contentType is null.
@@ -96,7 +99,10 @@ public final class ModuleEditorInterfaces extends AbsModule<ServiceEditorInterfa
     /**
      * Fetch editor interface to given content type in a given space.
      *
-     * @return the callback to be informed about success or failure.
+     * @param spaceId       the space this editor interface is defined on.
+     * @param contentTypeId the id of the content type controlled by this editor interface.
+     * @param callback      the callback to be informed about success or failure.
+     * @return the callback.
      */
     public CMACallback<CMAEditorInterface> fetchOne(
         final String spaceId,
@@ -112,7 +118,9 @@ public final class ModuleEditorInterfaces extends AbsModule<ServiceEditorInterfa
     /**
      * Update the given editor interface.
      *
-     * @return the callback to be informed about success or failure.
+     * @param editor   the editor interface to be updated.
+     * @param callback the callback to be informed about success or failure.
+     * @return the callback.
      * @throws IllegalArgumentException if editors spaceId is null.
      * @throws IllegalArgumentException if editors contentTypeId is null.
      * @throws IllegalArgumentException if editors version is not set.

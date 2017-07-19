@@ -20,8 +20,8 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
   /**
    * Create a new role module.
    *
-   * @param retrofit
-   * @param callbackExecutor
+   * @param retrofit         the retrofit instance to be used to create the service.
+   * @param callbackExecutor to tell on which thread it should run.
    */
   public ModuleRoles(Retrofit retrofit, Executor callbackExecutor) {
     super(retrofit, callbackExecutor);
@@ -202,7 +202,8 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
      *
      * @param spaceId the space identifier identifying the space.
      * @param query   the search criteria to search for.
-     * @return a callback for the array fetched.
+     * @param callback the callback to be informed about success or failure.
+     * @return the callback passed in.
      * @throws IllegalArgumentException if spaceId is null.
      * @see ModuleRoles#fetchAll(String)
      */

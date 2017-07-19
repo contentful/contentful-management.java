@@ -55,6 +55,7 @@ public final class ModulePersonalAccessTokens extends AbsModule<ServicePersonalA
   }
 
   /**
+   * @param query defines the items to be returned.
    * @return a list of specific personal access tokens.
    */
   public CMAArray<CMAPersonalAccessToken> fetchAll(Map<String, String> query) {
@@ -66,6 +67,7 @@ public final class ModulePersonalAccessTokens extends AbsModule<ServicePersonalA
   }
 
   /**
+   * @param tokenId the id of the access token to be returned.
    * @return one personal access token.
    */
   public CMAPersonalAccessToken fetchOne(String tokenId) {
@@ -79,6 +81,7 @@ public final class ModulePersonalAccessTokens extends AbsModule<ServicePersonalA
    * it save after this call, because a {@link #fetchAll()} or a {@link #fetchOne(String)} will
    * _not_ return it!
    *
+   * @param token the token to be created on Contentful.
    * @return the just created token, containing the access token string.
    */
   public CMAPersonalAccessToken create(CMAPersonalAccessToken token) {
@@ -93,9 +96,10 @@ public final class ModulePersonalAccessTokens extends AbsModule<ServicePersonalA
   }
 
   /**
-   * Revoke a delivery api key.
+   * Revoke a delivery api token.
    *
-   * @return the just revoked key.
+   * @param token the token to be revoked.
+   * @return the just revoked token.
    */
   public CMAPersonalAccessToken revoke(CMAPersonalAccessToken token) {
     return service.revoke(token.getId()).blockingFirst();
@@ -115,7 +119,8 @@ public final class ModulePersonalAccessTokens extends AbsModule<ServicePersonalA
     /**
      * Fetch all personal access tokens.
      *
-     * @return the callback to be informed about success or failure.
+     * @param callback the callback to be informed about success or failure.
+     * @return the callback passed in.
      */
     public CMACallback<CMAArray<CMAPersonalAccessToken>> fetchAll(
         CMACallback<CMAArray<CMAPersonalAccessToken>> callback) {
@@ -129,8 +134,9 @@ public final class ModulePersonalAccessTokens extends AbsModule<ServicePersonalA
     /**
      * Fetch a list of specific personal access tokens.
      *
-     * @param query the definition on what to look for.
-     * @return a callback to be informed about success.
+     * @param query    the definition on what to look for.
+     * @param callback the callback to be informed about success or failure.
+     * @return the callback passed in.
      */
     public CMACallback<CMAArray<CMAPersonalAccessToken>> fetchAll(
         final Map<String, String> query,
@@ -145,7 +151,9 @@ public final class ModulePersonalAccessTokens extends AbsModule<ServicePersonalA
     /**
      * Fetch only one personal access token.
      *
-     * @return the callback to be informed about success or failure.
+     * @param tokenId  the id of the token to be fetched.
+     * @param callback the callback to be informed about success or failure.
+     * @return the callback passed in.
      */
     public CMACallback<CMAPersonalAccessToken> fetchOne(
         final String tokenId,
@@ -160,7 +168,9 @@ public final class ModulePersonalAccessTokens extends AbsModule<ServicePersonalA
     /**
      * Create a new personal access token.
      *
-     * @return the callback to be informed about success or failure.
+     * @param token    the token to be created.
+     * @param callback the callback to be informed about success or failure.
+     * @return the callback passed in.
      */
     public CMACallback<CMAPersonalAccessToken> create(
         final CMAPersonalAccessToken token,
@@ -175,7 +185,9 @@ public final class ModulePersonalAccessTokens extends AbsModule<ServicePersonalA
     /**
      * Revoke a personal access token.
      *
-     * @return the callback to be informed about success or failure.
+     * @param token    the token to be revoked.
+     * @param callback the callback to be informed about success or failure.
+     * @return the callback passed in.
      */
     public CMACallback<CMAPersonalAccessToken> revoke(
         final CMAPersonalAccessToken token,

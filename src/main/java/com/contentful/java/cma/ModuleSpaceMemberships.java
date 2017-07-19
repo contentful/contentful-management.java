@@ -20,8 +20,8 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
   /**
    * Create a new membership module.
    *
-   * @param retrofit
-   * @param callbackExecutor
+   * @param retrofit         the retrofit instance to be used to create the service.
+   * @param callbackExecutor to tell on which thread it should run.
    */
   public ModuleSpaceMemberships(Retrofit retrofit, Executor callbackExecutor) {
     super(retrofit, callbackExecutor);
@@ -182,7 +182,8 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
      * Fetch all memberships of this space, asynchronously.
      *
      * @param spaceId the space identifier identifying the space.
-     * @return a callback for the array fetched.
+     * @param callback the callback to be informed about success or failure.
+     * @return the callback passed in.
      * @throws IllegalArgumentException if spaceId is null.
      * @see ModuleSpaceMemberships#fetchAll(String)
      */
@@ -201,7 +202,8 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
      *
      * @param spaceId the space identifier identifying the space.
      * @param query   define which space memberships to return.
-     * @return a callback for the array fetched.
+     * @param callback the callback to be informed about success or failure.
+     * @return the callback passed in.
      * @throws IllegalArgumentException if spaceId is null.
      * @see ModuleSpaceMemberships#fetchAll(String)
      */
@@ -221,7 +223,8 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
      *
      * @param spaceId      the space this membership is hosted by.
      * @param membershipId the id of the membership to be found.
-     * @return a callback handling the response.
+     * @param callback the callback to be informed about success or failure.
+     * @return the callback passed in.
      * @throws IllegalArgumentException if space id is null.
      * @throws IllegalArgumentException if membership id is null.
      * @see ModuleSpaceMemberships#fetchOne(String, String)
@@ -244,7 +247,8 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
      *
      * @param spaceId    the space id to host the membership.
      * @param membership the new membership to be created.
-     * @return a callback for the responses.
+     * @param callback the callback to be informed about success or failure.
+     * @return the callback passed in.
      * @throws IllegalArgumentException if space id is null.
      * @throws IllegalArgumentException if membership is null.
      * @see ModuleSpaceMemberships#create(String, CMASpaceMembership)
@@ -269,7 +273,8 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
      * get an exception thrown.
      *
      * @param membership the membership fetched from contentful, updated by caller, to be updated.
-     * @return the updated membership callback.
+     * @param callback the callback to be informed about success or failure.
+     * @return the callback passed in.
      * @throws IllegalArgumentException if space id is null.
      * @throws IllegalArgumentException if membership is null.
      * @throws IllegalArgumentException if membership id is null.
@@ -296,7 +301,8 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
      *
      * @param spaceId    the id of the space to be used.
      * @param membership the membership fetched from contentful, updated by caller, to be deleted.
-     * @return a callback for asynchronous interaction.
+     * @param callback the callback to be informed about success or failure.
+     * @return the callback passed in.
      * @throws IllegalArgumentException if space id is null.
      * @throws IllegalArgumentException if membership id is null.
      * @see ModuleSpaceMemberships#delete(String, CMASpaceMembership)
