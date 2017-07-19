@@ -2,7 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Version [2.1.0][unreleased] - (in development)
+## Version [2.1.1][unreleased] - (in development)
+- To be defined
+
+## Version [2.1.0]- 2017-07-19
 - Add: Custom user agent header.
 - Add: [`/users/me` module](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/users).
 - Add: [Personal Access Token](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/personal-access-tokens).
@@ -108,7 +111,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Version 0.9.0 - 2014-11-18
 Initial release.
 
-[unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.0.0...HEAD
+[unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.1.0...HEAD
+[2.1.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.0.0...cma-sdk-2.1.0
 [2.0.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-1.3.0...cma-sdk-2.0.0
 [1.3.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-1.2.0...cma-sdk-1.3.0
 [1.2.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-1.1.1...cma-sdk-1.2.0
