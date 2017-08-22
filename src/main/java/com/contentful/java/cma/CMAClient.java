@@ -69,6 +69,7 @@ public class CMAClient {
   private final ModuleContentTypes moduleContentTypes;
   private final ModuleEditorInterfaces moduleEditorInterfaces;
   private final ModuleEntries moduleEntries;
+  private final ModuleLocales moduleLocales;
   private final ModuleOrganizations moduleOrganizations;
   private final ModulePersonalAccessTokens modulePersonalAccessTokens;
   private final ModuleRoles moduleRoles;
@@ -120,6 +121,7 @@ public class CMAClient {
     this.moduleContentTypes = new ModuleContentTypes(retrofit, callbackExecutor);
     this.moduleEditorInterfaces = new ModuleEditorInterfaces(retrofit, callbackExecutor);
     this.moduleEntries = new ModuleEntries(retrofit, callbackExecutor);
+    this.moduleLocales = new ModuleLocales(retrofit, callbackExecutor);
     this.moduleOrganizations = new ModuleOrganizations(retrofit, callbackExecutor);
     this.modulePersonalAccessTokens = new ModulePersonalAccessTokens(retrofit, callbackExecutor);
     this.moduleRoles = new ModuleRoles(retrofit, callbackExecutor);
@@ -265,6 +267,14 @@ public class CMAClient {
   public ModuleUploads uploads() {
     return moduleUploads;
   }
+
+  /**
+   * @return the Locales module.
+   */
+  public ModuleLocales locales() {
+    return moduleLocales;
+  }
+
 
   /**
    * Builder.

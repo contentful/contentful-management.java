@@ -1,0 +1,39 @@
+{
+  "name":"English (British)",
+  "internal_code":"nopenotol",
+  "code":"en-UK",
+  "fallbackCode":"en-US",
+  "default":false,
+  "contentManagementApi":true,
+  "contentDeliveryApi":true,
+  "optional":false,
+  "sys":{
+    "type":"Locale",
+    "id":"502kn7lUaVFRTzv3jx7maG",
+    "version":0,
+    "space":{
+      "sys":{
+        "type":"Link",
+        "linkType":"Space",
+        "id":"arqlnkt58eul"
+      }
+    },
+    "createdBy":{
+      "sys":{
+        "type":"Link",
+        "linkType":"User",
+        "id":"7uJNojWP0gbuP7Pplz7Syo"
+      }
+    },
+    "createdAt":"2017-08-22T15:08:13Z",
+    "updatedBy":{
+      "sys":{
+        "type":"Link",
+        "linkType":"User",
+        "id":"7uJNojWP0gbuP7Pplz7Syo"
+      }
+    },
+    "updatedAt":"2017-08-22T15:08:13Z"
+  }
+}
+

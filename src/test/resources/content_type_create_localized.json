@@ -1,0 +1,45 @@
+{
+  "sys": {
+    "space": {
+      "sys": {
+        "type": "Link",
+        "linkType": "Space",
+        "id": "arqlnkt58eul"
+      }
+    },
+    "id": "51Q7ngbcakOm6MUi2aKEIM",
+    "type": "ContentType",
+    "createdAt": "2017-08-21T14:33:10.285Z",
+    "updatedAt": "2017-08-21T14:33:10.285Z",
+    "createdBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "7uJNojWP0gbuP7Pplz7Syo"
+      }
+    },
+    "updatedBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "7uJNojWP0gbuP7Pplz7Syo"
+      }
+    },
+    "version": 1
+  },
+  "displayField": null,
+  "name": "Blog Post",
+  "description": null,
+  "fields": [
+    {
+      "id": "title",
+      "name": "Title",
+      "type": "Text",
+      "localized": true,
+      "required": true,
+      "validations": [],
+      "disabled": false,
+      "omitted": false
+    }
+  ]
+}

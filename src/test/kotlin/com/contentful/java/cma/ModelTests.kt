@@ -126,9 +126,9 @@ class ModelTests : BaseTest() {
     }
 
     @test fun testCMALocaleToString() {
-        assertEquals("CMALocale { CMAResource { system = CMASystem { type = Locale } } "
-                + "code = null, fallbackCode = null, isDefault = false, name = null, "
-                + "optional = false }",
+        assertEquals("CMALocale { CMAResource { system = CMASystem { type = Locale } }" +
+                " code = null, contentDeliveryApi = false, contentManagementApi = false," +
+                " fallbackCode = null, isDefault = false, name = null, optional = false }",
                 CMALocale().toString())
     }
 

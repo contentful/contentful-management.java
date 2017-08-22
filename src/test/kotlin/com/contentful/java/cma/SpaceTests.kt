@@ -47,6 +47,27 @@ class SpaceTests : BaseTest() {
         assertEquals(requestBody, recordedRequest.body.readUtf8())
     }
 
+    @org.junit.Test fun testCreateWithDefaultLocale() {
+        val requestBody = TestUtils.fileToString("space_create_with_locale_request.json")
+        val responseBody = TestUtils.fileToString("space_create_with_locale_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val space: CMASpace = CMASpace().setDefaultLocale("de-DE").setName("foo")
+
+        val result = assertTestCallback(client!!.spaces().async().create(
+                space, TestCallback()) as TestCallback)!!
+
+        assertEquals("spaceid", result.id)
+        assertEquals("foo", result.name)
+        assertNull(result.defaultLocale, "default locale will not be returned.")
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("POST", recordedRequest.method)
+        assertEquals("/spaces", recordedRequest.path)
+        assertEquals(requestBody, recordedRequest.body.readUtf8())
+    }
+
     @org.junit.Test fun testCreateInOrg() {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody("{}"))
 
