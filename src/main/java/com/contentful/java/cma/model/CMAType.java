@@ -3,7 +3,7 @@ package com.contentful.java.cma.model;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * A contentful resource will be of one of those types. If a new type gets added, this enum will be
+ * A Contentful resource will be of one of those types. If a new type gets added, this enum will be
  * set to null.
  */
 public enum CMAType {
@@ -23,7 +23,7 @@ public enum CMAType {
   SpaceMembership,
   Upload,
   User,
-  @SerializedName("Extension")UiExtension,
+  @SerializedName("Extension") UiExtension,
   Webhook,
   WebhookCallOverview,
   WebhookDefinition

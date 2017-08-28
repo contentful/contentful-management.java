@@ -58,6 +58,13 @@ public class CMAContentType extends CMAResource {
   }
 
   /**
+   * @return the name of this Content Type.
+   */
+  public String getName() {
+    return name;
+  }
+
+  /**
    * Sets the name for this Content Type.
    *
    * @param name name
@@ -66,13 +73,6 @@ public class CMAContentType extends CMAResource {
   public CMAContentType setName(String name) {
     this.name = name;
     return this;
-  }
-
-  /**
-   * @return the name of this Content Type.
-   */
-  public String getName() {
-    return name;
   }
 
   /**
@@ -152,6 +152,16 @@ public class CMAContentType extends CMAResource {
   }
 
   /**
+   * Convenience for getting the version of this resource.
+   *
+   * @return the calling instance for chaining.
+   */
+  @SuppressWarnings("unchecked")
+  @Override public Integer getVersion() {
+    return super.getVersion();
+  }
+
+  /**
    * Convenience: Update the version of this entry without going through {@link #getSystem()}.
    *
    * @param version to be set.
@@ -160,16 +170,6 @@ public class CMAContentType extends CMAResource {
   @SuppressWarnings("unchecked")
   @Override public CMAContentType setVersion(Integer version) {
     return super.setVersion(version);
-  }
-
-  /**
-   * Convenience for getting the version of this resource.
-   *
-   * @return the calling instance for chaining.
-   */
-  @SuppressWarnings("unchecked")
-  @Override public Integer getVersion() {
-    return super.getVersion();
   }
 
   /**

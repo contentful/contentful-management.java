@@ -9,124 +9,6 @@ import java.util.Map;
  */
 public class CMAConstraint {
 
-  /**
-   * Define a path to a field.
-   */
-  public static class FieldKeyPath {
-    private String doc;
-
-    /**
-     * Set the path.
-     *
-     * @param doc the path to the document, like "fields.name.nopenotok".
-     * @return this instance for chaining.
-     **/
-    public FieldKeyPath setDoc(String doc) {
-      this.doc = doc;
-      return this;
-    }
-
-    /**
-     * @return the doc part of the path.
-     */
-    public String getDoc() {
-      return doc;
-    }
-
-    /**
-     * @return a human readable string, representing the object.
-     */
-    @Override public String toString() {
-      return "FieldKeyPath { "
-          + "doc = " + getDoc() + " "
-          + "}";
-    }
-  }
-
-  /**
-   * Create an equals deciding whether the path to a field constraints a given value.
-   */
-  public static class Equals extends ArrayList<Object> {
-    /**
-     * @return which path this equals is targeting.
-     */
-    public FieldKeyPath getPath() {
-      if (size() == 2) {
-        final Object path = this.get(0);
-        if (path instanceof FieldKeyPath) {
-          return (FieldKeyPath) path;
-        } else if (path instanceof Map) {
-          Map mappedPath = (Map) path;
-          final FieldKeyPath objectifiedPath = new FieldKeyPath()
-              .setDoc((String) mappedPath.get("doc"));
-          setPath(objectifiedPath);
-          return objectifiedPath;
-        }
-        // missing else: fall through to return `null`, not a valid state.
-      }
-
-      return null;
-    }
-
-    /**
-     * Update the fieldKeyPath component.
-     *
-     * @param fieldKeyPath the new fieldKeyPath to be applied.
-     * @return this instance for chaining
-     */
-    public Equals setPath(FieldKeyPath fieldKeyPath) {
-      if (size() == 0) {
-        add(fieldKeyPath);
-      } else {
-        set(0, fieldKeyPath);
-      }
-      return this;
-    }
-
-    /**
-     * @return the value to be used for comparison.
-     */
-    public String getValue() {
-      if (size() == 2) {
-        return (String) this.get(1);
-      } else {
-        return null;
-      }
-    }
-
-    /**
-     * Update the value to be used in comparison.
-     *
-     * @param value the value.
-     * @return this instance for chaining.
-     */
-    public Equals setValue(String value) {
-      switch (size()) {
-        case 0:
-          add(null);
-        case 1:
-          add(value);
-          break;
-        case 2:
-          set(1, value);
-        default:
-          break;
-      }
-
-      return this;
-    }
-
-    /**
-     * @return Human readable representation of this instance.
-     */
-    @Override public String toString() {
-      return "Equals {"
-          + "doc = " + getPath() != null ? getPath().doc : "<null>" + ", "
-          + "value = " + getValue() + " "
-          + "}";
-    }
-  }
-
   private CMAConstraint[] and;
   private CMAConstraint[] or;
   private CMAConstraint[] not;
@@ -246,5 +128,123 @@ public class CMAConstraint {
         + "or = " + Arrays.toString(getOr()) + ", "
         + "fieldKeyPaths = " + Arrays.toString(getFieldKeyPaths()) + " "
         + "}";
+  }
+
+  /**
+   * Define a path to a field.
+   */
+  public static class FieldKeyPath {
+    private String doc;
+
+    /**
+     * @return the doc part of the path.
+     */
+    public String getDoc() {
+      return doc;
+    }
+
+    /**
+     * Set the path.
+     *
+     * @param doc the path to the document, like "fields.name.nopenotok".
+     * @return this instance for chaining.
+     **/
+    public FieldKeyPath setDoc(String doc) {
+      this.doc = doc;
+      return this;
+    }
+
+    /**
+     * @return a human readable string, representing the object.
+     */
+    @Override public String toString() {
+      return "FieldKeyPath { "
+          + "doc = " + getDoc() + " "
+          + "}";
+    }
+  }
+
+  /**
+   * Create an equals deciding whether the path to a field constraints a given value.
+   */
+  public static class Equals extends ArrayList<Object> {
+    /**
+     * @return which path this equals is targeting.
+     */
+    public FieldKeyPath getPath() {
+      if (size() == 2) {
+        final Object path = this.get(0);
+        if (path instanceof FieldKeyPath) {
+          return (FieldKeyPath) path;
+        } else if (path instanceof Map) {
+          Map mappedPath = (Map) path;
+          final FieldKeyPath objectifiedPath = new FieldKeyPath()
+              .setDoc((String) mappedPath.get("doc"));
+          setPath(objectifiedPath);
+          return objectifiedPath;
+        }
+        // missing else: fall through to return `null`, not a valid state.
+      }
+
+      return null;
+    }
+
+    /**
+     * Update the fieldKeyPath component.
+     *
+     * @param fieldKeyPath the new fieldKeyPath to be applied.
+     * @return this instance for chaining
+     */
+    public Equals setPath(FieldKeyPath fieldKeyPath) {
+      if (size() == 0) {
+        add(fieldKeyPath);
+      } else {
+        set(0, fieldKeyPath);
+      }
+      return this;
+    }
+
+    /**
+     * @return the value to be used for comparison.
+     */
+    public String getValue() {
+      if (size() == 2) {
+        return (String) this.get(1);
+      } else {
+        return null;
+      }
+    }
+
+    /**
+     * Update the value to be used in comparison.
+     *
+     * @param value the value.
+     * @return this instance for chaining.
+     */
+    public Equals setValue(String value) {
+      switch (size()) {
+        case 0:
+          add(null);
+        case 1:
+          add(value);
+          break;
+        case 2:
+          set(1, value);
+        default:
+          break;
+      }
+
+      return this;
+    }
+
+    /**
+     * @return Human readable representation of this instance.
+     */
+    @Override public String toString() {
+      return "Equals {"
+          + "doc = " + getPath() != null ? getPath().doc : "<null>" + ", "
+          + "value = " + getValue() + " "
+          + "}";
+    }
   }
 }

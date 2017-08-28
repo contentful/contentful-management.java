@@ -21,9 +21,9 @@ import com.contentful.java.cma.model.CMAOrganization;
 
 import java.util.Map;
 
+import io.reactivex.Flowable;
 import retrofit2.http.GET;
 import retrofit2.http.QueryMap;
-import io.reactivex.Flowable;
 
 /**
  * Organizations Service.

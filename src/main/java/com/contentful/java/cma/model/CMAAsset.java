@@ -22,6 +22,97 @@ import java.util.LinkedHashMap;
  * Represents a resource of type Asset.
  */
 public class CMAAsset extends CMAResource {
+  // Map of fields
+  Fields fields = new Fields();
+
+  /**
+   * Create a new asset, setting the system's type field.
+   */
+  public CMAAsset() {
+    super(CMAType.Asset);
+  }
+
+  /**
+   * @return fields for this asset.
+   */
+  public Fields getFields() {
+    return fields;
+  }
+
+  /**
+   * Sets new fields for this Asset.
+   *
+   * @param fields fields to overwrite the current set of fields.
+   * @return this {@code CMAAsset} instance
+   */
+  public CMAAsset setFields(Fields fields) {
+    this.fields = fields;
+    return this;
+  }
+
+  /**
+   * Sets the system field.
+   *
+   * @param system sets the system property.
+   * @return this instance for chaining.
+   */
+  @SuppressWarnings("unchecked")
+  public CMAAsset setSystem(CMASystem system) {
+    this.system = system;
+    return this;
+  }
+
+  /**
+   * Convenience: Update the id of this entry without going through {@link #getSystem()}.
+   *
+   * @param id to be set.
+   * @return the calling instance for chaining.
+   */
+  @SuppressWarnings("unchecked")
+  @Override public CMAAsset setId(String id) {
+    return super.setId(id);
+  }
+
+  /**
+   * Convenience for getting the version of this resource.
+   *
+   * @return the calling instance for chaining.
+   */
+  @Override public Integer getVersion() {
+    return super.getVersion();
+  }
+
+  /**
+   * Convenience: Update the version of this entry without going through {@link #getSystem()}.
+   *
+   * @param version to be set.
+   * @return the calling instance for chaining.
+   */
+  @SuppressWarnings("unchecked")
+  @Override public CMAAsset setVersion(Integer version) {
+    return super.setVersion(version);
+  }
+
+  /**
+   * Convenience: Update the space id of this entry without going through {@link #getSystem()}.
+   *
+   * @param spaceId to be set.
+   * @return the calling instance for chaining.
+   */
+  @SuppressWarnings("unchecked")
+  @Override public CMAAsset setSpaceId(String spaceId) {
+    return super.setSpaceId(spaceId);
+  }
+
+  /**
+   * @return a human readable string, representing the object.
+   */
+  @Override public String toString() {
+    return "CMAAsset {" + super.toString()
+        + "fields = " + getFields()
+        + "}";
+  }
+
   /**
    * Collect all fields of an asset.
    */
@@ -138,6 +229,28 @@ public class CMAAsset extends CMAResource {
     }
 
     /**
+     * @param locale the locale to be used for converting.
+     * @return a human readable string, representing the object.
+     */
+    public String toString(String locale) {
+      return "CMAAsset.Fields {"
+          + "description = " + getDescription(locale) + ", "
+          + "file = " + getFile(locale) + ", "
+          + "title = " + getTitle(locale)
+          + "}";
+    }
+
+    /**
+     * For debugging, it returns only the en-US locales!
+     *
+     * @return a human readable string, representing the object.
+     * @see #toString(String)
+     */
+    @Override public String toString() {
+      return toString("en-US");
+    }
+
+    /**
      * Localize all fields with a given locale.
      * <p>
      * Please use {@link Fields#localize(String)} to see how to create an instance.
@@ -223,118 +336,5 @@ public class CMAAsset extends CMAResource {
             + "}";
       }
     }
-
-    /**
-     * @param locale the locale to be used for converting.
-     * @return a human readable string, representing the object.
-     */
-    public String toString(String locale) {
-      return "CMAAsset.Fields {"
-          + "description = " + getDescription(locale) + ", "
-          + "file = " + getFile(locale) + ", "
-          + "title = " + getTitle(locale)
-          + "}";
-    }
-
-    /**
-     * For debugging, it returns only the en-US locales!
-     *
-     * @return a human readable string, representing the object.
-     * @see #toString(String)
-     */
-    @Override public String toString() {
-      return toString("en-US");
-    }
-  }
-
-  // Map of fields
-  Fields fields = new Fields();
-
-  /**
-   * Create a new asset, setting the system's type field.
-   */
-  public CMAAsset() {
-    super(CMAType.Asset);
-  }
-
-  /**
-   * @return fields for this asset.
-   */
-  public Fields getFields() {
-    return fields;
-  }
-
-  /**
-   * Sets new fields for this Asset.
-   *
-   * @param fields fields to overwrite the current set of fields.
-   * @return this {@code CMAAsset} instance
-   */
-  public CMAAsset setFields(Fields fields) {
-    this.fields = fields;
-    return this;
-  }
-
-  /**
-   * Sets the system field.
-   *
-   * @param system sets the system property.
-   * @return this instance for chaining.
-   */
-  @SuppressWarnings("unchecked")
-  public CMAAsset setSystem(CMASystem system) {
-    this.system = system;
-    return this;
-  }
-
-  /**
-   * Convenience: Update the id of this entry without going through {@link #getSystem()}.
-   *
-   * @param id to be set.
-   * @return the calling instance for chaining.
-   */
-  @SuppressWarnings("unchecked")
-  @Override public CMAAsset setId(String id) {
-    return super.setId(id);
-  }
-
-  /**
-   * Convenience: Update the version of this entry without going through {@link #getSystem()}.
-   *
-   * @param version to be set.
-   * @return the calling instance for chaining.
-   */
-  @SuppressWarnings("unchecked")
-  @Override public CMAAsset setVersion(Integer version) {
-    return super.setVersion(version);
-  }
-
-  /**
-   * Convenience for getting the version of this resource.
-   *
-   * @return the calling instance for chaining.
-   */
-  @Override public Integer getVersion() {
-    return super.getVersion();
-  }
-
-  /**
-   * Convenience: Update the space id of this entry without going through {@link #getSystem()}.
-   *
-   * @param spaceId to be set.
-   * @return the calling instance for chaining.
-   */
-  @SuppressWarnings("unchecked")
-  @Override public CMAAsset setSpaceId(String spaceId) {
-    return super.setSpaceId(spaceId);
-  }
-
-  /**
-   * @return a human readable string, representing the object.
-   */
-  @Override public String toString() {
-    return "CMAAsset {" + super.toString()
-        + "fields = " + getFields()
-        + "}";
   }
 }

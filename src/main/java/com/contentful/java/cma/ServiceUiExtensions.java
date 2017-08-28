@@ -21,6 +21,7 @@ import com.contentful.java.cma.model.CMAUiExtension;
 
 import java.util.Map;
 
+import io.reactivex.Flowable;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -30,7 +31,6 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
-import io.reactivex.Flowable;
 
 /**
  * Ui Extensions Service.

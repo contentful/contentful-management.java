@@ -25,7 +25,8 @@ public class CMAWebhookHeader {
 
   /**
    * Create new header, using key and value.
-   * @param key for this header.
+   *
+   * @param key   for this header.
    * @param value stored in this header.
    */
   public CMAWebhookHeader(String key, String value) {

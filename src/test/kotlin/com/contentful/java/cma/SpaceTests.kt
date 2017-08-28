@@ -29,7 +29,8 @@ import kotlin.test.assertTrue
 import org.junit.Test as tests
 
 class SpaceTests : BaseTest() {
-    @org.junit.Test fun testCreate() {
+    @org.junit.Test
+    fun testCreate() {
         val requestBody = TestUtils.fileToString("space_create_request.json")
         val responseBody = TestUtils.fileToString("space_create_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
@@ -47,7 +48,30 @@ class SpaceTests : BaseTest() {
         assertEquals(requestBody, recordedRequest.body.readUtf8())
     }
 
-    @org.junit.Test fun testCreateInOrg() {
+    @org.junit.Test
+    fun testCreateWithDefaultLocale() {
+        val requestBody = TestUtils.fileToString("space_create_with_locale_request.json")
+        val responseBody = TestUtils.fileToString("space_create_with_locale_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val space: CMASpace = CMASpace().setDefaultLocale("de-DE").setName("foo")
+
+        val result = assertTestCallback(client!!.spaces().async().create(
+                space, TestCallback()) as TestCallback)!!
+
+        assertEquals("spaceid", result.id)
+        assertEquals("foo", result.name)
+        assertNull(result.defaultLocale, "default locale will not be returned.")
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("POST", recordedRequest.method)
+        assertEquals("/spaces", recordedRequest.path)
+        assertEquals(requestBody, recordedRequest.body.readUtf8())
+    }
+
+    @org.junit.Test
+    fun testCreateInOrg() {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody("{}"))
 
         assertTestCallback(client!!.spaces().async().create(
@@ -60,7 +84,8 @@ class SpaceTests : BaseTest() {
         assertEquals("org", recordedRequest.getHeader("X-Contentful-Organization"))
     }
 
-    @org.junit.Test fun testCreateInOrgWithObject() {
+    @org.junit.Test
+    fun testCreateInOrgWithObject() {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody("{}"))
 
         assertTestCallback(client!!.spaces().async().create(
@@ -73,7 +98,8 @@ class SpaceTests : BaseTest() {
         assertEquals("org", recordedRequest.getHeader("X-Contentful-Organization"))
     }
 
-    @org.junit.Test fun testCreateWithObject() {
+    @org.junit.Test
+    fun testCreateWithObject() {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody("{}"))
 
         assertTestCallback(client!!.spaces().async().create(
@@ -88,7 +114,8 @@ class SpaceTests : BaseTest() {
         assertEquals(32, recordedRequest.body.readUtf8().indexOf("my locale"))
     }
 
-    @org.junit.Test fun testDelete() {
+    @org.junit.Test
+    fun testDelete() {
         val requestBody = ""
         server!!.enqueue(MockResponse().setResponseCode(204).setBody(requestBody))
 
@@ -101,7 +128,8 @@ class SpaceTests : BaseTest() {
         assertEquals("/spaces/spaceid", recordedRequest.path)
     }
 
-    @org.junit.Test fun testFetchAll() {
+    @org.junit.Test
+    fun testFetchAll() {
         val responseBody = TestUtils.fileToString("space_fetch_all_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -159,7 +187,8 @@ class SpaceTests : BaseTest() {
         assertEquals("/spaces?limit=100", request.path)
     }
 
-    @org.junit.Test fun testFetchWithId() {
+    @org.junit.Test
+    fun testFetchWithId() {
         val responseBody = TestUtils.fileToString("space_fetch_one_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -190,7 +219,8 @@ class SpaceTests : BaseTest() {
         assertEquals("/spaces/spaceid", request.path)
     }
 
-    @org.junit.Test fun testFetchAllLocales() {
+    @org.junit.Test
+    fun testFetchAllLocales() {
         val responseBody = TestUtils.fileToString("space_fetch_locales_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -209,7 +239,8 @@ class SpaceTests : BaseTest() {
         assertEquals("/spaces/spaceid/locales?limit=100", recordedRequest.path)
     }
 
-    @org.junit.Test fun testUpdate() {
+    @org.junit.Test
+    fun testUpdate() {
         val requestBody = TestUtils.fileToString("space_update_request.json")
         val responseBody = TestUtils.fileToString("space_update_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))

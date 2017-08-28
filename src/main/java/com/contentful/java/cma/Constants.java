@@ -20,14 +20,20 @@ package com.contentful.java.cma;
  * Library constants.
  */
 public final class Constants {
+  public static final String ENDPOINT_CMA = "https://api.contentful.com/";
+  public static final String ENDPOINT_UPLOAD = "https://upload.contentful.com/";
+  // Content Type Header Values
+  public static final String DEFAULT_CONTENT_TYPE = "application/vnd.contentful.management.v1+json";
+
+  //BEGIN TO LONG CODE LINES
+  public static final String OCTET_STREAM_CONTENT_TYPE = "application/octet-stream";
+  // Properties
+  static final String SDK_PROPERTIES = "contentful_cma.properties";
+  static final String PROP_VERSION_NAME = "version.name";
+
   private Constants() {
     throw new UnsupportedOperationException();
   }
-
-  public static final String ENDPOINT_CMA = "https://api.contentful.com/";
-  public static final String ENDPOINT_UPLOAD = "https://upload.contentful.com/";
-
-  //BEGIN TO LONG CODE LINES
   /**
    * @see <a href="https://www.contentful.com/developers/docs/references/content-management-api/#/reference/content-types">management api docs</a>
    */
@@ -45,12 +51,4 @@ public final class Constants {
     Symbol,
     Text
   }
-
-  // Properties
-  static final String SDK_PROPERTIES = "contentful_cma.properties";
-  static final String PROP_VERSION_NAME = "version.name";
-
-  // Content Type Header Values
-  public static final String DEFAULT_CONTENT_TYPE = "application/vnd.contentful.management.v1+json";
-  public static final String OCTET_STREAM_CONTENT_TYPE = "application/octet-stream";
 }

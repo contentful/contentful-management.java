@@ -20,6 +20,31 @@ package com.contentful.java.cma.model;
  * Model class representing a health report of this webhook.
  */
 public class CMAWebhookHealth extends CMAResource {
+  CMAWebhookHealthCall calls;
+
+  /**
+   * Create a webhook health record.
+   */
+  public CMAWebhookHealth() {
+    super(CMAType.Webhook);
+  }
+
+  /**
+   * @return Returns Object containing Counts of calls of this Webhook.
+   */
+  public CMAWebhookHealthCall getCalls() {
+    return calls;
+  }
+
+  /**
+   * @return a human readable string, representing the object.
+   */
+  @Override public String toString() {
+    return "CMAWebhookHealth { " + super.toString() + " "
+        + "calls = " + getCalls() + " "
+        + "}";
+  }
+
   /**
    * Model representing the spread of calls on this Webhook.
    */
@@ -50,30 +75,5 @@ public class CMAWebhookHealth extends CMAResource {
           + "total = " + getTotal()
           + "}";
     }
-  }
-
-  CMAWebhookHealthCall calls;
-
-  /**
-   * Create a webhook health record.
-   */
-  public CMAWebhookHealth() {
-    super(CMAType.Webhook);
-  }
-
-  /**
-   * @return Returns Object containing Counts of calls of this Webhook.
-   */
-  public CMAWebhookHealthCall getCalls() {
-    return calls;
-  }
-
-  /**
-   * @return a human readable string, representing the object.
-   */
-  @Override public String toString() {
-    return "CMAWebhookHealth { " + super.toString() + " "
-        + "calls = " + getCalls() + " "
-        + "}";
   }
 }

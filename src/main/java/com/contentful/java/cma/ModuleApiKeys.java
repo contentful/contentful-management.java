@@ -132,8 +132,8 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
     /**
      * Query for specific api keys.
      *
-     * @param spaceId the id of the space to host the api keys.
-     * @param query   the terms to query for specific keys.
+     * @param spaceId  the id of the space to host the api keys.
+     * @param query    the terms to query for specific keys.
      * @param callback the callback to be informed about success or failure.
      * @return the callback to be informed about success of failure.
      * @throws IllegalArgumentException if spaceId is null.

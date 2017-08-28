@@ -91,28 +91,6 @@ public class CMAWebhook extends CMAResource {
   }
 
   /**
-   * Set the name of this webhook.
-   *
-   * @param name to identify this webhook
-   * @return this webhook for chaining
-   */
-  public CMAWebhook setName(String name) {
-    this.name = name;
-    return this;
-  }
-
-  /**
-   * Sets the url to be called when this webhook is triggered.
-   *
-   * @param url complete, existing url to be used
-   * @return this webhook for chaining
-   */
-  public CMAWebhook setUrl(String url) {
-    this.url = url;
-    return this;
-  }
-
-  /**
    * Add a topic this webhook should be triggered on.
    *
    * @param topic a valid enum value for the trigger reason.
@@ -165,10 +143,32 @@ public class CMAWebhook extends CMAResource {
   }
 
   /**
+   * Set the name of this webhook.
+   *
+   * @param name to identify this webhook
+   * @return this webhook for chaining
+   */
+  public CMAWebhook setName(String name) {
+    this.name = name;
+    return this;
+  }
+
+  /**
    * @return Url to the server to be called, if this webhook is to be triggered
    */
   public String getUrl() {
     return url;
+  }
+
+  /**
+   * Sets the url to be called when this webhook is triggered.
+   *
+   * @param url complete, existing url to be used
+   * @return this webhook for chaining
+   */
+  public CMAWebhook setUrl(String url) {
+    this.url = url;
+    return this;
   }
 
   /**
@@ -194,7 +194,7 @@ public class CMAWebhook extends CMAResource {
   }
 
   /**
-   * @return the http basic auth password set (only valid while creating the hook on contentful).
+   * @return the http basic auth password set (only valid while creating the hook on Contentful).
    * @see #setBasicAuthorization(String, String)
    */
   public String getPassword() {

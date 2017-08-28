@@ -9,6 +9,17 @@ import java.util.Map;
 class DefaultQueryParameter {
 
   /**
+   * Use these parameter for every fetch, unless overwritten by user.
+   * <p>
+   * Right now set the limit to 100.
+   */
+  static final HashMap<String, String> FETCH = new HashMap<String, String>();
+
+  static {
+    FETCH.put("limit", "100");
+  }
+
+  /**
    * Do not initiate this class. Its only used in static contexts.
    *
    * @throws UnsupportedOperationException since it should not be used.
@@ -18,19 +29,9 @@ class DefaultQueryParameter {
   }
 
   /**
-   * Use these parameter for every fetch, unless overwritten by user.
-   *
-   * Right now set the limit to 100.
-   */
-  static final HashMap<String, String> FETCH = new HashMap<String, String>();
-  static {
-    FETCH.put("limit", "100");
-  }
-
-  /**
    * Update a given map with some default values if not already present in map.
-
-   * @param target the map to be filled with values, if a key for them is not set already.
+   *
+   * @param target   the map to be filled with values, if a key for them is not set already.
    * @param defaults the list of defaults, to be set.
    */
   static void putIfNotSet(Map<String, String> target, Map<String, String> defaults) {

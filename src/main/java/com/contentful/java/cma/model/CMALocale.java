@@ -32,6 +32,9 @@ public class CMALocale extends CMAResource {
   @SerializedName("default")
   boolean isDefault;
 
+  boolean contentManagementApi;
+  boolean contentDeliveryApi;
+
   /**
    * Create a new locale, specifying the type in the system property.
    */
@@ -182,11 +185,49 @@ public class CMALocale extends CMAResource {
   }
 
   /**
+   * @return true if this locale is used on the content management api.
+   */
+  public boolean isContentManagementApi() {
+    return contentManagementApi;
+  }
+
+  /**
+   * Change this locale to be the  used on the management api.
+   *
+   * @param contentManagementApi to update the value with.
+   * @return this instance for ease of chaining.
+   */
+  public CMALocale setContentManagementApi(boolean contentManagementApi) {
+    this.contentManagementApi = contentManagementApi;
+    return this;
+  }
+
+  /**
+   * @return true if this locale is used on the content delivery api.
+   */
+  public boolean isContentDeliveryApi() {
+    return contentDeliveryApi;
+  }
+
+  /**
+   * Change this locale to be available in the content deliver api.
+   *
+   * @param contentDeliveryApi true if available.
+   * @return this instance for ease of chaining.
+   */
+  public CMALocale setContentDeliveryApi(boolean contentDeliveryApi) {
+    this.contentDeliveryApi = contentDeliveryApi;
+    return this;
+  }
+
+  /**
    * @return a human readable string, representing the object.
    */
   @Override public String toString() {
     return "CMALocale { " + super.toString() + " "
         + "code = " + getCode() + ", "
+        + "contentDeliveryApi = " + isContentDeliveryApi() + ", "
+        + "contentManagementApi = " + isContentManagementApi() + ", "
         + "fallbackCode = " + getFallbackCode() + ", "
         + "isDefault = " + isDefault() + ", "
         + "name = " + getName() + ", "

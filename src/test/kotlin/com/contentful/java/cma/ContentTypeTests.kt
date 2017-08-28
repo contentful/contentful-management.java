@@ -114,6 +114,30 @@ class ContentTypeTests : BaseTest() {
         assertJsonEquals(requestBody, recordedRequest.body.readUtf8())
     }
 
+    @test fun testCreateLocalized() {
+        val responseBody = TestUtils.fileToString("content_type_create_localized_payload.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val response = client!!.contentTypes().create("spaceid", CMAContentType()
+                .setName("whatever1")
+                .addField(CMAField()
+                        .setId("f1")
+                        .setName("field1")
+                        .setType(CMAFieldType.Link)
+                        .setLinkType("Entry")
+                        .setLocalized(true)
+                )
+        )
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("POST", recordedRequest.method)
+        assertEquals("/spaces/spaceid/content_types", recordedRequest.path)
+        assertTrue(recordedRequest.body.readUtf8().contains("\"localized\":true"))
+
+        assertTrue(response.fields[0].isLocalized)
+    }
+
     @test fun testUpdate() {
         val requestBody = TestUtils.fileToString("content_type_update_request.json")
         val responseBody = TestUtils.fileToString("content_type_update_response.json")

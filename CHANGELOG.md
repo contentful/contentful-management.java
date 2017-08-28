@@ -2,8 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Version [2.1.1][unreleased] - (in development)
+## Version [2.2.1][unreleased] - (in development)
 - To be defined
+
+## Version [2.2.0][unreleased] - (in development)
+- Add: [Locales module](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/locales).
 
 ## Version [2.1.0]- 2017-07-19
 - Add: Custom user agent header.

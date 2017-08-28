@@ -13,49 +13,58 @@ import java.util.Map;
  */
 public class CMAEditorInterface extends CMAResource {
 
+  List<Control> controls;
+
+  /**
+   * This method only exists for compatibility reasons.
+   * <p>
+   * You cannot create and upload new editor interfaces to Contentful. Please consider updating
+   * an existing one by fetching it first and then using
+   * {@link ModuleEditorInterfaces#update(CMAEditorInterface)} on it.
+   */
+  public CMAEditorInterface() {
+    super(CMAType.EditorInterface);
+  }
+
+  /**
+   * Adds a new control to the list of controls.
+   * <p>
+   * It might create a new list of controls, if no list is created.
+   *
+   * @param control to be added to the list.
+   * @return this instance for chaining.
+   */
+  public CMAEditorInterface addControl(Control control) {
+    if (controls == null) {
+      controls = new ArrayList<Control>();
+    }
+
+    controls.add(control);
+    return this;
+  }
+
+  /**
+   * @return the list of all controls.
+   */
+  public List<Control> getControls() {
+    return controls;
+  }
+
+  /**
+   * @return a human readable string, representing the object.
+   */
+  @Override public String toString() {
+    return "CMAEditorInterface { " + super.toString() + " "
+        + "controls = " + getControls() + " "
+        + "}";
+  }
+
   /**
    * This class represents one control of the editor interface.
    */
   public static class Control {
 
     private static final String SETTINGS_KEY_HELP_TEXT = "helpText";
-
-    /**
-     * Enum holding the build in values of a widget id.
-     * <p>
-     * For custom ids, as for using a custom UI extension, please take a look at
-     * {@link #setWidgetId(String)}
-     */
-    public enum BuildInWidgetId {
-      @SerializedName("assetGalleryEditor") AssetGalleryEditor,
-      @SerializedName("assetLinkEditor") AssetLinkEditor,
-      @SerializedName("assetLinksEditor") AssetLinksEditor,
-      @SerializedName("boolean") Boolean,
-      @SerializedName("checkbox") Checkbox,
-      @SerializedName("datePicker") DatePicker,
-      @SerializedName("dropdown") Dropdown,
-      @SerializedName("entryCardEditor") EntryCardEditor,
-      @SerializedName("entryCardsEditor") EntryCardsEditor,
-      @SerializedName("entryLinkEditor") EntryLinkEditor,
-      @SerializedName("entryLinksEditor") EntryLinksEditor,
-      @SerializedName("kalturaEditor") KalturaEditor,
-      @SerializedName("kalturaMultiVideoEditor") KalturaMultiVideoEditor,
-      @SerializedName("listInput") ListInput,
-      @SerializedName("locationEditor") LocationEditor,
-      @SerializedName("markdown") Markdown,
-      @SerializedName("multipleLine") MultipleLine,
-      @SerializedName("numberEditor") NumberEditor,
-      @SerializedName("objectEditor") ObjectEditor,
-      @SerializedName("ooyalaEditor") OoyalaEditor,
-      @SerializedName("ooyalaMultiAssetEditor") OoyalaMultiAssetEditor,
-      @SerializedName("radio") Radio,
-      @SerializedName("rating") Rating,
-      @SerializedName("singleLine") SingleLine,
-      @SerializedName("slugEditor") SlugEditor,
-      @SerializedName("tagEditor") TagEditor,
-      @SerializedName("urlEditor") UrlEditor
-    }
-
     String fieldId;
     String widgetId;
     Map<String, String> settings;
@@ -190,51 +199,41 @@ public class CMAEditorInterface extends CMAResource {
           + "widgetId = " + getWidgetId() + " "
           + "}";
     }
-  }
 
-  List<Control> controls;
-
-  /**
-   * This method only exists for compatibility reasons.
-   * <p>
-   * You cannot create and upload new editor interfaces to Contentful. Please consider updating
-   * an existing one by fetching it first and then using
-   * {@link ModuleEditorInterfaces#update(CMAEditorInterface)} on it.
-   */
-  public CMAEditorInterface() {
-    super(CMAType.EditorInterface);
-  }
-
-  /**
-   * Adds a new control to the list of controls.
-   * <p>
-   * It might create a new list of controls, if no list is created.
-   *
-   * @param control to be added to the list.
-   * @return this instance for chaining.
-   */
-  public CMAEditorInterface addControl(Control control) {
-    if (controls == null) {
-      controls = new ArrayList<Control>();
+    /**
+     * Enum holding the build in values of a widget id.
+     * <p>
+     * For custom ids, as for using a custom UI extension, please take a look at
+     * {@link #setWidgetId(String)}
+     */
+    public enum BuildInWidgetId {
+      @SerializedName("assetGalleryEditor") AssetGalleryEditor,
+      @SerializedName("assetLinkEditor") AssetLinkEditor,
+      @SerializedName("assetLinksEditor") AssetLinksEditor,
+      @SerializedName("boolean") Boolean,
+      @SerializedName("checkbox") Checkbox,
+      @SerializedName("datePicker") DatePicker,
+      @SerializedName("dropdown") Dropdown,
+      @SerializedName("entryCardEditor") EntryCardEditor,
+      @SerializedName("entryCardsEditor") EntryCardsEditor,
+      @SerializedName("entryLinkEditor") EntryLinkEditor,
+      @SerializedName("entryLinksEditor") EntryLinksEditor,
+      @SerializedName("kalturaEditor") KalturaEditor,
+      @SerializedName("kalturaMultiVideoEditor") KalturaMultiVideoEditor,
+      @SerializedName("listInput") ListInput,
+      @SerializedName("locationEditor") LocationEditor,
+      @SerializedName("markdown") Markdown,
+      @SerializedName("multipleLine") MultipleLine,
+      @SerializedName("numberEditor") NumberEditor,
+      @SerializedName("objectEditor") ObjectEditor,
+      @SerializedName("ooyalaEditor") OoyalaEditor,
+      @SerializedName("ooyalaMultiAssetEditor") OoyalaMultiAssetEditor,
+      @SerializedName("radio") Radio,
+      @SerializedName("rating") Rating,
+      @SerializedName("singleLine") SingleLine,
+      @SerializedName("slugEditor") SlugEditor,
+      @SerializedName("tagEditor") TagEditor,
+      @SerializedName("urlEditor") UrlEditor
     }
-
-    controls.add(control);
-    return this;
-  }
-
-  /**
-   * @return the list of all controls.
-   */
-  public List<Control> getControls() {
-    return controls;
-  }
-
-  /**
-   * @return a human readable string, representing the object.
-   */
-  @Override public String toString() {
-    return "CMAEditorInterface { " + super.toString() + " "
-        + "controls = " + getControls() + " "
-        + "}";
   }
 }

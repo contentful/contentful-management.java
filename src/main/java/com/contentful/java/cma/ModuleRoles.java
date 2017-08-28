@@ -121,7 +121,7 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
    * Please make sure that the instance provided is fetched from Contentful. Otherwise you will
    * get an exception thrown.
    *
-   * @param role the role fetched from contentful, updated by caller, to be updated.
+   * @param role the role fetched from Contentful, updated by caller, to be updated.
    * @return the updated role.
    * @throws IllegalArgumentException if space id is null.
    * @throws IllegalArgumentException if role is null.
@@ -152,7 +152,7 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
    * get an exception thrown.
    *
    * @param spaceId the id of the space to be used.
-   * @param role    the role fetched from contentful, updated by caller, to be deleted.
+   * @param role    the role fetched from Contentful, updated by caller, to be deleted.
    * @return the code of the response (200 means success).
    * @throws IllegalArgumentException if space id is null.
    * @throws IllegalArgumentException if role id is null.
@@ -200,8 +200,8 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
     /**
      * Fetch specific roles of this space.
      *
-     * @param spaceId the space identifier identifying the space.
-     * @param query   the search criteria to search for.
+     * @param spaceId  the space identifier identifying the space.
+     * @param query    the search criteria to search for.
      * @param callback the callback to be informed about success or failure.
      * @return the callback passed in.
      * @throws IllegalArgumentException if spaceId is null.
@@ -272,7 +272,7 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
      * Please make sure that the instance provided is fetched from Contentful. Otherwise you will
      * get an exception thrown.
      *
-     * @param role     the role fetched from contentful, updated by caller, to be updated.
+     * @param role     the role fetched from Contentful, updated by caller, to be updated.
      * @param callback a callback to be called, once the results are present.
      * @return the updated role callback.
      * @throws IllegalArgumentException if space id is null.
@@ -300,7 +300,7 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
      * get an exception thrown.
      *
      * @param spaceId  the id of the space to be used.
-     * @param role     the role fetched from contentful, updated by caller, to be deleted.
+     * @param role     the role fetched from Contentful, updated by caller, to be deleted.
      * @param callback a callback to be called, once the results are present.
      * @return a callback for asynchronous interaction.
      * @throws IllegalArgumentException if space id is null.
