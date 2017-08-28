@@ -121,7 +121,7 @@ public class ModuleLocales extends AbsModule<ServiceLocales> {
    * Please make sure that the instance provided is fetched from Contentful. Otherwise you will
    * get an exception thrown.
    *
-   * @param locale the locale fetched from contentful, updated by caller, to be updated.
+   * @param locale the locale fetched from Contentful, updated by caller, to be updated.
    * @return the updated locale.
    * @throws IllegalArgumentException if space id is null.
    * @throws IllegalArgumentException if locale is null.
@@ -152,7 +152,7 @@ public class ModuleLocales extends AbsModule<ServiceLocales> {
    * get an exception thrown.
    *
    * @param spaceId the id of the space to be used.
-   * @param locale    the locale fetched from contentful, updated by caller, to be deleted.
+   * @param locale    the locale fetched from Contentful, updated by caller, to be deleted.
    * @return the code of the response (200 means success).
    * @throws IllegalArgumentException if space id is null.
    * @throws IllegalArgumentException if locale id is null.
@@ -272,7 +272,7 @@ public class ModuleLocales extends AbsModule<ServiceLocales> {
      * Please make sure that the instance provided is fetched from Contentful. Otherwise you will
      * get an exception thrown.
      *
-     * @param locale     the locale fetched from contentful, updated by caller, to be updated.
+     * @param locale     the locale fetched from Contentful, updated by caller, to be updated.
      * @param callback a callback to be called, once the results are present.
      * @return the updated locale callback.
      * @throws IllegalArgumentException if space id is null.
@@ -300,7 +300,7 @@ public class ModuleLocales extends AbsModule<ServiceLocales> {
      * get an exception thrown.
      *
      * @param spaceId  the id of the space to be used.
-     * @param locale     the locale fetched from contentful, updated by caller, to be deleted.
+     * @param locale     the locale fetched from Contentful, updated by caller, to be deleted.
      * @param callback a callback to be called, once the results are present.
      * @return a callback for asynchronous interaction.
      * @throws IllegalArgumentException if space id is null.

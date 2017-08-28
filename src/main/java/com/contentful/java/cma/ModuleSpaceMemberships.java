@@ -121,7 +121,7 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
    * Please make sure that the instance provided is fetched from Contentful. Otherwise you will
    * get an exception thrown.
    *
-   * @param membership the membership fetched from contentful, updated by caller, to be updated.
+   * @param membership the membership fetched from Contentful, updated by caller, to be updated.
    * @return the updated membership.
    * @throws IllegalArgumentException if space id is null.
    * @throws IllegalArgumentException if membership is null.
@@ -152,7 +152,7 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
    * get an exception thrown.
    *
    * @param spaceId    the id of the space to be used.
-   * @param membership the membership fetched from contentful, updated by caller, to be deleted.
+   * @param membership the membership fetched from Contentful, updated by caller, to be deleted.
    * @return the code of the response (200 means success).
    * @throws IllegalArgumentException if space id is null.
    * @throws IllegalArgumentException if membership id is null.
@@ -272,7 +272,7 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
      * Please make sure that the instance provided is fetched from Contentful. Otherwise you will
      * get an exception thrown.
      *
-     * @param membership the membership fetched from contentful, updated by caller, to be updated.
+     * @param membership the membership fetched from Contentful, updated by caller, to be updated.
      * @param callback the callback to be informed about success or failure.
      * @return the callback passed in.
      * @throws IllegalArgumentException if space id is null.
@@ -300,7 +300,7 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
      * get an exception thrown.
      *
      * @param spaceId    the id of the space to be used.
-     * @param membership the membership fetched from contentful, updated by caller, to be deleted.
+     * @param membership the membership fetched from Contentful, updated by caller, to be deleted.
      * @param callback the callback to be informed about success or failure.
      * @return the callback passed in.
      * @throws IllegalArgumentException if space id is null.

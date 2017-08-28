@@ -194,7 +194,7 @@ public class CMAWebhook extends CMAResource {
   }
 
   /**
-   * @return the http basic auth password set (only valid while creating the hook on contentful).
+   * @return the http basic auth password set (only valid while creating the hook on Contentful).
    * @see #setBasicAuthorization(String, String)
    */
   public String getPassword() {

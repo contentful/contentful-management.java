@@ -10,7 +10,7 @@ import static java.util.Locale.getDefault;
 import static java.util.regex.Pattern.compile;
 
 /**
- * This header interceptor will add contentful relevant information to the custom user agent header.
+ * This header interceptor will add Contentful relevant information to the custom user agent header.
  */
 public class ContentfulUserAgentHeaderInterceptor extends HeaderInterceptor {
   public static final String HEADER_NAME = "X-Contentful-User-Agent";
