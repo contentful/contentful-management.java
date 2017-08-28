@@ -21,22 +21,6 @@ public class CMASpaceMembership extends CMAResource {
   }
 
   /**
-   * Update admin flag.
-   * <p>
-   * If you set this flag to false, you have to provide some roles this membership should be part
-   * of.
-   *
-   * @param admin true, if this membership should be an admin.
-   * @return this membership for ease of chaining.
-   * @see #setRoles(CMALink...)
-   * @see #addRole(CMALink)
-   */
-  public CMASpaceMembership setAdmin(boolean admin) {
-    this.admin = admin;
-    return this;
-  }
-
-  /**
    * @return a link to the user of this membership
    */
   public CMALink getUser() {
@@ -138,6 +122,22 @@ public class CMASpaceMembership extends CMAResource {
    */
   public boolean isAdmin() {
     return admin;
+  }
+
+  /**
+   * Update admin flag.
+   * <p>
+   * If you set this flag to false, you have to provide some roles this membership should be part
+   * of.
+   *
+   * @param admin true, if this membership should be an admin.
+   * @return this membership for ease of chaining.
+   * @see #setRoles(CMALink...)
+   * @see #addRole(CMALink)
+   */
+  public CMASpaceMembership setAdmin(boolean admin) {
+    this.admin = admin;
+    return this;
   }
 
   /**

@@ -22,58 +22,6 @@ import java.util.LinkedHashMap;
  * Represents a resource of type Entry.
  */
 public class CMAEntry extends CMAResource {
-  /**
-   * Localize all fields with a given locale.
-   * <p>
-   * Please use {@link CMAEntry#localize(String)} to see how to create an instance.
-   */
-  public class Localized {
-    private final String locale;
-
-    /**
-     * Internal method for creating the Localized fields.
-     *
-     * @param locale the locale, like 'en-US', to be used.
-     */
-    Localized(String locale) {
-      this.locale = locale;
-    }
-
-    /**
-     * Get a localized field.
-     *
-     * @param key the key of the value to be returned.
-     * @param <T> the type of the value to be returned.
-     * @return a value based on the key given here and the locale set earlier.
-     */
-    public <T> T getField(String key) {
-      return CMAEntry.this.getField(key, locale);
-    }
-
-    /**
-     * Change the value of a localized field.
-     *
-     * @param key   identifier of the field to be changed.
-     * @param value value of the new field.
-     * @param <T>   type of the field.
-     * @return an instance of the calling {@link Localized} instance, for easy chaining.
-     */
-    public <T> Localized setField(String key, T value) {
-      CMAEntry.this.setField(key, locale, value);
-      return this;
-    }
-
-    /**
-     * @return a human readable string, representing the object.
-     */
-    @Override public String toString() {
-      return "Localized { "
-          + "locale = " + locale + ", "
-          + "fields = " + fields + " "
-          + "}";
-    }
-  }
-
   // Map of fields
   LinkedHashMap<String, LinkedHashMap<String, Object>> fields;
 
@@ -209,5 +157,57 @@ public class CMAEntry extends CMAResource {
     return "CMAEntry { " + super.toString() + " "
         + "fields = " + getFields() + " "
         + "}";
+  }
+
+  /**
+   * Localize all fields with a given locale.
+   * <p>
+   * Please use {@link CMAEntry#localize(String)} to see how to create an instance.
+   */
+  public class Localized {
+    private final String locale;
+
+    /**
+     * Internal method for creating the Localized fields.
+     *
+     * @param locale the locale, like 'en-US', to be used.
+     */
+    Localized(String locale) {
+      this.locale = locale;
+    }
+
+    /**
+     * Get a localized field.
+     *
+     * @param key the key of the value to be returned.
+     * @param <T> the type of the value to be returned.
+     * @return a value based on the key given here and the locale set earlier.
+     */
+    public <T> T getField(String key) {
+      return CMAEntry.this.getField(key, locale);
+    }
+
+    /**
+     * Change the value of a localized field.
+     *
+     * @param key   identifier of the field to be changed.
+     * @param value value of the new field.
+     * @param <T>   type of the field.
+     * @return an instance of the calling {@link Localized} instance, for easy chaining.
+     */
+    public <T> Localized setField(String key, T value) {
+      CMAEntry.this.setField(key, locale, value);
+      return this;
+    }
+
+    /**
+     * @return a human readable string, representing the object.
+     */
+    @Override public String toString() {
+      return "Localized { "
+          + "locale = " + locale + ", "
+          + "fields = " + fields + " "
+          + "}";
+    }
   }
 }

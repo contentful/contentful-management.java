@@ -4,70 +4,6 @@ package com.contentful.java.cma.model;
  * Description of a file on the asset system of Contentful.
  */
 public class CMAAssetFile {
-  /**
-   * Read only structure, detailing the content of the asset uploaded.
-   */
-  public static class Details {
-    /**
-     * Optional readonly structure, filled with information by Contentful, if the asset is an image.
-     */
-    public static class ImageMeta {
-      Long width;
-      Long height;
-
-      /**
-       * @return width of the image in pixel.
-       */
-      public Long getWidth() {
-        return width;
-      }
-
-      /**
-       * @return height of the image in pixel.
-       */
-      public Long getHeight() {
-        return height;
-      }
-
-      /**
-       * @return a human readable string, representing the object.
-       */
-      @Override public String toString() {
-        return "ImageMeta { "
-            + "height = " + getHeight() + ", "
-            + "width = " + getWidth() + " "
-            + "}";
-      }
-    }
-
-    Long size;
-    ImageMeta imageMeta;
-
-    /**
-     * @return size of the asset in bytes.
-     */
-    public Long getSize() {
-      return size;
-    }
-
-    /**
-     * @return image meta information, if present.
-     */
-    public ImageMeta getImageMeta() {
-      return imageMeta;
-    }
-
-    /**
-     * @return a human readable string, representing the object.
-     */
-    @Override public String toString() {
-      return "Details { "
-          + "imageMeta = " + getImageMeta() + ", "
-          + "size = " + getSize() + " "
-          + "}";
-    }
-  }
-
   String contentType;
   Details details;
   String url;
@@ -206,5 +142,69 @@ public class CMAAssetFile {
         + "uploadFrom = " + getUploadFrom() + ", "
         + "url = " + getUrl() + " "
         + "}";
+  }
+
+  /**
+   * Read only structure, detailing the content of the asset uploaded.
+   */
+  public static class Details {
+    Long size;
+    ImageMeta imageMeta;
+
+    /**
+     * @return size of the asset in bytes.
+     */
+    public Long getSize() {
+      return size;
+    }
+
+    /**
+     * @return image meta information, if present.
+     */
+    public ImageMeta getImageMeta() {
+      return imageMeta;
+    }
+
+    /**
+     * @return a human readable string, representing the object.
+     */
+    @Override public String toString() {
+      return "Details { "
+          + "imageMeta = " + getImageMeta() + ", "
+          + "size = " + getSize() + " "
+          + "}";
+    }
+
+    /**
+     * Optional readonly structure, filled with information by Contentful, if the asset is an image.
+     */
+    public static class ImageMeta {
+      Long width;
+      Long height;
+
+      /**
+       * @return width of the image in pixel.
+       */
+      public Long getWidth() {
+        return width;
+      }
+
+      /**
+       * @return height of the image in pixel.
+       */
+      public Long getHeight() {
+        return height;
+      }
+
+      /**
+       * @return a human readable string, representing the object.
+       */
+      @Override public String toString() {
+        return "ImageMeta { "
+            + "height = " + getHeight() + ", "
+            + "width = " + getWidth() + " "
+            + "}";
+      }
+    }
   }
 }

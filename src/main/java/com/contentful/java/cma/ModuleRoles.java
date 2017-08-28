@@ -200,8 +200,8 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
     /**
      * Fetch specific roles of this space.
      *
-     * @param spaceId the space identifier identifying the space.
-     * @param query   the search criteria to search for.
+     * @param spaceId  the space identifier identifying the space.
+     * @param query    the search criteria to search for.
      * @param callback the callback to be informed about success or failure.
      * @return the callback passed in.
      * @throws IllegalArgumentException if spaceId is null.

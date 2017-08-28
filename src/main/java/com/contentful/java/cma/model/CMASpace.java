@@ -45,6 +45,13 @@ public class CMASpace extends CMAResource {
   }
 
   /**
+   * @return the name of this Space.
+   */
+  public String getName() {
+    return name;
+  }
+
+  /**
    * Sets the name for this Space.
    *
    * @param name the name of the Space to be set
@@ -53,13 +60,6 @@ public class CMASpace extends CMAResource {
   public CMASpace setName(String name) {
     this.name = name;
     return this;
-  }
-
-  /**
-   * @return the name of this Space.
-   */
-  public String getName() {
-    return name;
   }
 
   /**
@@ -84,6 +84,16 @@ public class CMASpace extends CMAResource {
   }
 
   /**
+   * This method returns the actual id of this space.
+   *
+   * @return the id of this space
+   * @see #getId()
+   */
+  @Override public String getSpaceId() {
+    return super.getId();
+  }
+
+  /**
    * Sets the id of this space.
    *
    * @param id the id to be set.
@@ -93,16 +103,6 @@ public class CMASpace extends CMAResource {
   @SuppressWarnings("unchecked") @Override
   public CMASpace setSpaceId(String id) {
     return super.setId(id);
-  }
-
-  /**
-   * This method returns the actual id of this space.
-   *
-   * @return the id of this space
-   * @see #getId()
-   */
-  @Override public String getSpaceId() {
-    return super.getId();
   }
 
   /**

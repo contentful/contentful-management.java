@@ -24,6 +24,39 @@ public abstract class Platform {
   }
 
   /**
+   * @return the platform identified.
+   */
+  private static Platform findPlatform() {
+    if (tryGettingAndroidSDKNumber() > 0) {
+      return new Android();
+    } else {
+      return new Base();
+    }
+  }
+
+  private static String tryGettingAndroidReleaseVersionString() {
+    try {
+      final Class<?> buildsVersionClass = Class.forName("android.os.Build$VERSION");
+      final Field releaseField = buildsVersionClass.getField("RELEASE");
+      return (String) releaseField.get(null);
+    } catch (Exception ignored) {
+      // if exception is thrown, ignore it and provide no version.
+      return null;
+    }
+  }
+
+  private static int tryGettingAndroidSDKNumber() {
+    try {
+      final Class<?> buildsVersionClass = Class.forName("android.os.Build$VERSION");
+      final Field versionInt = buildsVersionClass.getField("SDK_INT");
+      return (Integer) versionInt.get(null);
+    } catch (Exception ignored) {
+      // if exception is thrown, ignore it and provide no version.
+      return 0;
+    }
+  }
+
+  /**
    * Return an executor for this platform.
    *
    * @return an executor for this platform.
@@ -45,17 +78,6 @@ public abstract class Platform {
    * @return "1.4", "4.4", "10.1" …
    */
   public abstract String version();
-
-  /**
-   * @return the platform identified.
-   */
-  private static Platform findPlatform() {
-    if (tryGettingAndroidSDKNumber() > 0) {
-      return new Android();
-    } else {
-      return new Base();
-    }
-  }
 
   /**
    * Provides sane defaults for operation on the JVM.
@@ -115,28 +137,6 @@ public abstract class Platform {
      */
     @Override public String version() {
       return tryGettingAndroidReleaseVersionString();
-    }
-  }
-
-  private static String tryGettingAndroidReleaseVersionString() {
-    try {
-      final Class<?> buildsVersionClass = Class.forName("android.os.Build$VERSION");
-      final Field releaseField = buildsVersionClass.getField("RELEASE");
-      return (String) releaseField.get(null);
-    } catch (Exception ignored) {
-      // if exception is thrown, ignore it and provide no version.
-      return null;
-    }
-  }
-
-  private static int tryGettingAndroidSDKNumber() {
-    try {
-      final Class<?> buildsVersionClass = Class.forName("android.os.Build$VERSION");
-      final Field versionInt = buildsVersionClass.getField("SDK_INT");
-      return (Integer) versionInt.get(null);
-    } catch (Exception ignored) {
-      // if exception is thrown, ignore it and provide no version.
-      return 0;
     }
   }
 }

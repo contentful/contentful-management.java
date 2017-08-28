@@ -16,9 +16,174 @@ public class ContentfulUserAgentHeaderInterceptor extends HeaderInterceptor {
   public static final String HEADER_NAME = "X-Contentful-User-Agent";
 
   /**
+   * Create Header interceptor, saving parameters.
+   *
+   * @param sections a list of sections to be used to identify this application.
+   */
+  public ContentfulUserAgentHeaderInterceptor(Section... sections) {
+    super(HEADER_NAME, sectionsToString(checkSections(sections)));
+  }
+
+  private static Section[] checkSections(Section[] sections) {
+    if (sections == null || sections.length <= 0) {
+      throw new IllegalArgumentException("sections cannot be empty.");
+    }
+    return sections;
+  }
+
+  private static String sectionsToString(Section[] sections) {
+    // take last section of same identifier
+    final LinkedHashMap<String, Section> mappedSections = new LinkedHashMap<String, Section>();
+    for (final Section section : sections) {
+      if (section != null) {
+        final String identifier = section.getIdentifier();
+        mappedSections.put(identifier, section);
+      }
+    }
+
+    // Stringify sections
+    final StringBuilder builder = new StringBuilder();
+    for (final Section section : mappedSections.values()) {
+      builder.append(section.toString());
+    }
+    return builder.toString();
+  }
+
+  /**
    * A section of values used to fill out the Contentful custom HTTP header.
    */
   public static class Section {
+
+    private final static String APP = "app";
+    private final static String INTEGRATION = "integration";
+    private final static String SDK = "sdk";
+    private final static String PLATFORM = "platform";
+    private final static String OS = "os";
+    private final String identifier;
+    private final String name;
+    private final Version version;
+
+    /**
+     * Create a section.
+     *
+     * @param name    How do we call this header section?
+     * @param version What is the version of this fields' value?
+     */
+    private Section(String identifier, String name, Version version) {
+      this.identifier = identifier;
+      this.name = name;
+      this.version = version;
+    }
+
+    /**
+     * Create an app section.
+     *
+     * @param name    of the app.
+     * @param version of the app.
+     * @return a new Section.
+     */
+    public static Section integration(String name, Version version) {
+      return new Section(INTEGRATION, name, version);
+    }
+
+    /**
+     * Create an sdk section.
+     *
+     * @param name    of the sdk.
+     * @param version of the sdk.
+     * @return a new Section.
+     */
+    public static Section sdk(String name, Version version) {
+      return new Section(SDK, name, version);
+    }
+
+    /**
+     * Create an platform section.
+     *
+     * @param name    of the platform.
+     * @param version of the platform.
+     * @return a new Section.
+     */
+    public static Section platform(String name, Version version) {
+      return new Section(PLATFORM, name, version);
+    }
+
+    /**
+     * Create an os section.
+     *
+     * @param os      one of the supported and understood operation systems.
+     * @param version the version of the os.
+     * @return a new Section.
+     */
+    public static Section os(OperatingSystem os, Version version) {
+      return new Section(OS, os.name(), version);
+    }
+
+    /**
+     * Create an app section.
+     *
+     * @param name    of the app.
+     * @param version of the app.
+     * @return a new Section or null, if app name is invalid.
+     */
+    public static Section app(String name, Version version) {
+      name = check(name);
+      if (name == null) {
+        return null;
+      } else {
+        return new Section(APP, name, version);
+      }
+    }
+
+    private static String check(String name) {
+      if (name == null || name.length() <= 0) {
+        return null;
+      }
+      return name.replace(" ", "-").toLowerCase();
+    }
+
+    /**
+     * @return the name of this section.
+     */
+    public String getName() {
+      return name;
+    }
+
+    /**
+     * @return the version of this section.
+     */
+    public Version getVersion() {
+      return version;
+    }
+
+    /**
+     * @return which identifier this section uses.
+     */
+    public String getIdentifier() {
+      return identifier;
+    }
+
+    /**
+     * @return a string representing the section.
+     */
+    public String toString() {
+      if (getVersion() == null) {
+        return format(
+            getDefault(),
+            "%s %s; ",
+            getIdentifier(),
+            getName()
+        );
+      } else {
+        return format(
+            getDefault(),
+            "%s %s/%s; ",
+            getIdentifier(),
+            getName(),
+            getVersion().toString()
+        );
+      }
+    }
 
     /**
      * Fixed enumeration of what operating systems we support.
@@ -56,6 +221,36 @@ public class ContentfulUserAgentHeaderInterceptor extends HeaderInterceptor {
       private static final Pattern VERSION_PATTERN = compile(VERSION_REGEX);
       private static final String STABILITY_REGEX = "^([a-zA-Z]+[0-9]*).*";
       private static final Pattern STABILITY_PATTERN = compile(STABILITY_REGEX);
+      private final int major;
+      private final int minor;
+      private final int patch;
+      private final String stability;
+      /**
+       * Create a release version, omitting stability
+       *
+       * @param major How many breaking changes did this version release?
+       * @param minor How many additional backwards compatible changes were added?
+       * @param patch How many bugs were fixed in the release?
+       * @see #parse(String)
+       */
+      public Version(int major, int minor, int patch) {
+        this(major, minor, patch, null);
+      }
+      /**
+       * Create a version including a stability.
+       *
+       * @param major     How many breaking changes did this version release?
+       * @param minor     How many additional backwards compatible changes were added?
+       * @param patch     How many bugs were fixed in the release?
+       * @param stability Is this a stable version(null) or is this not (dev, BETA, …)?
+       * @see #parse(String)
+       */
+      public Version(int major, int minor, int patch, String stability) {
+        this.major = major;
+        this.minor = minor;
+        this.patch = patch;
+        this.stability = stability;
+      }
 
       /**
        * Convert a version into a Semver and Contentful conform version number.
@@ -128,39 +323,6 @@ public class ContentfulUserAgentHeaderInterceptor extends HeaderInterceptor {
         }
       }
 
-      private final int major;
-      private final int minor;
-      private final int patch;
-      private final String stability;
-
-      /**
-       * Create a release version, omitting stability
-       *
-       * @param major How many breaking changes did this version release?
-       * @param minor How many additional backwards compatible changes were added?
-       * @param patch How many bugs were fixed in the release?
-       * @see #parse(String)
-       */
-      public Version(int major, int minor, int patch) {
-        this(major, minor, patch, null);
-      }
-
-      /**
-       * Create a version including a stability.
-       *
-       * @param major     How many breaking changes did this version release?
-       * @param minor     How many additional backwards compatible changes were added?
-       * @param patch     How many bugs were fixed in the release?
-       * @param stability Is this a stable version(null) or is this not (dev, BETA, …)?
-       * @see #parse(String)
-       */
-      public Version(int major, int minor, int patch, String stability) {
-        this.major = major;
-        this.minor = minor;
-        this.patch = patch;
-        this.stability = stability;
-      }
-
       /**
        * @return major version part.
        */
@@ -200,171 +362,5 @@ public class ContentfulUserAgentHeaderInterceptor extends HeaderInterceptor {
         }
       }
     }
-
-    private final static String APP = "app";
-    private final static String INTEGRATION = "integration";
-    private final static String SDK = "sdk";
-    private final static String PLATFORM = "platform";
-    private final static String OS = "os";
-
-    /**
-     * Create an app section.
-     *
-     * @param name    of the app.
-     * @param version of the app.
-     * @return a new Section.
-     */
-    public static Section integration(String name, Version version) {
-      return new Section(INTEGRATION, name, version);
-    }
-
-    /**
-     * Create an sdk section.
-     *
-     * @param name    of the sdk.
-     * @param version of the sdk.
-     * @return a new Section.
-     */
-    public static Section sdk(String name, Version version) {
-      return new Section(SDK, name, version);
-    }
-
-    /**
-     * Create an platform section.
-     *
-     * @param name    of the platform.
-     * @param version of the platform.
-     * @return a new Section.
-     */
-    public static Section platform(String name, Version version) {
-      return new Section(PLATFORM, name, version);
-    }
-
-    /**
-     * Create an os section.
-     *
-     * @param os      one of the supported and understood operation systems.
-     * @param version the version of the os.
-     * @return a new Section.
-     */
-    public static Section os(OperatingSystem os, Version version) {
-      return new Section(OS, os.name(), version);
-    }
-
-    /**
-     * Create an app section.
-     *
-     * @param name    of the app.
-     * @param version of the app.
-     * @return a new Section or null, if app name is invalid.
-     */
-    public static Section app(String name, Version version) {
-      name = check(name);
-      if (name == null) {
-        return null;
-      } else {
-        return new Section(APP, name, version);
-      }
-    }
-
-    private static String check(String name) {
-      if (name == null || name.length() <= 0) {
-        return null;
-      }
-      return name.replace(" ", "-").toLowerCase();
-    }
-
-    private final String identifier;
-    private final String name;
-    private final Version version;
-
-    /**
-     * Create a section.
-     *
-     * @param name    How do we call this header section?
-     * @param version What is the version of this fields' value?
-     */
-    private Section(String identifier, String name, Version version) {
-      this.identifier = identifier;
-      this.name = name;
-      this.version = version;
-    }
-
-    /**
-     * @return the name of this section.
-     */
-    public String getName() {
-      return name;
-    }
-
-    /**
-     * @return the version of this section.
-     */
-    public Version getVersion() {
-      return version;
-    }
-
-    /**
-     * @return which identifier this section uses.
-     */
-    public String getIdentifier() {
-      return identifier;
-    }
-
-    /**
-     * @return a string representing the section.
-     */
-    public String toString() {
-      if (getVersion() == null) {
-        return format(
-            getDefault(),
-            "%s %s; ",
-            getIdentifier(),
-            getName()
-        );
-      } else {
-        return format(
-            getDefault(),
-            "%s %s/%s; ",
-            getIdentifier(),
-            getName(),
-            getVersion().toString()
-        );
-      }
-    }
-  }
-
-  /**
-   * Create Header interceptor, saving parameters.
-   *
-   * @param sections a list of sections to be used to identify this application.
-   */
-  public ContentfulUserAgentHeaderInterceptor(Section... sections) {
-    super(HEADER_NAME, sectionsToString(checkSections(sections)));
-  }
-
-  private static Section[] checkSections(Section[] sections) {
-    if (sections == null || sections.length <= 0) {
-      throw new IllegalArgumentException("sections cannot be empty.");
-    }
-    return sections;
-  }
-
-  private static String sectionsToString(Section[] sections) {
-    // take last section of same identifier
-    final LinkedHashMap<String, Section> mappedSections = new LinkedHashMap<String, Section>();
-    for (final Section section : sections) {
-      if (section != null) {
-        final String identifier = section.getIdentifier();
-        mappedSections.put(identifier, section);
-      }
-    }
-
-    // Stringify sections
-    final StringBuilder builder = new StringBuilder();
-    for (final Section section : mappedSections.values()) {
-      builder.append(section.toString());
-    }
-    return builder.toString();
   }
 }

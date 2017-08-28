@@ -135,6 +135,20 @@ public class CMAClient {
   }
 
   /**
+   * Creates and returns a custom {@code Gson} instance.
+   */
+  static Gson createGson() {
+    if (gson == null) {
+      gson = new GsonBuilder()
+          .registerTypeAdapter(CMAField.class, new FieldTypeAdapter())
+          .registerTypeAdapter(CMAEntry.class, new EntrySerializer())
+          .create();
+    }
+
+    return gson;
+  }
+
+  /**
    * Sets the callback executor.
    */
   private void setCallbackExecutor(Builder clientBuilder) {
@@ -154,20 +168,6 @@ public class CMAClient {
       return retrofitBuilder.baseUrl(endpoint);
     }
     return retrofitBuilder;
-  }
-
-  /**
-   * Creates and returns a custom {@code Gson} instance.
-   */
-  static Gson createGson() {
-    if (gson == null) {
-      gson = new GsonBuilder()
-          .registerTypeAdapter(CMAField.class, new FieldTypeAdapter())
-          .registerTypeAdapter(CMAEntry.class, new EntrySerializer())
-          .create();
-    }
-
-    return gson;
   }
 
   /**

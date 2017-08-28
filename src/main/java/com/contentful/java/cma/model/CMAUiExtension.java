@@ -10,44 +10,51 @@ import java.util.List;
  * Model class to describe an ui extension.
  */
 public class CMAUiExtension extends CMAResource {
+  Extension extension;
+
+  /**
+   * Creates a new ui extension.
+   */
+  public CMAUiExtension() {
+    super(CMAType.UiExtension);
+  }
+
+  /**
+   * Update the id of this ui extension.
+   *
+   * @param id to be set.
+   * @return this instance for chaining.
+   */
+  @SuppressWarnings("unchecked") @Override
+  public CMAUiExtension setId(String id) {
+    super.setId(id);
+    return this;
+  }
+
+  /**
+   * @return the extension description part of the ui extension.
+   */
+  public Extension getExtension() {
+    if (extension == null) {
+      extension = new Extension();
+    }
+
+    return extension;
+  }
+
+  /**
+   * @return a human readable string, representing the object.
+   */
+  @Override public String toString() {
+    return "CMAUiExtension { " + super.toString() + " "
+        + "extension = " + getExtension() + " "
+        + "}";
+  }
+
   /**
    * Model holding the actual information of the extension.
    */
   public static class Extension {
-
-    /**
-     * Holder of one field type this extension should be used on.
-     */
-    public static class FieldType {
-      CMAFieldType type;
-
-      /**
-       * @return the type of the field
-       */
-      public CMAFieldType getType() {
-        return type;
-      }
-
-      /**
-       * Updates the type of this field with a new one.
-       *
-       * @param type the new content type field type.
-       * @return this instance for chaining.
-       */
-      public FieldType setType(CMAFieldType type) {
-        this.type = type;
-        return this;
-      }
-
-      /**
-       * @return a human readable string, representing the object.
-       */
-      @Override public String toString() {
-        return "FieldType { "
-            + "type = " + getType() + " "
-            + "}";
-      }
-    }
 
     String name;
     List<FieldType> fieldTypes;
@@ -177,46 +184,39 @@ public class CMAUiExtension extends CMAResource {
           + "sourceUrl = " + getSourceUrl() + " "
           + "}";
     }
-  }
 
-  /**
-   * Creates a new ui extension.
-   */
-  public CMAUiExtension() {
-    super(CMAType.UiExtension);
-  }
+    /**
+     * Holder of one field type this extension should be used on.
+     */
+    public static class FieldType {
+      CMAFieldType type;
 
-  Extension extension;
+      /**
+       * @return the type of the field
+       */
+      public CMAFieldType getType() {
+        return type;
+      }
 
-  /**
-   * Update the id of this ui extension.
-   *
-   * @param id to be set.
-   * @return this instance for chaining.
-   */
-  @SuppressWarnings("unchecked") @Override
-  public CMAUiExtension setId(String id) {
-    super.setId(id);
-    return this;
-  }
+      /**
+       * Updates the type of this field with a new one.
+       *
+       * @param type the new content type field type.
+       * @return this instance for chaining.
+       */
+      public FieldType setType(CMAFieldType type) {
+        this.type = type;
+        return this;
+      }
 
-  /**
-   * @return the extension description part of the ui extension.
-   */
-  public Extension getExtension() {
-    if (extension == null) {
-      extension = new Extension();
+      /**
+       * @return a human readable string, representing the object.
+       */
+      @Override public String toString() {
+        return "FieldType { "
+            + "type = " + getType() + " "
+            + "}";
+      }
     }
-
-    return extension;
-  }
-
-  /**
-   * @return a human readable string, representing the object.
-   */
-  @Override public String toString() {
-    return "CMAUiExtension { " + super.toString() + " "
-        + "extension = " + getExtension() + " "
-        + "}";
   }
 }

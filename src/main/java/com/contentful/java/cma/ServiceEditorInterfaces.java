@@ -18,12 +18,12 @@ package com.contentful.java.cma;
 
 import com.contentful.java.cma.model.CMAEditorInterface;
 
+import io.reactivex.Flowable;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
-import io.reactivex.Flowable;
 
 /**
  * Editor Interfaces Service.

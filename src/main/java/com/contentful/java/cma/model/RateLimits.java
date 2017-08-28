@@ -7,6 +7,47 @@ import java.util.Map;
  * Class to summarize the rate limits Contentful returns.
  */
 public class RateLimits {
+  private int hourLimit;
+  private int hourRemaining;
+  private int reset;
+  private int secondLimit;
+  private int secondRemaining;
+
+  /**
+   * @return the number of requests remaining per hour in total.
+   */
+  public int getHourLimit() {
+    return hourLimit;
+  }
+
+  /**
+   * @return the number of requests remaining currently.
+   */
+  public int getHourRemaining() {
+    return hourRemaining;
+  }
+
+  /**
+   * @return when does the rate limit counter reset?
+   */
+  public int getReset() {
+    return reset;
+  }
+
+  /**
+   * @return the number of requests remaining per hour in total.
+   */
+  public int getSecondLimit() {
+    return secondLimit;
+  }
+
+  /**
+   * @return the number of requests remaining currently.
+   */
+  public int getSecondRemaining() {
+    return secondRemaining;
+  }
+
   /**
    * Interface for parsing rate limits.
    */
@@ -115,46 +156,5 @@ public class RateLimits {
     public RateLimits build() {
       return limits;
     }
-  }
-
-  private int hourLimit;
-  private int hourRemaining;
-  private int reset;
-  private int secondLimit;
-  private int secondRemaining;
-
-  /**
-   * @return the number of requests remaining per hour in total.
-   */
-  public int getHourLimit() {
-    return hourLimit;
-  }
-
-  /**
-   * @return the number of requests remaining currently.
-   */
-  public int getHourRemaining() {
-    return hourRemaining;
-  }
-
-  /**
-   * @return when does the rate limit counter reset?
-   */
-  public int getReset() {
-    return reset;
-  }
-
-  /**
-   * @return the number of requests remaining per hour in total.
-   */
-  public int getSecondLimit() {
-    return secondLimit;
-  }
-
-  /**
-   * @return the number of requests remaining currently.
-   */
-  public int getSecondRemaining() {
-    return secondRemaining;
   }
 }

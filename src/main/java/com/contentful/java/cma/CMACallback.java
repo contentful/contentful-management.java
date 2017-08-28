@@ -18,16 +18,16 @@ package com.contentful.java.cma;
 
 /**
  * Callback to be used with any of the {@code CMAClient} asynchronous methods.
- *
+ * <p>
  * Implement the {@link #onSuccess} method for cases where the request was successful, the result
  * object should be delivered as a parameter.
- *
+ * <p>
  * It is also possible, but not mandatory to override {@link #onFailure} and provide an
  * implementation for handling errors.
  *
  * @param <T> the type of object to be expected as a result. For methods that return a collection
  *            of resources it is required to use {@code CMAArray} as the type.
- *
+ *            <p>
  *            Callback can be cancelled at any point using the {@link #cancel()} method, that will
  *            prevent any future calls to {@link #onSuccess} and
  *            {@link #onFailure(RuntimeException)}.

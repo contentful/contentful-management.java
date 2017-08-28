@@ -181,7 +181,7 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
     /**
      * Fetch all memberships of this space, asynchronously.
      *
-     * @param spaceId the space identifier identifying the space.
+     * @param spaceId  the space identifier identifying the space.
      * @param callback the callback to be informed about success or failure.
      * @return the callback passed in.
      * @throws IllegalArgumentException if spaceId is null.
@@ -200,8 +200,8 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
     /**
      * Fetch all memberships of this space, asynchronously.
      *
-     * @param spaceId the space identifier identifying the space.
-     * @param query   define which space memberships to return.
+     * @param spaceId  the space identifier identifying the space.
+     * @param query    define which space memberships to return.
      * @param callback the callback to be informed about success or failure.
      * @return the callback passed in.
      * @throws IllegalArgumentException if spaceId is null.
@@ -223,7 +223,7 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
      *
      * @param spaceId      the space this membership is hosted by.
      * @param membershipId the id of the membership to be found.
-     * @param callback the callback to be informed about success or failure.
+     * @param callback     the callback to be informed about success or failure.
      * @return the callback passed in.
      * @throws IllegalArgumentException if space id is null.
      * @throws IllegalArgumentException if membership id is null.
@@ -247,7 +247,7 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
      *
      * @param spaceId    the space id to host the membership.
      * @param membership the new membership to be created.
-     * @param callback the callback to be informed about success or failure.
+     * @param callback   the callback to be informed about success or failure.
      * @return the callback passed in.
      * @throws IllegalArgumentException if space id is null.
      * @throws IllegalArgumentException if membership is null.
@@ -273,7 +273,7 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
      * get an exception thrown.
      *
      * @param membership the membership fetched from Contentful, updated by caller, to be updated.
-     * @param callback the callback to be informed about success or failure.
+     * @param callback   the callback to be informed about success or failure.
      * @return the callback passed in.
      * @throws IllegalArgumentException if space id is null.
      * @throws IllegalArgumentException if membership is null.
@@ -301,7 +301,7 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
      *
      * @param spaceId    the id of the space to be used.
      * @param membership the membership fetched from Contentful, updated by caller, to be deleted.
-     * @param callback the callback to be informed about success or failure.
+     * @param callback   the callback to be informed about success or failure.
      * @return the callback passed in.
      * @throws IllegalArgumentException if space id is null.
      * @throws IllegalArgumentException if membership id is null.

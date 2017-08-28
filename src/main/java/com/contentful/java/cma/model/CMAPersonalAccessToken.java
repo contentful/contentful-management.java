@@ -14,19 +14,10 @@ import java.util.List;
  */
 public class CMAPersonalAccessToken extends CMAResource {
 
-  /**
-   * Enum holding the allowed values of scope.
-   */
-  public enum Scope {
-    @SerializedName("content_management_read")Read,
-    @SerializedName("content_management_manage")Manage
-  }
-
   String name;
   String revokedAt;
   List<Scope> scopes;
   String token;
-
   /**
    * Create a new personal access token to be uploaded to Contentful.
    */
@@ -46,6 +37,13 @@ public class CMAPersonalAccessToken extends CMAResource {
   }
 
   /**
+   * @return the name of this personal access token.
+   */
+  public String getName() {
+    return name;
+  }
+
+  /**
    * Sets the name for this personal access token.
    *
    * @param name the name of the personal access token to be set.
@@ -54,13 +52,6 @@ public class CMAPersonalAccessToken extends CMAResource {
   public CMAPersonalAccessToken setName(String name) {
     this.name = name;
     return this;
-  }
-
-  /**
-   * @return the name of this personal access token.
-   */
-  public String getName() {
-    return name;
   }
 
   /**
@@ -116,5 +107,13 @@ public class CMAPersonalAccessToken extends CMAResource {
         + "revokedAt = " + getRevokedAt() + ", "
         + "scopes = " + getScopes() + " "
         + "}";
+  }
+
+  /**
+   * Enum holding the allowed values of scope.
+   */
+  public enum Scope {
+    @SerializedName("content_management_read") Read,
+    @SerializedName("content_management_manage") Manage
   }
 }

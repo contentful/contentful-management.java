@@ -5,6 +5,15 @@ package com.contentful.java.cma;
  */
 public interface Logger {
   /**
+   * Abstract method to be implemented by client.
+   * <p>
+   * This method gets called, once there is something to log
+   *
+   * @param message to be delivered to the logger.
+   */
+  void log(String message);
+
+  /**
    * Determine the level of logging
    */
   enum Level {
@@ -23,13 +32,4 @@ public interface Logger {
      */
     FULL
   }
-
-  /**
-   * Abstract method to be implemented by client.
-   *
-   * This method gets called, once there is something to log
-   *
-   * @param message to be delivered to the logger.
-   */
-  void log(String message);
 }

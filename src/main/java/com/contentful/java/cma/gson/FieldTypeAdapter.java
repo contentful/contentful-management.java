@@ -42,10 +42,25 @@ public final class FieldTypeAdapter implements JsonSerializer<CMAField> {
   private static final String ATTR_VALIDATIONS = "validations";
   private static final String ATTR_ARRAY_ITEMS = "items";
 
+  private static <T> void add(JsonObject json, String property, T value) {
+    if (value != null) {
+      if (value instanceof Boolean) {
+        if ((Boolean) value) {
+          json.addProperty(property, true);
+        }
+      } else if (value instanceof String) {
+        json.addProperty(property, (String) value);
+      } else {
+        json.addProperty(property, value.toString());
+      }
+    }
+  }
+
   /**
    * Serialize all fields for content types.
-   * @param field the content type field to be serialized
-   * @param type the type to be used.
+   *
+   * @param field   the content type field to be serialized
+   * @param type    the type to be used.
    * @param context the json context to be used.
    * @return a json object representing the field.
    */
@@ -65,7 +80,9 @@ public final class FieldTypeAdapter implements JsonSerializer<CMAField> {
     List<Map> validations = field.getValidations();
     if (validations != null) {
       json.add(ATTR_VALIDATIONS, context.serialize(validations,
-          new TypeToken<List<Map>>() { } .getType()));
+          new TypeToken<List<Map>>() {
+          }
+          .getType()));
     }
 
     Map arrayItems = field.getArrayItems();
@@ -74,19 +91,5 @@ public final class FieldTypeAdapter implements JsonSerializer<CMAField> {
     }
 
     return json;
-  }
-
-  private static <T> void add(JsonObject json, String property, T value) {
-    if (value != null) {
-      if (value instanceof Boolean) {
-        if ((Boolean) value) {
-          json.addProperty(property, true);
-        }
-      } else if (value instanceof String) {
-        json.addProperty(property, (String) value);
-      } else {
-        json.addProperty(property, value.toString());
-      }
-    }
   }
 }

@@ -48,6 +48,40 @@ public final class ModuleUploads extends AbsModule<ServiceUploads> {
     this.async = new Async();
   }
 
+  /**
+   * Tries to read all content from a give stream.
+   *
+   * @param stream stream to be read.
+   * @return bytes of the stream
+   * @throws IOException if the stream is not accessible
+   * @throws IOException if the stream did not contain data.
+   */
+  static byte[] readAllBytes(InputStream stream) throws IOException {
+    int bytesRead = 0;
+    byte[] currentChunk = new byte[255];
+    final List<byte[]> chunks = new ArrayList<byte[]>();
+    while ((bytesRead = stream.read(currentChunk)) != -1) {
+      chunks.add(copyOf(currentChunk, bytesRead));
+    }
+
+    if (chunks.size() <= 0) {
+      throw new IOException("Stream did not contain any data. Please provide data to upload.");
+    }
+
+    int size = 0;
+    for (byte[] chunk : chunks) {
+      size += chunk.length;
+    }
+
+    final byte[] content = new byte[size];
+    int position = 0;
+    for (byte[] chunk : chunks) {
+      arraycopy(chunk, 0, content, position, chunk.length);
+      position += chunk.length;
+    }
+    return content;
+  }
+
   @Override protected ServiceUploads createService(Retrofit retrofit) {
     return retrofit.create(ServiceUploads.class);
   }
@@ -183,40 +217,6 @@ public final class ModuleUploads extends AbsModule<ServiceUploads> {
         }
       }, callback);
     }
-  }
-
-  /**
-   * Tries to read all content from a give stream.
-   *
-   * @param stream stream to be read.
-   * @return bytes of the stream
-   * @throws IOException if the stream is not accessible
-   * @throws IOException if the stream did not contain data.
-   */
-  static byte[] readAllBytes(InputStream stream) throws IOException {
-    int bytesRead = 0;
-    byte[] currentChunk = new byte[255];
-    final List<byte[]> chunks = new ArrayList<byte[]>();
-    while ((bytesRead = stream.read(currentChunk)) != -1) {
-      chunks.add(copyOf(currentChunk, bytesRead));
-    }
-
-    if (chunks.size() <= 0) {
-      throw new IOException("Stream did not contain any data. Please provide data to upload.");
-    }
-
-    int size = 0;
-    for (byte[] chunk : chunks) {
-      size += chunk.length;
-    }
-
-    final byte[] content = new byte[size];
-    int position = 0;
-    for (byte[] chunk : chunks) {
-      arraycopy(chunk, 0, content, position, chunk.length);
-      position += chunk.length;
-    }
-    return content;
   }
 
 }

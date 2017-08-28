@@ -23,7 +23,7 @@ public enum CMAType {
   SpaceMembership,
   Upload,
   User,
-  @SerializedName("Extension")UiExtension,
+  @SerializedName("Extension") UiExtension,
   Webhook,
   WebhookCallOverview,
   WebhookDefinition

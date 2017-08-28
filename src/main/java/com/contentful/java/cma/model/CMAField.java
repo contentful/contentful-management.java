@@ -59,85 +59,6 @@ public class CMAField {
   boolean localized;
 
   /**
-   * Sets the ID for this field.
-   *
-   * @param id the id to be set
-   * @return this {@code CMAField} instance
-   */
-  public CMAField setId(String id) {
-    this.id = id;
-    return this;
-  }
-
-  /**
-   * Sets the name for this field.
-   *
-   * @param name the name to be set
-   * @return this {@code CMAField} instance
-   */
-  public CMAField setName(String name) {
-    this.name = name;
-    return this;
-  }
-
-  /**
-   * Sets the type for this field.
-   *
-   * @param type the type to be set
-   * @return this {@code CMAField} instance
-   */
-  public CMAField setType(CMAFieldType type) {
-    this.type = type;
-    return this;
-  }
-
-  /**
-   * Sets the link type for this field.
-   *
-   * @param linkType the type of link to be set
-   * @return this {@code CMAField} instance
-   */
-  public CMAField setLinkType(String linkType) {
-    this.linkType = linkType;
-    return this;
-  }
-
-  /**
-   * Sets a {@code List} of validation rules for this field.
-   *
-   * @param validations validations list
-   *                    Returns this {@code CMAField} instance
-   * @return this {@code CMAField} instance
-   */
-  public CMAField setValidations(List<Map> validations) {
-    this.validations = validations;
-    return this;
-  }
-
-  /**
-   * Sets the {@code items} attribute value.
-   *
-   * @param arrayItems Map instance
-   * @return this {@code CMAField} instance
-   */
-  public CMAField setArrayItems(HashMap arrayItems) {
-    this.arrayItems = arrayItems;
-    return this;
-  }
-
-  /**
-   * Sets the {@code required} attribute value.
-   *
-   * @param required boolean indicating whether or not this field is required
-   *                 Returns this {@code CMAField} instance
-   * @return this {@code CMAField} instance
-   */
-  public CMAField setRequired(boolean required) {
-    this.required = required;
-    return this;
-  }
-
-  /**
    * Sets the {@code disabled} attribute value.
    *
    * @param disabled boolean indicating whether or not this field is disabled
@@ -162,22 +83,21 @@ public class CMAField {
   }
 
   /**
-   * Sets the {@code localized} attribute value.
-   *
-   * @param localized boolean indicating whether or not this field is localized
-   *                  Returns this {@code CMAField} instance
-   * @return this {@code CMAField} instance
-   */
-  public CMAField setLocalized(boolean localized) {
-    this.localized = localized;
-    return this;
-  }
-
-  /**
    * @return the {@code id} attribute of this field.
    */
   public String getId() {
     return id;
+  }
+
+  /**
+   * Sets the ID for this field.
+   *
+   * @param id the id to be set
+   * @return this {@code CMAField} instance
+   */
+  public CMAField setId(String id) {
+    this.id = id;
+    return this;
   }
 
   /**
@@ -188,10 +108,32 @@ public class CMAField {
   }
 
   /**
+   * Sets the name for this field.
+   *
+   * @param name the name to be set
+   * @return this {@code CMAField} instance
+   */
+  public CMAField setName(String name) {
+    this.name = name;
+    return this;
+  }
+
+  /**
    * @return the {@code type} attribute of this field.
    */
   public CMAFieldType getType() {
     return type;
+  }
+
+  /**
+   * Sets the type for this field.
+   *
+   * @param type the type to be set
+   * @return this {@code CMAField} instance
+   */
+  public CMAField setType(CMAFieldType type) {
+    this.type = type;
+    return this;
   }
 
   /**
@@ -202,10 +144,33 @@ public class CMAField {
   }
 
   /**
+   * Sets the link type for this field.
+   *
+   * @param linkType the type of link to be set
+   * @return this {@code CMAField} instance
+   */
+  public CMAField setLinkType(String linkType) {
+    this.linkType = linkType;
+    return this;
+  }
+
+  /**
    * @return a {@code List} of validation rules for this field.
    */
   public List<Map> getValidations() {
     return validations;
+  }
+
+  /**
+   * Sets a {@code List} of validation rules for this field.
+   *
+   * @param validations validations list
+   *                    Returns this {@code CMAField} instance
+   * @return this {@code CMAField} instance
+   */
+  public CMAField setValidations(List<Map> validations) {
+    this.validations = validations;
+    return this;
   }
 
   /**
@@ -216,10 +181,33 @@ public class CMAField {
   }
 
   /**
+   * Sets the {@code items} attribute value.
+   *
+   * @param arrayItems Map instance
+   * @return this {@code CMAField} instance
+   */
+  public CMAField setArrayItems(HashMap arrayItems) {
+    this.arrayItems = arrayItems;
+    return this;
+  }
+
+  /**
    * @return the {@code required} attribute of this field.
    */
   public boolean isRequired() {
     return required;
+  }
+
+  /**
+   * Sets the {@code required} attribute value.
+   *
+   * @param required boolean indicating whether or not this field is required
+   *                 Returns this {@code CMAField} instance
+   * @return this {@code CMAField} instance
+   */
+  public CMAField setRequired(boolean required) {
+    this.required = required;
+    return this;
   }
 
   /**
@@ -241,6 +229,18 @@ public class CMAField {
    */
   public boolean isLocalized() {
     return localized;
+  }
+
+  /**
+   * Sets the {@code localized} attribute value.
+   *
+   * @param localized boolean indicating whether or not this field is localized
+   *                  Returns this {@code CMAField} instance
+   * @return this {@code CMAField} instance
+   */
+  public CMAField setLocalized(boolean localized) {
+    this.localized = localized;
+    return this;
   }
 
   /**

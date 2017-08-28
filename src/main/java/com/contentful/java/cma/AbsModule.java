@@ -23,9 +23,9 @@ import com.contentful.java.cma.model.CMAResource;
 
 import java.util.concurrent.Executor;
 
-import retrofit2.Retrofit;
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Retrofit;
 
 /**
  * Base Module.

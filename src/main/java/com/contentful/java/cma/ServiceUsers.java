@@ -18,8 +18,8 @@ package com.contentful.java.cma;
 
 import com.contentful.java.cma.model.CMAUser;
 
-import retrofit2.http.GET;
 import io.reactivex.Flowable;
+import retrofit2.http.GET;
 
 /**
  * Spaces Service.
