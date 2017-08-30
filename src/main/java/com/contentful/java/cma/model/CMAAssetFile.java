@@ -1,5 +1,7 @@
 package com.contentful.java.cma.model;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Description of a file on the asset system of Contentful.
  */
@@ -149,6 +151,7 @@ public class CMAAssetFile {
    */
   public static class Details {
     Long size;
+    @SerializedName("image")
     ImageMeta imageMeta;
 
     /**
