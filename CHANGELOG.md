@@ -5,7 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Version [2.2.1][unreleased] - (in development)
 - To be defined
 
-## Version [2.2.0][unreleased] - (in development)
+## Version [2.2.0] - 2017-08-30
 - Add: [Locales module](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/locales).
 - Fix: ImageMeta contains data now.
 
@@ -115,7 +115,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Version 0.9.0 - 2014-11-18
 Initial release.
 
-[unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.1.0...HEAD
+[unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.2.0...HEAD
+[2.2.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.1.0...cma-sdk-2.2.0
 [2.1.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.0.0...cma-sdk-2.1.0
 [2.0.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-1.3.0...cma-sdk-2.0.0
 [1.3.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-1.2.0...cma-sdk-1.3.0
