@@ -124,9 +124,21 @@ class AssetTests : BaseTest() {
         assertEquals(1, result.total)
         val items = result.items
         assertEquals(1, items.size)
-        assertNull(items[0].fields.localize("en-US").description)
-        assertNotNull(items[0].fields.localize("en-US").file)
-        assertNotNull(items[0].fields.localize("en-US").title)
+        val fields = items[0].fields.localize("en-US")
+        assertNull(fields.description)
+        assertEquals("Bonanza Coffee Heroes", fields.title)
+
+        assertNotNull(fields.file)
+        assertEquals("hash.jpg", fields.file.fileName)
+        assertEquals("image/jpeg", fields.file.contentType)
+        assertEquals("//images.contentful.com/spaceid/a/b/c.jpg", fields.file.url)
+        assertNull(fields.file.uploadFrom)
+        assertNull(fields.file.uploadUrl)
+        assertNotNull(fields.file.details)
+
+        assertEquals(101905, fields.file.details.size)
+        assertEquals(960, fields.file.details.imageMeta.width)
+        assertEquals(720, fields.file.details.imageMeta.height)
 
         // Request
         val request = server!!.takeRequest()
