@@ -36,7 +36,6 @@ import com.contentful.java.cma.model.CMAField;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.io.IOException;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
@@ -49,6 +48,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import static com.contentful.java.cma.Constants.DEFAULT_CONTENT_TYPE;
 import static com.contentful.java.cma.Constants.OCTET_STREAM_CONTENT_TYPE;
 import static com.contentful.java.cma.Logger.Level.NONE;
+import static com.contentful.java.cma.build.GeneratedBuildParameters.PROJECT_VERSION;
 import static com.contentful.java.cma.interceptor.ContentfulUserAgentHeaderInterceptor.Section.Version.parse;
 import static com.contentful.java.cma.interceptor.ContentfulUserAgentHeaderInterceptor.Section.os;
 import static com.contentful.java.cma.interceptor.ContentfulUserAgentHeaderInterceptor.Section.platform;
@@ -280,9 +280,6 @@ public class CMAClient {
    * Builder.
    */
   public static class Builder {
-    // User Agent
-    static String sUserAgent;
-
     String accessToken;
     Call.Factory coreCallFactory;
     Call.Factory uploadCallFactory;
@@ -294,7 +291,6 @@ public class CMAClient {
     Section integration;
     Executor callbackExecutor;
     RateLimitsListener rateLimitListener;
-    PropertiesReader propertiesReader = new PropertiesReader();
 
     /**
      * Overrides the default remote URL for core modules.
@@ -504,18 +500,20 @@ public class CMAClient {
       return setLogger(okBuilder);
     }
 
+    private String getUserAgent() {
+      return String.format(
+          "contentful-management.java/%s",
+          PROJECT_VERSION);
+    }
+
     Section[] createCustomHeaderSections(Section application, Section integration) {
       final Properties properties = System.getProperties();
 
-      Section sdk;
-      try {
-        sdk = sdk("contentful-management.java", parse(getSDKVersionName()));
-      } catch (IOException e) {
-        sdk = sdk("contentful-management.java", new Version(0, 0, 0, "INVALID"));
-      }
-
       return new Section[]{
-          sdk,
+          sdk(
+              "contentful-management.java",
+              parse(PROJECT_VERSION)
+          ),
           platform(
               "java",
               parse(properties.getProperty("java.runtime.version"))
@@ -548,22 +546,5 @@ public class CMAClient {
       }
       return okBuilder;
     }
-
-    String getUserAgent() {
-      if (sUserAgent == null) {
-        try {
-          String versionName = getSDKVersionName();
-          sUserAgent = String.format("contentful-management.java/%s", versionName);
-        } catch (IOException e) {
-          throw new RuntimeException("Unable to retrieve version name.", e);
-        }
-      }
-      return sUserAgent;
-    }
-
-    private String getSDKVersionName() throws IOException {
-      return propertiesReader.getField(Constants.PROP_VERSION_NAME);
-    }
-
   }
 }

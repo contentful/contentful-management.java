@@ -16,6 +16,7 @@
 
 package com.contentful.java.cma
 
+import com.contentful.java.cma.build.GeneratedBuildParameters
 import com.contentful.java.cma.interceptor.AuthorizationHeaderInterceptor
 import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.lib.TestUtils
@@ -24,7 +25,6 @@ import com.contentful.java.cma.model.CMASpace
 import com.contentful.java.cma.model.CMAUpload
 import io.reactivex.Observable
 import okhttp3.mockwebserver.MockResponse
-import org.mockito.Mockito
 import java.io.IOException
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
@@ -118,7 +118,7 @@ class ClientTests : BaseTest() {
     }
 
     @test fun testAccessToken() {
-        val responseBody = TestUtils.fileToString("asset_publish_response.json")
+        val responseBody = TestUtils.fileToString("space_fetch_all_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
         client!!.spaces().fetchAll()
 
@@ -129,21 +129,20 @@ class ClientTests : BaseTest() {
     }
 
     @test fun testUserAgent() {
-        val responseBody = TestUtils.fileToString("asset_publish_response.json")
+        val responseBody = TestUtils.fileToString("space_fetch_all_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
         client!!.spaces().fetchAll()
 
-        val prefix = "contentful-management.java/"
-        val versionName = PropertiesReader().getField(Constants.PROP_VERSION_NAME)
+        val versionName = GeneratedBuildParameters.PROJECT_VERSION;
 
         // Request
         val recordedRequest = server!!.takeRequest()
 
-        assertEquals("$prefix$versionName", recordedRequest.getHeader("User-Agent"))
+        assertTrue(recordedRequest.getHeader("User-Agent").contains(versionName))
     }
 
     @test fun testCustomUserAgentHeader() {
-        val responseBody = TestUtils.fileToString("asset_publish_response.json")
+        val responseBody = TestUtils.fileToString("space_fetch_all_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
         client!!.spaces().fetchAll()
 
@@ -212,24 +211,6 @@ class ClientTests : BaseTest() {
             CMAClient.Builder().setCallbackExecutor(null)
         } catch (e: IllegalArgumentException) {
             assertEquals("Cannot call setCallbackExecutor() with null.", e.message)
-            throw e
-        }
-    }
-
-    @test(expected = RuntimeException::class)
-    fun testUserAgentThrowsRuntimeExceptionOnFailure() {
-        try {
-            val reader = Mockito.mock(PropertiesReader::class.java)
-            Mockito.`when`(reader.getField(Constants.PROP_VERSION_NAME))
-                    .thenThrow(IOException::class.java)
-            CMAClient.Builder.sUserAgent = null
-
-            val builder = CMAClient.Builder()
-            builder.propertiesReader = reader
-            builder.defaultCoreCallFactoryBuilder()
-
-        } catch(e: RuntimeException) {
-            assertEquals("Unable to retrieve version name.", e.message)
             throw e
         }
     }

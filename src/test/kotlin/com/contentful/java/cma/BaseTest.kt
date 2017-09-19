@@ -33,6 +33,7 @@ open class BaseTest {
     var gson: Gson? = null
 
     @before fun setUp() {
+        LogManager.getLogManager().reset()
         // MockWebServer
         server = MockWebServer()
         server!!.start()
@@ -45,7 +46,6 @@ open class BaseTest {
                 .build()
 
         gson = CMAClient.createGson()
-        LogManager.getLogManager().reset()
     }
 
     @after fun tearDown() {
