@@ -60,6 +60,9 @@
     <android.version>4.1.1.4</android.version>
     <android.platform>16</android.platform>
     <robolectric.version>2.4</robolectric.version>
+
+    <!-- Build Dependencies -->
+    <build-helper.version>3.0.0</build-helper.version>
   </properties>
 
   <dependencies>
@@ -162,10 +165,31 @@
       <resource>
         <directory>src/main/resources</directory>
         <filtering>true</filtering>
+        <targetPath>
+          ${project.build.directory}/generated-sources/
+        </targetPath>
       </resource>
     </resources>
     <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
     <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>${build-helper.version}</version>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${project.build.directory}/generated-sources/</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <artifactId>kotlin-maven-plugin</artifactId>
         <groupId>org.jetbrains.kotlin</groupId>

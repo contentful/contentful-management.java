@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Version [2.2.1][unreleased] - (in development)
-- To be defined
+- Fix: add version number of sdk on buildtime, not on runtime.
 
 ## Version [2.2.0] - 2017-08-30
 - Add: [Locales module](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/locales).
