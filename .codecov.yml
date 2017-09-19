@@ -1,2 +1,5 @@
 ignore:
-  - "**/java/cma/build"  # ignore build resource folders
+  - "src/main/resources/com/contentful/java/cma/build/GeneratedBuildParameters.java"  # ignore build resource folders
+
+coverage:
+  precision: 1
