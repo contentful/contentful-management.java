@@ -14,6 +14,8 @@ import okhttp3.Response;
  * @see Interceptor
  */
 public class LogInterceptor implements Interceptor {
+  private static final double NANOS_PER_SECOND = 1000000d;
+
   private final Logger logger;
 
   /**
@@ -50,7 +52,7 @@ public class LogInterceptor implements Interceptor {
 
     long t2 = System.nanoTime();
     logger.log(String.format("Received response for %s in %.1fms%n%s",
-        response.request().url(), (t2 - t1) / 1e6d, response.headers()));
+        response.request().url(), (t2 - t1) / NANOS_PER_SECOND, response.headers()));
 
     return response;
   }

@@ -8,6 +8,12 @@ package com.contentful.java.cma.build;
  */
 public final class GeneratedBuildParameters {
   /**
+   * Hide constructor.
+   */
+  private GeneratedBuildParameters() {
+  }
+
+  /**
    * Which version of '${project.name}' is getting used?
    */
   public static final String PROJECT_VERSION = "${project.version}";
