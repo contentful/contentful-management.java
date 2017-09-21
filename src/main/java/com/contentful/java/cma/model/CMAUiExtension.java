@@ -10,6 +10,8 @@ import java.util.List;
  * Model class to describe an ui extension.
  */
 public class CMAUiExtension extends CMAResource {
+  private static final int MAXIMUM_BYTE_COUNT = 200 * 1024;
+
   Extension extension;
 
   /**
@@ -123,7 +125,7 @@ public class CMAUiExtension extends CMAResource {
      * @see #setSourceUrl(String)
      */
     public Extension setSourceContent(String sourceContent) {
-      if (sourceContent.getBytes().length >= 200 * 1024) {
+      if (sourceContent.getBytes().length >= MAXIMUM_BYTE_COUNT) {
         throw new IllegalArgumentException(
             "Source content to big. Please provide less then 200kb of source code or use "
                 + "sourceUrl.");
