@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Version [2.2.1][unreleased] - (in development)
+## Version [2.2.1] - 2017-10-18
 - Fix: add version number of sdk on buildtime, not on runtime.
 - Remove: Now obsolete mockito testing dependency.
 
