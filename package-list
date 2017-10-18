@@ -1,4 +1,5 @@
 com.contentful.java.cma
+com.contentful.java.cma.build
 com.contentful.java.cma.gson
 com.contentful.java.cma.interceptor
 com.contentful.java.cma.model
