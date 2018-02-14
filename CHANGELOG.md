@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Version [2.2.2] - (TBD)
+- Fix: make creating auto save webhooks work.
+
 ## Version [2.2.1] - 2017-10-18
 - Fix: add version number of sdk on buildtime, not on runtime.
 - Remove: Now obsolete mockito testing dependency.
@@ -116,7 +119,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Version 0.9.0 - 2014-11-18
 Initial release.
 
-[unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.2.0...HEAD
+[unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.2.2...HEAD
+[2.2.2]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.2.1...cma-sdk-2.2.2
+[2.2.1]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.2.0...cma-sdk-2.2.1
 [2.2.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.1.0...cma-sdk-2.2.0
 [2.1.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.0.0...cma-sdk-2.1.0
 [2.0.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-1.3.0...cma-sdk-2.0.0
