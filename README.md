@@ -115,7 +115,7 @@ Documentation
 License
 =======
 
-Copyright (c) 2017 Contentful GmbH. See [LICENSE.txt][5] for further details.
+Copyright (c) 2018 Contentful GmbH. See [LICENSE.txt][5] for further details.
 
 
  [1]: https://www.contentful.com
