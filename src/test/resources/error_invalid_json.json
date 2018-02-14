@@ -1,0 +1,8 @@
+{
+  "sys": {
+    "type": "Error",
+    "id": "BadRequest"
+  },
+  "message": "Invalid JSON in request body: {\n\t\"fields\": {\n\t\t\"test\": {\n\t\t\t\"en-US: \"bar\"\n\t\t}\n\t}\n}",
+  "requestId": "8467e3d93f5650aefc596367370b6fa3"
+}

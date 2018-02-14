@@ -1,0 +1,13 @@
+{
+  "sys": {
+    "type": "Error",
+    "id": "InvalidEntry"
+  },
+  "message":"The body you sent contains an unknown key.",
+  "details":{
+    "keys":[
+      "a_field_that_does_not_exist"
+    ]
+  },
+  "requestId": "fieldsRequestId"
+}

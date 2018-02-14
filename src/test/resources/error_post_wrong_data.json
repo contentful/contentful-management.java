@@ -1,0 +1,21 @@
+{
+  "sys": {
+    "type": "Error",
+    "id": "InvalidEntry"
+  },
+  "message": "Validation error",
+  "details": {
+    "errors": [
+      {
+        "name": "unknown",
+        "path": [
+          "fields",
+          "test"
+        ],
+        "value": "bar",
+        "details": "The property \"test\" is not allowed here."
+      }
+    ]
+  },
+  "requestId": "0cb77b0bf64d814ed182a668be4dc0eb"
+}
