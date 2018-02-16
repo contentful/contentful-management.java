@@ -4,6 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Version [2.2.2] - (TBD)
 - Fix: make creating auto save webhooks work.
+- Fix: Do not send default field in locales.
 
 ## Version [2.2.1] - 2017-10-18
 - Fix: add version number of sdk on buildtime, not on runtime.
