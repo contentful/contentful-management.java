@@ -110,7 +110,6 @@ class LocalesTests : BaseTest() {
                 .setName("U.S. English")
                 .setCode("en-US")
                 .setFallbackCode(null)
-                .setDefault(true)
                 .setOptional(false)
 
         val result = assertTestCallback(client!!.locales().async()

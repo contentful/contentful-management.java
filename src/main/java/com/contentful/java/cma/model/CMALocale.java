@@ -167,7 +167,7 @@ public class CMALocale extends CMAResource {
   }
 
   /**
-   * @return whether this is the default locale, the fallback if no fallback is set.
+   * @return whether this is the default locale.
    */
   public boolean isDefault() {
     return isDefault;
@@ -178,7 +178,11 @@ public class CMALocale extends CMAResource {
    *
    * @param isDefault set this to true, if you want this locale to be the default one.
    * @return this instance for ease of chaining.
+   *
+   * @deprecated Setting this to default will not get send to the backend. This method will get
+   * removed in the next major release.
    */
+  @Deprecated
   public CMALocale setDefault(boolean isDefault) {
     this.isDefault = isDefault;
     return this;
