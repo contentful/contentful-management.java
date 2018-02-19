@@ -111,7 +111,7 @@ class ModelTests : BaseTest() {
                 .message("")
                 .build()
 
-        assertEquals("FAILED REQUEST:\n"
+        assertEquals("FAILED \n"
                 + "\tRequest{method=GET, url=https://example.com/, tag=null}\n"
                 + "\t↳ Header{}\n"
                 + "\tResponse{"

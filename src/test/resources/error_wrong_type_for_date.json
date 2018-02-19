@@ -1,0 +1,22 @@
+{
+  "sys": {
+    "type": "Error",
+    "id": "InvalidQuery"
+  },
+  "message": "The query you sent was invalid. Probably a filter or ordering specification is not applicable to the type of a field.",
+  "details": {
+    "errors": [
+      {
+        "name": "value",
+        "path": [
+          "sys",
+          "archivedAt"
+        ],
+        "type": "Date",
+        "filter": "equals",
+        "details": "false used on sys.archivedAt is not a valid value for type Date."
+      }
+    ]
+  },
+  "requestId": "4dfcab3bd85b753033280b1fa38d7717"
+}

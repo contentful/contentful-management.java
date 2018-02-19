@@ -1,0 +1,23 @@
+{
+  "sys": {
+    "type": "Error",
+    "id": "InvalidEntry"
+  },
+  "message": "Validation error",
+  "details": {
+    "errors": [
+      {
+        "name": "type",
+        "value": "bar",
+        "type": "Object",
+        "details": "The type of \"value\" is incorrect, expected type: Object",
+        "path": [
+          "fields",
+          "xqZFfK7YdzEfhhJg",
+          "en-US"
+        ]
+      }
+    ]
+  },
+  "requestId": "8cd7ef1751dd283ee230e6a58efef8ec"
+}
