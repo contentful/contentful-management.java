@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Version [2.2.2] - (TBD)
+## Version [2.2.2] - 2018-02-19
 - Fix: make creating auto save webhooks work.
 - Fix: add details to contentful error.
 - Fix: Do not send default field in locales.
