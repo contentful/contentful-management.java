@@ -17,7 +17,7 @@ class CMAHttpExceptionTest : BaseTest() {
     fun testHeadersParsing() {
         val request = Request.Builder().url("https://example.com/foo").build()
 
-        val response = buildMockedResponse(request, "{\"sys\":{\"id\":\"manualid\"}}")
+        val response = buildMockedResponse(request, "{\"sys\":{\"id\":\"manualid\"}}", 500, "message")
 
         val e = CMAHttpException(request, response)
 
@@ -48,7 +48,7 @@ class CMAHttpExceptionTest : BaseTest() {
     fun testUnknownPath() {
         val request = Request.Builder().url("https://example.com/foo").build()
 
-        val response = buildMockedResponse(request, TestUtils.fileToString("error_unknown_path.json"))
+        val response = buildMockedResponse(request, TestUtils.fileToString("error_unknown_path.json"), 200, "message")
 
         val e = CMAHttpException(request, response).errorBody
 
@@ -72,7 +72,7 @@ class CMAHttpExceptionTest : BaseTest() {
     fun testWrongTypeForLimit() {
         val request = Request.Builder().url("https://example.com/foo").build()
 
-        val response = buildMockedResponse(request, TestUtils.fileToString("error_wrong_type_for_limit.json"))
+        val response = buildMockedResponse(request, TestUtils.fileToString("error_wrong_type_for_limit.json"), 200, "message")
 
         val e = CMAHttpException(request, response).errorBody
 
@@ -86,7 +86,7 @@ class CMAHttpExceptionTest : BaseTest() {
     fun testWrongTypeForDate() {
         val request = Request.Builder().url("https://example.com/foo").build()
 
-        val response = buildMockedResponse(request, TestUtils.fileToString("error_wrong_type_for_date.json"))
+        val response = buildMockedResponse(request, TestUtils.fileToString("error_wrong_type_for_date.json"), 200, "message")
 
         val e = CMAHttpException(request, response).errorBody
 
@@ -112,7 +112,7 @@ class CMAHttpExceptionTest : BaseTest() {
     fun testPostWithWrongData() {
         val request = Request.Builder().url("https://example.com/foo").build()
 
-        val response = buildMockedResponse(request, TestUtils.fileToString("error_post_wrong_data.json"))
+        val response = buildMockedResponse(request, TestUtils.fileToString("error_post_wrong_data.json"), 200, "message")
 
         val e = CMAHttpException(request, response).errorBody
 
@@ -135,7 +135,7 @@ class CMAHttpExceptionTest : BaseTest() {
     fun testInvalidJson() {
         val request = Request.Builder().url("https://example.com/foo").build()
 
-        val response = buildMockedResponse(request, TestUtils.fileToString("error_invalid_json.json"))
+        val response = buildMockedResponse(request, TestUtils.fileToString("error_invalid_json.json"), 200, "message")
 
         val e = CMAHttpException(request, response).errorBody
 
@@ -151,7 +151,7 @@ class CMAHttpExceptionTest : BaseTest() {
     fun testWrongType() {
         val request = Request.Builder().url("https://example.com/foo").build()
 
-        val response = buildMockedResponse(request, TestUtils.fileToString("error_wrong_type.json"))
+        val response = buildMockedResponse(request, TestUtils.fileToString("error_wrong_type.json"), 200, "message")
 
         val e = CMAHttpException(request, response).errorBody
 
@@ -176,7 +176,7 @@ class CMAHttpExceptionTest : BaseTest() {
     fun testWrongField() {
         val request = Request.Builder().url("https://example.com/foo").build()
 
-        val response = buildMockedResponse(request, TestUtils.fileToString("error_wrong_field.json"))
+        val response = buildMockedResponse(request, TestUtils.fileToString("error_wrong_field.json"), 200, "message")
 
         val e = CMAHttpException(request, response).errorBody
 
@@ -193,7 +193,10 @@ class CMAHttpExceptionTest : BaseTest() {
     fun testToString() {
         val request = Request.Builder().url("https://example.com/foo").build()
 
-        val response = buildMockedResponse(request, TestUtils.fileToString("error_wrong_type.json"))
+        val response = buildMockedResponse(
+                request,
+                TestUtils.fileToString("error_wrong_type.json"), 500, "message"
+        )
 
         val e = CMAHttpException(request, response)
 
@@ -213,7 +216,7 @@ class CMAHttpExceptionTest : BaseTest() {
                 "X-Contentful-RateLimit-Second-Remaining: 4}", e.toString())
     }
 
-    private fun buildMockedResponse(request: Request?, body: String): Response? {
+    private fun buildMockedResponse(request: Request, body: String, code: Int, message: String): Response? {
         return Response.Builder()
                 .request(request)
                 .body(
@@ -225,8 +228,8 @@ class CMAHttpExceptionTest : BaseTest() {
                 .header(HEADER_RATE_LIMIT_SECOND_REMAINING, "4")
                 .header(HEADER_RATE_LIMIT_RESET, "5k")
                 .protocol(Protocol.HTTP_1_1)
-                .code(500)
-                .message("message")
+                .code(code)
+                .message(message)
                 .build()
     }
 }
