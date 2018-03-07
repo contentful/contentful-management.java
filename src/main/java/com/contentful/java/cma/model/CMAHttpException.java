@@ -66,8 +66,9 @@ public class CMAHttpException extends RuntimeException {
         String details;
         String type;
         String filter;
-        String value;
+        Object value;
         Object path;
+        List<String> expected;
 
         /**
          * @return the name of this error.
@@ -100,8 +101,15 @@ public class CMAHttpException extends RuntimeException {
         /**
          * @return the value triggering this error.
          */
-        public String getValue() {
+        public Object getValue() {
           return value;
+        }
+
+        /**
+         * @return an invalid type returns an expectation.
+         */
+        public List<String> getExpected() {
+          return expected;
         }
 
         /**

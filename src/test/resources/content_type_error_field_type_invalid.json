@@ -1,0 +1,33 @@
+{
+  "sys": {
+    "type": "Error",
+    "id": "ValidationFailed"
+  },
+  "message": "Validation error",
+  "details": {
+    "errors": [
+      {
+        "name": "in",
+        "path": [
+          "fields",
+          0,
+          "type"
+        ],
+        "value": "null",
+        "expected": [
+          "Array",
+          "Boolean",
+          "Date",
+          "Integer",
+          "Number",
+          "Object",
+          "Symbol",
+          "Link",
+          "Location",
+          "Text"
+        ]
+      }
+    ]
+  },
+  "requestId": "ca5845b2efc9cebbc417e25dec1d3277"
+}

@@ -22,10 +22,12 @@ import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAContentType
 import com.contentful.java.cma.model.CMAField
+import com.contentful.java.cma.model.CMAHttpException
 import com.contentful.java.cma.model.CMAType
 import okhttp3.HttpUrl
 import okhttp3.mockwebserver.MockResponse
 import java.io.IOException
+import java.util.Collections
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
@@ -419,5 +421,27 @@ class ContentTypeTests : BaseTest() {
         assertEquals("GET", recordedRequest.method)
         assertEquals("/spaces/spaceId/content_types/contentTypeId/snapshots/snapShotId",
                 recordedRequest.path)
+    }
+
+    @test(expected = CMAHttpException::class)
+    fun testFailureOnCreateContenTypeWithWrongFieldType() {
+        val responseBody = TestUtils.fileToString("content_type_error_field_type_invalid.json")
+        server!!.enqueue(MockResponse().setResponseCode(422).setBody(responseBody))
+
+        val fields = Collections.singletonList(CMAField().setName("name").setId("testid").setType(null).setRequired(true))
+
+        val contentType = CMAContentType()
+                .setId("entryId")
+                .setSpaceId("spaceId")
+                .setFields(fields)
+
+        try {
+            client!!.contentTypes().create("spaceID", contentType)
+        } catch (e: CMAHttpException) {
+            assertEquals("null", e.errorBody.details.errors[0].value)
+            assertEquals("[Array, Boolean, Date, Integer, Number, Object, Symbol, Link, Location, Text]",
+                    e.errorBody.details.errors[0].expected.toString())
+            throw e
+        }
     }
 }
