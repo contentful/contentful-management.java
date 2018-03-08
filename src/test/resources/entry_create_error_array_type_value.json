@@ -1,0 +1,25 @@
+{
+  "sys": {
+    "type": "Error",
+    "id": "InvalidEntry"
+  },
+  "message": "Validation error",
+  "details": {
+    "errors": [
+      {
+        "name": "type",
+        "value": [
+          2
+        ],
+        "type": "Symbol",
+        "details": "The type of \"value\" is incorrect, expected type: Symbol",
+        "path": [
+          "fields",
+          "testField2",
+          "en-US"
+        ]
+      }
+    ]
+  },
+  "requestId": "fa607c736302207868b25e97c18ad3dd"
+}

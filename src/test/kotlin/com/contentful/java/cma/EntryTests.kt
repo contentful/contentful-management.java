@@ -20,10 +20,12 @@ import com.contentful.java.cma.lib.ModuleTestUtils
 import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAEntry
+import com.contentful.java.cma.model.CMAHttpException
 import com.contentful.java.cma.model.CMAType
 import okhttp3.HttpUrl
 import okhttp3.mockwebserver.MockResponse
 import java.io.IOException
+import java.util.*
 import kotlin.test.*
 import org.junit.Test as test
 
@@ -308,6 +310,25 @@ class EntryTests : BaseTest() {
         }
     }
 
+    @test(expected = CMAHttpException::class)
+    fun testFailureOnCreateEntryWithWrongFieldType() {
+        val responseBody = TestUtils.fileToString("entry_create_error_array_type_value.json")
+        server!!.enqueue(MockResponse().setResponseCode(422).setBody(responseBody))
+
+        val entry = CMAEntry()
+                .setId("entryId")
+                .setSpaceId("spaceId")
+                .setField("testField2", "en-US", Collections.singletonList(""))
+
+        try {
+            client!!.entries().create("spaceID", "contenttype", entry)
+        } catch (e: CMAHttpException) {
+            assertEquals(
+                    "The type of \"value\" is incorrect, expected type: Symbol",
+                    e.errorBody.details.errors[0].details)
+            throw e
+        }
+    }
     @test
     fun testChainingInterface() {
         val entry = CMAEntry()
