@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Version [2.2.3] - 2018-03-08
+- Fix: Parsing error in error response
+
 ## Version [2.2.2] - 2018-02-19
 - Fix: make creating auto save webhooks work.
 - Fix: add details to contentful error.
@@ -121,7 +124,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Version 0.9.0 - 2014-11-18
 Initial release.
 
-[unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.2.2...HEAD
+[unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.2.3...HEAD
+[2.2.3]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.2.2...cma-sdk-2.2.3
 [2.2.2]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.2.1...cma-sdk-2.2.2
 [2.2.1]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.2.0...cma-sdk-2.2.1
 [2.2.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.1.0...cma-sdk-2.2.0

@@ -16,12 +16,12 @@ Grab via Maven:
 <dependency>
   <groupId>com.contentful.java</groupId>
   <artifactId>cma-sdk</artifactId>
-  <version>2.2.2</version>
+  <version>2.2.3</version>
 </dependency>
 ```
 or Gradle:
 ```groovy
-compile 'com.contentful.java:cma-sdk:2.2.2'
+compile 'com.contentful.java:cma-sdk:2.2.3'
 ```
 
 The SDK requires at minimum Java 6 or Android 2.3.
