@@ -73,6 +73,26 @@ class ApiKeysTests : BaseTest() {
         assertEquals("/spaces/spaceid/api_keys/keyid", recordedRequest.path)
     }
 
+    @test fun testFetchOnePreview() {
+        val responseBody = TestUtils.fileToString("apikeys_preview_get_one.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val result = assertTestCallback(client!!.apiKeys().async()
+                .fetchOnePreview("spaceid", "keyid", TestCallback()) as TestCallback)!!
+
+        assertEquals("Test", result.name)
+        assertEquals("Some Description", result.description)
+        assertEquals(CMAType.ApiKey, result.system.type)
+        assertEquals("<token>", result.accessToken)
+
+        assertNull(result.previewApiKey)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/spaceid/preview_api_keys/keyid", recordedRequest.path)
+    }
+
     @test fun testCreate() {
         val responseBody = TestUtils.fileToString("apikeys_create.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
