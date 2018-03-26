@@ -3,7 +3,7 @@
 
   <groupId>com.contentful.java</groupId>
   <artifactId>cma-sdk</artifactId>
-  <version>2.2.4-SNAPSHOT</version>
+  <version>3.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>cma-sdk</name>
@@ -53,7 +53,7 @@
     <!-- Test Dependencies -->
     <commonsio.version>2.5</commonsio.version>
     <junit.version>4.12</junit.version>
-    <kotlin.version>1.0.1</kotlin.version>
+    <kotlin.version>1.2.31</kotlin.version>
     <okhttp.version>3.8.1</okhttp.version>
     <rxjava.version>2.1.1</rxjava.version>
     <android.version>4.1.1.4</android.version>
@@ -98,7 +98,7 @@
 
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
-      <artifactId>kotlin-stdlib</artifactId>
+      <artifactId>kotlin-stdlib-jdk7</artifactId>
       <version>${kotlin.version}</version>
       <scope>test</scope>
     </dependency>
@@ -150,6 +150,12 @@
       <version>${robolectric.version}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-test</artifactId>
+      <version>${kotlin.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -162,7 +168,7 @@
         </targetPath>
       </resource>
     </resources>
-    <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
+    <testSourceDirectory>src/test/kotlin</testSourceDirectory>
     <plugins>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -203,21 +209,30 @@
 
       <plugin>
         <artifactId>kotlin-maven-plugin</artifactId>
+        <configuration>
+          <jvmTarget>1.6</jvmTarget>
+        </configuration>
         <groupId>org.jetbrains.kotlin</groupId>
         <version>${kotlin.version}</version>
 
         <executions>
           <execution>
             <id>compile</id>
-            <phase>process-sources</phase>
+            <phase>compile</phase>
             <goals>
               <goal>compile</goal>
             </goals>
+            <configuration>
+              <sourceDirs>
+                <source>src/main/java</source>
+                <source>target/generated-sources</source>
+              </sourceDirs>
+            </configuration>
           </execution>
 
           <execution>
             <id>test-compile</id>
-            <phase>process-test-sources</phase>
+            <phase>test-compile</phase>
             <goals>
               <goal>test-compile</goal>
             </goals>
@@ -259,6 +274,22 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.6.1</version>
+        <executions>
+          <execution>
+            <id>compile</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>testCompile</id>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+        </executions>
         <configuration>
           <source>${java.version}</source>
           <target>${java.version}</target>
