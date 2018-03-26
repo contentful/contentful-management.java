@@ -9,7 +9,7 @@
       "sys": {
         "type": "Link",
         "linkType": "User",
-        "id": "7uJNojWP0gbuP7Pplz7Syo"
+        "id": "<user_id>"
       }
     },
     "updatedAt": "2017-04-25T09:13:31.601Z",
@@ -17,14 +17,14 @@
       "sys": {
         "type": "Link",
         "linkType": "User",
-        "id": "7uJNojWP0gbuP7Pplz7Syo"
+        "id": "<user_id>"
       }
     },
     "space": {
       "sys": {
         "type": "Link",
         "linkType": "Space",
-        "id": "arqlnkt58eul"
+        "id": "<space_id>"
       }
     }
   },
@@ -74,14 +74,14 @@
         "sys": {
           "type": "Link",
           "linkType": "User",
-          "id": "7uJNojWP0gbuP7Pplz7Syo"
+          "id": "<user_id>"
         }
       },
       "space": {
         "sys": {
           "type": "Link",
           "linkType": "Space",
-          "id": "arqlnkt58eul"
+          "id": "<space_id>"
         }
       },
       "contentType": {
@@ -97,7 +97,7 @@
         "sys": {
           "type": "Link",
           "linkType": "User",
-          "id": "7uJNojWP0gbuP7Pplz7Syo"
+          "id": "<user_id>"
         }
       },
       "firstPublishedAt": "2017-04-24T10:42:51.814Z",
@@ -107,7 +107,7 @@
         "sys": {
           "type": "Link",
           "linkType": "User",
-          "id": "7uJNojWP0gbuP7Pplz7Syo"
+          "id": "<user_id>"
         }
       },
       "publishedVersion": 48

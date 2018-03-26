@@ -34,7 +34,7 @@ class SpaceMembershipTests : BaseTest() {
 
         assertEquals(2, result.items.size)
         assertEquals(true, result.items[0].isAdmin)
-        assertEquals("7uJNojWP0gbuP7Pplz7Syo", result.items[0].user.id)
+        assertEquals("<user_id>", result.items[0].user.id)
         assertEquals(0, result.items[0].roles.size)
 
         assertEquals(false, result.items[1].isAdmin)
@@ -74,7 +74,7 @@ class SpaceMembershipTests : BaseTest() {
         assertEquals("MEMBERSHIP_ID", result.id)
         assertEquals("SpaceMembership", result.system.type.name)
         assertEquals(true, result.isAdmin)
-        assertEquals("7uJNojWP0gbuP7Pplz7Syo", result.user.id)
+        assertEquals("<user_id>", result.user.id)
         assertEquals(0, result.roles.size)
 
         // Request

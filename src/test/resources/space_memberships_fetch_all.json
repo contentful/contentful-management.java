@@ -16,14 +16,14 @@
           "sys":{
             "type":"Link",
             "linkType":"Space",
-            "id":"arqlnkt58eul"
+            "id":"<space_id>"
           }
         },
         "createdBy":{
           "sys":{
             "type":"Link",
             "linkType":"User",
-            "id":"7uJNojWP0gbuP7Pplz7Syo"
+            "id":"<user_id>"
           }
         },
         "createdAt":"2016-07-26T09:40:42Z",
@@ -31,7 +31,7 @@
           "sys":{
             "type":"Link",
             "linkType":"User",
-            "id":"7uJNojWP0gbuP7Pplz7Syo"
+            "id":"<user_id>"
           }
         },
         "updatedAt":"2016-07-26T09:40:42Z"
@@ -40,7 +40,7 @@
         "sys":{
           "type":"Link",
           "linkType":"User",
-          "id":"7uJNojWP0gbuP7Pplz7Syo"
+          "id":"<user_id>"
         }
       },
       "roles":[]
@@ -55,14 +55,14 @@
           "sys":{
             "type":"Link",
             "linkType":"Space",
-            "id":"arqlnkt58eul"
+            "id":"<space_id>"
           }
         },
         "createdBy":{
           "sys":{
             "type":"Link",
             "linkType":"User",
-            "id":"7uJNojWP0gbuP7Pplz7Syo"
+            "id":"<user_id>"
           }
         },
         "createdAt":"2017-04-26T07:08:43Z",
@@ -70,7 +70,7 @@
           "sys":{
             "type":"Link",
             "linkType":"User",
-            "id":"7uJNojWP0gbuP7Pplz7Syo"
+            "id":"<user_id>"
           }
         },
         "updatedAt":"2017-04-26T07:10:01Z"
