@@ -3,6 +3,7 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Version [3.0.0] - (TBD)
+- Add: environments CRUD (Create/Read/Update/Delete).
 - Polish: Test resource generators to strip credentials and to include environments.
 
 ## Version [2.2.3] - 2018-03-08

@@ -61,7 +61,7 @@
           "sys":{
             "type":"Link",
             "linkType":"Status",
-            "id":"ready"
+            "id":"queued"
           }
         },
         "createdBy":{
@@ -99,7 +99,7 @@
           "sys":{
             "type":"Link",
             "linkType":"Status",
-            "id":"ready"
+            "id":"creating"
           }
         },
         "createdBy":{
@@ -137,7 +137,7 @@
           "sys":{
             "type":"Link",
             "linkType":"Status",
-            "id":"ready"
+            "id":"failed"
           }
         },
         "createdBy":{
