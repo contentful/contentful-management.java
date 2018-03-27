@@ -45,7 +45,7 @@
     <project.reporting.sourceEncoding>UTF-8</project.reporting.sourceEncoding>
 
     <!-- Compilation -->
-    <java.version>1.6</java.version>
+    <java.version>1.8</java.version>
 
     <!-- Dependencies -->
     <retrofit.version>2.3.0</retrofit.version>
@@ -98,7 +98,7 @@
 
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
-      <artifactId>kotlin-stdlib-jdk7</artifactId>
+      <artifactId>kotlin-stdlib-jdk8</artifactId>
       <version>${kotlin.version}</version>
       <scope>test</scope>
     </dependency>
@@ -210,7 +210,7 @@
       <plugin>
         <artifactId>kotlin-maven-plugin</artifactId>
         <configuration>
-          <jvmTarget>1.6</jvmTarget>
+          <jvmTarget>1.8</jvmTarget>
         </configuration>
         <groupId>org.jetbrains.kotlin</groupId>
         <version>${kotlin.version}</version>
