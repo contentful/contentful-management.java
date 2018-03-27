@@ -27,7 +27,7 @@ import com.contentful.java.cma.model.CMAType
 import okhttp3.HttpUrl
 import okhttp3.mockwebserver.MockResponse
 import java.io.IOException
-import java.util.Collections
+import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
@@ -35,7 +35,8 @@ import kotlin.test.assertTrue
 import org.junit.Test as test
 
 class ContentTypeTests : BaseTest() {
-    @test fun testCreate() {
+    @test
+    fun testCreate() {
         val requestBody = TestUtils.fileToString("content_type_create_request.json")
         val responseBody = TestUtils.fileToString("content_type_create_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
@@ -64,7 +65,8 @@ class ContentTypeTests : BaseTest() {
         assertTrue(result.fields[0].isRequired)
     }
 
-    @test fun testCreateWithId() {
+    @test
+    fun testCreateWithId() {
         val requestBody = TestUtils.fileToString("content_type_create_request.json")
         val responseBody = TestUtils.fileToString("content_type_create_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
@@ -96,7 +98,8 @@ class ContentTypeTests : BaseTest() {
         assertTrue(result.fields[0].isRequired)
     }
 
-    @test fun testCreateWithLink() {
+    @test
+    fun testCreateWithLink() {
         val responseBody = TestUtils.fileToString("content_type_create_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -116,7 +119,8 @@ class ContentTypeTests : BaseTest() {
         assertJsonEquals(requestBody, recordedRequest.body.readUtf8())
     }
 
-    @test fun testCreateLocalized() {
+    @test
+    fun testCreateLocalized() {
         val responseBody = TestUtils.fileToString("content_type_create_localized_payload.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -140,7 +144,8 @@ class ContentTypeTests : BaseTest() {
         assertTrue(response.fields[0].isLocalized)
     }
 
-    @test fun testUpdate() {
+    @test
+    fun testUpdate() {
         val requestBody = TestUtils.fileToString("content_type_update_request.json")
         val responseBody = TestUtils.fileToString("content_type_update_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
@@ -173,7 +178,8 @@ class ContentTypeTests : BaseTest() {
         assertEquals(2, contentType.version)
     }
 
-    @test fun testDelete() {
+    @test
+    fun testDelete() {
         val requestBody = ""
         server!!.enqueue(MockResponse().setResponseCode(204).setBody(requestBody))
 
@@ -201,7 +207,8 @@ class ContentTypeTests : BaseTest() {
         assertEquals("/spaces/spaceid/content_types/contenttypeid", recordedRequest.path)
     }
 
-    @test fun testFetchAll() {
+    @test
+    fun testFetchAll() {
         val responseBody = TestUtils.fileToString("content_type_fetch_all_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -248,7 +255,8 @@ class ContentTypeTests : BaseTest() {
         assertEquals("/spaces/spaceid/content_types?limit=100", recordedRequest.path)
     }
 
-    @test fun testFetchAllWithQuery() {
+    @test
+    fun testFetchAllWithQuery() {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(
                 TestUtils.fileToString("content_type_fetch_all_response.json")))
 
@@ -265,7 +273,8 @@ class ContentTypeTests : BaseTest() {
         assertEquals("bar", url.queryParameter("foo"))
     }
 
-    @test fun testFetchWithId() {
+    @test
+    fun testFetchWithId() {
         val responseBody = TestUtils.fileToString("content_type_fetch_one_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -318,7 +327,8 @@ class ContentTypeTests : BaseTest() {
         assertEquals("/spaces/spaceid/content_types/contenttypeid", recordedRequest.path)
     }
 
-    @test fun testPublish() {
+    @test
+    fun testPublish() {
         val responseBody = TestUtils.fileToString("content_type_publish_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -337,7 +347,8 @@ class ContentTypeTests : BaseTest() {
         assertNotNull(recordedRequest.getHeader("X-Contentful-Version"))
     }
 
-    @test fun testUnPublish() {
+    @test
+    fun testUnPublish() {
         val responseBody = TestUtils.fileToString("content_type_unpublish_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -355,7 +366,8 @@ class ContentTypeTests : BaseTest() {
         assertFalse(result.isPublished)
     }
 
-    @test fun testCMAField() {
+    @test
+    fun testCMAField() {
         val field = CMAField().setId("id")
                 .setName("name")
                 .setType(CMAFieldType.Link)
@@ -392,7 +404,8 @@ class ContentTypeTests : BaseTest() {
         }
     }
 
-    @test fun testFetchAllSnapshots() {
+    @test
+    fun testFetchAllSnapshots() {
         val responseBody = TestUtils.fileToString("content_type_snapshots_get_all.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -417,7 +430,8 @@ class ContentTypeTests : BaseTest() {
         assertEquals("/spaces/spaceId/content_types/contentTypeId/snapshots", recordedRequest.path)
     }
 
-    @test fun testFetchOneSnapshot() {
+    @test
+    fun testFetchOneSnapshot() {
         val responseBody = TestUtils.fileToString("content_type_snapshots_get_one.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 

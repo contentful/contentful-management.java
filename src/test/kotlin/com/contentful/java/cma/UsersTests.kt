@@ -23,7 +23,8 @@ import kotlin.test.assertEquals
 import org.junit.Test as test
 
 class UsersTests : BaseTest() {
-    @test fun testFetchMe() {
+    @test
+    fun testFetchMe() {
         val responseBody = TestUtils.fileToString("users_get_me.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 

@@ -197,7 +197,7 @@ class WebhookTests : BaseTest() {
         assertEquals(recordedRequest.getHeader("X-Contentful-Version"), "5")
     }
 
-    @org.junit.Test(expected = RuntimeException::class)
+    @test(expected = RuntimeException::class)
     fun testRetainsSysOnNetworkError() {
         val badClient = CMAClient.Builder()
                 .setAccessToken("accesstoken")

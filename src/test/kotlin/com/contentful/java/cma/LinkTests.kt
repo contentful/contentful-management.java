@@ -25,7 +25,8 @@ import kotlin.test.assertTrue
 import org.junit.Test as test
 
 class LinkTests : BaseTest() {
-    @test fun testCreateLink() {
+    @test
+    fun testCreateLink() {
         val requestBody = TestUtils.fileToString("asset_update_request.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(requestBody))
         val cmaLink = CMALink(CMAType.Asset).setId("linkedTargetId")

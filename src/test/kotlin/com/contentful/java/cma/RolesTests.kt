@@ -33,7 +33,8 @@ import kotlin.test.assertTrue
 import org.junit.Test as test
 
 class RolesTests : BaseTest() {
-    @test fun testFetchOne() {
+    @test
+    fun testFetchOne() {
         val responseBody = TestUtils.fileToString("roles_get_one.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -75,7 +76,8 @@ class RolesTests : BaseTest() {
         assertEquals("/spaces/SPACE_ID/roles/ROLE_ID", recordedRequest.path)
     }
 
-    @test fun testFetchAll() {
+    @test
+    fun testFetchAll() {
         val responseBody = TestUtils.fileToString("roles_get_all.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -99,7 +101,8 @@ class RolesTests : BaseTest() {
         assertEquals("/spaces/SPACE_ID/roles", recordedRequest.path)
     }
 
-    @test fun testFetchAllWithQuery() {
+    @test
+    fun testFetchAllWithQuery() {
         val responseBody = TestUtils.fileToString("roles_get_all.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -114,7 +117,8 @@ class RolesTests : BaseTest() {
         assertEquals("/spaces/SPACE_ID/roles?skip=3", recordedRequest.path)
     }
 
-    @test fun testCreateNew() {
+    @test
+    fun testCreateNew() {
         val responseBody = TestUtils.fileToString("roles_create.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -139,7 +143,8 @@ class RolesTests : BaseTest() {
         assertEquals("/spaces/SPACE_ID/roles/", recordedRequest.path)
     }
 
-    @test fun testUpdate() {
+    @test
+    fun testUpdate() {
         val responseBody = TestUtils.fileToString("roles_update.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -206,14 +211,14 @@ class RolesTests : BaseTest() {
         assertEquals("/spaces/SPACE_ID/roles/sampleId", recordedRequest.path)
     }
 
-    @test fun testDeleteOne() {
+    @test
+    fun testDeleteOne() {
         val responseBody = TestUtils.fileToString("roles_delete.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         assertTestCallback(client!!.roles().async()
                 .delete(
-                        "SPACE_ID",
-                        CMARole().setId("ROLE_ID"),
+                        CMARole().setId("ROLE_ID").setSpaceId("SPACE_ID"),
                         TestCallback()
                 ) as TestCallback)
 

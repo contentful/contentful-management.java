@@ -27,7 +27,8 @@ import kotlin.test.assertNull
 import org.junit.Test as test
 
 class ApiKeysTests : BaseTest() {
-    @test fun testFetchAll() {
+    @test
+    fun testFetchAll() {
         val responseBody = TestUtils.fileToString("apikeys_get_all.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -51,7 +52,8 @@ class ApiKeysTests : BaseTest() {
         assertEquals("/spaces/spaceid/api_keys", recordedRequest.path)
     }
 
-    @test fun testFetchOne() {
+    @test
+    fun testFetchOne() {
         val responseBody = TestUtils.fileToString("apikeys_get_one.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -73,7 +75,8 @@ class ApiKeysTests : BaseTest() {
         assertEquals("/spaces/spaceid/api_keys/keyid", recordedRequest.path)
     }
 
-    @test fun testCreate() {
+    @test
+    fun testCreate() {
         val responseBody = TestUtils.fileToString("apikeys_create.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -99,7 +102,8 @@ class ApiKeysTests : BaseTest() {
         assertEquals("/spaces/spaceid/api_keys", recordedRequest.path)
     }
 
-    @test fun testQueryForAll() {
+    @test
+    fun testQueryForAll() {
         val responseBody = TestUtils.fileToString("apikeys_get_all.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 

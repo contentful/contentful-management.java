@@ -30,7 +30,8 @@ import kotlin.test.*
 import org.junit.Test as test
 
 class EntryTests : BaseTest() {
-    @test fun testArchive() {
+    @test
+    fun testArchive() {
         val responseBody = TestUtils.fileToString("entry_archive_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
         val entry = CMAEntry().setId("entryid").setSpaceId("spaceid")
@@ -45,7 +46,8 @@ class EntryTests : BaseTest() {
         assertEquals("/spaces/spaceid/entries/entryid/archived", recordedRequest.path)
     }
 
-    @test fun testCreate() {
+    @test
+    fun testCreate() {
         val requestBody = TestUtils.fileToString("entry_create_request.json")
         val responseBody = TestUtils.fileToString("entry_create_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
@@ -75,7 +77,8 @@ class EntryTests : BaseTest() {
         assertEquals("ctid", recordedRequest.getHeader("X-Contentful-Content-Type"))
     }
 
-    @test fun testCreateWithId() {
+    @test
+    fun testCreateWithId() {
         val requestBody = TestUtils.fileToString("entry_create_request.json")
         val responseBody = TestUtils.fileToString("entry_create_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
@@ -96,7 +99,8 @@ class EntryTests : BaseTest() {
         assertEquals("ctid", recordedRequest.getHeader("X-Contentful-Content-Type"))
     }
 
-    @test fun testCreateWithLinks() {
+    @test
+    fun testCreateWithLinks() {
         val responseBody = TestUtils.fileToString("entry_create_links_request.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -124,13 +128,14 @@ class EntryTests : BaseTest() {
         server!!.enqueue(MockResponse().setResponseCode(200))
         try {
             client!!.entries().create("space", "type", foo)
-        } catch(e: RuntimeException) {
+        } catch (e: RuntimeException) {
             assertEquals("Entry contains link to draft resource (has no ID).", e.message)
             throw e
         }
     }
 
-    @test fun testDelete() {
+    @test
+    fun testDelete() {
         val requestBody = ""
         server!!.enqueue(MockResponse().setResponseCode(204).setBody(requestBody))
         assertTestCallback(client!!.entries().async().delete(
@@ -156,7 +161,8 @@ class EntryTests : BaseTest() {
         assertEquals("/spaces/spaceid/entries/entryid", recordedRequest.path)
     }
 
-    @test fun testFetchAll() {
+    @test
+    fun testFetchAll() {
         val responseBody = TestUtils.fileToString("entry_fetch_all_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -179,7 +185,8 @@ class EntryTests : BaseTest() {
         assertEquals("/spaces/spaceid/entries?limit=100", request.path)
     }
 
-    @test fun testFetchAllWithQuery() {
+    @test
+    fun testFetchAllWithQuery() {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(
                 TestUtils.fileToString("entry_fetch_all_response.json")))
 
@@ -196,7 +203,8 @@ class EntryTests : BaseTest() {
         assertEquals("foo", url.queryParameter("content_type"))
     }
 
-    @test fun testFetchWithId() {
+    @test
+    fun testFetchWithId() {
         val responseBody = TestUtils.fileToString("entry_fetch_one_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -218,13 +226,15 @@ class EntryTests : BaseTest() {
         assertEquals("/spaces/space/entries/entry", request.path)
     }
 
-    @test fun testParseEntryWithList() {
+    @test
+    fun testParseEntryWithList() {
         gson!!.fromJson(
                 TestUtils.fileToString("entry_with_list_object.json"),
                 CMAEntry::class.java)
     }
 
-    @test fun testUpdate() {
+    @test
+    fun testUpdate() {
         val requestBody = TestUtils.fileToString("entry_update_request.json")
         val responseBody = TestUtils.fileToString("entry_update_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
@@ -257,7 +267,8 @@ class EntryTests : BaseTest() {
         assertEquals(requestBody, recordedRequest.body.readUtf8())
     }
 
-    @test fun testPublish() {
+    @test
+    fun testPublish() {
         val requestBody = TestUtils.fileToString("entry_create_links_request.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(requestBody))
 
@@ -273,7 +284,8 @@ class EntryTests : BaseTest() {
         assertNotNull(recordedRequest.getHeader("X-Contentful-Version"))
     }
 
-    @test fun testUnArchive() {
+    @test
+    fun testUnArchive() {
         val requestBody = TestUtils.fileToString("space_create_request.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(requestBody))
 
@@ -287,7 +299,8 @@ class EntryTests : BaseTest() {
         assertEquals("/spaces/spaceid/entries/entryid/archived", recordedRequest.path)
     }
 
-    @test fun testUnPublish() {
+    @test
+    fun testUnPublish() {
         val requestBody = TestUtils.fileToString("entry_create_links_request.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(requestBody))
 
@@ -343,6 +356,7 @@ class EntryTests : BaseTest() {
             throw e
         }
     }
+
     @test
     fun testChainingInterface() {
         val entry = CMAEntry()
@@ -359,7 +373,8 @@ class EntryTests : BaseTest() {
         assertEquals("baz", entry.getField("foo", "en-US"))
     }
 
-    @test fun testFetchAllSnapshots() {
+    @test
+    fun testFetchAllSnapshots() {
         val responseBody = TestUtils.fileToString("entry_snapshots_get_all.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -384,7 +399,8 @@ class EntryTests : BaseTest() {
         assertEquals("/spaces/spaceId/entries/entryId/snapshots", recordedRequest.path)
     }
 
-    @test fun testFetchOneSnapshot() {
+    @test
+    fun testFetchOneSnapshot() {
         val responseBody = TestUtils.fileToString("entry_snapshots_get_one.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 

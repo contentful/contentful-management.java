@@ -32,7 +32,8 @@ import org.junit.Test as test
 
 class EditorInterfacesTests : BaseTest() {
 
-    @test fun testFetchOne() {
+    @test
+    fun testFetchOne() {
         val responseBody = TestUtils.fileToString("editor_interfaces_get.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -48,7 +49,8 @@ class EditorInterfacesTests : BaseTest() {
                 recordedRequest.path)
     }
 
-    @test fun testUpdate() {
+    @test
+    fun testUpdate() {
         val responseBody = TestUtils.fileToString("editor_interfaces_update.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 

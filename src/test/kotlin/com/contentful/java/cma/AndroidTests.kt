@@ -18,7 +18,8 @@ import org.junit.Test as test
 @RunWith(RobolectricTestRunner::class)
 @Config(manifest = Config.NONE)
 class AndroidTests : BaseTest() {
-    @test fun testCallbackExecutesOnMainThread() {
+    @test
+    fun testCallbackExecutesOnMainThread() {
         val responseBody = TestUtils.fileToString("asset_fetch_all_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 

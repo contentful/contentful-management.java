@@ -25,7 +25,8 @@ import kotlin.test.assertEquals
 import org.junit.Test as test
 
 class SpaceMembershipTests : BaseTest() {
-    @test fun testFetchAll() {
+    @test
+    fun testFetchAll() {
         val responseBody = TestUtils.fileToString("space_memberships_fetch_all.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -48,7 +49,8 @@ class SpaceMembershipTests : BaseTest() {
         assertEquals("/spaces/SPACE_ID/space_memberships", recordedRequest.path)
     }
 
-    @test fun testFetchAllWithQuery() {
+    @test
+    fun testFetchAllWithQuery() {
         val responseBody = TestUtils.fileToString("space_memberships_fetch_all.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -64,7 +66,8 @@ class SpaceMembershipTests : BaseTest() {
         assertEquals("/spaces/SPACE_ID/space_memberships?limit=foo", recordedRequest.path)
     }
 
-    @test fun testFetchOne() {
+    @test
+    fun testFetchOne() {
         val responseBody = TestUtils.fileToString("space_memberships_fetch_one.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -83,7 +86,8 @@ class SpaceMembershipTests : BaseTest() {
         assertEquals("/spaces/SPACE_ID/space_memberships/MEMBERSHIP_ID", recordedRequest.path)
     }
 
-    @test fun testCreateNew() {
+    @test
+    fun testCreateNew() {
         val responseBody = TestUtils.fileToString("space_memberships_create.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -105,7 +109,8 @@ class SpaceMembershipTests : BaseTest() {
         assertEquals("/spaces/SPACE_ID/space_memberships", recordedRequest.path)
     }
 
-    @test fun testUpdate() {
+    @test
+    fun testUpdate() {
         val responseBody = TestUtils.fileToString("space_memberships_update.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -172,7 +177,8 @@ class SpaceMembershipTests : BaseTest() {
         assertEquals(4, membership.roles.size)
     }
 
-    @test fun testIfNotAdminNeedsRoles() {
+    @test
+    fun testIfNotAdminNeedsRoles() {
         val responseBody = TestUtils.fileToString("space_memberships_no_admin_needs_roles.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -198,14 +204,14 @@ class SpaceMembershipTests : BaseTest() {
         assertEquals("/spaces/SPACE_ID/space_memberships/sampleid", recordedRequest.path)
     }
 
-    @test fun testDeleteOne() {
+    @test
+    fun testDeleteOne() {
         val responseBody = TestUtils.fileToString("space_memberships_delete_one.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         assertTestCallback(client!!.spaceMemberships().async()
                 .delete(
-                        "SPACE_ID",
-                        CMASpaceMembership().setId("MEMBERSHIP_ID"),
+                        CMASpaceMembership().setId("MEMBERSHIP_ID").setSpaceId("SPACE_ID"),
                         TestCallback()
                 ) as TestCallback)
 

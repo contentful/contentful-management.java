@@ -26,10 +26,10 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
-import org.junit.Test as tests
+import org.junit.Test as test
 
 class SpaceTests : BaseTest() {
-    @org.junit.Test
+    @test
     fun testCreate() {
         val requestBody = TestUtils.fileToString("space_create_request.json")
         val responseBody = TestUtils.fileToString("space_create_response.json")
@@ -48,7 +48,7 @@ class SpaceTests : BaseTest() {
         assertEquals(requestBody, recordedRequest.body.readUtf8())
     }
 
-    @org.junit.Test
+    @test
     fun testCreateWithDefaultLocale() {
         val requestBody = TestUtils.fileToString("space_create_with_locale_request.json")
         val responseBody = TestUtils.fileToString("space_create_with_locale_response.json")
@@ -70,7 +70,7 @@ class SpaceTests : BaseTest() {
         assertEquals(requestBody, recordedRequest.body.readUtf8())
     }
 
-    @org.junit.Test
+    @test
     fun testCreateInOrg() {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody("{}"))
 
@@ -84,7 +84,7 @@ class SpaceTests : BaseTest() {
         assertEquals("org", recordedRequest.getHeader("X-Contentful-Organization"))
     }
 
-    @org.junit.Test
+    @test
     fun testCreateInOrgWithObject() {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody("{}"))
 
@@ -98,7 +98,7 @@ class SpaceTests : BaseTest() {
         assertEquals("org", recordedRequest.getHeader("X-Contentful-Organization"))
     }
 
-    @org.junit.Test
+    @test
     fun testCreateWithObject() {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody("{}"))
 
@@ -114,7 +114,7 @@ class SpaceTests : BaseTest() {
         assertEquals(32, recordedRequest.body.readUtf8().indexOf("my locale"))
     }
 
-    @org.junit.Test
+    @test
     fun testDelete() {
         val requestBody = ""
         server!!.enqueue(MockResponse().setResponseCode(204).setBody(requestBody))
@@ -128,7 +128,7 @@ class SpaceTests : BaseTest() {
         assertEquals("/spaces/spaceid", recordedRequest.path)
     }
 
-    @org.junit.Test
+    @test
     fun testDeleteWithObject() {
         val requestBody = ""
         server!!.enqueue(MockResponse().setResponseCode(204).setBody(requestBody))
@@ -144,7 +144,7 @@ class SpaceTests : BaseTest() {
         assertEquals("/spaces/spaceid", recordedRequest.path)
     }
 
-    @org.junit.Test
+    @test
     fun testFetchAll() {
         val responseBody = TestUtils.fileToString("space_fetch_all_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
@@ -203,7 +203,7 @@ class SpaceTests : BaseTest() {
         assertEquals("/spaces?limit=100", request.path)
     }
 
-    @org.junit.Test
+    @test
     fun testFetchWithId() {
         val responseBody = TestUtils.fileToString("space_fetch_one_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
@@ -235,7 +235,7 @@ class SpaceTests : BaseTest() {
         assertEquals("/spaces/spaceid", request.path)
     }
 
-    @org.junit.Test
+    @test
     fun testFetchAllLocales() {
         val responseBody = TestUtils.fileToString("space_fetch_locales_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
@@ -255,7 +255,7 @@ class SpaceTests : BaseTest() {
         assertEquals("/spaces/spaceid/locales?limit=100", recordedRequest.path)
     }
 
-    @org.junit.Test
+    @test
     fun testUpdate() {
         val requestBody = TestUtils.fileToString("space_update_request.json")
         val responseBody = TestUtils.fileToString("space_update_response.json")
@@ -281,7 +281,7 @@ class SpaceTests : BaseTest() {
         assertEquals(requestBody, recordedRequest.body.readUtf8())
     }
 
-    @org.junit.Test(expected = Exception::class)
+    @test(expected = Exception::class)
     fun testUpdateFailsWithoutVersion() {
         ModuleTestUtils.assertUpdateWithoutVersion {
             val space: CMASpace = CMASpace().setName("name").setId("id")

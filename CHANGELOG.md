@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Add: Object variant for Update/Delete of resources.
 - Break: Remove `space id` from [`ModuleLocales`|`ModuleRoles`|`ModuleSpaceMemberships`].delete.
 - Polish: Test resource generators to strip credentials and to include environments.
+- Polish: Annotation placement in tests.
 
 ## Version [2.2.3] - 2018-03-08
 - Fix: Parsing error in error response

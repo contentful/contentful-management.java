@@ -28,7 +28,8 @@ import kotlin.test.assertNull
 import org.junit.Test as test
 
 class UiExtensionsTests : BaseTest() {
-    @test fun testFetchAll() {
+    @test
+    fun testFetchAll() {
         val responseBody = TestUtils.fileToString("ui_extensions_get_all.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -52,7 +53,8 @@ class UiExtensionsTests : BaseTest() {
                 recordedRequest.path)
     }
 
-    @test fun testFetchAllWithQuery() {
+    @test
+    fun testFetchAllWithQuery() {
         val responseBody = TestUtils.fileToString("ui_extensions_get_all.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -69,7 +71,8 @@ class UiExtensionsTests : BaseTest() {
                 recordedRequest.path)
     }
 
-    @test fun testFetchOne() {
+    @test
+    fun testFetchOne() {
         val responseBody = TestUtils.fileToString("ui_extensions_get_one.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -92,7 +95,8 @@ class UiExtensionsTests : BaseTest() {
                 recordedRequest.path)
     }
 
-    @test fun testCreateWithSourceContent() {
+    @test
+    fun testCreateWithSourceContent() {
         val responseBody = TestUtils.fileToString("ui_extensions_create_with_html_data.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -124,7 +128,8 @@ class UiExtensionsTests : BaseTest() {
                 recordedRequest.path)
     }
 
-    @test fun testCreateWithSourceLink() {
+    @test
+    fun testCreateWithSourceLink() {
         val responseBody = TestUtils.fileToString("ui_extensions_create_with_url.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -157,7 +162,8 @@ class UiExtensionsTests : BaseTest() {
                 recordedRequest.path)
     }
 
-    @test fun testCreateWithId() {
+    @test
+    fun testCreateWithId() {
         val responseBody = TestUtils.fileToString("ui_extensions_create_with_url.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -208,7 +214,8 @@ class UiExtensionsTests : BaseTest() {
                 .setIsOnSidebar(false)
     }
 
-    @test fun testUpdate() {
+    @test
+    fun testUpdate() {
         val responseBody = TestUtils.fileToString("ui_extensions_update.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -244,7 +251,8 @@ class UiExtensionsTests : BaseTest() {
                 recordedRequest.path)
     }
 
-    @test fun testDelete() {
+    @test
+    fun testDelete() {
         server!!.enqueue(MockResponse().setResponseCode(204))
 
         // usually you would fetch this from Contentful

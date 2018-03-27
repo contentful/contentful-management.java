@@ -320,7 +320,7 @@ class AssetTests : BaseTest() {
         assertEquals(requestBody, recordedRequest.body.readUtf8())
     }
 
-    @org.junit.Test(expected = RuntimeException::class)
+    @test(expected = RuntimeException::class)
     fun testRetainsSysOnNetworkError() {
         val badClient = CMAClient.Builder()
                 .setAccessToken("accesstoken")
@@ -341,14 +341,14 @@ class AssetTests : BaseTest() {
         assertNull(CMAAsset().version)
     }
 
-    @org.junit.Test(expected = Exception::class)
+    @test(expected = Exception::class)
     fun testUpdateFailsWithoutVersion() {
         ModuleTestUtils.assertUpdateWithoutVersion {
             client!!.assets().update(CMAAsset().setId("aid").setSpaceId("spaceid"))
         }
     }
 
-    @org.junit.Test
+    @test
     fun testDoNotChangeSysOnException() {
         val asset = CMAAsset().setId("aid").setSpaceId("spaceid")
         val system = asset.system

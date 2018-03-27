@@ -27,7 +27,8 @@ import org.junit.Test as test
 class ModuleTests : BaseTest() {
     private var module: AbsModule<Any>? = null
 
-    @before fun setup() {
+    @before
+    fun setup() {
         super.setUp()
         module = object : AbsModule<Any>(null, SynchronousExecutor()) {
             override fun createService(retrofit: Retrofit?): Any? {
@@ -66,7 +67,8 @@ class ModuleTests : BaseTest() {
         }
     }
 
-    @test fun testDefersToBackgroundThread() {
+    @test
+    fun testDefersToBackgroundThread() {
         val currentThreadId = Thread.currentThread().id
         var workerThreadId: Long? = null
 

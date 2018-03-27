@@ -25,10 +25,10 @@ import com.contentful.java.cma.model.CMAType
 import okhttp3.mockwebserver.MockResponse
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
-import org.junit.Test as tests
+import org.junit.Test as test
 
 class EnvironmentsTest : BaseTest() {
-    @org.junit.Test
+    @test
     fun testCreate() {
         val responseBody = TestUtils.fileToString("environments_create.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
@@ -54,7 +54,7 @@ class EnvironmentsTest : BaseTest() {
         assertEquals("/spaces/%3Cspace_id%3E/environments", recordedRequest.path)
     }
 
-    @org.junit.Test
+    @test
     fun testCreateWithId() {
         val responseBody = TestUtils.fileToString("environments_create_with_id.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
@@ -83,7 +83,7 @@ class EnvironmentsTest : BaseTest() {
         assertEquals("/spaces/%3Cspace_id%3E/environments/new_id", recordedRequest.path)
     }
 
-    @org.junit.Test
+    @test
     fun testDelete() {
         val fetchBody = TestUtils.fileToString("environments_get_one.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(fetchBody))
@@ -118,7 +118,7 @@ class EnvironmentsTest : BaseTest() {
         assertEquals("/spaces/%3Cspace_id%3E/environments/staging", recordedRequest.path)
     }
 
-    @org.junit.Test
+    @test
     fun testFetchAll() {
         val responseBody = TestUtils.fileToString("environments_get_all.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
@@ -188,7 +188,7 @@ class EnvironmentsTest : BaseTest() {
         assertEquals("/spaces/%3Cspace_id%3E/environments", request.path)
     }
 
-    @org.junit.Test
+    @test
     fun testFetchWithId() {
         val responseBody = TestUtils.fileToString("environments_get_one.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
@@ -228,7 +228,7 @@ class EnvironmentsTest : BaseTest() {
         assertEquals("/spaces/%3Cspace_id%3E/environments/staging", request.path)
     }
 
-    @org.junit.Test
+    @test
     fun testUpdate() {
         val fetchBody = TestUtils.fileToString("environments_get_one.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(fetchBody))
@@ -267,7 +267,7 @@ class EnvironmentsTest : BaseTest() {
         assertEquals("environment_new_name", newEnvironment.name)
     }
 
-    @org.junit.Test(expected = Exception::class)
+    @test(expected = Exception::class)
     fun testUpdateFailsWithoutVersion() {
         ModuleTestUtils.assertUpdateWithoutVersion {
             val environment = CMAEnvironment().setName("name").setId("id")
@@ -277,7 +277,7 @@ class EnvironmentsTest : BaseTest() {
         }
     }
 
-    @org.junit.Test
+    @test
     fun testNotPushedEnvironmentReturnsNullStatus() {
         assertNull(CMAEnvironment().setName("name").setId("id").status)
     }

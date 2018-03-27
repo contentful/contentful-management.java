@@ -36,7 +36,8 @@ open class BaseTest {
     var client: CMAClient? = null
     var gson: Gson? = null
 
-    @before fun setUp() {
+    @before
+    fun setUp() {
         LogManager.getLogManager().reset()
         // MockWebServer
         server = MockWebServer()
@@ -52,7 +53,8 @@ open class BaseTest {
         gson = CMAClient.createGson()
     }
 
-    @after fun tearDown() {
+    @after
+    fun tearDown() {
         server!!.shutdown()
     }
 }

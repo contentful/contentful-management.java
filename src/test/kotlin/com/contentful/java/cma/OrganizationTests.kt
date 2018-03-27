@@ -23,7 +23,8 @@ import kotlin.test.assertEquals
 import org.junit.Test as test
 
 class OrganizationTests : BaseTest() {
-    @test fun testFetchAll() {
+    @test
+    fun testFetchAll() {
         val responseBody = TestUtils.fileToString("organizations_get_all.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -52,7 +53,8 @@ class OrganizationTests : BaseTest() {
         assertEquals("/organizations", recordedRequest.path)
     }
 
-    @test fun testFetchAllWithQuery() {
+    @test
+    fun testFetchAllWithQuery() {
         val responseBody = TestUtils.fileToString("organizations_get_all.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 

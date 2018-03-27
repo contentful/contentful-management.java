@@ -10,11 +10,13 @@ import kotlin.test.assertTrue
 import org.junit.Test as test
 
 class GeneralTests : BaseTest() {
-    @test fun testGsonInstanceRetained() {
+    @test
+    fun testGsonInstanceRetained() {
         assertTrue(CMAClient.createGson() === CMAClient.createGson())
     }
 
-    @test fun testFieldSerialization() {
+    @test
+    fun testFieldSerialization() {
         val field = gson!!.fromJson(
                 TestUtils.fileToString("field_object.json"),
                 CMAField::class.java)
@@ -41,7 +43,8 @@ class GeneralTests : BaseTest() {
         assertEquals("Text", json.get("type").asString)
     }
 
-    @test fun testFieldArraySerialization() {
+    @test
+    fun testFieldArraySerialization() {
         val field = CMAField().setType(CMAFieldType.Array)
                 .setArrayItems(hashMapOf(Pair("type", CMAFieldType.Symbol.toString())))
 
@@ -51,11 +54,13 @@ class GeneralTests : BaseTest() {
         assertEquals("Symbol", items.get("type").asString)
     }
 
-    @test fun testConstantsThrowsUnsupportedException() {
+    @test
+    fun testConstantsThrowsUnsupportedException() {
         assertPrivateConstructor(Constants::class.java)
     }
 
-    @test fun testRxExtensionsThrowsUnsupportedException() {
+    @test
+    fun testRxExtensionsThrowsUnsupportedException() {
         assertPrivateConstructor(RxExtensions::class.java)
     }
 
@@ -64,7 +69,7 @@ class GeneralTests : BaseTest() {
         constructor.isAccessible = true
         val exception = try {
             constructor.newInstance()
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             e
         }
 
