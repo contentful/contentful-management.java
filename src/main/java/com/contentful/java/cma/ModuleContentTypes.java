@@ -93,6 +93,20 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
   }
 
   /**
+   * Delete a Content Type.
+   *
+   * @param contentType Content Type
+   * @return Integer representing the result of the operation
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if contentTypeId is null.
+   */
+  public Integer delete(CMAContentType contentType) {
+    assertNotNull(contentType.getSpaceId(), "spaceId");
+    assertNotNull(contentType.getId(), "contentTypeId");
+    return service.delete(contentType.getSpaceId(), contentType.getId()).blockingFirst().code();
+  }
+
+  /**
    * Fetch all Content Types from a Space, using default query parameter.
    * <p>
    * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH}
@@ -299,6 +313,24 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
       return defer(new DefFunc<Integer>() {
         @Override Integer method() {
           return ModuleContentTypes.this.delete(spaceId, contentTypeId);
+        }
+      }, callback);
+    }
+
+    /**
+     * Delete a Content Type.
+     *
+     * @param contentType Content Type
+     * @param callback    Callback
+     * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if contentTypeId is null.
+     */
+    public CMACallback<Integer> delete(final CMAContentType contentType,
+                                       CMACallback<Integer> callback) {
+      return defer(new DefFunc<Integer>() {
+        @Override Integer method() {
+          return ModuleContentTypes.this.delete(contentType);
         }
       }, callback);
     }

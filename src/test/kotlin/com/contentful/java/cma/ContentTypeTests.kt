@@ -186,6 +186,21 @@ class ContentTypeTests : BaseTest() {
         assertEquals("/spaces/spaceid/content_types/contenttypeid", recordedRequest.path)
     }
 
+    @test
+    fun testDeleteWithObject() {
+        val requestBody = ""
+        server!!.enqueue(MockResponse().setResponseCode(204).setBody(requestBody))
+
+        assertTestCallback(client!!.contentTypes().async().delete(
+                CMAContentType().setSpaceId("spaceid").setId("contenttypeid"),
+                TestCallback()) as TestCallback)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("DELETE", recordedRequest.method)
+        assertEquals("/spaces/spaceid/content_types/contenttypeid", recordedRequest.path)
+    }
+
     @test fun testFetchAll() {
         val responseBody = TestUtils.fileToString("content_type_fetch_all_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))

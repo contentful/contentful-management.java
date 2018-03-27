@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Version [3.0.0] - (TBD)
 - Add: environments CRUD (Create/Read/Update/Delete).
+- Add: Object variant for Update/Delete of resources.
+- Break: Remove `space id` from [`ModuleLocales`|`ModuleRoles`|`ModuleSpaceMemberships`].delete.
 - Polish: Test resource generators to strip credentials and to include environments.
 
 ## Version [2.2.3] - 2018-03-08

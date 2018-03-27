@@ -151,17 +151,14 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
    * Please make sure that the instance provided is fetched from Contentful. Otherwise you will
    * get an exception thrown.
    *
-   * @param spaceId the id of the space to be used.
-   * @param role    the role fetched from Contentful, updated by caller, to be deleted.
+   * @param role the role fetched from Contentful, updated by caller, to be deleted.
    * @return the code of the response (200 means success).
    * @throws IllegalArgumentException if space id is null.
    * @throws IllegalArgumentException if role id is null.
    */
-  public int delete(String spaceId, CMARole role) {
-    assertNotNull(spaceId, "spaceId");
-    assertNotNull(role, "role");
-
+  public int delete(CMARole role) {
     final String id = getResourceIdOrThrow(role, "role");
+    final String spaceId = getSpaceIdOrThrow(role, "role");
 
     final CMASystem sys = role.getSystem();
     role.setSystem(null);
@@ -299,22 +296,20 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
      * Please make sure that the instance provided is fetched from Contentful. Otherwise you will
      * get an exception thrown.
      *
-     * @param spaceId  the id of the space to be used.
      * @param role     the role fetched from Contentful, updated by caller, to be deleted.
      * @param callback a callback to be called, once the results are present.
      * @return a callback for asynchronous interaction.
      * @throws IllegalArgumentException if space id is null.
      * @throws IllegalArgumentException if role id is null.
-     * @see ModuleRoles#delete(String, CMARole)
+     * @see ModuleRoles#delete(CMARole)
      */
     public CMACallback<Integer> delete(
-        final String spaceId,
         final CMARole role,
         final CMACallback<Integer> callback) {
       return defer(new DefFunc<Integer>() {
         @Override Integer method() {
           return ModuleRoles.this.delete(
-              spaceId, role
+              role
           );
         }
       }, callback);

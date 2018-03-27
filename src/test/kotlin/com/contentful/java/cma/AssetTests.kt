@@ -113,6 +113,21 @@ class AssetTests : BaseTest() {
     }
 
     @test
+    fun testDeleteWithObject() {
+        val responseBody = ""
+        server!!.enqueue(MockResponse().setResponseCode(204).setBody(responseBody))
+        assertTestCallback(client!!.assets().async().delete(
+                CMAAsset().setSpaceId("spaceid").setId("assetid"),
+                TestCallback()
+        ) as TestCallback)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("DELETE", recordedRequest.method)
+        assertEquals("/spaces/spaceid/assets/assetid", recordedRequest.path)
+    }
+
+    @test
     fun testFetchAll() {
         val responseBody = TestUtils.fileToString("asset_fetch_all_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))

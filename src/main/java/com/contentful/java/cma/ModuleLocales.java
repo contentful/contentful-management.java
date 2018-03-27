@@ -151,17 +151,14 @@ public class ModuleLocales extends AbsModule<ServiceLocales> {
    * Please make sure that the instance provided is fetched from Contentful. Otherwise you will
    * get an exception thrown.
    *
-   * @param spaceId the id of the space to be used.
-   * @param locale  the locale fetched from Contentful, updated by caller, to be deleted.
+   * @param locale the locale fetched from Contentful, updated by caller, to be deleted.
    * @return the code of the response (200 means success).
    * @throws IllegalArgumentException if space id is null.
    * @throws IllegalArgumentException if locale id is null.
    */
-  public int delete(String spaceId, CMALocale locale) {
-    assertNotNull(spaceId, "spaceId");
-    assertNotNull(locale, "locale");
-
+  public int delete(CMALocale locale) {
     final String id = getResourceIdOrThrow(locale, "locale");
+    final String spaceId = getSpaceIdOrThrow(locale, "locale");
 
     final CMASystem sys = locale.getSystem();
     locale.setSystem(null);
@@ -299,22 +296,20 @@ public class ModuleLocales extends AbsModule<ServiceLocales> {
      * Please make sure that the instance provided is fetched from Contentful. Otherwise you will
      * get an exception thrown.
      *
-     * @param spaceId  the id of the space to be used.
      * @param locale   the locale fetched from Contentful, updated by caller, to be deleted.
      * @param callback a callback to be called, once the results are present.
      * @return a callback for asynchronous interaction.
      * @throws IllegalArgumentException if space id is null.
      * @throws IllegalArgumentException if locale id is null.
-     * @see ModuleLocales#delete(String, CMALocale)
+     * @see ModuleLocales#delete(CMALocale)
      */
     public CMACallback<Integer> delete(
-        final String spaceId,
         final CMALocale locale,
         final CMACallback<Integer> callback) {
       return defer(new DefFunc<Integer>() {
         @Override Integer method() {
           return ModuleLocales.this.delete(
-              spaceId, locale
+              locale
           );
         }
       }, callback);

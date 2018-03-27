@@ -129,6 +129,22 @@ class SpaceTests : BaseTest() {
     }
 
     @org.junit.Test
+    fun testDeleteWithObject() {
+        val requestBody = ""
+        server!!.enqueue(MockResponse().setResponseCode(204).setBody(requestBody))
+
+        assertTestCallback(client!!.spaces().async().delete(
+                CMASpace().setId("spaceid"),
+                TestCallback()
+        ) as TestCallback)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("DELETE", recordedRequest.method)
+        assertEquals("/spaces/spaceid", recordedRequest.path)
+    }
+
+    @org.junit.Test
     fun testFetchAll() {
         val responseBody = TestUtils.fileToString("space_fetch_all_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))

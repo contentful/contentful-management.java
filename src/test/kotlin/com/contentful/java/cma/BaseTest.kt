@@ -17,6 +17,10 @@
 package com.contentful.java.cma
 
 import com.contentful.java.cma.lib.TestCallback
+import com.contentful.java.cma.model.CMALink
+import com.contentful.java.cma.model.CMAResource
+import com.contentful.java.cma.model.CMASystem
+import com.contentful.java.cma.model.CMAWebhookCall
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import okhttp3.mockwebserver.MockWebServer

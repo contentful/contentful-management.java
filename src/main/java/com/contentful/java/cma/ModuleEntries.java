@@ -111,6 +111,21 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
   }
 
   /**
+   * Delete an Entry.
+   *
+   * @param entry Entry ID
+   * @return Integer representing the success (204) of the action
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if entry is null.
+   */
+  public Integer delete(CMAEntry entry) {
+    assertNotNull(entry.getSpaceId(), "spaceId");
+    assertNotNull(entry.getId(), "entryId");
+
+    return service.delete(entry.getSpaceId(), entry.getId()).blockingFirst().code();
+  }
+
+  /**
    * Fetch all Entries from a Space.
    * <p>
    * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH}
@@ -333,6 +348,24 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
       return defer(new RxExtensions.DefFunc<Integer>() {
         @Override Integer method() {
           return ModuleEntries.this.delete(spaceId, entryId);
+        }
+      }, callback);
+    }
+
+    /**
+     * Delete an Entry.
+     *
+     * @param entry    Entry
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if entry is null.
+     */
+    public CMACallback<Integer> delete(final CMAEntry entry,
+                                       CMACallback<Integer> callback) {
+      return defer(new RxExtensions.DefFunc<Integer>() {
+        @Override Integer method() {
+          return ModuleEntries.this.delete(entry);
         }
       }, callback);
     }

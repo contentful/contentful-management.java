@@ -136,8 +136,7 @@ class LocalesTests : BaseTest() {
 
         assertTestCallback(client!!.locales().async()
                 .delete(
-                        "SPACE_ID",
-                        CMALocale().setId("LOCALE_ID"),
+                        CMALocale().setId("LOCALE_ID").setSpaceId("SPACE_ID"),
                         TestCallback()
                 ) as TestCallback)
 

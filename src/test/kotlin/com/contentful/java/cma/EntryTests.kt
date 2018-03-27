@@ -142,6 +142,20 @@ class EntryTests : BaseTest() {
         assertEquals("/spaces/spaceid/entries/entryid", recordedRequest.path)
     }
 
+    @test
+    fun testDeleteWithObject() {
+        val requestBody = ""
+        server!!.enqueue(MockResponse().setResponseCode(204).setBody(requestBody))
+        assertTestCallback(client!!.entries().async().delete(
+                CMAEntry().setSpaceId("spaceid").setId("entryid"),
+                TestCallback()) as TestCallback)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("DELETE", recordedRequest.method)
+        assertEquals("/spaces/spaceid/entries/entryid", recordedRequest.path)
+    }
+
     @test fun testFetchAll() {
         val responseBody = TestUtils.fileToString("entry_fetch_all_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))

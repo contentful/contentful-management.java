@@ -151,17 +151,14 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
    * Please make sure that the instance provided is fetched from Contentful. Otherwise you will
    * get an exception thrown.
    *
-   * @param spaceId    the id of the space to be used.
    * @param membership the membership fetched from Contentful, updated by caller, to be deleted.
    * @return the code of the response (200 means success).
    * @throws IllegalArgumentException if space id is null.
    * @throws IllegalArgumentException if membership id is null.
    */
-  public int delete(String spaceId, CMASpaceMembership membership) {
-    assertNotNull(spaceId, "spaceId");
-    assertNotNull(membership, "membership");
-
+  public int delete(CMASpaceMembership membership) {
     final String id = getResourceIdOrThrow(membership, "membership");
+    final String spaceId = getSpaceIdOrThrow(membership, "membership");
 
     final CMASystem sys = membership.getSystem();
     membership.setSystem(null);
@@ -299,22 +296,20 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
      * Please make sure that the instance provided is fetched from Contentful. Otherwise you will
      * get an exception thrown.
      *
-     * @param spaceId    the id of the space to be used.
      * @param membership the membership fetched from Contentful, updated by caller, to be deleted.
      * @param callback   the callback to be informed about success or failure.
      * @return the callback passed in.
      * @throws IllegalArgumentException if space id is null.
      * @throws IllegalArgumentException if membership id is null.
-     * @see ModuleSpaceMemberships#delete(String, CMASpaceMembership)
+     * @see ModuleSpaceMemberships#delete(CMASpaceMembership)
      */
     public CMACallback<Integer> delete(
-        final String spaceId,
         final CMASpaceMembership membership,
         final CMACallback<Integer> callback) {
       return defer(new DefFunc<Integer>() {
         @Override Integer method() {
           return ModuleSpaceMemberships.this.delete(
-              spaceId, membership
+              membership
           );
         }
       }, callback);

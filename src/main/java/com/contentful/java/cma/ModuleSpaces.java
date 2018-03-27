@@ -130,6 +130,18 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
   }
 
   /**
+   * Delete a Space.
+   *
+   * @param space Space
+   * @return Integer representing the result (204, or an error code)
+   * @throws IllegalArgumentException if space's id is null.
+   */
+  public Integer delete(CMASpace space) {
+    assertNotNull(space.getId(), "spaceId");
+    return service.delete(space.getId()).blockingFirst().code();
+  }
+
+  /**
    * Fetch all Spaces.
    *
    * @return {@link CMAArray} result instance
@@ -307,6 +319,23 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
       return defer(new DefFunc<Integer>() {
         @Override Integer method() {
           return ModuleSpaces.this.delete(spaceId);
+        }
+      }, callback);
+    }
+
+    /**
+     * Delete a Space.
+     *
+     * @param space    Space
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if space's id is null.
+     */
+    public CMACallback<Integer> delete(final CMASpace space,
+                                       CMACallback<Integer> callback) {
+      return defer(new DefFunc<Integer>() {
+        @Override Integer method() {
+          return ModuleSpaces.this.delete(space);
         }
       }, callback);
     }

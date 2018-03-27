@@ -109,6 +109,21 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
   }
 
   /**
+   * Delete an Asset.
+   *
+   * @param asset Asset
+   * @return An integer representing the result of the delete operation
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if assetId is null.
+   */
+  public Integer delete(CMAAsset asset) {
+    assertNotNull(asset.getSpaceId(), "spaceId");
+    assertNotNull(asset.getId(), "assetId");
+
+    return service.delete(asset.getSpaceId(), asset.getId()).blockingFirst().code();
+  }
+
+  /**
    * Fetch all Assets from a Space.
    * <p>
    * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH}
@@ -317,6 +332,24 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
       return defer(new DefFunc<Integer>() {
         @Override Integer method() {
           return ModuleAssets.this.delete(spaceId, assetId);
+        }
+      }, callback);
+    }
+
+    /**
+     * Delete an Asset.
+     *
+     * @param asset    Asset
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if assetId is null.
+     */
+    public CMACallback<Integer> delete(final CMAAsset asset,
+                                       CMACallback<Integer> callback) {
+      return defer(new DefFunc<Integer>() {
+        @Override Integer method() {
+          return ModuleAssets.this.delete(asset);
         }
       }, callback);
     }

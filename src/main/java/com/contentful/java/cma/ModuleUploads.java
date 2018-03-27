@@ -143,6 +143,22 @@ public final class ModuleUploads extends AbsModule<ServiceUploads> {
   }
 
   /**
+   * Delete a given upload again.
+   *
+   * @param upload upload
+   * @return response code, 204 on success.
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if uploadId is null.
+   */
+  public int delete(CMAUpload upload) {
+    final String uploadId = getResourceIdOrThrow(upload, "upload");
+    final String spaceId = getSpaceIdOrThrow(upload, "upload");
+
+    final Response<Void> response = service.delete(spaceId, uploadId).blockingFirst();
+    return response.code();
+  }
+
+  /**
    * @return a module with a set of asynchronous methods.
    */
   public Async async() {
@@ -214,6 +230,24 @@ public final class ModuleUploads extends AbsModule<ServiceUploads> {
       return defer(new DefFunc<Integer>() {
         @Override Integer method() {
           return ModuleUploads.this.delete(spaceId, uploadId);
+        }
+      }, callback);
+    }
+
+    /**
+     * Delete a given upload again, asynchronously.
+     *
+     * @param upload   upload
+     * @param callback the callback to be informed about success or failure.
+     * @return the callback passed in.
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if uploadId is null.
+     */
+    public CMACallback<Integer> delete(final CMAUpload upload,
+                                       CMACallback<Integer> callback) {
+      return defer(new DefFunc<Integer>() {
+        @Override Integer method() {
+          return ModuleUploads.this.delete(upload);
         }
       }, callback);
     }

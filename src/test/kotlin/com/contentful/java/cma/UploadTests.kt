@@ -19,6 +19,7 @@ package com.contentful.java.cma
 import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAType
+import com.contentful.java.cma.model.CMAUpload
 import junit.framework.TestCase.assertEquals
 import okhttp3.mockwebserver.MockResponse
 import org.junit.Test as test
@@ -64,6 +65,23 @@ class UploadTests : BaseTest() {
 
         val result = assertTestCallback(client!!.uploads().async()
                 .delete("space_id", "upload_id", TestCallback()) as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("DELETE", recordedRequest.method)
+        assertEquals("/spaces/space_id/uploads/upload_id", recordedRequest.path)
+        assertEquals(204, result)
+    }
+
+    @test
+    fun testDeleteUploadWithObject() {
+        server!!.enqueue(MockResponse().setResponseCode(204))
+
+        val result = assertTestCallback(client!!.uploads().async()
+                .delete(
+                        CMAUpload().setId("upload_id").setSpaceId("space_id"),
+                        TestCallback()
+                ) as TestCallback)!!
 
         // Request
         val recordedRequest = server!!.takeRequest()

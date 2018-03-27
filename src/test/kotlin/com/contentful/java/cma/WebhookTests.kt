@@ -18,9 +18,7 @@ package com.contentful.java.cma
 
 import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.lib.TestUtils
-import com.contentful.java.cma.model.CMAType
-import com.contentful.java.cma.model.CMAWebhook
-import com.contentful.java.cma.model.CMAWebhookTopic
+import com.contentful.java.cma.model.*
 import okhttp3.mockwebserver.MockResponse
 import java.io.IOException
 import kotlin.test.assertEquals
@@ -82,6 +80,29 @@ class WebhookTests : BaseTest() {
         val callback: TestCallback<Int> = TestCallback(true)
         assertTestCallback(client!!.webhooks().async().delete(
                 "spaceid", "webhookid", callback) as TestCallback)
+
+        assertEquals(200, callback.value)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("DELETE", recordedRequest.method)
+        assertEquals("/spaces/spaceid/webhook_definitions/webhookid", recordedRequest.path)
+    }
+
+    @test
+    fun testDeleteWithObject() {
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody("200"))
+
+        val callback: TestCallback<Int> = TestCallback(true)
+        assertTestCallback(client!!
+                .webhooks()
+                .async()
+                .delete(
+                        CMAWebhook()
+                                .setId("webhookid")
+                                .setSpaceId("spaceid")
+                        , callback)
+                as TestCallback)
 
         assertEquals(200, callback.value)
 
@@ -208,6 +229,21 @@ class WebhookTests : BaseTest() {
     }
 
     @test
+    fun testCallsOverviewByObject() {
+        val responseBody = TestUtils.fileToString("webhook_calls_overview_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.webhooks().async().calls(
+                CMAWebhook().setSpaceId("spaceid").setId("webhookid"),
+                TestCallback(true)) as TestCallback)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/spaceid/webhooks/webhookid/calls", recordedRequest.path)
+    }
+
+    @test
     fun testCallDetails() {
         val responseBody = TestUtils.fileToString("webhook_calls_detail_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
@@ -223,12 +259,45 @@ class WebhookTests : BaseTest() {
     }
 
     @test
+    fun testCallDetailsByObject() {
+        val responseBody = TestUtils.fileToString("webhook_calls_detail_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val call: CMAWebhookCall = CMAWebhookCall().setSpaceId("spaceid").setId("callid")
+        call.system.setCreatedBy(CMALink(CMAType.Webhook).setId("webhookid"))
+
+        assertTestCallback(client!!.webhooks().async().callDetails(
+                call,
+                TestCallback(true)) as TestCallback)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/spaceid/webhooks/webhookid/calls/callid", recordedRequest.path)
+    }
+
+    @test
     fun testCallHealth() {
         val responseBody = TestUtils.fileToString("webhook_health_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         assertTestCallback(client!!.webhooks().async().health(
                 "spaceid", "webhookid",
+                TestCallback(true)) as TestCallback)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/spaceid/webhooks/webhookid/health", recordedRequest.path)
+    }
+
+    @test
+    fun testCallHealthByObject() {
+        val responseBody = TestUtils.fileToString("webhook_health_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.webhooks().async().health(
+                CMAWebhook().setSpaceId("spaceid").setId("webhookid"),
                 TestCallback(true)) as TestCallback)
 
         // Request

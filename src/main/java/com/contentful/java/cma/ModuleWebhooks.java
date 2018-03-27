@@ -126,6 +126,21 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
   }
 
   /**
+   * Delete a given Webhook.
+   *
+   * @param webhook actual webhook to be deleted.
+   * @return the response code of the request (aka 200 if successful)
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if webhookId is null.
+   */
+  public Integer delete(CMAWebhook webhook) {
+    final String webhookId = getResourceIdOrThrow(webhook, "webhook");
+    final String spaceId = getSpaceIdOrThrow(webhook, "webhook");
+
+    return service.delete(spaceId, webhookId).blockingFirst().code();
+  }
+
+  /**
    * Retrieve all the webhooks defined for this space.
    *
    * @param spaceId The id of the space to be asked for all of its spaces.
@@ -212,6 +227,22 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
   }
 
   /**
+   * Get more information about a specific webhook.
+   *
+   * @param webhook webhook to be asked for more detail.
+   * @return A detailed object for the given webhook.
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if webhook is null.
+   * @see CMAWebhookCall
+   */
+  public CMAArray<CMAWebhookCall> calls(CMAWebhook webhook) {
+    final String spaceId = getSpaceIdOrThrow(webhook, "webhook");
+    final String webhookId = getResourceIdOrThrow(webhook, "webhook");
+
+    return service.calls(spaceId, webhookId).blockingFirst();
+  }
+
+  /**
    * Get more information about one specific call to one specific webhook, hosted by one specific
    * space.
    *
@@ -232,7 +263,26 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
   }
 
   /**
-   * Return a general understanding of the health of the webhooks.
+   * Get more information about one specific call to one specific webhook, hosted by one specific
+   * space.
+   *
+   * @param call A call to be get more information about.
+   * @return A Call Detail to be used to gather more information about this call.
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if webhook is null.
+   * @throws IllegalArgumentException if callId is null.
+   */
+  public CMAWebhookCallDetail callDetails(CMAWebhookCall call) {
+    final String spaceId = getSpaceIdOrThrow(call, "call");
+    final String callId = getResourceIdOrThrow(call, "call");
+    assertNotNull(call.getSystem().getCreatedBy().getId(), "webhook.sys.createdBy");
+    final String webhookId = call.getSystem().getCreatedBy().getId();
+
+    return service.callDetails(spaceId, webhookId, callId).blockingFirst();
+  }
+
+  /**
+   * Return a general understanding of the health of the webhook.
    *
    * @param spaceId   Which space does host this webhook?
    * @param webhookId Which webhook should be asked for its health?
@@ -243,6 +293,21 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
   public CMAWebhookHealth health(String spaceId, String webhookId) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(webhookId, "webhookId");
+
+    return service.health(spaceId, webhookId).blockingFirst();
+  }
+
+  /**
+   * Return a general understanding of the health of the webhook.
+   *
+   * @param webhook Which webhook should be asked for its health?
+   * @return A health indicator summarizing healthy/total calls to the Webhook.
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if webhook is null.
+   */
+  public CMAWebhookHealth health(CMAWebhook webhook) {
+    final String spaceId = getSpaceIdOrThrow(webhook, "webhook");
+    final String webhookId = getResourceIdOrThrow(webhook, "webhook");
 
     return service.health(spaceId, webhookId).blockingFirst();
   }
@@ -321,6 +386,24 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
       return defer(new RxExtensions.DefFunc<Integer>() {
         @Override Integer method() {
           return ModuleWebhooks.this.delete(spaceId, webhookId);
+        }
+      }, callback);
+    }
+
+    /**
+     * Asynchronous variant of {@link ModuleWebhooks#delete(CMAWebhook)}
+     *
+     * @param webhook  webhook to be deleted.
+     * @param callback the callback to be called once finished.
+     * @return the callback passed in.
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if webhookId is null.
+     */
+    public CMACallback<Integer> delete(final CMAWebhook webhook,
+                                       CMACallback<Integer> callback) {
+      return defer(new RxExtensions.DefFunc<Integer>() {
+        @Override Integer method() {
+          return ModuleWebhooks.this.delete(webhook);
         }
       }, callback);
     }
@@ -422,6 +505,25 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
     }
 
     /**
+     * Asynchronous variant of {@link ModuleWebhooks#calls(CMAWebhook)}
+     *
+     * @param webhook  to be used to retrieve calls from.
+     * @param callback the callback to be called once finished.
+     * @return the callback passed in.
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if webhook is null.
+     */
+    public CMACallback<CMAArray<CMAWebhookCall>> calls(final CMAWebhook webhook,
+                                                       CMACallback<CMAArray<CMAWebhookCall>>
+                                                           callback) {
+      return defer(new RxExtensions.DefFunc<CMAArray<CMAWebhookCall>>() {
+        @Override CMAArray<CMAWebhookCall> method() {
+          return ModuleWebhooks.this.calls(webhook);
+        }
+      }, callback);
+    }
+
+    /**
      * Asynchronous variant of {@link ModuleWebhooks#callDetails(String, String, String)}
      *
      * @param spaceId   id of the space to be used.
@@ -446,6 +548,26 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
     }
 
     /**
+     * Asynchronous variant of {@link ModuleWebhooks#callDetails(CMAWebhookCall)}
+     *
+     * @param call     call to get more details about.
+     * @param callback the callback to be called once finished.
+     * @return the callback passed in.
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if webhook is null.
+     * @throws IllegalArgumentException if callId is null.
+     */
+    public CMACallback<CMAWebhookCallDetail> callDetails(final CMAWebhookCall call,
+                                                         CMACallback<CMAWebhookCallDetail>
+                                                             callback) {
+      return defer(new RxExtensions.DefFunc<CMAWebhookCallDetail>() {
+        @Override CMAWebhookCallDetail method() {
+          return ModuleWebhooks.this.callDetails(call);
+        }
+      }, callback);
+    }
+
+    /**
      * Asynchronous variant of {@link ModuleWebhooks#health(String, String)}
      *
      * @param spaceId   id of the space to be used.
@@ -460,6 +582,24 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
       return defer(new RxExtensions.DefFunc<CMAWebhookHealth>() {
         @Override CMAWebhookHealth method() {
           return ModuleWebhooks.this.health(spaceId, webhookId);
+        }
+      }, callback);
+    }
+
+    /**
+     * Asynchronous variant of {@link ModuleWebhooks#health(CMAWebhook)}
+     *
+     * @param webhook  webhook to be used for healthy check.
+     * @param callback the callback to be called once finished.
+     * @return the callback passed in.
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if webhook is null.
+     */
+    public CMACallback<CMAWebhookHealth> health(final CMAWebhook webhook,
+                                                CMACallback<CMAWebhookHealth> callback) {
+      return defer(new RxExtensions.DefFunc<CMAWebhookHealth>() {
+        @Override CMAWebhookHealth method() {
+          return ModuleWebhooks.this.health(webhook);
         }
       }, callback);
     }
