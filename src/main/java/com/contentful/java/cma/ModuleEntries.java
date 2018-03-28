@@ -27,6 +27,8 @@ import java.util.concurrent.Executor;
 
 import retrofit2.Retrofit;
 
+import static com.contentful.java.cma.Constants.DEFAULT_ENVIRONMENT;
+
 /**
  * Entries Module.
  */
@@ -55,12 +57,55 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
 
     final String entryId = getResourceIdOrThrow(entry, "entry");
     final String spaceId = getSpaceIdOrThrow(entry, "entry");
+    final String environmentId = entry.getEnvironmentId();
 
-    return service.archive(spaceId, entryId).blockingFirst();
+    return service.archive(spaceId, environmentId, entryId).blockingFirst();
   }
 
   /**
    * Create a new Entry.
+   * <p>
+   * In case the given {@code entry} has an ID associated with it, that ID will be used,
+   * otherwise the server will auto-generate an ID that will be contained in the response upon
+   * success.
+   *
+   * @param spaceId       Space ID
+   * @param environmentId Environment ID
+   * @param contentTypeId Content Type ID
+   * @param entry         Entry
+   * @return {@link CMAEntry} result instance
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if entry is null.
+   */
+  @SuppressWarnings("unchecked")
+  public CMAEntry create(
+      String spaceId,
+      String environmentId,
+      String contentTypeId,
+      CMAEntry entry) {
+    assertNotNull(spaceId, "spaceId");
+    assertNotNull(environmentId, "environmentId");
+    assertNotNull(entry, "entry");
+
+    final String entryId = entry.getSystem().getId();
+
+    final CMASystem sys = entry.getSystem();
+    entry.setSystem(null);
+
+    try {
+      if (entryId == null) {
+        return service.create(spaceId, environmentId, contentTypeId, entry).blockingFirst();
+      } else {
+        return service.create(spaceId, environmentId, contentTypeId, entryId, entry)
+            .blockingFirst();
+      }
+    } finally {
+      entry.setSystem(sys);
+    }
+  }
+
+  /**
+   * Create a new Entry in master environment.
    * <p>
    * In case the given {@code entry} has an ID associated with it, that ID will be used,
    * otherwise the server will auto-generate an ID that will be contained in the response upon
@@ -75,27 +120,29 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
    */
   @SuppressWarnings("unchecked")
   public CMAEntry create(String spaceId, String contentTypeId, CMAEntry entry) {
-    assertNotNull(spaceId, "spaceId");
-    assertNotNull(entry, "entry");
-
-    final String entryId = entry.getSystem().getId();
-
-    final CMASystem sys = entry.getSystem();
-    entry.setSystem(null);
-
-    try {
-      if (entryId == null) {
-        return service.create(spaceId, contentTypeId, entry).blockingFirst();
-      } else {
-        return service.create(spaceId, contentTypeId, entryId, entry).blockingFirst();
-      }
-    } finally {
-      entry.setSystem(sys);
-    }
+    return create(spaceId, DEFAULT_ENVIRONMENT, contentTypeId, entry);
   }
 
   /**
    * Delete an Entry.
+   *
+   * @param spaceId       Space ID
+   * @param environmentId Environment ID
+   * @param entryId       Entry ID
+   * @return Integer representing the success (204) of the action
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if entry is null.
+   */
+  public Integer delete(String spaceId, String environmentId, String entryId) {
+    assertNotNull(spaceId, "spaceId");
+    assertNotNull(environmentId, "environmentId");
+    assertNotNull(entryId, "entryId");
+
+    return service.delete(spaceId, environmentId, entryId).blockingFirst().code();
+  }
+
+  /**
+   * Delete an Entry in master environment.
    *
    * @param spaceId Space ID
    * @param entryId Entry ID
@@ -104,10 +151,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
    * @throws IllegalArgumentException if entry is null.
    */
   public Integer delete(String spaceId, String entryId) {
-    assertNotNull(spaceId, "spaceId");
-    assertNotNull(entryId, "entryId");
-
-    return service.delete(spaceId, entryId).blockingFirst().code();
+    return delete(spaceId, DEFAULT_ENVIRONMENT, entryId);
   }
 
   /**
@@ -120,49 +164,101 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
    */
   public Integer delete(CMAEntry entry) {
     assertNotNull(entry.getSpaceId(), "spaceId");
+    assertNotNull(entry.getEnvironmentId(), "environmentId");
     assertNotNull(entry.getId(), "entryId");
 
-    return service.delete(entry.getSpaceId(), entry.getId()).blockingFirst().code();
+    return delete(entry.getSpaceId(), entry.getEnvironmentId(), entry.getId());
   }
 
   /**
    * Fetch all Entries from a Space.
    * <p>
-   * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH}
+   * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH} and uses
+   * the default Environment {@link Constants#DEFAULT_ENVIRONMENT}.
    *
    * @param spaceId Space ID
    * @return {@link CMAArray} result instance
    * @throws IllegalArgumentException if spaceId is null.
    */
   public CMAArray<CMAEntry> fetchAll(String spaceId) {
-    return fetchAll(spaceId, new HashMap<String, String>());
+    return fetchAll(spaceId, DEFAULT_ENVIRONMENT, new HashMap<String, String>());
+  }
+
+  /**
+   * Fetch all Entries from a Space.
+   * <p>
+   * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH} and uses
+   * the default Environment {@link Constants#DEFAULT_ENVIRONMENT}.
+   *
+   * @param spaceId Space ID
+   * @param query         Query
+   * @return {@link CMAArray} result instance
+   * @throws IllegalArgumentException if spaceId is null.
+   */
+  public CMAArray<CMAEntry> fetchAll(String spaceId, Map<String, String> query) {
+    return fetchAll(spaceId, DEFAULT_ENVIRONMENT, query);
+  }
+
+  /**
+   * Fetch all Entries from an Environment.
+   * <p>
+   * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH}
+   *
+   * @param spaceId       Space ID
+   * @param environmentId Environment ID
+   * @return {@link CMAArray} result instance
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if environmentId is null.
+   */
+  public CMAArray<CMAEntry> fetchAll(String spaceId, String environmentId) {
+    return fetchAll(spaceId, environmentId, new HashMap<String, String>());
   }
 
   /**
    * Fetch all Entries from a Space with a query url parameter map.
    *
-   * @param spaceId Space ID
-   * @param query   Query
+   * @param spaceId       Space ID
+   * @param environmentId Environment ID
+   * @param query         Query
    * @return {@link CMAArray} result instance
    * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if environmentId is null.
    */
-  public CMAArray<CMAEntry> fetchAll(String spaceId, Map<String, String> query) {
+  public CMAArray<CMAEntry> fetchAll(
+      String spaceId,
+      String environmentId,
+      Map<String, String> query) {
     assertNotNull(spaceId, "spaceId");
+    assertNotNull(environmentId, "environmentId");
+
     DefaultQueryParameter.putIfNotSet(query, DefaultQueryParameter.FETCH);
-    return service.fetchAll(spaceId, query).blockingFirst();
+    return service.fetchAll(spaceId, environmentId, query).blockingFirst();
   }
 
   /**
-   * Fetch an Entry with the given {@code entryId} from a Space.
+   * Fetch an Entry with the given {@code entryId} from an Environment.
+   *
+   * @param spaceId       Space ID
+   * @param environmentId Environment ID
+   * @param entryId       Entry ID
+   * @return {@link CMAEntry} result instance
+   */
+  public CMAEntry fetchOne(String spaceId, String environmentId, String entryId) {
+    assertNotNull(spaceId, "spaceId");
+    assertNotNull(environmentId, "environmentId");
+    assertNotNull(entryId, "entryId");
+    return service.fetchOne(spaceId, environmentId, entryId).blockingFirst();
+  }
+
+  /**
+   * Fetch an Entry with the given {@code entryId} from a Space, using the default environment.
    *
    * @param spaceId Space ID
    * @param entryId Entry ID
    * @return {@link CMAEntry} result instance
    */
   public CMAEntry fetchOne(String spaceId, String entryId) {
-    assertNotNull(spaceId, "spaceId");
-    assertNotNull(entryId, "entryId");
-    return service.fetchOne(spaceId, entryId).blockingFirst();
+    return fetchOne(spaceId, DEFAULT_ENVIRONMENT, entryId);
   }
 
   /**
@@ -177,9 +273,14 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
   public CMAEntry publish(CMAEntry entry) {
     assertNotNull(entry, "entry");
     final String entryId = getResourceIdOrThrow(entry, "entry");
+    final String environmentId = entry.getEnvironmentId();
     final String spaceId = getSpaceIdOrThrow(entry, "entry");
 
-    return service.publish(entry.getSystem().getVersion(), spaceId, entryId).blockingFirst();
+    return service.publish(
+        entry.getSystem().getVersion(),
+        spaceId,
+        environmentId,
+        entryId).blockingFirst();
   }
 
   /**
@@ -195,8 +296,9 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     assertNotNull(entry, "entry");
     final String entryId = getResourceIdOrThrow(entry, "entry");
     final String spaceId = getSpaceIdOrThrow(entry, "entry");
+    final String environmentId = entry.getEnvironmentId();
 
-    return service.unArchive(spaceId, entryId).blockingFirst();
+    return service.unArchive(spaceId, environmentId, entryId).blockingFirst();
   }
 
   /**
@@ -212,8 +314,9 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     assertNotNull(entry, "entry");
     final String entryId = getResourceIdOrThrow(entry, "entry");
     final String spaceId = getSpaceIdOrThrow(entry, "entry");
+    final String environmentId = entry.getEnvironmentId();
 
-    return service.unPublish(spaceId, entryId).blockingFirst();
+    return service.unPublish(spaceId, environmentId, entryId).blockingFirst();
   }
 
   /**
@@ -230,12 +333,13 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     assertNotNull(entry, "entry");
     final String entryId = getResourceIdOrThrow(entry, "entry");
     final String spaceId = getSpaceIdOrThrow(entry, "entry");
+    final String environmentId = entry.getEnvironmentId();
     final Integer version = getVersionOrThrow(entry, "update");
 
     final CMASystem system = entry.getSystem();
     entry.setSystem(null);
     try {
-      return service.update(version, spaceId, entryId, entry).blockingFirst();
+      return service.update(version, spaceId, environmentId, entryId, entry).blockingFirst();
     } finally {
       entry.setSystem(system);
     }
@@ -255,8 +359,9 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
 
     final String entryId = getResourceIdOrThrow(entry, "entry");
     final String spaceId = getSpaceIdOrThrow(entry, "entry");
+    final String environmentId = entry.getEnvironmentId();
 
-    return service.fetchAllSnapshots(spaceId, entryId).blockingFirst();
+    return service.fetchAllSnapshots(spaceId, environmentId, entryId).blockingFirst();
   }
 
   /**
@@ -270,15 +375,15 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
    * @throws IllegalArgumentException if entry's space id is null.
    * @throws IllegalArgumentException if snapshotId is null.
    */
-  public CMASnapshot fetchOneSnapshot(CMAEntry entry,
-                                      String snapshotId) {
+  public CMASnapshot fetchOneSnapshot(CMAEntry entry, String snapshotId) {
     assertNotNull(entry, "entry");
     assertNotNull(snapshotId, "snapshotId");
 
     final String entryId = getResourceIdOrThrow(entry, "entry");
     final String spaceId = getSpaceIdOrThrow(entry, "entry");
+    final String environmentId = entry.getEnvironmentId();
 
-    return service.fetchOneSnapshot(spaceId, entryId, snapshotId).blockingFirst();
+    return service.fetchOneSnapshot(spaceId, environmentId, entryId, snapshotId).blockingFirst();
   }
 
   /**
@@ -323,11 +428,42 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if entry is null.
      */
-    public CMACallback<CMAEntry> create(final String spaceId, final String contentTypeId,
-                                        final CMAEntry entry, CMACallback<CMAEntry> callback) {
+    public CMACallback<CMAEntry> create(
+        final String spaceId,
+        final String contentTypeId,
+        final CMAEntry entry, CMACallback<CMAEntry> callback) {
       return defer(new RxExtensions.DefFunc<CMAEntry>() {
         @Override CMAEntry method() {
           return ModuleEntries.this.create(spaceId, contentTypeId, entry);
+        }
+      }, callback);
+    }
+
+    /**
+     * Create a new Entry in an Environment.
+     * In case the given {@code entry} has an ID associated with it, that ID will be used,
+     * otherwise the server will auto-generate an ID that will be contained in the response upon
+     * success.
+     *
+     * @param spaceId       Space ID
+     * @param environmentId Environment ID
+     * @param contentTypeId Content Type ID
+     * @param entry         Entry
+     * @param callback      Callback
+     * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if environmentId is null.
+     * @throws IllegalArgumentException if entry is null.
+     */
+    public CMACallback<CMAEntry> create(
+        final String spaceId,
+        final String environmentId,
+        final String contentTypeId,
+        final CMAEntry entry,
+        CMACallback<CMAEntry> callback) {
+      return defer(new RxExtensions.DefFunc<CMAEntry>() {
+        @Override CMAEntry method() {
+          return ModuleEntries.this.create(spaceId, environmentId, contentTypeId, entry);
         }
       }, callback);
     }
@@ -342,12 +478,37 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if entry is null.
      */
-    public CMACallback<Integer> delete(final String spaceId,
-                                       final String entryId,
-                                       CMACallback<Integer> callback) {
+    public CMACallback<Integer> delete(
+        final String spaceId,
+        final String entryId,
+        CMACallback<Integer> callback) {
       return defer(new RxExtensions.DefFunc<Integer>() {
         @Override Integer method() {
           return ModuleEntries.this.delete(spaceId, entryId);
+        }
+      }, callback);
+    }
+
+    /**
+     * Delete an Entry from an environment.
+     *
+     * @param spaceId       Space ID
+     * @param environmentId Environment ID
+     * @param entryId       Entry ID
+     * @param callback      Callback
+     * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if environmentId is null.
+     * @throws IllegalArgumentException if entry is null.
+     */
+    public CMACallback<Integer> delete(
+        final String spaceId,
+        final String environmentId,
+        final String entryId,
+        CMACallback<Integer> callback) {
+      return defer(new RxExtensions.DefFunc<Integer>() {
+        @Override Integer method() {
+          return ModuleEntries.this.delete(spaceId, environmentId, entryId);
         }
       }, callback);
     }
@@ -361,8 +522,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if entry is null.
      */
-    public CMACallback<Integer> delete(final CMAEntry entry,
-                                       CMACallback<Integer> callback) {
+    public CMACallback<Integer> delete(final CMAEntry entry, CMACallback<Integer> callback) {
       return defer(new RxExtensions.DefFunc<Integer>() {
         @Override Integer method() {
           return ModuleEntries.this.delete(entry);
@@ -378,27 +538,77 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
      * @return the given {@code CMACallback} instance
      * @throws IllegalArgumentException if spaceId is null.
      */
-    public CMACallback<CMAArray<CMAEntry>> fetchAll(final String spaceId,
-                                                    CMACallback<CMAArray<CMAEntry>> callback) {
-      return fetchAll(spaceId, new HashMap<String, String>(), callback);
+    public CMACallback<CMAArray<CMAEntry>> fetchAll(
+        final String spaceId,
+        CMACallback<CMAArray<CMAEntry>> callback) {
+      return defer(new RxExtensions.DefFunc<CMAArray<CMAEntry>>() {
+        @Override CMAArray<CMAEntry> method() {
+          return ModuleEntries.this.fetchAll(spaceId);
+        }
+      }, callback);
+    }
+
+    /**
+     * Fetch all Entries from a Space.
+     *
+     * @param spaceId  Space ID
+     * @param query    query to be performed
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if spaceId is null.
+     */
+    public CMACallback<CMAArray<CMAEntry>> fetchAll(
+        final String spaceId,
+        final Map<String, String> query,
+        CMACallback<CMAArray<CMAEntry>> callback) {
+      return defer(new RxExtensions.DefFunc<CMAArray<CMAEntry>>() {
+        @Override CMAArray<CMAEntry> method() {
+          DefaultQueryParameter.putIfNotSet(query, DefaultQueryParameter.FETCH);
+          return ModuleEntries.this.fetchAll(spaceId, query);
+        }
+      }, callback);
+    }
+
+    /**
+     * Fetch all Entries from an Environment.
+     *
+     * @param spaceId       Space ID
+     * @param environmentId Environment ID
+     * @param callback      Callback
+     * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if environmentId is null.
+     */
+    public CMACallback<CMAArray<CMAEntry>> fetchAll(
+        final String spaceId,
+        final String environmentId,
+        CMACallback<CMAArray<CMAEntry>> callback) {
+      return defer(new RxExtensions.DefFunc<CMAArray<CMAEntry>>() {
+        @Override CMAArray<CMAEntry> method() {
+          return ModuleEntries.this.fetchAll(spaceId, environmentId);
+        }
+      }, callback);
     }
 
     /**
      * Fetch all Entries from a Space with a query.
      *
-     * @param spaceId  Space ID
-     * @param query    Query
-     * @param callback Callback
+     * @param spaceId       Space ID
+     * @param environmentId Environment ID
+     * @param query         Query
+     * @param callback      Callback
      * @return the given {@code CMACallback} instance
      * @throws IllegalArgumentException if spaceId is null.
      */
-    public CMACallback<CMAArray<CMAEntry>> fetchAll(final String spaceId,
-                                                    final Map<String, String> query,
-                                                    CMACallback<CMAArray<CMAEntry>> callback) {
+    public CMACallback<CMAArray<CMAEntry>> fetchAll(
+        final String spaceId,
+        final String environmentId,
+        final Map<String, String> query,
+        CMACallback<CMAArray<CMAEntry>> callback) {
       return defer(new RxExtensions.DefFunc<CMAArray<CMAEntry>>() {
         @Override CMAArray<CMAEntry> method() {
           DefaultQueryParameter.putIfNotSet(query, DefaultQueryParameter.FETCH);
-          return ModuleEntries.this.fetchAll(spaceId, query);
+          return ModuleEntries.this.fetchAll(spaceId, environmentId, query);
         }
       }, callback);
     }
@@ -411,11 +621,34 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
-    public CMACallback<CMAEntry> fetchOne(final String spaceId, final String entryId,
-                                          CMACallback<CMAEntry> callback) {
+    public CMACallback<CMAEntry> fetchOne(
+        final String spaceId,
+        final String entryId,
+        CMACallback<CMAEntry> callback) {
       return defer(new RxExtensions.DefFunc<CMAEntry>() {
         @Override CMAEntry method() {
           return ModuleEntries.this.fetchOne(spaceId, entryId);
+        }
+      }, callback);
+    }
+
+    /**
+     * Fetch an Entry with the given {@code entryId} from a Space.
+     *
+     * @param spaceId       Space ID
+     * @param environmentId Environment ID
+     * @param entryId       Entry ID
+     * @param callback      Callback
+     * @return the given {@code CMACallback} instance
+     */
+    public CMACallback<CMAEntry> fetchOne(
+        final String spaceId,
+        final String environmentId,
+        final String entryId,
+        CMACallback<CMAEntry> callback) {
+      return defer(new RxExtensions.DefFunc<CMAEntry>() {
+        @Override CMAEntry method() {
+          return ModuleEntries.this.fetchOne(spaceId, environmentId, entryId);
         }
       }, callback);
     }

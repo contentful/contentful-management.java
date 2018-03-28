@@ -16,6 +16,7 @@
 
 package com.contentful.java.cma.model;
 
+import com.contentful.java.cma.Constants;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -121,6 +122,37 @@ public class CMAResource {
   }
 
   /**
+   * @return the ID of the Environment associated with this resource,
+   * {@link com.contentful.java.cma.Constants#DEFAULT_ENVIRONMENT} if it does not exist.
+   */
+  public String getEnvironmentId() {
+    final CMALink environment = getSystem().getEnvironment();
+    if (environment != null && environment.getId() != null && !environment.getId().isEmpty()) {
+      return environment.getId();
+    }
+
+    return Constants.DEFAULT_ENVIRONMENT;
+  }
+
+  /**
+   * Convenience method for setting an environment id.
+   *
+   * @param environmentId the id to be set.
+   * @param <T>     An implementation of CMAResource, normally used for chaining setter methods.
+   * @return the calling {@link CMAResource} for chaining.
+   */
+  @SuppressWarnings("unchecked")
+  public <T extends CMAResource> T setEnvironmentId(String environmentId) {
+    if (getSystem().getEnvironment() == null) {
+      getSystem().environment = new CMALink(CMAType.Environment);
+    }
+
+    getSystem().environment.setId(environmentId);
+
+    return (T) this;
+  }
+
+  /**
    * @return true if this resource is archived.
    */
   public Boolean isArchived() {
@@ -142,4 +174,5 @@ public class CMAResource {
         + "system = " + getSystem() + " "
         + "}";
   }
+
 }

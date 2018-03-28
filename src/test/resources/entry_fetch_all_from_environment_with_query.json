@@ -1,0 +1,55 @@
+{
+  "sys": {
+    "type": "Array"
+  },
+  "total": 23,
+  "skip": 0,
+  "limit": 1,
+  "items": [
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "<space_id>"
+          }
+        },
+        "id": "4iO7CN7tSE8aia4wm2CkmS",
+        "type": "Entry",
+        "createdAt": "2017-09-28T09:02:53.305Z",
+        "updatedAt": "2017-09-28T09:02:53.305Z",
+        "environment": {
+          "sys": {
+            "id": "staging",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "<user_id>"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "<user_id>"
+          }
+        },
+        "version": 1,
+        "contentType": {
+          "sys": {
+            "type": "Link",
+            "linkType": "ContentType",
+            "id": "deletemeLinks"
+          }
+        }
+      },
+      "fields": {}
+    }
+  ]
+}

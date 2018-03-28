@@ -27,6 +27,7 @@ public final class Constants {
 
   //BEGIN TO LONG CODE LINES
   public static final String OCTET_STREAM_CONTENT_TYPE = "application/octet-stream";
+  public static final String DEFAULT_ENVIRONMENT = "master";
 
   private Constants() {
     throw new UnsupportedOperationException();
