@@ -1,0 +1,50 @@
+{
+  "controls": [
+    {
+      "fieldId": "name",
+      "widgetId": "singleLine"
+    }
+  ],
+  "sys": {
+    "id": "default",
+    "type": "EditorInterface",
+    "space": {
+      "sys": {
+        "id": "<space_id>",
+        "type": "Link",
+        "linkType": "Space"
+      }
+    },
+    "version": 193,
+    "createdAt": "2016-08-30T12:52:59.554Z",
+    "createdBy": {
+      "sys": {
+        "id": "<user_id>",
+        "type": "Link",
+        "linkType": "User"
+      }
+    },
+    "updatedAt": "2018-03-29T13:16:26.494Z",
+    "updatedBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "<user_id>"
+      }
+    },
+    "contentType": {
+      "sys": {
+        "id": "deleteme",
+        "type": "Link",
+        "linkType": "ContentType"
+      }
+    },
+    "environment": {
+      "sys": {
+        "id": "staging",
+        "type": "Link",
+        "linkType": "Environment"
+      }
+    }
+  }
+}

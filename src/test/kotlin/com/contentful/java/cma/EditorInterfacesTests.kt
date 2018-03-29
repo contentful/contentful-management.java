@@ -45,7 +45,24 @@ class EditorInterfacesTests : BaseTest() {
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("GET", recordedRequest.method)
-        assertEquals("/spaces/spaceId/content_types/contentTypeId/editor_interface",
+        assertEquals("/spaces/spaceId/environments/master/content_types/contentTypeId/editor_interface",
+                recordedRequest.path)
+    }
+
+    @test
+    fun testFetchOneFromEnvironment() {
+        val responseBody = TestUtils.fileToString("editor_interfaces_get_from_environment.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val result = assertTestCallback(client!!.editorInterfaces().async()
+                .fetchOne("spaceId", "staging", "contentTypeId", TestCallback()) as TestCallback)!!
+
+        assertEquals("staging", result.environmentId)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/spaceId/environments/staging/content_types/contentTypeId/editor_interface",
                 recordedRequest.path)
     }
 
@@ -132,12 +149,36 @@ class EditorInterfacesTests : BaseTest() {
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("PUT", recordedRequest.method)
-        assertEquals("/spaces/spaceId/content_types/contentTypeId/editor_interface",
+        assertEquals("/spaces/spaceId/environments/master/content_types/contentTypeId/editor_interface",
+                recordedRequest.path)
+    }
+
+    @test
+    fun testUpdateFromEnvironments() {
+        val responseBody = TestUtils.fileToString("editor_interfaces_update_in_environment.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val payload = CMAEditorInterface()
+        payload
+                .setEnvironmentId<CMAEditorInterface>("staging")
+                .setSpaceId<CMAEditorInterface>("spaceId")
+                .setVersion<CMAEditorInterface>(123)
+                .system.contentType = CMALink(CMAType.ContentType).setId("contentTypeId")
+
+        val result = assertTestCallback(client!!.editorInterfaces().async()
+                .update(payload, TestCallback()) as TestCallback)!!
+
+        assertEquals("staging", result.environmentId)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("PUT", recordedRequest.method)
+        assertEquals(
+                "/spaces/spaceId/environments/staging/content_types/contentTypeId/editor_interface",
                 recordedRequest.path)
     }
 
     private fun assertEditorInterface(result: CMAEditorInterface) {
-
         assertEquals(9, result.controls.size)
 
         var i = 0

@@ -24,6 +24,8 @@ import java.util.concurrent.Executor;
 
 import retrofit2.Retrofit;
 
+import static com.contentful.java.cma.Constants.DEFAULT_ENVIRONMENT;
+
 /**
  * Editor Interfaces Module.
  */
@@ -51,7 +53,17 @@ public final class ModuleEditorInterfaces extends AbsModule<ServiceEditorInterfa
    * @return the editor interface for a specific content type on a specific space.
    */
   public CMAEditorInterface fetchOne(String spaceId, String contentTypeId) {
-    return service.fetchOne(spaceId, contentTypeId).blockingFirst();
+    return fetchOne(spaceId, DEFAULT_ENVIRONMENT, contentTypeId);
+  }
+
+  /**
+   * @param spaceId       the id of the space this environment is part of.
+   * @param environmentId the id of the environment this editor interface is valid on.
+   * @param contentTypeId the contentTypeId this editor interface is valid on.
+   * @return the editor interface for a specific content type on a specific space.
+   */
+  public CMAEditorInterface fetchOne(String spaceId, String environmentId, String contentTypeId) {
+    return service.fetchOne(spaceId, environmentId, contentTypeId).blockingFirst();
   }
 
   /**
@@ -73,13 +85,14 @@ public final class ModuleEditorInterfaces extends AbsModule<ServiceEditorInterfa
       throw new IllegalArgumentException("Id of ContentType of editor interface may not be null!");
     }
     final String contentTypeId = editor.getSystem().getContentType().getId();
+    final String environmentId = editor.getEnvironmentId();
     final Integer version = getVersionOrThrow(editor, "update");
 
     CMASystem old = editor.getSystem();
     editor.setSystem(null);
 
     try {
-      return service.update(spaceId, contentTypeId, editor, version).blockingFirst();
+      return service.update(spaceId, environmentId, contentTypeId, editor, version).blockingFirst();
     } finally {
       editor.setSystem(old);
     }
@@ -111,6 +124,27 @@ public final class ModuleEditorInterfaces extends AbsModule<ServiceEditorInterfa
       return defer(new DefFunc<CMAEditorInterface>() {
         @Override CMAEditorInterface method() {
           return ModuleEditorInterfaces.this.fetchOne(spaceId, contentTypeId);
+        }
+      }, callback);
+    }
+
+    /**
+     * Fetch editor interface to given content type in a given space.
+     *
+     * @param spaceId       the space this environment is defined on.
+     * @param environmentId the environment this editor interface is defined on.
+     * @param contentTypeId the id of the content type controlled by this editor interface.
+     * @param callback      the callback to be informed about success or failure.
+     * @return the callback.
+     */
+    public CMACallback<CMAEditorInterface> fetchOne(
+        final String spaceId,
+        final String environmentId,
+        final String contentTypeId,
+        CMACallback<CMAEditorInterface> callback) {
+      return defer(new DefFunc<CMAEditorInterface>() {
+        @Override CMAEditorInterface method() {
+          return ModuleEditorInterfaces.this.fetchOne(spaceId, environmentId, contentTypeId);
         }
       }, callback);
     }
