@@ -59,7 +59,7 @@ class ContentTypeTests : BaseTest() {
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("POST", recordedRequest.method)
-        assertEquals("/spaces/spaceid/content_types", recordedRequest.path)
+        assertEquals("/spaces/spaceid/environments/master/content_types", recordedRequest.path)
         assertJsonEquals(requestBody, recordedRequest.body.readUtf8())
         assertEquals(2, result.fields.size)
         assertTrue(result.fields[0].isRequired)
@@ -91,7 +91,8 @@ class ContentTypeTests : BaseTest() {
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("PUT", recordedRequest.method)
-        assertEquals("/spaces/spaceid/content_types/contenttypeid", recordedRequest.path)
+        assertEquals("/spaces/spaceid/environments/master/content_types/contenttypeid",
+                recordedRequest.path)
         assertJsonEquals(requestBody, recordedRequest.body.readUtf8())
         assertEquals(2, result.fields.size)
         assertEquals("df", result.displayField)
@@ -115,7 +116,7 @@ class ContentTypeTests : BaseTest() {
         val requestBody = TestUtils.fileToString("content_type_create_with_link.json")
         val recordedRequest = server!!.takeRequest()
         assertEquals("POST", recordedRequest.method)
-        assertEquals("/spaces/spaceid/content_types", recordedRequest.path)
+        assertEquals("/spaces/spaceid/environments/master/content_types", recordedRequest.path)
         assertJsonEquals(requestBody, recordedRequest.body.readUtf8())
     }
 
@@ -138,7 +139,7 @@ class ContentTypeTests : BaseTest() {
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("POST", recordedRequest.method)
-        assertEquals("/spaces/spaceid/content_types", recordedRequest.path)
+        assertEquals("/spaces/spaceid/environments/master/content_types", recordedRequest.path)
         assertTrue(recordedRequest.body.readUtf8().contains("\"localized\":true"))
 
         assertTrue(response.fields[0].isLocalized)
@@ -172,7 +173,8 @@ class ContentTypeTests : BaseTest() {
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("PUT", recordedRequest.method)
-        assertEquals("/spaces/spaceid/content_types/contenttypeid", recordedRequest.path)
+        assertEquals("/spaces/spaceid/environments/master/content_types/contenttypeid",
+                recordedRequest.path)
         assertJsonEquals(requestBody, recordedRequest.body.readUtf8())
         assertNotNull(recordedRequest.getHeader("X-Contentful-Version"))
         assertEquals(2, contentType.version)
@@ -189,7 +191,8 @@ class ContentTypeTests : BaseTest() {
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("DELETE", recordedRequest.method)
-        assertEquals("/spaces/spaceid/content_types/contenttypeid", recordedRequest.path)
+        assertEquals("/spaces/spaceid/environments/master/content_types/contenttypeid",
+                recordedRequest.path)
     }
 
     @test
@@ -204,7 +207,8 @@ class ContentTypeTests : BaseTest() {
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("DELETE", recordedRequest.method)
-        assertEquals("/spaces/spaceid/content_types/contenttypeid", recordedRequest.path)
+        assertEquals("/spaces/spaceid/environments/master/content_types/contenttypeid",
+                recordedRequest.path)
     }
 
     @test
@@ -252,7 +256,8 @@ class ContentTypeTests : BaseTest() {
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("GET", recordedRequest.method)
-        assertEquals("/spaces/spaceid/content_types?limit=100", recordedRequest.path)
+        assertEquals("/spaces/spaceid/environments/master/content_types?limit=100",
+                recordedRequest.path)
     }
 
     @test
@@ -324,7 +329,8 @@ class ContentTypeTests : BaseTest() {
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("GET", recordedRequest.method)
-        assertEquals("/spaces/spaceid/content_types/contenttypeid", recordedRequest.path)
+        assertEquals("/spaces/spaceid/environments/master/content_types/contenttypeid",
+                recordedRequest.path)
     }
 
     @test
@@ -342,7 +348,8 @@ class ContentTypeTests : BaseTest() {
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("PUT", recordedRequest.method)
-        assertEquals("/spaces/spaceid/content_types/ctid/published", recordedRequest.path)
+        assertEquals("/spaces/spaceid/environments/master/content_types/ctid/published",
+                recordedRequest.path)
         assertTrue(result.isPublished)
         assertNotNull(recordedRequest.getHeader("X-Contentful-Version"))
     }
@@ -362,7 +369,8 @@ class ContentTypeTests : BaseTest() {
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("DELETE", recordedRequest.method)
-        assertEquals("/spaces/spaceid/content_types/contenttypeid/published", recordedRequest.path)
+        assertEquals("/spaces/spaceid/environments/master/content_types/contenttypeid/published",
+                recordedRequest.path)
         assertFalse(result.isPublished)
     }
 
@@ -411,7 +419,7 @@ class ContentTypeTests : BaseTest() {
 
         val contentType = CMAContentType()
                 .setId("contentTypeId")
-                .setSpaceId("spaceId")
+                .setSpaceId("spaceid")
 
         val result = assertTestCallback(client!!.contentTypes().async().fetchAllSnapshots(
                 contentType, TestCallback()) as TestCallback)!!
@@ -427,7 +435,8 @@ class ContentTypeTests : BaseTest() {
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("GET", recordedRequest.method)
-        assertEquals("/spaces/spaceId/content_types/contentTypeId/snapshots", recordedRequest.path)
+        assertEquals("/spaces/spaceid/environments/master/content_types/contentTypeId/snapshots",
+                recordedRequest.path)
     }
 
     @test
@@ -437,7 +446,7 @@ class ContentTypeTests : BaseTest() {
 
         val contentType = CMAContentType()
                 .setId("contentTypeId")
-                .setSpaceId("spaceId")
+                .setSpaceId("spaceid")
 
         val result = assertTestCallback(client!!.contentTypes().async().fetchOneSnapshot(
                 contentType, "snapShotId", TestCallback()) as TestCallback)!!
@@ -448,7 +457,7 @@ class ContentTypeTests : BaseTest() {
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("GET", recordedRequest.method)
-        assertEquals("/spaces/spaceId/content_types/contentTypeId/snapshots/snapShotId",
+        assertEquals("/spaces/spaceid/environments/master/content_types/contentTypeId/snapshots/snapShotId",
                 recordedRequest.path)
     }
 
@@ -457,7 +466,12 @@ class ContentTypeTests : BaseTest() {
         val responseBody = TestUtils.fileToString("content_type_error_field_type_invalid.json")
         server!!.enqueue(MockResponse().setResponseCode(422).setBody(responseBody))
 
-        val fields = Collections.singletonList(CMAField().setName("name").setId("testid").setType(null).setRequired(true))
+        val fields = Collections.singletonList(
+                CMAField()
+                        .setName("name")
+                        .setId("testid")
+                        .setType(null)
+                        .setRequired(true))
 
         val contentType = CMAContentType()
                 .setId("entryId")
@@ -472,5 +486,108 @@ class ContentTypeTests : BaseTest() {
                     e.errorBody.details.errors[0].expected.toString())
             throw e
         }
+    }
+
+    @test
+    fun testCreateInEnvironment() {
+        val responseBody = TestUtils.fileToString("content_type_create_in_environment.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val result = assertTestCallback(client!!.contentTypes().async().create(
+                "spaceid",
+                "staging",
+                CMAContentType()
+                        .setName("Post")
+                        .addField(CMAField().setId("title")
+                                .setName("Title")
+                                .setType(CMAFieldType.Text)
+                                .setRequired(true)),
+                TestCallback()) as TestCallback)!!
+
+        assertEquals(1, result.fields.size)
+        assertEquals("Post", result.name)
+        assertEquals("title", result.fields[0].id)
+        assertEquals("staging", result.environmentId)
+        assertTrue(result.fields[0].isRequired)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("POST", recordedRequest.method)
+        assertEquals("/spaces/spaceid/environments/staging/content_types", recordedRequest.path)
+    }
+
+    @test
+    fun testDeleteFromEnvironment() {
+        server!!.enqueue(MockResponse().setResponseCode(204).setBody(""))
+
+        val result = assertTestCallback(client!!.contentTypes().async().delete(
+                "spaceid",
+                "staging",
+                "6WIydLkj2ogUWusoQguOki",
+                TestCallback()) as TestCallback)!!
+
+        assertEquals(204, result)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("DELETE", recordedRequest.method)
+        assertEquals("/spaces/spaceid/environments/staging/content_types/6WIydLkj2ogUWusoQguOki",
+                recordedRequest.path)
+    }
+
+    @test
+    fun testFetchAllFromEnvironment() {
+        val responseBody = TestUtils.fileToString("content_type_fetch_all_from_environment.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val result = assertTestCallback(
+                client!!
+                        .contentTypes()
+                        .async()
+                        .fetchAll(
+                                "spaceid",
+                                "staging",
+                                TestCallback()
+                        ) as TestCallback)!!
+
+        val items = result.items
+        assertEquals(11, result.total)
+        assertEquals(11, items.size)
+        assertEquals(CMAType.Array, result.system.type)
+        assertEquals("Author", items[0].name)
+        assertEquals("staging", items[0].environmentId)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/spaceid/environments/staging/content_types?limit=100",
+                recordedRequest.path)
+    }
+
+    @test
+    fun testFetchOneFromEnvironment() {
+        val responseBody = TestUtils.fileToString("content_type_fetch_one_from_environment.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val result = assertTestCallback(
+                client!!
+                        .contentTypes()
+                        .async()
+                        .fetchOne(
+                                "spaceid",
+                                "staging",
+                                "1kUEViTN4EmGiEaaeC6ouY",
+                                TestCallback()
+                        ) as TestCallback)!!
+
+        assertEquals(CMAType.ContentType, result.system.type)
+        assertEquals("Author", result.name)
+        assertEquals("staging", result.environmentId)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/spaceid/environments/staging/content_types/1kUEViTN4EmGiEaaeC6ouY",
+                recordedRequest.path)
     }
 }

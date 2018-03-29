@@ -1,0 +1,52 @@
+{
+  "sys": {
+    "space": {
+      "sys": {
+        "type": "Link",
+        "linkType": "Space",
+        "id": "<space_id>"
+      }
+    },
+    "id": "6WIydLkj2ogUWusoQguOki",
+    "type": "ContentType",
+    "createdAt": "2018-03-29T12:09:57.415Z",
+    "updatedAt": "2018-03-29T12:09:57.415Z",
+    "environment": {
+      "sys": {
+        "id": "staging",
+        "type": "Link",
+        "linkType": "Environment"
+      }
+    },
+    "createdBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "<user_id>"
+      }
+    },
+    "updatedBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "<user_id>"
+      }
+    },
+    "version": 1
+  },
+  "displayField": null,
+  "name": "Post",
+  "description": null,
+  "fields": [
+    {
+      "id": "title",
+      "name": "Title",
+      "type": "Text",
+      "localized": true,
+      "required": true,
+      "validations": [],
+      "disabled": false,
+      "omitted": false
+    }
+  ]
+}

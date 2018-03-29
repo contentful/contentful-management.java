@@ -4,7 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Version [3.0.0] - (TBD)
 - Add: environments CRUD (Create/Read/Update/Delete).
-- Add: environment aware entries, assets, locales
+- Add: environment aware entries, assets, locales, content types
 - Add: Object variant for Update/Delete of resources.
 - Break: Remove `space id` from [`ModuleLocales`|`ModuleRoles`|`ModuleSpaceMemberships`].delete.
 - Break: Use JDK 1.8 (LTS)
