@@ -3,8 +3,6 @@ package com.contentful.java.cma;
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMALocale;
 
-import java.util.Map;
-
 import io.reactivex.Flowable;
 import retrofit2.Response;
 import retrofit2.http.Body;
@@ -14,44 +12,44 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
-import retrofit2.http.QueryMap;
 
 /**
  * Service class to define the REST interface to Contentful.
  */
 public interface ServiceLocales {
-  @GET("/spaces/{spaceId}/locales")
-  Flowable<CMAArray<CMALocale>> fetchAll(@Path("spaceId") String spaceId);
-
-  @GET("/spaces/{spaceId}/locales")
+  @GET("/spaces/{spaceId}/environments/{environmentId}/locales")
   Flowable<CMAArray<CMALocale>> fetchAll(
       @Path("spaceId") String spaceId,
-      @QueryMap Map<String, String> query
+      @Path("environmentId") String environmentId
   );
 
-  @GET("/spaces/{spaceId}/locales/{localeId}")
+  @GET("/spaces/{spaceId}/environments/{environmentId}/locales/{localeId}")
   Flowable<CMALocale> fetchOne(
       @Path("spaceId") String spaceId,
+      @Path("environmentId") String environmentId,
       @Path("localeId") String localeId
   );
 
-  @POST("/spaces/{spaceId}/locales/")
+  @POST("/spaces/{spaceId}/environments/{environmentId}/locales/")
   Flowable<CMALocale> create(
       @Path("spaceId") String spaceId,
+      @Path("environmentId") String environmentId,
       @Body CMALocale locale
   );
 
-  @PUT("/spaces/{spaceId}/locales/{localeId}")
+  @PUT("/spaces/{spaceId}/environments/{environmentId}/locales/{localeId}")
   Flowable<CMALocale> update(
       @Path("spaceId") String spaceId,
+      @Path("environmentId") String environmentId,
       @Path("localeId") String localeId,
       @Body CMALocale locale,
       @Header("X-Contentful-Version") Integer version
   );
 
-  @DELETE("/spaces/{spaceId}/locales/{localeId}")
+  @DELETE("/spaces/{spaceId}/environments/{environmentId}/locales/{localeId}")
   Flowable<Response<Void>> delete(
       @Path("spaceId") String spaceId,
+      @Path("environmentId") String environmentId,
       @Path("localeId") String localeId
   );
 }

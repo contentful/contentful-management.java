@@ -14,7 +14,7 @@ class LocalesTests : BaseTest() {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val result = assertTestCallback(client!!.locales().async()
-                .fetchOne("SPACE_ID", "LOCALE_ID", TestCallback()) as TestCallback)!!
+                .fetchOne("spaceId", "localeId", TestCallback()) as TestCallback)!!
 
         assertEquals("U.S. English", result.name)
         assertEquals("en-US", result.code)
@@ -30,7 +30,7 @@ class LocalesTests : BaseTest() {
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("GET", recordedRequest.method)
-        assertEquals("/spaces/SPACE_ID/locales/LOCALE_ID", recordedRequest.path)
+        assertEquals("/spaces/spaceId/environments/master/locales/localeId", recordedRequest.path)
     }
 
     @Test
@@ -39,7 +39,7 @@ class LocalesTests : BaseTest() {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val result = assertTestCallback(client!!.locales().async()
-                .fetchAll("SPACE_ID", TestCallback()) as TestCallback)!!
+                .fetchAll("spaceId", TestCallback()) as TestCallback)!!
 
         assertEquals(2, result.total)
         assertEquals(100, result.limit)
@@ -53,23 +53,7 @@ class LocalesTests : BaseTest() {
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("GET", recordedRequest.method)
-        assertEquals("/spaces/SPACE_ID/locales", recordedRequest.path)
-    }
-
-    @Test
-    fun testFetchAllWithQuery() {
-        val responseBody = TestUtils.fileToString("locales_get_all.json")
-        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
-
-        assertTestCallback(client!!.locales().async()
-                .fetchAll("SPACE_ID",
-                        hashMapOf("skip" to "3"),
-                        TestCallback()) as TestCallback)!!
-
-        // Request
-        val recordedRequest = server!!.takeRequest()
-        assertEquals("GET", recordedRequest.method)
-        assertEquals("/spaces/SPACE_ID/locales?skip=3", recordedRequest.path)
+        assertEquals("/spaces/spaceId/environments/master/locales", recordedRequest.path)
     }
 
     @Test
@@ -84,7 +68,7 @@ class LocalesTests : BaseTest() {
                 .setOptional(false)
 
         val result = assertTestCallback(client!!.locales().async()
-                .create("SPACE_ID", locale, TestCallback()) as TestCallback)!!
+                .create("spaceId", locale, TestCallback()) as TestCallback)!!
 
         assertEquals("English (British)", result.name)
         assertEquals("en-UK", result.code)
@@ -94,7 +78,7 @@ class LocalesTests : BaseTest() {
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("POST", recordedRequest.method)
-        assertEquals("/spaces/SPACE_ID/locales/", recordedRequest.path)
+        assertEquals("/spaces/spaceId/environments/master/locales/", recordedRequest.path)
     }
 
     @Test
@@ -105,7 +89,7 @@ class LocalesTests : BaseTest() {
         // DO NOT USE IN PRODUCTION: USE A FETCH FIRST!
         val locale = CMALocale()
                 .setId("sampleId")
-                .setSpaceId("SPACE_ID")
+                .setSpaceId("spaceId")
                 .setVersion(3)
                 .setName("U.S. English")
                 .setCode("en-US")
@@ -126,7 +110,7 @@ class LocalesTests : BaseTest() {
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("PUT", recordedRequest.method)
-        assertEquals("/spaces/SPACE_ID/locales/sampleId", recordedRequest.path)
+        assertEquals("/spaces/spaceId/environments/master/locales/sampleId", recordedRequest.path)
     }
 
     @Test
@@ -136,13 +120,77 @@ class LocalesTests : BaseTest() {
 
         assertTestCallback(client!!.locales().async()
                 .delete(
-                        CMALocale().setId("LOCALE_ID").setSpaceId("SPACE_ID"),
+                        CMALocale().setId("localeId").setSpaceId("spaceId"),
                         TestCallback()
                 ) as TestCallback)
 
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("DELETE", recordedRequest.method)
-        assertEquals("/spaces/SPACE_ID/locales/LOCALE_ID", recordedRequest.path)
+        assertEquals("/spaces/spaceId/environments/master/locales/localeId", recordedRequest.path)
+    }
+
+    @Test
+    fun testFetchAllFromEnvironment() {
+        val responseBody = TestUtils.fileToString("locales_get_all_form_environment.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val result = assertTestCallback(client!!.locales().async()
+                .fetchAll("spaceId", "staging", TestCallback()) as TestCallback)!!
+
+        assertEquals(8, result.total)
+        assertEquals(100, result.limit)
+        assertEquals(0, result.skip)
+        assertEquals(8, result.items.size)
+
+        assertEquals("U.S. English", result.items[0].name)
+        assertEquals("English (British)", result.items[1].name)
+
+        assertEquals("staging", result.items[0].environmentId)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/spaceId/environments/staging/locales", recordedRequest.path)
+    }
+
+    @Test
+    fun testFetchOneFromEnvironment() {
+        val responseBody = TestUtils.fileToString("locales_get_one_form_environment.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val result = assertTestCallback(client!!.locales().async()
+                .fetchOne("spaceId", "staging", "7lTcrh2SzR626t7fR8rIPD", TestCallback()) as TestCallback)!!
+
+        assertEquals("U.S. English", result.name)
+        assertEquals("staging", result.environmentId)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/spaceId/environments/staging/locales/7lTcrh2SzR626t7fR8rIPD", recordedRequest.path)
+    }
+
+    @Test
+    fun testCreateInEnvironment() {
+        val responseBody = TestUtils.fileToString("locales_create_in_environment.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val locale = CMALocale().apply {
+            name = "Chinese"
+            code = "cn"
+        }
+
+        val result = assertTestCallback(client!!.locales().async()
+                .create("spaceId", "staging", locale, TestCallback()) as TestCallback)!!
+
+        assertEquals("Chinese", result.name)
+        assertEquals("cn", result.code)
+        assertEquals("staging", result.environmentId)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("POST", recordedRequest.method)
+        assertEquals("/spaces/spaceId/environments/staging/locales/", recordedRequest.path)
     }
 }
