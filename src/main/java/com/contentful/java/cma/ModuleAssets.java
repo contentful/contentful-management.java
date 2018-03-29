@@ -27,6 +27,8 @@ import java.util.concurrent.Executor;
 
 import retrofit2.Retrofit;
 
+import static com.contentful.java.cma.Constants.DEFAULT_ENVIRONMENT;
+
 /**
  * Assets Module.
  */
@@ -55,12 +57,48 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     assertNotNull(asset, "asset");
     final String assetId = getResourceIdOrThrow(asset, "asset");
     final String spaceId = getSpaceIdOrThrow(asset, "asset");
+    final String environmentId = asset.getEnvironmentId();
 
-    return service.archive(spaceId, assetId).blockingFirst();
+    return service.archive(spaceId, environmentId, assetId).blockingFirst();
   }
 
   /**
    * Create a new Asset.
+   * In case the given {@code asset} has an ID associated with it, that ID will be used,
+   * otherwise the server will auto-generate an ID that will be contained in the response upon
+   * success.
+   *
+   * @param spaceId       Space ID
+   * @param environmentId Environment ID
+   * @param asset         Asset
+   * @return {@link CMAAsset} result instance
+   * @throws IllegalArgumentException if asset is null.
+   * @throws IllegalArgumentException if asset space id is null.
+   * @throws IllegalArgumentException if asset environment id is null.
+   */
+  @SuppressWarnings("unchecked")
+  public CMAAsset create(String spaceId, String environmentId, CMAAsset asset) {
+    assertNotNull(spaceId, "spaceId");
+    assertNotNull(asset, "asset");
+
+    final String assetId = asset.getId();
+
+    final CMASystem sys = asset.getSystem();
+    asset.setSystem(null);
+
+    try {
+      if (assetId == null) {
+        return service.create(spaceId, environmentId, asset).blockingFirst();
+      } else {
+        return service.create(spaceId, environmentId, assetId, asset).blockingFirst();
+      }
+    } finally {
+      asset.setSystem(sys);
+    }
+  }
+
+  /**
+   * Create a new Asset in the default environment.
    * In case the given {@code asset} has an ID associated with it, that ID will be used,
    * otherwise the server will auto-generate an ID that will be contained in the response upon
    * success.
@@ -73,39 +111,40 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
    */
   @SuppressWarnings("unchecked")
   public CMAAsset create(String spaceId, CMAAsset asset) {
-    assertNotNull(spaceId, "spaceId");
-    assertNotNull(asset, "asset");
-
-    final String assetId = asset.getId();
-
-    final CMASystem sys = asset.getSystem();
-    asset.setSystem(null);
-
-    try {
-      if (assetId == null) {
-        return service.create(spaceId, asset).blockingFirst();
-      } else {
-        return service.create(spaceId, assetId, asset).blockingFirst();
-      }
-    } finally {
-      asset.setSystem(sys);
-    }
+    return create(spaceId, DEFAULT_ENVIRONMENT, asset);
   }
 
   /**
    * Delete an Asset.
    *
+   * @param spaceId       Space ID
+   * @param environmentId Environment ID
+   * @param assetId       Asset ID
+   * @return An integer representing the result of the delete operation
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if environmentIdS is null.
+   * @throws IllegalArgumentException if assetId is null.
+   */
+  public Integer delete(String spaceId, String environmentId, String assetId) {
+    assertNotNull(spaceId, "spaceId");
+    assertNotNull(assetId, "assetId");
+    assertNotNull(environmentId, "environmentId");
+
+    return service.delete(spaceId, environmentId, assetId).blockingFirst().code();
+  }
+
+  /**
+   * Delete an Asset from the default environment.
+   *
    * @param spaceId Space ID
    * @param assetId Asset ID
    * @return An integer representing the result of the delete operation
    * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if environmentIdS is null.
    * @throws IllegalArgumentException if assetId is null.
    */
   public Integer delete(String spaceId, String assetId) {
-    assertNotNull(spaceId, "spaceId");
-    assertNotNull(assetId, "assetId");
-
-    return service.delete(spaceId, assetId).blockingFirst().code();
+    return delete(spaceId, DEFAULT_ENVIRONMENT, assetId);
   }
 
   /**
@@ -117,10 +156,11 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
    * @throws IllegalArgumentException if assetId is null.
    */
   public Integer delete(CMAAsset asset) {
-    assertNotNull(asset.getSpaceId(), "spaceId");
-    assertNotNull(asset.getId(), "assetId");
+    final String assetId = getResourceIdOrThrow(asset, "asset");
+    final String spaceId = getSpaceIdOrThrow(asset, "asset");
+    final String environmentId = asset.getEnvironmentId();
 
-    return service.delete(asset.getSpaceId(), asset.getId()).blockingFirst().code();
+    return delete(spaceId, environmentId, assetId);
   }
 
   /**
@@ -133,11 +173,26 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
    * @throws IllegalArgumentException if spaceId is null.
    */
   public CMAArray<CMAAsset> fetchAll(String spaceId) {
-    return fetchAll(spaceId, new HashMap<String, String>());
+    return fetchAll(spaceId, new HashMap<>());
   }
 
   /**
-   * Fetch all Assets from a Space with query parameter.
+   * Fetch all Assets from an Environment.
+   * <p>
+   * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH}
+   *
+   * @param spaceId       Space ID
+   * @param environmentId Environment ID
+   * @return {@link CMAArray} result instance
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if environment id is null.
+   */
+  public CMAArray<CMAAsset> fetchAll(String spaceId, String environmentId) {
+    return fetchAll(spaceId, environmentId, new HashMap<>());
+  }
+
+  /**
+   * Fetch all Assets from a Space's default Environment with query parameter.
    *
    * @param spaceId Space ID
    * @param query   specifying details about which assets to fetch.
@@ -145,14 +200,31 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
    * @throws IllegalArgumentException if spaceId is null.
    */
   public CMAArray<CMAAsset> fetchAll(String spaceId, Map<String, String> query) {
-    assertNotNull(spaceId, "spaceId");
-    DefaultQueryParameter.putIfNotSet(query, DefaultQueryParameter.FETCH);
-
-    return service.fetchAll(spaceId, query).blockingFirst();
+    return fetchAll(spaceId, DEFAULT_ENVIRONMENT, query);
   }
 
   /**
-   * Fetch an Asset with the given {@code assetId} from a Space.
+   * Fetch all Assets from a Space with query parameter.
+   *
+   * @param spaceId       Space ID
+   * @param environmentId Environment ID
+   * @param query         specifying details about which assets to fetch.
+   * @return {@link CMAArray} result instance
+   * @throws IllegalArgumentException if spaceId is null.
+   */
+  public CMAArray<CMAAsset> fetchAll(
+      String spaceId,
+      String environmentId,
+      Map<String, String> query) {
+    assertNotNull(spaceId, "spaceId");
+    assertNotNull(environmentId, "environmentId");
+    DefaultQueryParameter.putIfNotSet(query, DefaultQueryParameter.FETCH);
+
+    return service.fetchAll(spaceId, environmentId, query).blockingFirst();
+  }
+
+  /**
+   * Fetch an Asset with the given {@code assetId} from a Space's default Environment.
    *
    * @param spaceId Space ID
    * @param assetId Asset ID
@@ -164,7 +236,25 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(assetId, "assetId");
 
-    return service.fetchOne(spaceId, assetId).blockingFirst();
+    return fetchOne(spaceId, DEFAULT_ENVIRONMENT, assetId);
+  }
+
+  /**
+   * Fetch an Asset with the given {@code assetId} from an Environment.
+   *
+   * @param spaceId       Space ID
+   * @param environmentId Environment ID
+   * @param assetId       Asset ID
+   * @return {@link CMAAsset} result instance
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if assetId is null.
+   */
+  public CMAAsset fetchOne(String spaceId, String environmentId, String assetId) {
+    assertNotNull(spaceId, "spaceId");
+    assertNotNull(environmentId, "environmentId");
+    assertNotNull(assetId, "assetId");
+
+    return service.fetchOne(spaceId, environmentId, assetId).blockingFirst();
   }
 
   /**
@@ -182,8 +272,9 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     assertNotNull(asset, "asset");
     final String assetId = getResourceIdOrThrow(asset, "asset");
     final String spaceId = getSpaceIdOrThrow(asset, "asset");
+    final String environmentId = asset.getEnvironmentId();
 
-    return service.process(spaceId, assetId, locale).blockingFirst().code();
+    return service.process(spaceId, environmentId, assetId, locale).blockingFirst().code();
   }
 
   /**
@@ -199,8 +290,14 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     assertNotNull(asset, "asset");
     final String assetId = getResourceIdOrThrow(asset, "asset");
     final String spaceId = getSpaceIdOrThrow(asset, "asset");
+    final String environmentId = asset.getEnvironmentId();
 
-    return service.publish(asset.getSystem().getVersion(), spaceId, assetId).blockingFirst();
+    return service.publish(
+        asset.getSystem().getVersion(),
+        spaceId,
+        environmentId,
+        assetId
+    ).blockingFirst();
   }
 
   /**
@@ -217,8 +314,9 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
 
     final String assetId = getResourceIdOrThrow(asset, "asset");
     final String spaceId = getSpaceIdOrThrow(asset, "asset");
+    final String environmentId = asset.getEnvironmentId();
 
-    return service.unArchive(spaceId, assetId).blockingFirst();
+    return service.unArchive(spaceId, environmentId, assetId).blockingFirst();
   }
 
   /**
@@ -232,10 +330,12 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
    */
   public CMAAsset unPublish(CMAAsset asset) {
     assertNotNull(asset, "asset");
+
     final String assetId = getResourceIdOrThrow(asset, "asset");
     final String spaceId = getSpaceIdOrThrow(asset, "asset");
+    final String environmentId = asset.getEnvironmentId();
 
-    return service.unPublish(spaceId, assetId).blockingFirst();
+    return service.unPublish(spaceId, environmentId, assetId).blockingFirst();
   }
 
   /**
@@ -252,13 +352,14 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     assertNotNull(asset, "asset");
     final String assetId = getResourceIdOrThrow(asset, "asset");
     final String spaceId = getSpaceIdOrThrow(asset, "asset");
+    final String environmentId = asset.getEnvironmentId();
     final Integer version = getVersionOrThrow(asset, "update");
 
     final CMASystem sys = asset.getSystem();
     asset.setSystem(null);
 
     try {
-      return service.update(version, spaceId, assetId, asset).blockingFirst();
+      return service.update(version, spaceId, environmentId, assetId, asset).blockingFirst();
     } finally {
       asset.setSystem(sys);
     }
@@ -317,6 +418,34 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     }
 
     /**
+     * Create a new Asset in an Environment.
+     * In case the given {@code asset} has an ID associated with it, that ID will be used,
+     * otherwise the server will auto-generate an ID that will be contained in the response upon
+     * success.
+     *
+     * @param spaceId       Space ID
+     * @param environmentId Environment ID
+     * @param asset         Asset
+     * @param callback      Callback
+     * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if asset is null.
+     * @throws IllegalArgumentException if asset id is null.
+     * @throws IllegalArgumentException if asset space id is null.
+     * @throws IllegalArgumentException if asset environment id is null.
+     */
+    public CMACallback<CMAAsset> create(
+        final String spaceId,
+        final String environmentId,
+        final CMAAsset asset,
+        CMACallback<CMAAsset> callback) {
+      return defer(new DefFunc<CMAAsset>() {
+        @Override CMAAsset method() {
+          return ModuleAssets.this.create(spaceId, environmentId, asset);
+        }
+      }, callback);
+    }
+
+    /**
      * Delete an Asset.
      *
      * @param spaceId  Space ID
@@ -326,12 +455,37 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if assetId is null.
      */
-    public CMACallback<Integer> delete(final String spaceId,
-                                       final String assetId,
-                                       CMACallback<Integer> callback) {
+    public CMACallback<Integer> delete(
+        final String spaceId,
+        final String assetId,
+        CMACallback<Integer> callback) {
       return defer(new DefFunc<Integer>() {
         @Override Integer method() {
           return ModuleAssets.this.delete(spaceId, assetId);
+        }
+      }, callback);
+    }
+
+    /**
+     * Delete an Asset from an Environment.
+     *
+     * @param spaceId       Space ID
+     * @param environmentId Environment ID
+     * @param assetId       Asset ID
+     * @param callback      Callback
+     * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if environmentId is null.
+     * @throws IllegalArgumentException if assetId is null.
+     */
+    public CMACallback<Integer> delete(
+        final String spaceId,
+        final String environmentId,
+        final String assetId,
+        CMACallback<Integer> callback) {
+      return defer(new DefFunc<Integer>() {
+        @Override Integer method() {
+          return ModuleAssets.this.delete(spaceId, environmentId, assetId);
         }
       }, callback);
     }
@@ -361,27 +515,73 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
-    public CMACallback<CMAArray<CMAAsset>> fetchAll(String spaceId,
-                                                    CMACallback<CMAArray<CMAAsset>> callback) {
-      return fetchAll(spaceId, new HashMap<String, String>(), callback);
+    public CMACallback<CMAArray<CMAAsset>> fetchAll(
+        String spaceId,
+        CMACallback<CMAArray<CMAAsset>> callback) {
+      return defer(new DefFunc<CMAArray<CMAAsset>>() {
+        @Override CMAArray<CMAAsset> method() {
+          return ModuleAssets.this.fetchAll(spaceId);
+        }
+      }, callback);
+    }
+
+    /**
+     * Fetch all Assets from a Space's Environment.
+     *
+     * @param spaceId       Space ID
+     * @param environmentId Environment ID
+     * @param callback      Callback
+     * @return the given {@code CMACallback} instance
+     */
+    public CMACallback<CMAArray<CMAAsset>> fetchAll(
+        String spaceId,
+        String environmentId,
+        CMACallback<CMAArray<CMAAsset>> callback) {
+      return defer(new DefFunc<CMAArray<CMAAsset>>() {
+        @Override CMAArray<CMAAsset> method() {
+          return ModuleAssets.this.fetchAll(spaceId, environmentId);
+        }
+      }, callback);
     }
 
     /**
      * Fetch all Assets from a Space with a query.
      *
-     * @param spaceId  Space ID
-     * @param query    Query
-     * @param callback Callback
+     * @param spaceId       Space ID
+     * @param query         Query
+     * @param callback      Callback
      * @return the given {@code CMACallback} instance
      * @throws IllegalArgumentException if spaceId is null.
      */
-    public CMACallback<CMAArray<CMAAsset>> fetchAll(final String spaceId,
-                                                    final Map<String, String> query,
-                                                    CMACallback<CMAArray<CMAAsset>> callback) {
+    public CMACallback<CMAArray<CMAAsset>> fetchAll(
+        final String spaceId,
+        final Map<String, String> query,
+        CMACallback<CMAArray<CMAAsset>> callback) {
       return defer(new DefFunc<CMAArray<CMAAsset>>() {
         @Override CMAArray<CMAAsset> method() {
-          DefaultQueryParameter.putIfNotSet(query, DefaultQueryParameter.FETCH);
           return ModuleAssets.this.fetchAll(spaceId, query);
+        }
+      }, callback);
+    }
+
+    /**
+     * Fetch all Assets from a Space's Environment with a query.
+     *
+     * @param spaceId       Space ID
+     * @param environmentId Environment ID
+     * @param query         Query
+     * @param callback      Callback
+     * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if spaceId is null.
+     */
+    public CMACallback<CMAArray<CMAAsset>> fetchAll(
+        final String spaceId,
+        final String environmentId,
+        final Map<String, String> query,
+        CMACallback<CMAArray<CMAAsset>> callback) {
+      return defer(new DefFunc<CMAArray<CMAAsset>>() {
+        @Override CMAArray<CMAAsset> method() {
+          return ModuleAssets.this.fetchAll(spaceId, environmentId, query);
         }
       }, callback);
     }
@@ -396,11 +596,36 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if assetId is null.
      */
-    public CMACallback<CMAAsset> fetchOne(final String spaceId, final String assetId,
-                                          CMACallback<CMAAsset> callback) {
+    public CMACallback<CMAAsset> fetchOne(
+        final String spaceId,
+        final String assetId,
+        CMACallback<CMAAsset> callback) {
       return defer(new DefFunc<CMAAsset>() {
         @Override CMAAsset method() {
           return ModuleAssets.this.fetchOne(spaceId, assetId);
+        }
+      }, callback);
+    }
+
+    /**
+     * Fetch an Asset with the given {@code assetId} from a Space's Environment.
+     *
+     * @param spaceId       Space ID
+     * @param environmentId Environment ID
+     * @param assetId       Asset ID
+     * @param callback      Callback
+     * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if assetId is null.
+     */
+    public CMACallback<CMAAsset> fetchOne(
+        final String spaceId,
+        final String environmentId,
+        final String assetId,
+        CMACallback<CMAAsset> callback) {
+      return defer(new DefFunc<CMAAsset>() {
+        @Override CMAAsset method() {
+          return ModuleAssets.this.fetchOne(spaceId, environmentId, assetId);
         }
       }, callback);
     }

@@ -36,63 +36,74 @@ import retrofit2.http.QueryMap;
  * Assets Service.
  */
 interface ServiceAssets {
-  @PUT("spaces/{space}/assets/{asset}/archived")
+  @PUT("spaces/{space}/environments/{environment}/assets/{asset}/archived")
   Flowable<CMAAsset> archive(
       @Path("space") String spaceId,
+      @Path("environment") String environment,
       @Path("asset") String assetId);
 
-  @POST("spaces/{space}/assets")
+  @POST("spaces/{space}/environments/{environment}/assets")
   Flowable<CMAAsset> create(
       @Path("space") String spaceId,
+      @Path("environment") String environment,
       @Body CMAAsset asset);
 
-  @PUT("spaces/{space}/assets/{asset}")
+  @PUT("spaces/{space}/environments/{environment}/assets/{asset}")
   Flowable<CMAAsset> create(
       @Path("space") String spaceId,
+      @Path("environment") String environment,
       @Path("asset") String assetId,
       @Body CMAAsset asset);
 
-  @DELETE("spaces/{space}/assets/{asset}")
+  @DELETE("spaces/{space}/environments/{environment}/assets/{asset}")
   Flowable<Response<Void>> delete(
       @Path("space") String spaceId,
+      @Path("environment") String environment,
       @Path("asset") String assetId);
 
-  @GET("spaces/{space}/assets")
+  @GET("spaces/{space}/environments/{environment}/assets")
   Flowable<CMAArray<CMAAsset>> fetchAll(
       @Path("space") String spaceId,
+      @Path("environment") String environment,
       @QueryMap Map<String, String> query);
 
-  @GET("spaces/{space}/assets/{asset}")
+  @GET("spaces/{space}/environments/{environment}/assets/{asset}")
   Flowable<CMAAsset> fetchOne(
       @Path("space") String spaceId,
+      @Path("environment") String environment,
       @Path("asset") String assetId);
 
-  @PUT("spaces/{space}/assets/{asset}/files/{locale}/process")
+  @PUT("spaces/{space}/environments/{environment}/assets/{asset}/files/{locale}/process")
   Flowable<Response<Void>> process(
       @Path("space") String spaceId,
+      @Path("environment") String environment,
       @Path("asset") String assetId,
       @Path("locale") String locale);
 
-  @PUT("spaces/{space}/assets/{asset}/published")
+  @PUT("spaces/{space}/environments/{environment}/assets/{asset}/published")
   Flowable<CMAAsset> publish(
       @Header("X-Contentful-Version") Integer version,
       @Path("space") String spaceId,
+      @Path("environment") String environment,
       @Path("asset") String assetId);
 
-  @DELETE("spaces/{space}/assets/{asset}/archived")
+  @DELETE("spaces/{space}/environments/{environment}/assets/{asset}/archived")
   Flowable<CMAAsset> unArchive(
       @Path("space") String spaceId,
+      @Path("environment") String environment,
       @Path("asset") String assetId);
 
-  @DELETE("spaces/{space}/assets/{asset}/published")
+  @DELETE("spaces/{space}/environments/{environment}/assets/{asset}/published")
   Flowable<CMAAsset> unPublish(
       @Path("space") String spaceId,
+      @Path("environment") String environment,
       @Path("asset") String assetId);
 
-  @PUT("spaces/{space}/assets/{asset}")
+  @PUT("spaces/{space}/environments/{environment}/assets/{asset}")
   Flowable<CMAAsset> update(
       @Header("X-Contentful-Version") Integer version,
       @Path("space") String spaceId,
+      @Path("environment") String environment,
       @Path("asset") String assetId,
       @Body CMAAsset asset);
 }
