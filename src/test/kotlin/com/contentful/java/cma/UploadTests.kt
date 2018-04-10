@@ -25,6 +25,18 @@ import okhttp3.mockwebserver.MockResponse
 import org.junit.Test as test
 
 class UploadTests : BaseTest() {
+    override fun setUp() {
+        super.setUp()
+
+        // overwrite client to not use environments
+        client = CMAClient.Builder().apply {
+            accessToken = "token"
+            coreEndpoint = server!!.url("/").toString()
+            uploadEndpoint = server!!.url("/").toString()
+            spaceId = "configuredSpaceId"
+        }.build()
+    }
+
     @test
     fun testPostBinaryToUpload() {
         val responseBody = TestUtils.fileToString("upload_post_response.json")
@@ -40,6 +52,22 @@ class UploadTests : BaseTest() {
         assertEquals("POST", recordedRequest.method)
         assertEquals("/spaces/space_id/uploads", recordedRequest.path)
         assertEquals("upload_id", result.id)
+    }
+
+    @test
+    fun testPostBinaryToUploadWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("upload_post_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val uploadStream = TestUtils.fileToInputStream("upload_post_payload.jpg")
+
+        assertTestCallback(client!!.uploads().async().create(uploadStream, TestCallback())
+                as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("POST", recordedRequest.method)
+        assertEquals("/spaces/configuredSpaceId/uploads", recordedRequest.path)
     }
 
     @test
@@ -60,11 +88,28 @@ class UploadTests : BaseTest() {
     }
 
     @test
+    fun testGetUploadWithIdWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("upload_get_upload_with_id.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.uploads().async().fetchOne("upload_id", TestCallback())
+                as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/configuredSpaceId/uploads/upload_id", recordedRequest.path)
+    }
+
+    @test
     fun testDeleteUpload() {
         server!!.enqueue(MockResponse().setResponseCode(204))
 
         val result = assertTestCallback(client!!.uploads().async()
-                .delete("space_id", "upload_id", TestCallback()) as TestCallback)!!
+                .delete(CMAUpload().apply {
+                    spaceId = "space_id"
+                    id = "upload_id"
+                }, TestCallback()) as TestCallback)!!
 
         // Request
         val recordedRequest = server!!.takeRequest()

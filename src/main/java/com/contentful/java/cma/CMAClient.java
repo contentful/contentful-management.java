@@ -119,23 +119,31 @@ public class CMAClient {
     Retrofit uploadRetrofit = retrofitBuilder.build();
 
     // Modules
-    this.moduleApiKeys = new ModuleApiKeys(retrofit, callbackExecutor);
-    this.moduleAssets = new ModuleAssets(retrofit, callbackExecutor);
-    this.moduleContentTypes = new ModuleContentTypes(retrofit, callbackExecutor);
-    this.moduleEditorInterfaces = new ModuleEditorInterfaces(retrofit, callbackExecutor);
-    this.moduleEntries = new ModuleEntries(retrofit, callbackExecutor);
-    this.moduleEnvironments = new ModuleEnvironments(retrofit, callbackExecutor);
-    this.moduleLocales = new ModuleLocales(retrofit, callbackExecutor);
+    final String spaceId = cmaBuilder.spaceId;
+    final String environmentId = cmaBuilder.environmentId;
+
+    this.moduleApiKeys = new ModuleApiKeys(retrofit, callbackExecutor, spaceId, environmentId);
+    this.moduleAssets = new ModuleAssets(retrofit, callbackExecutor, spaceId, environmentId);
+    this.moduleContentTypes = new ModuleContentTypes(retrofit, callbackExecutor, spaceId,
+        environmentId);
+    this.moduleEditorInterfaces = new ModuleEditorInterfaces(retrofit, callbackExecutor, spaceId,
+        environmentId);
+    this.moduleEntries = new ModuleEntries(retrofit, callbackExecutor, spaceId, environmentId);
+    this.moduleEnvironments = new ModuleEnvironments(retrofit, callbackExecutor, spaceId,
+        environmentId);
+    this.moduleLocales = new ModuleLocales(retrofit, callbackExecutor, spaceId, environmentId);
     this.moduleOrganizations = new ModuleOrganizations(retrofit, callbackExecutor);
     this.modulePersonalAccessTokens = new ModulePersonalAccessTokens(retrofit, callbackExecutor);
-    this.moduleRoles = new ModuleRoles(retrofit, callbackExecutor);
-    this.moduleSpaceMemberships = new ModuleSpaceMemberships(retrofit, callbackExecutor);
+    this.moduleRoles = new ModuleRoles(retrofit, callbackExecutor, spaceId, environmentId);
+    this.moduleSpaceMemberships = new ModuleSpaceMemberships(retrofit, callbackExecutor, spaceId,
+        environmentId);
     this.moduleSpaces = new ModuleSpaces(retrofit, callbackExecutor);
-    this.moduleUiExtensions = new ModuleUiExtensions(retrofit, callbackExecutor);
+    this.moduleUiExtensions = new ModuleUiExtensions(retrofit, callbackExecutor, spaceId,
+        environmentId);
+    this.moduleUploads = new ModuleUploads(uploadRetrofit, callbackExecutor, spaceId,
+        environmentId);
     this.moduleUsers = new ModuleUsers(retrofit, callbackExecutor);
-    this.moduleWebhooks = new ModuleWebhooks(retrofit, callbackExecutor);
-
-    this.moduleUploads = new ModuleUploads(uploadRetrofit, callbackExecutor);
+    this.moduleWebhooks = new ModuleWebhooks(retrofit, callbackExecutor, spaceId, environmentId);
   }
 
   /**
@@ -301,6 +309,8 @@ public class CMAClient {
     String uploadEndpoint;
     Section application;
     Section integration;
+    String environmentId = Constants.DEFAULT_ENVIRONMENT;
+    String spaceId;
     Executor callbackExecutor;
     RateLimitsListener rateLimitListener;
 
@@ -345,6 +355,32 @@ public class CMAClient {
         throw new IllegalArgumentException("Cannot call setAccessToken() with null.");
       }
       this.accessToken = accessToken;
+      return this;
+    }
+
+    /**
+     * Set which space to use if none is specified specifically.
+     *
+     * @param spaceId the id of the space to be used.
+     * @return this {@link Builder} instance
+     */
+    public Builder setSpaceId(String spaceId) {
+      this.spaceId = spaceId;
+      return this;
+    }
+
+    /**
+     * Set which environment to use if none is specified specifically.
+     * <p>
+     * Please be aware that some endpoints (like {@link CMAClient#webhooks()}) do not support
+     * environments and will throw an exception if used with something else then
+     * {@link Constants#DEFAULT_ENVIRONMENT} here.
+     *
+     * @param environmentId the id of the environment to be used.
+     * @return this {@link Builder} instance
+     */
+    public Builder setEnvironmentId(String environmentId) {
+      this.environmentId = environmentId;
       return this;
     }
 

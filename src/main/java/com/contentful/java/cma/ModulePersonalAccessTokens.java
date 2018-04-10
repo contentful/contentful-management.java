@@ -39,7 +39,7 @@ public final class ModulePersonalAccessTokens extends AbsModule<ServicePersonalA
    * @param callbackExecutor to tell on which thread it should run.
    */
   public ModulePersonalAccessTokens(Retrofit retrofit, Executor callbackExecutor) {
-    super(retrofit, callbackExecutor);
+    super(retrofit, callbackExecutor, null, null);
     this.async = new Async();
   }
 

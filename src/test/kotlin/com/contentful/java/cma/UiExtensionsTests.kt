@@ -28,6 +28,18 @@ import kotlin.test.assertNull
 import org.junit.Test as test
 
 class UiExtensionsTests : BaseTest() {
+    override fun setUp() {
+        super.setUp()
+
+        // overwrite client to not use environments
+        client = CMAClient.Builder().apply {
+            accessToken = "token"
+            coreEndpoint = server!!.url("/").toString()
+            uploadEndpoint = server!!.url("/").toString()
+            spaceId = "configuredSpaceId"
+        }.build()
+    }
+
     @test
     fun testFetchAll() {
         val responseBody = TestUtils.fileToString("ui_extensions_get_all.json")
@@ -54,6 +66,20 @@ class UiExtensionsTests : BaseTest() {
     }
 
     @test
+    fun testFetchAllWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("ui_extensions_get_all.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.uiExtensions().async().fetchAll(TestCallback())
+                as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/configuredSpaceId/extensions", recordedRequest.path)
+    }
+
+    @test
     fun testFetchAllWithQuery() {
         val responseBody = TestUtils.fileToString("ui_extensions_get_all.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
@@ -68,6 +94,21 @@ class UiExtensionsTests : BaseTest() {
         val recordedRequest = server!!.takeRequest()
         assertEquals("GET", recordedRequest.method)
         assertEquals("/spaces/spaceId/extensions?skip=3",
+                recordedRequest.path)
+    }
+
+    @test
+    fun testFetchAllWithQueryWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("ui_extensions_get_all.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.uiExtensions().async()
+                .fetchAll(mapOf("skip" to "3"), TestCallback()) as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/configuredSpaceId/extensions?skip=3",
                 recordedRequest.path)
     }
 
@@ -92,6 +133,21 @@ class UiExtensionsTests : BaseTest() {
         val recordedRequest = server!!.takeRequest()
         assertEquals("GET", recordedRequest.method)
         assertEquals("/spaces/spaceId/extensions/extensionId",
+                recordedRequest.path)
+    }
+
+    @test
+    fun testFetchOneWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("ui_extensions_get_one.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.uiExtensions().async().fetchOne("extensionId", TestCallback())
+                as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/configuredSpaceId/extensions/extensionId",
                 recordedRequest.path)
     }
 
@@ -126,6 +182,29 @@ class UiExtensionsTests : BaseTest() {
         assertEquals("POST", recordedRequest.method)
         assertEquals("/spaces/spaceId/extensions",
                 recordedRequest.path)
+    }
+
+    @test
+    fun testCreateWithSourceContentWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("ui_extensions_create_with_html_data.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val uiExtension = CMAUiExtension()
+        uiExtension
+                .extension
+                .setSourceContent("<html>")
+                .setName("My awesome extensions by srcDoc")
+                .addFieldType(Symbol)
+                .addFieldType(Text)
+                .setIsOnSidebar(false)
+
+        assertTestCallback(client!!.uiExtensions().async().create(uiExtension, TestCallback())
+                as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("POST", recordedRequest.method)
+        assertEquals("/spaces/configuredSpaceId/extensions", recordedRequest.path)
     }
 
     @test

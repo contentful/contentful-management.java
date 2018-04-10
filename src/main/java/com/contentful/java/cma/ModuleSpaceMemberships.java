@@ -2,6 +2,7 @@ package com.contentful.java.cma;
 
 import com.contentful.java.cma.RxExtensions.DefFunc;
 import com.contentful.java.cma.model.CMAArray;
+import com.contentful.java.cma.model.CMANotWithEnvironmentsException;
 import com.contentful.java.cma.model.CMASpaceMembership;
 import com.contentful.java.cma.model.CMASystem;
 
@@ -22,9 +23,15 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
    *
    * @param retrofit         the retrofit instance to be used to create the service.
    * @param callbackExecutor to tell on which thread it should run.
+   * @param spaceId          the id of the space to be used if not specified in the module call.
+   * @param environmentId    the id of the environment used, if not specified before.
    */
-  public ModuleSpaceMemberships(Retrofit retrofit, Executor callbackExecutor) {
-    super(retrofit, callbackExecutor);
+  public ModuleSpaceMemberships(
+      Retrofit retrofit,
+      Executor callbackExecutor,
+      String spaceId,
+      String environmentId) {
+    super(retrofit, callbackExecutor, spaceId, environmentId);
     async = new Async();
   }
 
@@ -50,13 +57,42 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
   /**
    * Fetch all memberships of this space.
    *
+   * @return the array of memberships.
+   * @throws IllegalArgumentException        if spaceId is null.
+   * @throws CMANotWithEnvironmentsException if environmentId was set using
+   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
+   *                                         throws a runtime exception.
+   */
+  public CMAArray<CMASpaceMembership> fetchAll() {
+    return fetchAll(spaceId);
+  }
+
+  /**
+   * Fetch all memberships of this space.
+   *
    * @param spaceId the space identifier identifying the space.
    * @return the array of memberships.
-   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException        if spaceId is null.
+   * @throws CMANotWithEnvironmentsException if environmentId was set using
+   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
+   *                                         throws a runtime exception.
    */
   public CMAArray<CMASpaceMembership> fetchAll(String spaceId) {
-    assertNotNull(spaceId, "spaceId");
-    return service.fetchAll(spaceId).blockingFirst();
+    return fetchAll(spaceId, null);
+  }
+
+  /**
+   * Fetch all memberships of the configured space.
+   *
+   * @param query define which space memberships to return.
+   * @return the array of memberships.
+   * @throws IllegalArgumentException        if spaceId is null.
+   * @throws CMANotWithEnvironmentsException if environmentId was set using
+   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
+   *                                         throws a runtime exception.
+   */
+  public CMAArray<CMASpaceMembership> fetchAll(Map<String, String> query) {
+    return fetchAll(spaceId, query);
   }
 
   /**
@@ -65,10 +101,14 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
    * @param spaceId the space identifier identifying the space.
    * @param query   define which space memberships to return.
    * @return the array of memberships.
-   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException        if spaceId is null.
+   * @throws CMANotWithEnvironmentsException if environmentId was set using
+   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
+   *                                         throws a runtime exception.
    */
   public CMAArray<CMASpaceMembership> fetchAll(String spaceId, Map<String, String> query) {
     assertNotNull(spaceId, "spaceId");
+    throwIfEnvironmentIdIsNotDefault();
     if (query == null) {
       return service.fetchAll(spaceId).blockingFirst();
     } else {
@@ -79,17 +119,51 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
   /**
    * Fetches one space membership by its id from Contentful.
    *
+   * @param membershipId the id of the membership to be found.
+   * @return null if no membership was found, otherwise the found membership.
+   * @throws IllegalArgumentException        if space id is null.
+   * @throws IllegalArgumentException        if membership id is null.
+   * @throws CMANotWithEnvironmentsException if environmentId was set using
+   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
+   *                                         throws a runtime exception.
+   */
+  public CMASpaceMembership fetchOne(String membershipId) {
+    return fetchOne(spaceId, membershipId);
+  }
+
+  /**
+   * Fetches one space membership by its id from Contentful.
+   *
    * @param spaceId      the space this membership is hosted by.
    * @param membershipId the id of the membership to be found.
    * @return null if no membership was found, otherwise the found membership.
-   * @throws IllegalArgumentException if space id is null.
-   * @throws IllegalArgumentException if membership id is null.
+   * @throws IllegalArgumentException        if space id is null.
+   * @throws IllegalArgumentException        if membership id is null.
+   * @throws CMANotWithEnvironmentsException if environmentId was set using
+   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
+   *                                         throws a runtime exception.
    */
   public CMASpaceMembership fetchOne(String spaceId, String membershipId) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(membershipId, "membershipId");
+    throwIfEnvironmentIdIsNotDefault();
 
     return service.fetchOne(spaceId, membershipId).blockingFirst();
+  }
+
+  /**
+   * Create a new membership.
+   *
+   * @param membership the new membership to be created.
+   * @return the newly created membership.
+   * @throws IllegalArgumentException        if space id is null.
+   * @throws IllegalArgumentException        if membership is null.
+   * @throws CMANotWithEnvironmentsException if environmentId was set using
+   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
+   *                                         throws a runtime exception.
+   */
+  public CMASpaceMembership create(CMASpaceMembership membership) {
+    return create(spaceId, membership);
   }
 
   /**
@@ -98,12 +172,16 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
    * @param spaceId    the space id to host the membership.
    * @param membership the new membership to be created.
    * @return the newly created membership.
-   * @throws IllegalArgumentException if space id is null.
-   * @throws IllegalArgumentException if membership is null.
+   * @throws IllegalArgumentException        if space id is null.
+   * @throws IllegalArgumentException        if membership is null.
+   * @throws CMANotWithEnvironmentsException if environmentId was set using
+   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
+   *                                         throws a runtime exception.
    */
   public CMASpaceMembership create(String spaceId, CMASpaceMembership membership) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(membership, "membership");
+    throwIfEnvironmentIdIsNotDefault();
 
     final CMASystem sys = membership.getSystem();
     membership.setSystem(null);
@@ -178,10 +256,33 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
     /**
      * Fetch all memberships of this space, asynchronously.
      *
+     * @param callback the callback to be informed about success or failure.
+     * @return the callback passed in.
+     * @throws IllegalArgumentException        if spaceId is null.
+     * @throws CMANotWithEnvironmentsException if environmentId was set using
+     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
+     *                                         throws a runtime exception.
+     * @see ModuleSpaceMemberships#fetchAll(String)
+     */
+    public CMACallback<CMAArray<CMASpaceMembership>> fetchAll(
+        final CMACallback<CMAArray<CMASpaceMembership>> callback) {
+      return defer(new DefFunc<CMAArray<CMASpaceMembership>>() {
+        @Override CMAArray<CMASpaceMembership> method() {
+          return ModuleSpaceMemberships.this.fetchAll();
+        }
+      }, callback);
+    }
+
+    /**
+     * Fetch all memberships of this space, asynchronously.
+     *
      * @param spaceId  the space identifier identifying the space.
      * @param callback the callback to be informed about success or failure.
      * @return the callback passed in.
-     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException        if spaceId is null.
+     * @throws CMANotWithEnvironmentsException if environmentId was set using
+     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
+     *                                         throws a runtime exception.
      * @see ModuleSpaceMemberships#fetchAll(String)
      */
     public CMACallback<CMAArray<CMASpaceMembership>> fetchAll(
@@ -195,13 +296,38 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
     }
 
     /**
+     * Fetch all memberships of the configured space, asynchronously.
+     *
+     * @param query    define which space memberships to return.
+     * @param callback the callback to be informed about success or failure.
+     * @return the callback passed in.
+     * @throws IllegalArgumentException        if spaceId is null.
+     * @throws CMANotWithEnvironmentsException if environmentId was set using
+     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
+     *                                         throws a runtime exception.
+     * @see ModuleSpaceMemberships#fetchAll(String)
+     */
+    public CMACallback<CMAArray<CMASpaceMembership>> fetchAll(
+        final Map<String, String> query,
+        final CMACallback<CMAArray<CMASpaceMembership>> callback) {
+      return defer(new DefFunc<CMAArray<CMASpaceMembership>>() {
+        @Override CMAArray<CMASpaceMembership> method() {
+          return ModuleSpaceMemberships.this.fetchAll(query);
+        }
+      }, callback);
+    }
+
+    /**
      * Fetch all memberships of this space, asynchronously.
      *
      * @param spaceId  the space identifier identifying the space.
      * @param query    define which space memberships to return.
      * @param callback the callback to be informed about success or failure.
      * @return the callback passed in.
-     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException        if spaceId is null.
+     * @throws CMANotWithEnvironmentsException if environmentId was set using
+     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
+     *                                         throws a runtime exception.
      * @see ModuleSpaceMemberships#fetchAll(String)
      */
     public CMACallback<CMAArray<CMASpaceMembership>> fetchAll(
@@ -218,12 +344,38 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
     /**
      * Fetches one space membership by its id from Contentful asynchronously.
      *
+     * @param membershipId the id of the membership to be found.
+     * @param callback     the callback to be informed about success or failure.
+     * @return the callback passed in.
+     * @throws IllegalArgumentException        if space id is null.
+     * @throws IllegalArgumentException        if membership id is null.
+     * @throws CMANotWithEnvironmentsException if environmentId was set using
+     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
+     *                                         throws a runtime exception.
+     * @see ModuleSpaceMemberships#fetchOne(String, String)
+     */
+    public CMACallback<CMASpaceMembership> fetchOne(
+        final String membershipId,
+        final CMACallback<CMASpaceMembership> callback) {
+      return defer(new DefFunc<CMASpaceMembership>() {
+        @Override CMASpaceMembership method() {
+          return ModuleSpaceMemberships.this.fetchOne(membershipId);
+        }
+      }, callback);
+    }
+
+    /**
+     * Fetches one space membership by its id from Contentful asynchronously.
+     *
      * @param spaceId      the space this membership is hosted by.
      * @param membershipId the id of the membership to be found.
      * @param callback     the callback to be informed about success or failure.
      * @return the callback passed in.
-     * @throws IllegalArgumentException if space id is null.
-     * @throws IllegalArgumentException if membership id is null.
+     * @throws IllegalArgumentException        if space id is null.
+     * @throws IllegalArgumentException        if membership id is null.
+     * @throws CMANotWithEnvironmentsException if environmentId was set using
+     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
+     *                                         throws a runtime exception.
      * @see ModuleSpaceMemberships#fetchOne(String, String)
      */
     public CMACallback<CMASpaceMembership> fetchOne(
@@ -232,9 +384,7 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
         final CMACallback<CMASpaceMembership> callback) {
       return defer(new DefFunc<CMASpaceMembership>() {
         @Override CMASpaceMembership method() {
-          return ModuleSpaceMemberships.this.fetchOne(
-              spaceId, membershipId
-          );
+          return ModuleSpaceMemberships.this.fetchOne(spaceId, membershipId);
         }
       }, callback);
     }
@@ -246,8 +396,11 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
      * @param membership the new membership to be created.
      * @param callback   the callback to be informed about success or failure.
      * @return the callback passed in.
-     * @throws IllegalArgumentException if space id is null.
-     * @throws IllegalArgumentException if membership is null.
+     * @throws IllegalArgumentException        if space id is null.
+     * @throws IllegalArgumentException        if membership is null.
+     * @throws CMANotWithEnvironmentsException if environmentId was set using
+     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
+     *                                         throws a runtime exception.
      * @see ModuleSpaceMemberships#create(String, CMASpaceMembership)
      */
     public CMACallback<CMASpaceMembership> create(
@@ -256,9 +409,30 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
         final CMACallback<CMASpaceMembership> callback) {
       return defer(new DefFunc<CMASpaceMembership>() {
         @Override CMASpaceMembership method() {
-          return ModuleSpaceMemberships.this.create(
-              spaceId, membership
-          );
+          return ModuleSpaceMemberships.this.create(spaceId, membership);
+        }
+      }, callback);
+    }
+
+    /**
+     * Asynchronously create a new membership.
+     *
+     * @param membership the new membership to be created.
+     * @param callback   the callback to be informed about success or failure.
+     * @return the callback passed in.
+     * @throws IllegalArgumentException        if space id is null.
+     * @throws IllegalArgumentException        if membership is null.
+     * @throws CMANotWithEnvironmentsException if environmentId was set using
+     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
+     *                                         throws a runtime exception.
+     * @see ModuleSpaceMemberships#create(String, CMASpaceMembership)
+     */
+    public CMACallback<CMASpaceMembership> create(
+        final CMASpaceMembership membership,
+        final CMACallback<CMASpaceMembership> callback) {
+      return defer(new DefFunc<CMASpaceMembership>() {
+        @Override CMASpaceMembership method() {
+          return ModuleSpaceMemberships.this.create(membership);
         }
       }, callback);
     }
@@ -283,9 +457,7 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
         final CMACallback<CMASpaceMembership> callback) {
       return defer(new DefFunc<CMASpaceMembership>() {
         @Override CMASpaceMembership method() {
-          return ModuleSpaceMemberships.this.update(
-              membership
-          );
+          return ModuleSpaceMemberships.this.update(membership);
         }
       }, callback);
     }
@@ -308,9 +480,7 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
         final CMACallback<Integer> callback) {
       return defer(new DefFunc<Integer>() {
         @Override Integer method() {
-          return ModuleSpaceMemberships.this.delete(
-              membership
-          );
+          return ModuleSpaceMemberships.this.delete(membership);
         }
       }, callback);
     }

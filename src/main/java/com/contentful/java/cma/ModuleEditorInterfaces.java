@@ -24,8 +24,6 @@ import java.util.concurrent.Executor;
 
 import retrofit2.Retrofit;
 
-import static com.contentful.java.cma.Constants.DEFAULT_ENVIRONMENT;
-
 /**
  * Editor Interfaces Module.
  */
@@ -37,9 +35,15 @@ public final class ModuleEditorInterfaces extends AbsModule<ServiceEditorInterfa
    *
    * @param retrofit         the retrofit instance to be used to create the service.
    * @param callbackExecutor to tell on which thread it should run.
+   * @param spaceId          the space to be used when not given.
+   * @param environmentId    the environment to be used when not given.
    */
-  public ModuleEditorInterfaces(Retrofit retrofit, Executor callbackExecutor) {
-    super(retrofit, callbackExecutor);
+  public ModuleEditorInterfaces(
+      Retrofit retrofit,
+      Executor callbackExecutor,
+      String spaceId,
+      String environmentId) {
+    super(retrofit, callbackExecutor, spaceId, environmentId);
     this.async = new Async();
   }
 
@@ -48,12 +52,11 @@ public final class ModuleEditorInterfaces extends AbsModule<ServiceEditorInterfa
   }
 
   /**
-   * @param spaceId       the id of the space this editor interface is valid on.
    * @param contentTypeId the contentTypeId this editor interface is valid on.
    * @return the editor interface for a specific content type on a specific space.
    */
-  public CMAEditorInterface fetchOne(String spaceId, String contentTypeId) {
-    return fetchOne(spaceId, DEFAULT_ENVIRONMENT, contentTypeId);
+  public CMAEditorInterface fetchOne(String contentTypeId) {
+    return fetchOne(spaceId, environmentId, contentTypeId);
   }
 
   /**
@@ -112,18 +115,16 @@ public final class ModuleEditorInterfaces extends AbsModule<ServiceEditorInterfa
     /**
      * Fetch editor interface to given content type in a given space.
      *
-     * @param spaceId       the space this editor interface is defined on.
      * @param contentTypeId the id of the content type controlled by this editor interface.
      * @param callback      the callback to be informed about success or failure.
      * @return the callback.
      */
     public CMACallback<CMAEditorInterface> fetchOne(
-        final String spaceId,
         final String contentTypeId,
         CMACallback<CMAEditorInterface> callback) {
       return defer(new DefFunc<CMAEditorInterface>() {
         @Override CMAEditorInterface method() {
-          return ModuleEditorInterfaces.this.fetchOne(spaceId, contentTypeId);
+          return ModuleEditorInterfaces.this.fetchOne(contentTypeId);
         }
       }, callback);
     }

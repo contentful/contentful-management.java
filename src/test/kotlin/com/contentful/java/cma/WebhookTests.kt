@@ -26,6 +26,18 @@ import kotlin.test.assertNotNull
 import org.junit.Test as test
 
 class WebhookTests : BaseTest() {
+    override fun setUp() {
+        super.setUp()
+
+        // overwrite client to not use environments
+        client = CMAClient.Builder().apply {
+            accessToken = "token"
+            coreEndpoint = server!!.url("/").toString()
+            uploadEndpoint = server!!.url("/").toString()
+            spaceId = "configuredSpaceId"
+        }.build()
+    }
+
     @test
     fun testCreate() {
         val requestBody = TestUtils.fileToString("webhook_create_request.json")
@@ -50,6 +62,27 @@ class WebhookTests : BaseTest() {
     }
 
     @test
+    fun testCreateWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("webhook_create_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val webhook = CMAWebhook()
+                .setName("cma-created")
+                .setUrl("http://lorempixel.com/200/200/cats")
+                .addTopic(CMAWebhookTopic.All)
+                .addHeader("key", "value")
+                .setBasicAuthorization("user", "password")
+
+        assertTestCallback(client!!.webhooks().async().create(webhook, TestCallback())
+                as TestCallback)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("POST", recordedRequest.method)
+        assertEquals("/spaces/configuredSpaceId/webhook_definitions", recordedRequest.path)
+    }
+
+    @test
     fun testCreateWithId() {
         val requestBody = TestUtils.fileToString("webhook_create_with_id_request.json")
         val responseBody = TestUtils.fileToString("webhook_create_with_id_response.json")
@@ -64,7 +97,7 @@ class WebhookTests : BaseTest() {
                 .setBasicAuthorization("user", "password")
 
         assertTestCallback(client!!.webhooks().async().create(
-                "spaceid", "webhookid", webhook, TestCallback()) as TestCallback)
+                "spaceid", webhook, TestCallback()) as TestCallback)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -77,32 +110,14 @@ class WebhookTests : BaseTest() {
     fun testDelete() {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody("200"))
 
+        val webhook = CMAWebhook().apply {
+            spaceId = "spaceid"
+            id = "webhookid"
+        }
+
         val callback: TestCallback<Int> = TestCallback(true)
         assertTestCallback(client!!.webhooks().async().delete(
-                "spaceid", "webhookid", callback) as TestCallback)
-
-        assertEquals(200, callback.value)
-
-        // Request
-        val recordedRequest = server!!.takeRequest()
-        assertEquals("DELETE", recordedRequest.method)
-        assertEquals("/spaces/spaceid/webhook_definitions/webhookid", recordedRequest.path)
-    }
-
-    @test
-    fun testDeleteWithObject() {
-        server!!.enqueue(MockResponse().setResponseCode(200).setBody("200"))
-
-        val callback: TestCallback<Int> = TestCallback(true)
-        assertTestCallback(client!!
-                .webhooks()
-                .async()
-                .delete(
-                        CMAWebhook()
-                                .setId("webhookid")
-                                .setSpaceId("spaceid")
-                        , callback)
-                as TestCallback)
+                webhook, callback) as TestCallback)
 
         assertEquals(200, callback.value)
 
@@ -141,6 +156,18 @@ class WebhookTests : BaseTest() {
     }
 
     @test
+    fun testFetchAllWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("webhook_fetch_all_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.webhooks().async().fetchAll(TestCallback()) as TestCallback)!!
+
+        val request = server!!.takeRequest()
+        assertEquals("GET", request.method)
+        assertEquals("/spaces/configuredSpaceId/webhook_definitions", request.path)
+    }
+
+    @test
     fun testFetchAllWithQuery() {
         val responseBody = TestUtils.fileToString("webhook_fetch_all_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
@@ -153,6 +180,20 @@ class WebhookTests : BaseTest() {
         val request = server!!.takeRequest()
         assertEquals("GET", request.method)
         assertEquals("/spaces/spaceid/webhook_definitions?limit=3", request.path)
+    }
+
+    @test
+    fun testFetchAllWithQueryWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("webhook_fetch_all_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.webhooks().async().fetchAll(
+                hashMapOf("limit" to "3"),
+                TestCallback()) as TestCallback)!!
+
+        val request = server!!.takeRequest()
+        assertEquals("GET", request.method)
+        assertEquals("/spaces/configuredSpaceId/webhook_definitions?limit=3", request.path)
     }
 
     @test
@@ -176,6 +217,20 @@ class WebhookTests : BaseTest() {
         assertEquals(4, result.topics.size)
         assertEquals(1, result.headers.size)
         assertEquals("user", result.user)
+    }
+
+    @test
+    fun testFetchWithIdWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("webhook_fetch_id_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.webhooks().async().fetchOne("webhookid", TestCallback())
+                as TestCallback)
+
+        // Request
+        val request = server!!.takeRequest()
+        assertEquals("GET", request.method)
+        assertEquals("/spaces/configuredSpaceId/webhook_definitions/webhookid", request.path)
     }
 
     @test
@@ -219,21 +274,6 @@ class WebhookTests : BaseTest() {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         assertTestCallback(client!!.webhooks().async().calls(
-                "spaceid", "webhookid",
-                TestCallback(true)) as TestCallback)
-
-        // Request
-        val recordedRequest = server!!.takeRequest()
-        assertEquals("GET", recordedRequest.method)
-        assertEquals("/spaces/spaceid/webhooks/webhookid/calls", recordedRequest.path)
-    }
-
-    @test
-    fun testCallsOverviewByObject() {
-        val responseBody = TestUtils.fileToString("webhook_calls_overview_response.json")
-        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
-
-        assertTestCallback(client!!.webhooks().async().calls(
                 CMAWebhook().setSpaceId("spaceid").setId("webhookid"),
                 TestCallback(true)) as TestCallback)
 
@@ -245,21 +285,6 @@ class WebhookTests : BaseTest() {
 
     @test
     fun testCallDetails() {
-        val responseBody = TestUtils.fileToString("webhook_calls_detail_response.json")
-        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
-
-        assertTestCallback(client!!.webhooks().async().callDetails(
-                "spaceid", "webhookid", "callid",
-                TestCallback(true)) as TestCallback)
-
-        // Request
-        val recordedRequest = server!!.takeRequest()
-        assertEquals("GET", recordedRequest.method)
-        assertEquals("/spaces/spaceid/webhooks/webhookid/calls/callid", recordedRequest.path)
-    }
-
-    @test
-    fun testCallDetailsByObject() {
         val responseBody = TestUtils.fileToString("webhook_calls_detail_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -282,21 +307,6 @@ class WebhookTests : BaseTest() {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         assertTestCallback(client!!.webhooks().async().health(
-                "spaceid", "webhookid",
-                TestCallback(true)) as TestCallback)
-
-        // Request
-        val recordedRequest = server!!.takeRequest()
-        assertEquals("GET", recordedRequest.method)
-        assertEquals("/spaces/spaceid/webhooks/webhookid/health", recordedRequest.path)
-    }
-
-    @test
-    fun testCallHealthByObject() {
-        val responseBody = TestUtils.fileToString("webhook_health_response.json")
-        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
-
-        assertTestCallback(client!!.webhooks().async().health(
                 CMAWebhook().setSpaceId("spaceid").setId("webhookid"),
                 TestCallback(true)) as TestCallback)
 
@@ -305,5 +315,4 @@ class WebhookTests : BaseTest() {
         assertEquals("GET", recordedRequest.method)
         assertEquals("/spaces/spaceid/webhooks/webhookid/health", recordedRequest.path)
     }
-
 }

@@ -14,7 +14,7 @@ class LocalesTests : BaseTest() {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val result = assertTestCallback(client!!.locales().async()
-                .fetchOne("spaceId", "localeId", TestCallback()) as TestCallback)!!
+                .fetchOne("spaceId", "master", "localeId", TestCallback()) as TestCallback)!!
 
         assertEquals("U.S. English", result.name)
         assertEquals("en-US", result.code)
@@ -34,12 +34,28 @@ class LocalesTests : BaseTest() {
     }
 
     @Test
+    fun testFetchOneWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("locales_get_one.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.locales().async().fetchOne("localeId", TestCallback())
+                as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/configuredSpaceId/environments/configuredEnvironmentId"
+                + "/locales/localeId",
+                recordedRequest.path)
+    }
+
+    @Test
     fun testFetchAll() {
         val responseBody = TestUtils.fileToString("locales_get_all.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val result = assertTestCallback(client!!.locales().async()
-                .fetchAll("spaceId", TestCallback()) as TestCallback)!!
+                .fetchAll("spaceId", "master", TestCallback()) as TestCallback)!!
 
         assertEquals(2, result.total)
         assertEquals(100, result.limit)
@@ -57,6 +73,20 @@ class LocalesTests : BaseTest() {
     }
 
     @Test
+    fun testFetchAllWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("locales_get_all.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.locales().async().fetchAll(TestCallback()) as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/configuredSpaceId/environments/configuredEnvironmentId/locales",
+                recordedRequest.path)
+    }
+
+    @Test
     fun testCreateNew() {
         val responseBody = TestUtils.fileToString("locales_create.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
@@ -68,7 +98,7 @@ class LocalesTests : BaseTest() {
                 .setOptional(false)
 
         val result = assertTestCallback(client!!.locales().async()
-                .create("spaceId", locale, TestCallback()) as TestCallback)!!
+                .create("spaceId", "master", locale, TestCallback()) as TestCallback)!!
 
         assertEquals("English (British)", result.name)
         assertEquals("en-UK", result.code)
@@ -79,6 +109,27 @@ class LocalesTests : BaseTest() {
         val recordedRequest = server!!.takeRequest()
         assertEquals("POST", recordedRequest.method)
         assertEquals("/spaces/spaceId/environments/master/locales/", recordedRequest.path)
+    }
+
+    @Test
+    fun testCreateNewWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("locales_create.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val locale = CMALocale()
+                .setName("English (British)")
+                .setCode("en-UK")
+                .setFallbackCode("en-US")
+                .setOptional(false)
+
+        assertTestCallback(client!!.locales().async().create(locale, TestCallback())
+                as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("POST", recordedRequest.method)
+        assertEquals("/spaces/configuredSpaceId/environments/configuredEnvironmentId/locales/",
+                recordedRequest.path)
     }
 
     @Test

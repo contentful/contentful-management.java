@@ -36,7 +36,7 @@ public final class ModuleUsers extends AbsModule<ServiceUsers> {
    * @param callbackExecutor to tell on which thread it should run.
    */
   public ModuleUsers(Retrofit retrofit, Executor callbackExecutor) {
-    super(retrofit, callbackExecutor);
+    super(retrofit, callbackExecutor, null, null);
     this.async = new Async();
   }
 

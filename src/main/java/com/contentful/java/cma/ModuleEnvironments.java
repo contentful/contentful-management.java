@@ -31,13 +31,29 @@ import retrofit2.Retrofit;
 public final class ModuleEnvironments extends AbsModule<ServiceEnvironments> {
   final Async async;
 
-  public ModuleEnvironments(Retrofit retrofit, Executor callbackExecutor) {
-    super(retrofit, callbackExecutor);
+  public ModuleEnvironments(
+      Retrofit retrofit,
+      Executor callbackExecutor,
+      String spaceid,
+      String environmentId) {
+    super(retrofit, callbackExecutor, spaceid, environmentId);
     this.async = new Async();
   }
 
   @Override protected ServiceEnvironments createService(Retrofit retrofit) {
     return retrofit.create(ServiceEnvironments.class);
+  }
+
+  /**
+   * Create an environment.
+   *
+   * @param environment CMAEnvironment
+   * @return {@link CMAEnvironment} result instance
+   * @throws IllegalArgumentException if environment's space id is null.
+   * @throws IllegalArgumentException if environment is null.
+   */
+  public CMAEnvironment create(CMAEnvironment environment) {
+    return create(spaceId, environment);
   }
 
   /**
@@ -91,6 +107,16 @@ public final class ModuleEnvironments extends AbsModule<ServiceEnvironments> {
   /**
    * Fetch all environments.
    *
+   * @return {@link CMAArray} result instance
+   * @throws IllegalArgumentException if environment's space id is null.
+   */
+  public CMAArray<CMAEnvironment> fetchAll() {
+    return fetchAll(spaceId);
+  }
+
+  /**
+   * Fetch all environments.
+   *
    * @param spaceId space ID
    * @return {@link CMAArray} result instance
    * @throws IllegalArgumentException if environment's space id is null.
@@ -98,6 +124,18 @@ public final class ModuleEnvironments extends AbsModule<ServiceEnvironments> {
   public CMAArray<CMAEnvironment> fetchAll(String spaceId) {
     assertNotNull(spaceId, "spaceId");
     return service.fetchAll(spaceId).blockingFirst();
+  }
+
+  /**
+   * Fetch an environment with a given {@code environmentId}.
+   *
+   * @param environmentId environment ID
+   * @return {@link CMAEnvironment} result instance
+   * @throws IllegalArgumentException if environment's space id is null.
+   * @throws IllegalArgumentException if environment's id is null.
+   */
+  public CMAEnvironment fetchOne(String environmentId) {
+    return fetchOne(spaceId, environmentId);
   }
 
   /**
@@ -163,6 +201,25 @@ public final class ModuleEnvironments extends AbsModule<ServiceEnvironments> {
     /**
      * Create an environment.
      *
+     * @param environment CMAEnvironment
+     * @param callback    Callback
+     * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if space id is null.
+     * @throws IllegalArgumentException if environment is null.
+     */
+    public CMACallback<CMAEnvironment> create(
+        final CMAEnvironment environment,
+        CMACallback<CMAEnvironment> callback) {
+      return defer(new DefFunc<CMAEnvironment>() {
+        @Override CMAEnvironment method() {
+          return ModuleEnvironments.this.create(environment);
+        }
+      }, callback);
+    }
+
+    /**
+     * Create an environment.
+     *
      * @param spaceId     Id of the space to host environment in
      * @param environment CMAEnvironment
      * @param callback    Callback
@@ -204,6 +261,24 @@ public final class ModuleEnvironments extends AbsModule<ServiceEnvironments> {
      * <p>
      * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH}.
      *
+     * @param callback Inform about results on the callback.
+     * @return the given {@link CMACallback} instance.
+     * @throws IllegalArgumentException if environment's space id is null.
+     */
+    public CMACallback<CMAArray<CMAEnvironment>> fetchAll(
+        CMACallback<CMAArray<CMAEnvironment>> callback) {
+      return defer(new DefFunc<CMAArray<CMAEnvironment>>() {
+        @Override CMAArray<CMAEnvironment> method() {
+          return ModuleEnvironments.this.fetchAll();
+        }
+      }, callback);
+    }
+
+    /**
+     * Fetch all environments.
+     * <p>
+     * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH}.
+     *
      * @param spaceId  Id of the space to host environment in
      * @param callback Inform about results on the callback.
      * @return the given {@link CMACallback} instance.
@@ -215,6 +290,25 @@ public final class ModuleEnvironments extends AbsModule<ServiceEnvironments> {
       return defer(new DefFunc<CMAArray<CMAEnvironment>>() {
         @Override CMAArray<CMAEnvironment> method() {
           return ModuleEnvironments.this.fetchAll(spaceId);
+        }
+      }, callback);
+    }
+
+    /**
+     * Fetch an environment with a given {@code environmentId}.
+     *
+     * @param environmentId environment ID
+     * @param callback      Callback
+     * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if environment's space id is null.
+     * @throws IllegalArgumentException if environment's id is null.
+     */
+    public CMACallback<CMAEnvironment> fetchOne(
+        final String environmentId,
+        CMACallback<CMAEnvironment> callback) {
+      return defer(new DefFunc<CMAEnvironment>() {
+        @Override CMAEnvironment method() {
+          return ModuleEnvironments.this.fetchOne(environmentId);
         }
       }, callback);
     }

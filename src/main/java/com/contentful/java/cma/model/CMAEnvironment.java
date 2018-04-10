@@ -83,7 +83,8 @@ public class CMAEnvironment extends CMAResource {
    * Convenience method for setting an environment id.
    *
    * @param environmentId the id to be set.
-   * @param <T>           An implementation of CMAResource, normally used for chaining setter methods.
+   * @param <T>           An implementation of CMAResource, normally used for chaining setter
+   *                      methods.
    * @return the calling {@link CMAResource} for chaining.
    */
   @Override @SuppressWarnings("unchecked")

@@ -58,7 +58,7 @@ class EntryTests : BaseTest() {
 
         val result = assertTestCallback(client!!.entries()
                 .async()
-                .create("spaceid", "ctid", entry, TestCallback()) as TestCallback)!!
+                .create("spaceid", "master", "ctid", entry, TestCallback()) as TestCallback)!!
 
         assertEquals(2, result.fields.size)
 
@@ -78,6 +78,27 @@ class EntryTests : BaseTest() {
     }
 
     @test
+    fun testCreateWithConfiguredSpaceAndEnvironment() {
+        val requestBody = TestUtils.fileToString("entry_create_request.json")
+        val responseBody = TestUtils.fileToString("entry_create_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val entry = CMAEntry()
+                .setField("fid1", "en-US", "value1")
+                .setField("fid2", "en-US", "value2")
+
+        assertTestCallback(client!!.entries()
+                .async()
+                .create("ctid", entry, TestCallback()) as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("POST", recordedRequest.method)
+        assertEquals("/spaces/configuredSpaceId/environments/configuredEnvironmentId/entries",
+                recordedRequest.path)
+    }
+
+    @test
     fun testCreateWithId() {
         val requestBody = TestUtils.fileToString("entry_create_request.json")
         val responseBody = TestUtils.fileToString("entry_create_response.json")
@@ -89,7 +110,7 @@ class EntryTests : BaseTest() {
                 .setField("fid2", "en-US", "value2")
 
         assertTestCallback(client!!.entries().async().create(
-                "spaceid", "ctid", entry, TestCallback()) as TestCallback)
+                "spaceid", "master", "ctid", entry, TestCallback()) as TestCallback)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -115,7 +136,7 @@ class EntryTests : BaseTest() {
 
         bar.setField("link", locale, foo)
 
-        client!!.entries().create("space", "type", foo)
+        client!!.entries().create("space", "master", "type", foo)
 
         val requestBody = TestUtils.fileToString("entry_create_links_request.json")
         val request = server!!.takeRequest()
@@ -127,7 +148,7 @@ class EntryTests : BaseTest() {
         val foo = CMAEntry().setId("bar").setField("link", "en-US", CMAEntry())
         server!!.enqueue(MockResponse().setResponseCode(200))
         try {
-            client!!.entries().create("space", "type", foo)
+            client!!.entries().create("space", "master", "type", foo)
         } catch (e: RuntimeException) {
             assertEquals("Entry contains link to draft resource (has no ID).", e.message)
             throw e
@@ -139,21 +160,11 @@ class EntryTests : BaseTest() {
         val requestBody = ""
         server!!.enqueue(MockResponse().setResponseCode(204).setBody(requestBody))
         assertTestCallback(client!!.entries().async().delete(
-                "spaceid", "entryid", TestCallback()) as TestCallback)
-
-        // Request
-        val recordedRequest = server!!.takeRequest()
-        assertEquals("DELETE", recordedRequest.method)
-        assertEquals("/spaces/spaceid/environments/master/entries/entryid", recordedRequest.path)
-    }
-
-    @test
-    fun testDeleteWithObject() {
-        val requestBody = ""
-        server!!.enqueue(MockResponse().setResponseCode(204).setBody(requestBody))
-        assertTestCallback(client!!.entries().async().delete(
-                CMAEntry().setSpaceId("spaceid").setId("entryid"),
-                TestCallback()) as TestCallback)
+                CMAEntry().apply {
+                    spaceId = "spaceid"
+                    environmentId = "master"
+                    id = "entryid"
+                }, TestCallback()) as TestCallback)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -167,7 +178,7 @@ class EntryTests : BaseTest() {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val result = assertTestCallback(client!!.entries().async().fetchAll(
-                "spaceid", TestCallback()) as TestCallback)!!
+                "spaceid", "environmentId", TestCallback()) as TestCallback)!!
 
         assertEquals(CMAType.Array, result.system.type)
         assertEquals(1, result.total)
@@ -182,7 +193,22 @@ class EntryTests : BaseTest() {
         // Request
         val request = server!!.takeRequest()
         assertEquals("GET", request.method)
-        assertEquals("/spaces/spaceid/environments/master/entries?limit=100", request.path)
+        assertEquals("/spaces/spaceid/environments/environmentId/entries?limit=100", request.path)
+    }
+
+    @test
+    fun testFetchAllWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("entry_fetch_all_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.entries().async().fetchAll(TestCallback()) as TestCallback)!!
+
+        // Request
+        val request = server!!.takeRequest()
+        assertEquals("GET", request.method)
+        assertEquals("/spaces/configuredSpaceId/environments/configuredEnvironmentId/entries"
+                + "?limit=100",
+                request.path)
     }
 
     @test
@@ -193,7 +219,7 @@ class EntryTests : BaseTest() {
         val query = hashMapOf(Pair("skip", "1"), Pair("limit", "2"), Pair("content_type", "foo"))
 
         assertTestCallback(client!!.entries().async().fetchAll(
-                "spaceid", query, TestCallback()) as TestCallback)
+                "spaceid", "environmentId", query, TestCallback()) as TestCallback)
 
         // Request
         val request = server!!.takeRequest()
@@ -204,12 +230,30 @@ class EntryTests : BaseTest() {
     }
 
     @test
+    fun testFetchAllWithQueryWithConfiguredSpaceAndEnvironment() {
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(
+                TestUtils.fileToString("entry_fetch_all_response.json")))
+
+        val query = hashMapOf(Pair("skip", "1"), Pair("limit", "2"), Pair("content_type", "foo"))
+
+        assertTestCallback(client!!.entries().async().fetchAll(query, TestCallback())
+                as TestCallback)
+
+        // Request
+        val request = server!!.takeRequest()
+        assertEquals("GET", request.method)
+        assertEquals("/spaces/configuredSpaceId/environments/configuredEnvironmentId/entries"
+                + "?limit=2&content_type=foo&skip=1",
+                request.path)
+    }
+
+    @test
     fun testFetchWithId() {
         val responseBody = TestUtils.fileToString("entry_fetch_one_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val result = assertTestCallback(client!!.entries().async().fetchOne(
-                "space", "entry", TestCallback()) as TestCallback)!!
+                "space", "master", "entry", TestCallback()) as TestCallback)!!
 
         val sys = result.system
         val fields = result.fields
@@ -224,6 +268,21 @@ class EntryTests : BaseTest() {
         val request = server!!.takeRequest()
         assertEquals("GET", request.method)
         assertEquals("/spaces/space/environments/master/entries/entry", request.path)
+    }
+
+    @test
+    fun testFetchWithIdWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("entry_fetch_one_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val result = assertTestCallback(client!!.entries().async().fetchOne("entry", TestCallback())
+                as TestCallback)!!
+
+        // Request
+        val request = server!!.takeRequest()
+        assertEquals("GET", request.method)
+        assertEquals("/spaces/configuredSpaceId/environments/configuredEnvironmentId/entries/entry",
+                request.path)
     }
 
     @test
@@ -323,7 +382,7 @@ class EntryTests : BaseTest() {
 
         val entry = CMAEntry().setVersion(31337)
         try {
-            badClient.entries().create("spaceid", "ctid", entry)
+            badClient.entries().create("spaceid", "envid", "ctid", entry)
         } catch (e: RuntimeException) {
             assertEquals(31337, entry.version)
             throw e
@@ -348,7 +407,7 @@ class EntryTests : BaseTest() {
                 .setField("testField2", "en-US", Collections.singletonList(""))
 
         try {
-            client!!.entries().create("spaceID", "contenttype", entry)
+            client!!.entries().create("spaceID", "envID", "contenttype", entry)
         } catch (e: CMAHttpException) {
             assertEquals(
                     "The type of \"value\" is incorrect, expected type: Symbol",
@@ -537,10 +596,11 @@ class EntryTests : BaseTest() {
                 client!!
                         .entries()
                         .async()
-                        .delete(
-                                "spaceid",
-                                "environmentId",
-                                "entryId",
+                        .delete(CMAEntry().apply {
+                            spaceId = "spaceid"
+                            environmentId = "environmentId"
+                            id = "entryId"
+                        },
                                 TestCallback()
                         ) as TestCallback)!!
 

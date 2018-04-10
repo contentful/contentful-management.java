@@ -30,7 +30,7 @@ class ModuleTests : BaseTest() {
     @before
     fun setup() {
         super.setUp()
-        module = object : AbsModule<Any>(null, SynchronousExecutor()) {
+        module = object : AbsModule<Any>(null, SynchronousExecutor(), "", "") {
             override fun createService(retrofit: Retrofit?): Any? {
                 return null
             }
@@ -72,7 +72,7 @@ class ModuleTests : BaseTest() {
         val currentThreadId = Thread.currentThread().id
         var workerThreadId: Long? = null
 
-        val module = object : AbsModule<Any>(null, SynchronousExecutor()) {
+        val module = object : AbsModule<Any>(null, SynchronousExecutor(), null, null) {
             override fun createService(retrofit: Retrofit?): Any? = null
 
             fun work() {

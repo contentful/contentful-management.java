@@ -27,6 +27,18 @@ import kotlin.test.assertNull
 import org.junit.Test as test
 
 class ApiKeysTests : BaseTest() {
+    override fun setUp() {
+        super.setUp()
+
+        // overwrite client to not use environments
+        client = CMAClient.Builder().apply {
+            accessToken = "token"
+            coreEndpoint = server!!.url("/").toString()
+            uploadEndpoint = server!!.url("/").toString()
+            spaceId = "configuredSpaceId"
+        }.build()
+    }
+
     @test
     fun testFetchAll() {
         val responseBody = TestUtils.fileToString("apikeys_get_all.json")
@@ -116,4 +128,61 @@ class ApiKeysTests : BaseTest() {
         assertEquals("GET", recordedRequest.method)
         assertEquals("/spaces/spaceid/api_keys?skip=6", recordedRequest.path)
     }
+
+    @test
+    fun testCreateOneWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("apikeys_create.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.apiKeys().async()
+                .create(CMAApiKey(), TestCallback()) as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("POST", recordedRequest.method)
+        assertEquals("/spaces/configuredSpaceId/api_keys", recordedRequest.path)
+    }
+
+    @test
+    fun testFetchOneWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("apikeys_get_one.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.apiKeys().async()
+                .fetchOne("keyId", TestCallback()) as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/configuredSpaceId/api_keys/keyId", recordedRequest.path)
+    }
+
+    @test
+    fun testFetchAllWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("apikeys_get_all.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.apiKeys().async().fetchAll(TestCallback()) as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/configuredSpaceId/api_keys", recordedRequest.path)
+    }
+
+    @test
+    fun testQueryAllWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("apikeys_get_all.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val query = hashMapOf("skip" to "6")
+        assertTestCallback(client!!.apiKeys().async()
+                .fetchAll(query, TestCallback()) as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/configuredSpaceId/api_keys?skip=6", recordedRequest.path)
+    }
+
 }

@@ -34,7 +34,7 @@ class LinkTests : BaseTest() {
         val cmaEntry = CMAEntry()
         cmaEntry.localize("en-US").setField("link", cmaLink)
 
-        client!!.entries().create("spaceId", "contentTypeId", cmaEntry)
+        client!!.entries().create("spaceId", "master", "contentTypeId", cmaEntry)
 
         val cmaRequest = server!!.takeRequest()
 

@@ -19,6 +19,7 @@ package com.contentful.java.cma;
 import com.contentful.java.cma.RxExtensions.ActionError;
 import com.contentful.java.cma.RxExtensions.ActionSuccess;
 import com.contentful.java.cma.RxExtensions.DefFunc;
+import com.contentful.java.cma.model.CMANotWithEnvironmentsException;
 import com.contentful.java.cma.model.CMAResource;
 
 import java.util.concurrent.Executor;
@@ -33,10 +34,14 @@ import retrofit2.Retrofit;
 abstract class AbsModule<T> {
   final T service;
   final Executor callbackExecutor;
+  final String spaceId;
+  final String environmentId;
 
-  AbsModule(Retrofit retrofit, Executor callbackExecutor) {
+  AbsModule(Retrofit retrofit, Executor callbackExecutor, String spaceId, String environmentId) {
     this.service = createService(retrofit);
     this.callbackExecutor = callbackExecutor;
+    this.spaceId = spaceId;
+    this.environmentId = environmentId;
   }
 
   protected abstract T createService(Retrofit retrofit);
@@ -105,5 +110,17 @@ abstract class AbsModule<T> {
             new ActionSuccess<R>(callbackExecutor, callback),
             new ActionError(callbackExecutor, callback));
     return callback;
+  }
+
+  /**
+   * Throw an {@link CMANotWithEnvironmentsException} if an environment id was
+   * configured in
+   *
+   * @see CMAClient.Builder#setEnvironmentId(String)
+   */
+  void throwIfEnvironmentIdIsNotDefault() {
+    if (!Constants.DEFAULT_ENVIRONMENT.equals(environmentId)) {
+      throw new CMANotWithEnvironmentsException();
+    }
   }
 }

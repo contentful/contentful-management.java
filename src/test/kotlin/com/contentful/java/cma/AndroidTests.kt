@@ -52,7 +52,7 @@ class AndroidTests : BaseTest() {
                     .setCoreEndpoint(intent.getStringExtra("EXTRA_URL"))
                     .build()
 
-            androidClient.assets().async().fetchAll("space-id", cb)
+            androidClient.assets().async().fetchAll("space-id", "environment-id", cb)
         }
     }
 }

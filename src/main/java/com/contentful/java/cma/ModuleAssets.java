@@ -27,16 +27,18 @@ import java.util.concurrent.Executor;
 
 import retrofit2.Retrofit;
 
-import static com.contentful.java.cma.Constants.DEFAULT_ENVIRONMENT;
-
 /**
  * Assets Module.
  */
 public final class ModuleAssets extends AbsModule<ServiceAssets> {
   final Async async;
 
-  public ModuleAssets(Retrofit retrofit, Executor callbackExecutor) {
-    super(retrofit, callbackExecutor);
+  public ModuleAssets(
+      Retrofit retrofit,
+      Executor callbackExecutor,
+      String spaceId,
+      String environmentId) {
+    super(retrofit, callbackExecutor, spaceId, environmentId);
     this.async = new Async();
   }
 
@@ -98,53 +100,19 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
   }
 
   /**
-   * Create a new Asset in the default environment.
+   * Create a new Asset in the configured space and environment.
    * In case the given {@code asset} has an ID associated with it, that ID will be used,
    * otherwise the server will auto-generate an ID that will be contained in the response upon
    * success.
    *
-   * @param spaceId Space ID
-   * @param asset   Asset
+   * @param asset Asset
    * @return {@link CMAAsset} result instance
    * @throws IllegalArgumentException if asset is null.
    * @throws IllegalArgumentException if asset space id is null.
    */
   @SuppressWarnings("unchecked")
-  public CMAAsset create(String spaceId, CMAAsset asset) {
-    return create(spaceId, DEFAULT_ENVIRONMENT, asset);
-  }
-
-  /**
-   * Delete an Asset.
-   *
-   * @param spaceId       Space ID
-   * @param environmentId Environment ID
-   * @param assetId       Asset ID
-   * @return An integer representing the result of the delete operation
-   * @throws IllegalArgumentException if spaceId is null.
-   * @throws IllegalArgumentException if environmentIdS is null.
-   * @throws IllegalArgumentException if assetId is null.
-   */
-  public Integer delete(String spaceId, String environmentId, String assetId) {
-    assertNotNull(spaceId, "spaceId");
-    assertNotNull(assetId, "assetId");
-    assertNotNull(environmentId, "environmentId");
-
-    return service.delete(spaceId, environmentId, assetId).blockingFirst().code();
-  }
-
-  /**
-   * Delete an Asset from the default environment.
-   *
-   * @param spaceId Space ID
-   * @param assetId Asset ID
-   * @return An integer representing the result of the delete operation
-   * @throws IllegalArgumentException if spaceId is null.
-   * @throws IllegalArgumentException if environmentIdS is null.
-   * @throws IllegalArgumentException if assetId is null.
-   */
-  public Integer delete(String spaceId, String assetId) {
-    return delete(spaceId, DEFAULT_ENVIRONMENT, assetId);
+  public CMAAsset create(CMAAsset asset) {
+    return create(spaceId, environmentId, asset);
   }
 
   /**
@@ -160,7 +128,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     final String spaceId = getSpaceIdOrThrow(asset, "asset");
     final String environmentId = asset.getEnvironmentId();
 
-    return delete(spaceId, environmentId, assetId);
+    return service.delete(spaceId, environmentId, assetId).blockingFirst().code();
   }
 
   /**
@@ -168,12 +136,25 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
    * <p>
    * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH}
    *
-   * @param spaceId Space ID
    * @return {@link CMAArray} result instance
    * @throws IllegalArgumentException if spaceId is null.
    */
-  public CMAArray<CMAAsset> fetchAll(String spaceId) {
-    return fetchAll(spaceId, new HashMap<>());
+  public CMAArray<CMAAsset> fetchAll() {
+    return fetchAll(spaceId, environmentId, new HashMap<>());
+  }
+
+  /**
+   * Fetch all Assets from an Environment.
+   * <p>
+   * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH}
+   *
+   * @param map the query to narrow down the results.
+   * @return {@link CMAArray} result instance
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if environment id is null.
+   */
+  public CMAArray<CMAAsset> fetchAll(Map<String, String> map) {
+    return fetchAll(spaceId, environmentId, map);
   }
 
   /**
@@ -189,18 +170,6 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
    */
   public CMAArray<CMAAsset> fetchAll(String spaceId, String environmentId) {
     return fetchAll(spaceId, environmentId, new HashMap<>());
-  }
-
-  /**
-   * Fetch all Assets from a Space's default Environment with query parameter.
-   *
-   * @param spaceId Space ID
-   * @param query   specifying details about which assets to fetch.
-   * @return {@link CMAArray} result instance
-   * @throws IllegalArgumentException if spaceId is null.
-   */
-  public CMAArray<CMAAsset> fetchAll(String spaceId, Map<String, String> query) {
-    return fetchAll(spaceId, DEFAULT_ENVIRONMENT, query);
   }
 
   /**
@@ -224,19 +193,15 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
   }
 
   /**
-   * Fetch an Asset with the given {@code assetId} from a Space's default Environment.
+   * Fetch an Asset with the given {@code assetId}..
    *
-   * @param spaceId Space ID
    * @param assetId Asset ID
    * @return {@link CMAAsset} result instance
    * @throws IllegalArgumentException if spaceId is null.
    * @throws IllegalArgumentException if assetId is null.
    */
-  public CMAAsset fetchOne(String spaceId, String assetId) {
-    assertNotNull(spaceId, "spaceId");
-    assertNotNull(assetId, "assetId");
-
-    return fetchOne(spaceId, DEFAULT_ENVIRONMENT, assetId);
+  public CMAAsset fetchOne(String assetId) {
+    return fetchOne(spaceId, environmentId, assetId);
   }
 
   /**
@@ -400,7 +365,6 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
      * otherwise the server will auto-generate an ID that will be contained in the response upon
      * success.
      *
-     * @param spaceId  Space ID
      * @param asset    Asset
      * @param callback Callback
      * @return the given {@code CMACallback} instance
@@ -408,11 +372,11 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
      * @throws IllegalArgumentException if asset id is null.
      * @throws IllegalArgumentException if asset space id is null.
      */
-    public CMACallback<CMAAsset> create(final String spaceId, final CMAAsset asset,
+    public CMACallback<CMAAsset> create(final CMAAsset asset,
                                         CMACallback<CMAAsset> callback) {
       return defer(new DefFunc<CMAAsset>() {
         @Override CMAAsset method() {
-          return ModuleAssets.this.create(spaceId, asset);
+          return ModuleAssets.this.create(asset);
         }
       }, callback);
     }
@@ -448,51 +412,6 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     /**
      * Delete an Asset.
      *
-     * @param spaceId  Space ID
-     * @param assetId  Asset ID
-     * @param callback Callback
-     * @return the given {@code CMACallback} instance
-     * @throws IllegalArgumentException if spaceId is null.
-     * @throws IllegalArgumentException if assetId is null.
-     */
-    public CMACallback<Integer> delete(
-        final String spaceId,
-        final String assetId,
-        CMACallback<Integer> callback) {
-      return defer(new DefFunc<Integer>() {
-        @Override Integer method() {
-          return ModuleAssets.this.delete(spaceId, assetId);
-        }
-      }, callback);
-    }
-
-    /**
-     * Delete an Asset from an Environment.
-     *
-     * @param spaceId       Space ID
-     * @param environmentId Environment ID
-     * @param assetId       Asset ID
-     * @param callback      Callback
-     * @return the given {@code CMACallback} instance
-     * @throws IllegalArgumentException if spaceId is null.
-     * @throws IllegalArgumentException if environmentId is null.
-     * @throws IllegalArgumentException if assetId is null.
-     */
-    public CMACallback<Integer> delete(
-        final String spaceId,
-        final String environmentId,
-        final String assetId,
-        CMACallback<Integer> callback) {
-      return defer(new DefFunc<Integer>() {
-        @Override Integer method() {
-          return ModuleAssets.this.delete(spaceId, environmentId, assetId);
-        }
-      }, callback);
-    }
-
-    /**
-     * Delete an Asset.
-     *
      * @param asset    Asset
      * @param callback Callback
      * @return the given {@code CMACallback} instance
@@ -509,18 +428,33 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     }
 
     /**
-     * Fetch all Assets from a Space.
+     * Fetch all Assets.
      *
-     * @param spaceId  Space ID
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      */
     public CMACallback<CMAArray<CMAAsset>> fetchAll(
-        String spaceId,
         CMACallback<CMAArray<CMAAsset>> callback) {
       return defer(new DefFunc<CMAArray<CMAAsset>>() {
         @Override CMAArray<CMAAsset> method() {
-          return ModuleAssets.this.fetchAll(spaceId);
+          return ModuleAssets.this.fetchAll();
+        }
+      }, callback);
+    }
+
+    /**
+     * Fetch all Assets.
+     *
+     * @param query    The query to narrow down the results.
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     */
+    public CMACallback<CMAArray<CMAAsset>> fetchAll(
+        final Map<String, String> query,
+        CMACallback<CMAArray<CMAAsset>> callback) {
+      return defer(new DefFunc<CMAArray<CMAAsset>>() {
+        @Override CMAArray<CMAAsset> method() {
+          return ModuleAssets.this.fetchAll(query);
         }
       }, callback);
     }
@@ -540,26 +474,6 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
       return defer(new DefFunc<CMAArray<CMAAsset>>() {
         @Override CMAArray<CMAAsset> method() {
           return ModuleAssets.this.fetchAll(spaceId, environmentId);
-        }
-      }, callback);
-    }
-
-    /**
-     * Fetch all Assets from a Space with a query.
-     *
-     * @param spaceId       Space ID
-     * @param query         Query
-     * @param callback      Callback
-     * @return the given {@code CMACallback} instance
-     * @throws IllegalArgumentException if spaceId is null.
-     */
-    public CMACallback<CMAArray<CMAAsset>> fetchAll(
-        final String spaceId,
-        final Map<String, String> query,
-        CMACallback<CMAArray<CMAAsset>> callback) {
-      return defer(new DefFunc<CMAArray<CMAAsset>>() {
-        @Override CMAArray<CMAAsset> method() {
-          return ModuleAssets.this.fetchAll(spaceId, query);
         }
       }, callback);
     }
@@ -589,7 +503,6 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     /**
      * Fetch an Asset with the given {@code assetId} from a Space.
      *
-     * @param spaceId  Space ID
      * @param assetId  Asset ID
      * @param callback Callback
      * @return the given {@code CMACallback} instance
@@ -597,12 +510,11 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
      * @throws IllegalArgumentException if assetId is null.
      */
     public CMACallback<CMAAsset> fetchOne(
-        final String spaceId,
         final String assetId,
         CMACallback<CMAAsset> callback) {
       return defer(new DefFunc<CMAAsset>() {
         @Override CMAAsset method() {
-          return ModuleAssets.this.fetchOne(spaceId, assetId);
+          return ModuleAssets.this.fetchOne(assetId);
         }
       }, callback);
     }
@@ -642,8 +554,10 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
      * @throws IllegalArgumentException if asset has no space.
      * @throws IllegalArgumentException if locale is null.
      */
-    public CMACallback<Integer> process(final CMAAsset asset, final String locale,
-                                        CMACallback<Integer> callback) {
+    public CMACallback<Integer> process(
+        final CMAAsset asset,
+        final String locale,
+        CMACallback<Integer> callback) {
       return defer(new DefFunc<Integer>() {
         @Override Integer method() {
           return ModuleAssets.this.process(asset, locale);

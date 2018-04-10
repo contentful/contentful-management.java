@@ -32,7 +32,7 @@ public final class ModuleOrganizations extends AbsModule<ServiceOrganizations> {
   final Async async;
 
   public ModuleOrganizations(Retrofit retrofit, Executor callbackExecutor) {
-    super(retrofit, callbackExecutor);
+    super(retrofit, callbackExecutor, null, null);
     this.async = new Async();
   }
 

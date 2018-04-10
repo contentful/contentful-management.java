@@ -236,26 +236,6 @@ class SpaceTests : BaseTest() {
     }
 
     @test
-    fun testFetchAllLocales() {
-        val responseBody = TestUtils.fileToString("space_fetch_locales_response.json")
-        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
-
-        val result = assertTestCallback(client!!.spaces().async().fetchLocales(
-                "spaceid", TestCallback()) as TestCallback)!!
-
-        val item = result.items[0]
-        assertEquals("U.S. English", item.name)
-        assertEquals("en-US", item.code)
-        assertNull(item.fallbackCode)
-        assertTrue(item.isDefault)
-
-        // Request
-        val recordedRequest = server!!.takeRequest()
-        assertEquals("GET", recordedRequest.method)
-        assertEquals("/spaces/spaceid/locales?limit=100", recordedRequest.path)
-    }
-
-    @test
     fun testUpdate() {
         val requestBody = TestUtils.fileToString("space_update_request.json")
         val responseBody = TestUtils.fileToString("space_update_response.json")

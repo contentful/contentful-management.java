@@ -38,7 +38,7 @@ class EditorInterfacesTests : BaseTest() {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val result = assertTestCallback(client!!.editorInterfaces().async()
-                .fetchOne("spaceId", "contentTypeId", TestCallback()) as TestCallback)!!
+                .fetchOne("spaceId", "master", "contentTypeId", TestCallback()) as TestCallback)!!
 
         assertEditorInterface(result)
 
@@ -46,6 +46,22 @@ class EditorInterfacesTests : BaseTest() {
         val recordedRequest = server!!.takeRequest()
         assertEquals("GET", recordedRequest.method)
         assertEquals("/spaces/spaceId/environments/master/content_types/contentTypeId/editor_interface",
+                recordedRequest.path)
+    }
+
+    @test
+    fun testFetchOneWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("editor_interfaces_get.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.editorInterfaces().async()
+                .fetchOne("contentTypeId", TestCallback()) as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/configuredSpaceId/environments/configuredEnvironmentId/content_types"
+                + "/contentTypeId/editor_interface",
                 recordedRequest.path)
     }
 

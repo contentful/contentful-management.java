@@ -55,6 +55,28 @@ class EnvironmentsTest : BaseTest() {
     }
 
     @test
+    fun testCreateWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("environments_create.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val environment = CMAEnvironment().setName("environment_name")
+
+        val result = assertTestCallback(
+                client!!
+                        .environments()
+                        .async()
+                        .create(
+                                environment,
+                                TestCallback()
+                        ) as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("POST", recordedRequest.method)
+        assertEquals("/spaces/configuredSpaceId/environments", recordedRequest.path)
+    }
+
+    @test
     fun testCreateWithId() {
         val responseBody = TestUtils.fileToString("environments_create_with_id.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
@@ -189,6 +211,25 @@ class EnvironmentsTest : BaseTest() {
     }
 
     @test
+    fun testFetchAllWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("environments_get_all.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val result = assertTestCallback(
+                client!!
+                        .environments()
+                        .async()
+                        .fetchAll(
+                                TestCallback()
+                        ) as TestCallback)!!
+
+        // Request
+        val request = server!!.takeRequest()
+        assertEquals("GET", request.method)
+        assertEquals("/spaces/configuredSpaceId/environments", request.path)
+    }
+
+    @test
     fun testFetchWithId() {
         val responseBody = TestUtils.fileToString("environments_get_one.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
@@ -226,6 +267,25 @@ class EnvironmentsTest : BaseTest() {
         val request = server!!.takeRequest()
         assertEquals("GET", request.method)
         assertEquals("/spaces/%3Cspace_id%3E/environments/staging", request.path)
+    }
+    @test
+    fun testFetchWithIdWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("environments_get_one.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val result = assertTestCallback(
+                client!!
+                        .environments()
+                        .async()
+                        .fetchOne(
+                                "staging",
+                                TestCallback()
+                        ) as TestCallback)!!
+
+        // Request
+        val request = server!!.takeRequest()
+        assertEquals("GET", request.method)
+        assertEquals("/spaces/configuredSpaceId/environments/staging", request.path)
     }
 
     @test

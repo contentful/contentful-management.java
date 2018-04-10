@@ -17,10 +17,6 @@
 package com.contentful.java.cma
 
 import com.contentful.java.cma.lib.TestCallback
-import com.contentful.java.cma.model.CMALink
-import com.contentful.java.cma.model.CMAResource
-import com.contentful.java.cma.model.CMASystem
-import com.contentful.java.cma.model.CMAWebhookCall
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import okhttp3.mockwebserver.MockWebServer
@@ -37,18 +33,20 @@ open class BaseTest {
     var gson: Gson? = null
 
     @before
-    fun setUp() {
+    open fun setUp() {
         LogManager.getLogManager().reset()
         // MockWebServer
         server = MockWebServer()
         server!!.start()
 
         // Client
-        client = CMAClient.Builder()
-                .setAccessToken("token")
-                .setCoreEndpoint(server!!.url("/").toString())
-                .setUploadEndpoint(server!!.url("/").toString())
-                .build()
+        client = CMAClient.Builder().apply {
+            accessToken = "token"
+            coreEndpoint = server!!.url("/").toString()
+            uploadEndpoint = server!!.url("/").toString()
+            spaceId = "configuredSpaceId"
+            environmentId = "configuredEnvironmentId"
+        }.build()
 
         gson = CMAClient.createGson()
     }

@@ -28,16 +28,18 @@ import java.util.concurrent.Executor;
 
 import retrofit2.Retrofit;
 
-import static com.contentful.java.cma.Constants.DEFAULT_ENVIRONMENT;
-
 /**
  * Content Types Module.
  */
 public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
   final Async async;
 
-  public ModuleContentTypes(Retrofit retrofit, Executor callbackExecutor) {
-    super(retrofit, callbackExecutor);
+  public ModuleContentTypes(
+      Retrofit retrofit,
+      Executor callbackExecutor,
+      String spaceId,
+      String environmentId) {
+    super(retrofit, callbackExecutor, spaceId, environmentId);
     this.async = new Async();
   }
 
@@ -51,17 +53,14 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
    * otherwise the server will auto-generate an ID that will be contained in the response upon
    * success.
    *
-   * @param spaceId     Space ID
    * @param contentType Content Type
    * @return {@link CMAContentType} result instance
    * @throws IllegalArgumentException if spaceId is null.
    * @throws IllegalArgumentException if contentType is null.
    */
   @SuppressWarnings("unchecked")
-  public CMAContentType create(
-      String spaceId,
-      CMAContentType contentType) {
-    return create(spaceId, DEFAULT_ENVIRONMENT, contentType);
+  public CMAContentType create(CMAContentType contentType) {
+    return create(spaceId, environmentId, contentType);
   }
 
   /**
@@ -107,37 +106,6 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
   /**
    * Delete a Content Type.
    *
-   * @param spaceId       Space ID
-   * @param contentTypeId Content Type ID
-   * @return Integer representing the result of the operation
-   * @throws IllegalArgumentException if spaceId is null.
-   * @throws IllegalArgumentException if contentTypeId is null.
-   */
-  public Integer delete(String spaceId, String contentTypeId) {
-    return delete(spaceId, DEFAULT_ENVIRONMENT, contentTypeId);
-  }
-
-  /**
-   * Delete a Content Type.
-   *
-   * @param spaceId       Space ID
-   * @param environmentId Environment ID
-   * @param contentTypeId Content Type ID
-   * @return Integer representing the result of the operation
-   * @throws IllegalArgumentException if spaceId is null.
-   * @throws IllegalArgumentException if environmentId is null.
-   * @throws IllegalArgumentException if contentTypeId is null.
-   */
-  public Integer delete(String spaceId, String environmentId, String contentTypeId) {
-    assertNotNull(spaceId, "spaceId");
-    assertNotNull(environmentId, "environmentId");
-    assertNotNull(contentTypeId, "contentTypeId");
-    return service.delete(spaceId, environmentId, contentTypeId).blockingFirst().code();
-  }
-
-  /**
-   * Delete a Content Type.
-   *
    * @param contentType Content Type
    * @return Integer representing the result of the operation
    * @throws IllegalArgumentException if spaceId is null.
@@ -148,7 +116,7 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
     final String environmentId = contentType.getEnvironmentId();
     final String contentTypeId = getResourceIdOrThrow(contentType, "contentType");
 
-    return delete(spaceId, environmentId, contentTypeId);
+    return service.delete(spaceId, environmentId, contentTypeId).blockingFirst().code();
   }
 
   /**
@@ -156,12 +124,24 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
    * <p>
    * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH}
    *
-   * @param spaceId Space ID
    * @return {@link CMAArray} result instance
    * @throws IllegalArgumentException if spaceId is null.
    */
-  public CMAArray<CMAContentType> fetchAll(String spaceId) {
-    return fetchAll(spaceId, new HashMap<>());
+  public CMAArray<CMAContentType> fetchAll() {
+    return fetchAll(spaceId, environmentId);
+  }
+
+  /**
+   * Fetch all Content Types from a Space, using default query parameter.
+   * <p>
+   * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH}
+   *
+   * @param query to specify to narrow down results.
+   * @return {@link CMAArray} result instance
+   * @throws IllegalArgumentException if spaceId is null.
+   */
+  public CMAArray<CMAContentType> fetchAll(Map<String, String> query) {
+    return fetchAll(spaceId, environmentId, query);
   }
 
   /**
@@ -176,18 +156,6 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
    */
   public CMAArray<CMAContentType> fetchAll(String spaceId, String environmentId) {
     return fetchAll(spaceId, environmentId, new HashMap<>());
-  }
-
-  /**
-   * Fetch all Content Types from a Space with query parameters.
-   *
-   * @param spaceId Space ID
-   * @param query   Query to narrow down the content_types to be searched for
-   * @return {@link CMAArray} result instance
-   * @throws IllegalArgumentException if spaceId is null.
-   */
-  public CMAArray<CMAContentType> fetchAll(String spaceId, Map<String, String> query) {
-    return fetchAll(spaceId, DEFAULT_ENVIRONMENT, query);
   }
 
   /**
@@ -212,16 +180,13 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
   /**
    * Fetch a Content Type with the given {@code contentTypeId} from a Space.
    *
-   * @param spaceId       Space ID
    * @param contentTypeId Content Type ID
    * @return {@link CMAContentType} result instance
    * @throws IllegalArgumentException if spaceId is null.
    * @throws IllegalArgumentException if contentTypeId is null.
    */
-  public CMAContentType fetchOne(String spaceId, String contentTypeId) {
-    assertNotNull(spaceId, "spaceId");
-    assertNotNull(contentTypeId, "contentTypeId");
-    return fetchOne(spaceId, DEFAULT_ENVIRONMENT, contentTypeId);
+  public CMAContentType fetchOne(String contentTypeId) {
+    return fetchOne(spaceId, environmentId, contentTypeId);
   }
 
   /**
@@ -351,8 +316,7 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
    * @throws IllegalArgumentException if contentType's space id is null.
    * @throws IllegalArgumentException if snapshotId is null.
    */
-  public CMASnapshot fetchOneSnapshot(CMAContentType contentType,
-                                      String snapshotId) {
+  public CMASnapshot fetchOneSnapshot(CMAContentType contentType, String snapshotId) {
     assertNotNull(contentType, "contentType");
     assertNotNull(snapshotId, "snapshotId");
 
@@ -385,7 +349,6 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
      * otherwise the server will auto-generate an ID that will be contained in the response upon
      * success.
      *
-     * @param spaceId     Space ID
      * @param contentType Content Type
      * @param callback    Callback
      * @return the given {@code CMACallback} instance
@@ -394,12 +357,11 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
      * @throws IllegalArgumentException if contentTypeId is null.
      */
     public CMACallback<CMAContentType> create(
-        final String spaceId,
         final CMAContentType contentType,
         CMACallback<CMAContentType> callback) {
       return defer(new DefFunc<CMAContentType>() {
         @Override CMAContentType method() {
-          return ModuleContentTypes.this.create(spaceId, contentType);
+          return ModuleContentTypes.this.create(contentType);
         }
       }, callback);
     }
@@ -435,49 +397,6 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
     /**
      * Delete a Content Type.
      *
-     * @param spaceId       Space ID
-     * @param contentTypeId Content Type ID
-     * @param callback      Callback
-     * @return the given {@code CMACallback} instance
-     * @throws IllegalArgumentException if spaceId is null.
-     * @throws IllegalArgumentException if contentTypeId is null.
-     */
-    public CMACallback<Integer> delete(final String spaceId,
-                                       final String contentTypeId,
-                                       CMACallback<Integer> callback) {
-      return defer(new DefFunc<Integer>() {
-        @Override Integer method() {
-          return ModuleContentTypes.this.delete(spaceId, contentTypeId);
-        }
-      }, callback);
-    }
-
-    /**
-     * Delete a Content Type from an environment.
-     *
-     * @param spaceId       Space ID
-     * @param environmentId Environment ID
-     * @param contentTypeId Content Type ID
-     * @param callback      Callback
-     * @return the given {@code CMACallback} instance
-     * @throws IllegalArgumentException if spaceId is null.
-     * @throws IllegalArgumentException if contentTypeId is null.
-     */
-    public CMACallback<Integer> delete(
-        final String spaceId,
-        final String environmentId,
-        final String contentTypeId,
-        CMACallback<Integer> callback) {
-      return defer(new DefFunc<Integer>() {
-        @Override Integer method() {
-          return ModuleContentTypes.this.delete(spaceId, environmentId, contentTypeId);
-        }
-      }, callback);
-    }
-
-    /**
-     * Delete a Content Type.
-     *
      * @param contentType Content Type
      * @param callback    Callback
      * @return the given {@code CMACallback} instance
@@ -496,17 +415,33 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
     /**
      * Fetch all Content Types from a Space.
      *
-     * @param spaceId  Space ID
      * @param callback Callback
      * @return the given {@code CMACallback} instance
      * @throws IllegalArgumentException if spaceId is null.
      */
     public CMACallback<CMAArray<CMAContentType>> fetchAll(
-        final String spaceId,
         CMACallback<CMAArray<CMAContentType>> callback) {
       return defer(new DefFunc<CMAArray<CMAContentType>>() {
         @Override CMAArray<CMAContentType> method() {
-          return ModuleContentTypes.this.fetchAll(spaceId);
+          return ModuleContentTypes.this.fetchAll();
+        }
+      }, callback);
+    }
+
+    /**
+     * Fetch all Content Types from a Space with a query.
+     *
+     * @param query    Query
+     * @param callback Callback
+     * @return the given {@code CMACallback} instance
+     * @throws IllegalArgumentException if spaceId is null.
+     */
+    public CMACallback<CMAArray<CMAContentType>> fetchAll(
+        final Map<String, String> query,
+        CMACallback<CMAArray<CMAContentType>> callback) {
+      return defer(new DefFunc<CMAArray<CMAContentType>>() {
+        @Override CMAArray<CMAContentType> method() {
+          return ModuleContentTypes.this.fetchAll(query);
         }
       }, callback);
     }
@@ -532,21 +467,23 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
     }
 
     /**
-     * Fetch all Content Types from a Space with a query.
+     * Fetch all Content Types from an Environment.
      *
-     * @param spaceId  Space ID
-     * @param query    Query
-     * @param callback Callback
+     * @param spaceId       Space ID
+     * @param environmentId Environment ID
+     * @param callback      Callback
+     * @param query         Query
      * @return the given {@code CMACallback} instance
      * @throws IllegalArgumentException if spaceId is null.
      */
     public CMACallback<CMAArray<CMAContentType>> fetchAll(
         final String spaceId,
+        final String environmentId,
         final Map<String, String> query,
         CMACallback<CMAArray<CMAContentType>> callback) {
       return defer(new DefFunc<CMAArray<CMAContentType>>() {
         @Override CMAArray<CMAContentType> method() {
-          return ModuleContentTypes.this.fetchAll(spaceId, query);
+          return ModuleContentTypes.this.fetchAll(spaceId, environmentId, query);
         }
       }, callback);
     }
@@ -554,7 +491,6 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
     /**
      * Fetch a Content Type with the given {@code contentTypeId} from a Space.
      *
-     * @param spaceId       Space ID
      * @param contentTypeId Content Type ID
      * @param callback      Callback
      * @return the given {@code CMACallback} instance
@@ -562,12 +498,11 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
      * @throws IllegalArgumentException if contentTypeId is null.
      */
     public CMACallback<CMAContentType> fetchOne(
-        final String spaceId,
         final String contentTypeId,
         CMACallback<CMAContentType> callback) {
       return defer(new DefFunc<CMAContentType>() {
         @Override CMAContentType method() {
-          return ModuleContentTypes.this.fetchOne(spaceId, contentTypeId);
+          return ModuleContentTypes.this.fetchOne(contentTypeId);
         }
       }, callback);
     }

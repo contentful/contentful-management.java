@@ -25,6 +25,18 @@ import kotlin.test.assertEquals
 import org.junit.Test as test
 
 class SpaceMembershipTests : BaseTest() {
+    override fun setUp() {
+        super.setUp()
+
+        // overwrite client to not use environments
+        client = CMAClient.Builder().apply {
+            accessToken = "token"
+            coreEndpoint = server!!.url("/").toString()
+            uploadEndpoint = server!!.url("/").toString()
+            spaceId = "configuredSpaceId"
+        }.build()
+    }
+
     @test
     fun testFetchAll() {
         val responseBody = TestUtils.fileToString("space_memberships_fetch_all.json")
@@ -50,6 +62,20 @@ class SpaceMembershipTests : BaseTest() {
     }
 
     @test
+    fun testFetchAllWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("space_memberships_fetch_all.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.spaceMemberships().async().fetchAll(TestCallback())
+                as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/configuredSpaceId/space_memberships", recordedRequest.path)
+    }
+
+    @test
     fun testFetchAllWithQuery() {
         val responseBody = TestUtils.fileToString("space_memberships_fetch_all.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
@@ -64,6 +90,20 @@ class SpaceMembershipTests : BaseTest() {
         val recordedRequest = server!!.takeRequest()
         assertEquals("GET", recordedRequest.method)
         assertEquals("/spaces/SPACE_ID/space_memberships?limit=foo", recordedRequest.path)
+    }
+
+    @test
+    fun testFetchAllWithQueryWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("space_memberships_fetch_all.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.spaceMemberships().async()
+                .fetchAll(mapOf("limit" to "foo"), TestCallback()) as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/configuredSpaceId/space_memberships?limit=foo", recordedRequest.path)
     }
 
     @test
@@ -87,6 +127,21 @@ class SpaceMembershipTests : BaseTest() {
     }
 
     @test
+    fun testFetchOneWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("space_memberships_fetch_one.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.spaceMemberships().async().fetchOne(
+                "MEMBERSHIP_ID", TestCallback()) as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/configuredSpaceId/space_memberships/MEMBERSHIP_ID",
+                recordedRequest.path)
+    }
+
+    @test
     fun testCreateNew() {
         val responseBody = TestUtils.fileToString("space_memberships_create.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
@@ -107,6 +162,24 @@ class SpaceMembershipTests : BaseTest() {
         val recordedRequest = server!!.takeRequest()
         assertEquals("POST", recordedRequest.method)
         assertEquals("/spaces/SPACE_ID/space_memberships", recordedRequest.path)
+    }
+
+    @test
+    fun testCreateNewWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("space_memberships_create.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val membership = CMASpaceMembership()
+                .setEmail("mario@contentful.com")
+                .setIsAdmin(true)
+
+        assertTestCallback(client!!.spaceMemberships().async().create(membership, TestCallback())
+                as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("POST", recordedRequest.method)
+        assertEquals("/spaces/configuredSpaceId/space_memberships", recordedRequest.path)
     }
 
     @test

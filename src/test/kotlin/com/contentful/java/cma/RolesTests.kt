@@ -33,6 +33,18 @@ import kotlin.test.assertTrue
 import org.junit.Test as test
 
 class RolesTests : BaseTest() {
+    override fun setUp() {
+        super.setUp()
+
+        // overwrite client to not use environments
+        client = CMAClient.Builder().apply {
+            accessToken = "token"
+            coreEndpoint = server!!.url("/").toString()
+            uploadEndpoint = server!!.url("/").toString()
+            spaceId = "configuredSpaceId"
+        }.build()
+    }
+
     @test
     fun testFetchOne() {
         val responseBody = TestUtils.fileToString("roles_get_one.json")
@@ -77,6 +89,19 @@ class RolesTests : BaseTest() {
     }
 
     @test
+    fun testFetchOneWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("roles_get_one.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.roles().async().fetchOne("ROLE_ID", TestCallback()) as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/configuredSpaceId/roles/ROLE_ID", recordedRequest.path)
+    }
+
+    @test
     fun testFetchAll() {
         val responseBody = TestUtils.fileToString("roles_get_all.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
@@ -102,6 +127,20 @@ class RolesTests : BaseTest() {
     }
 
     @test
+    fun testFetchAllWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("roles_get_all.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.roles().async()
+                .fetchAll(TestCallback()) as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/configuredSpaceId/roles", recordedRequest.path)
+    }
+
+    @test
     fun testFetchAllWithQuery() {
         val responseBody = TestUtils.fileToString("roles_get_all.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
@@ -115,6 +154,20 @@ class RolesTests : BaseTest() {
         val recordedRequest = server!!.takeRequest()
         assertEquals("GET", recordedRequest.method)
         assertEquals("/spaces/SPACE_ID/roles?skip=3", recordedRequest.path)
+    }
+
+    @test
+    fun testFetchAllWithQueryWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("roles_get_all.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.roles().async().fetchAll(mapOf("skip" to "3"), TestCallback())
+                as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/configuredSpaceId/roles?skip=3", recordedRequest.path)
     }
 
     @test
@@ -141,6 +194,26 @@ class RolesTests : BaseTest() {
         val recordedRequest = server!!.takeRequest()
         assertEquals("POST", recordedRequest.method)
         assertEquals("/spaces/SPACE_ID/roles/", recordedRequest.path)
+    }
+
+    @test
+    fun testCreateNewWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("roles_create.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val role = CMARole()
+                .setName("Manage Settings Role is actually all")
+                .setDescription("Test role")
+                .setPermissions(
+                        CMAPermissions().setSettings("all")
+                )
+
+        assertTestCallback(client!!.roles().async().create(role, TestCallback()) as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("POST", recordedRequest.method)
+        assertEquals("/spaces/configuredSpaceId/roles/", recordedRequest.path)
     }
 
     @test

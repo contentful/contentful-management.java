@@ -6,9 +6,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Add: environments CRUD (Create/Read/Update/Delete).
 - Add: environment aware entries, assets, locales, content types and editor_interfaces.
 - Add: Object variant for Update/Delete of resources.
+- Add: space id and environment id parameter on client creation, stopping repetitions.
 - Break: Remove `space id` from [`ModuleLocales`|`ModuleRoles`|`ModuleSpaceMemberships`].delete.
 - Break: Use JDK 1.8 (LTS)
 - Break: remove queries for locales
+- Break: remove non object variants of delete, update and some webhook calls. (ensure resource got fetched first)
 - Polish: Test resource generators to strip credentials and to include environments.
 - Polish: Annotation placement in tests.
 
