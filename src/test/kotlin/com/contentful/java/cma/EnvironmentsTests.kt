@@ -27,7 +27,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNull
 import org.junit.Test as test
 
-class EnvironmentsTest : BaseTest() {
+class EnvironmentsTests : BaseTest() {
     @test
     fun testCreate() {
         val responseBody = TestUtils.fileToString("environments_create.json")
