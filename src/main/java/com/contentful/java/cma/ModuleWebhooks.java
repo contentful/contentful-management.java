@@ -79,13 +79,15 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
    *
    * @param webhook A representation of the Webhook to be used.
    * @return The webhook returned from the backend, containing created its ID and more.
-   * @throws IllegalArgumentException        if space's id is null.
+   * @throws IllegalArgumentException        if configured space id is null.
    * @throws IllegalArgumentException        if webhook is null.
    * @throws CMANotWithEnvironmentsException if environmentId was set using
-   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-   *                                         throws a runtime exception.
+   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+   * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAWebhook create(CMAWebhook webhook) {
+    throwIfEnvironmentIdIsNotDefault();
+
     return create(spaceId, webhook);
   }
 
@@ -93,21 +95,21 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
    * Create a new webhook.
    * <p>
    * This will create a new ID and return the newly created webhook as a return value.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
    *
    * @param spaceId Which space should be used?
    * @param webhook A representation of the Webhook to be used.
    * @return The webhook returned from the backend, containing created its ID and more.
-   * @throws IllegalArgumentException        if space's id is null.
-   * @throws IllegalArgumentException        if webhook is null.
-   * @throws CMANotWithEnvironmentsException if environmentId was set using
-   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-   *                                         throws a runtime exception.
+   * @throws IllegalArgumentException if space id is null.
+   * @throws IllegalArgumentException if webhook is null.
    */
   public CMAWebhook create(String spaceId, CMAWebhook webhook) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(webhook, "webhook");
     final String webhookId = webhook.getId();
-    throwIfEnvironmentIdIsNotDefault();
 
     final CMASystem system = webhook.getSystem();
     webhook.setSystem(null);
@@ -141,12 +143,14 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
    * Retrieve all the webhooks defined the configured space.
    *
    * @return An {@link CMAArray} containing all found webhooks for this space.
-   * @throws IllegalArgumentException        if spaceId is null.
+   * @throws IllegalArgumentException        if configured spaceId is null.
    * @throws CMANotWithEnvironmentsException if environmentId was set using
-   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-   *                                         throws a runtime exception.
+   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+   * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAArray<CMAWebhook> fetchAll() {
+    throwIfEnvironmentIdIsNotDefault();
+
     return fetchAll(spaceId);
   }
 
@@ -155,21 +159,27 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
    *
    * @param query Specifying the criteria on which webhooks to return.
    * @return An {@link CMAArray} containing all found webhooks for this space.
-   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException        if configured spaceId is null.
+   * @throws CMANotWithEnvironmentsException if environmentId was set using
+   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+   * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAArray<CMAWebhook> fetchAll(Map<String, String> query) {
+    throwIfEnvironmentIdIsNotDefault();
+
     return fetchAll(spaceId, query);
   }
 
   /**
    * Retrieve all the webhooks defined for this space.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
    *
    * @param spaceId The id of the space to be asked for all of its spaces.
    * @return An {@link CMAArray} containing all found webhooks for this space.
-   * @throws IllegalArgumentException        if spaceId is null.
-   * @throws CMANotWithEnvironmentsException if environmentId was set using
-   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-   *                                         throws a runtime exception.
+   * @throws IllegalArgumentException if spaceId is null.
    */
   public CMAArray<CMAWebhook> fetchAll(String spaceId) {
     return fetchAll(spaceId, null);
@@ -177,18 +187,18 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
 
   /**
    * Retrieve specific webhooks matching a query for this space.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
    *
    * @param spaceId The id of the space to be asked for all of its spaces.
    * @param query   Specifying the criteria on which webhooks to return.
-   * @return An {@link CMAArray} containing all found webhooks for this space.
+   * @return A {@link CMAArray} containing all found webhooks for this space.
    * @throws IllegalArgumentException if spaceId is null.
-   * @throws CMANotWithEnvironmentsException if environmentId was set using
-   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-   *                                         throws a runtime exception.
    */
   public CMAArray<CMAWebhook> fetchAll(String spaceId, Map<String, String> query) {
     assertNotNull(spaceId, "spaceId");
-    throwIfEnvironmentIdIsNotDefault();
 
     if (query == null) {
       return service.fetchAll(spaceId).blockingFirst();
@@ -202,32 +212,34 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
    *
    * @param webhookId The id of the webhook to be returned.
    * @return The webhook found, or null, if no such webhook is available.
-   * @throws IllegalArgumentException if spaceId is null.
-   * @throws IllegalArgumentException if webhookId is null.
+   * @throws IllegalArgumentException        if configured spaceId is null.
+   * @throws IllegalArgumentException        if webhookId is null.
    * @throws CMANotWithEnvironmentsException if environmentId was set using
-   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-   *                                         throws a runtime exception.
+   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+   * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAWebhook fetchOne(String webhookId) {
+    throwIfEnvironmentIdIsNotDefault();
+
     return fetchOne(spaceId, webhookId);
   }
 
   /**
    * Retrieve exactly one webhook, whose id you know.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
    *
    * @param spaceId   The id of the space to be hosting this webhook.
    * @param webhookId The id of the webhook to be returned.
    * @return The webhook found, or null, if no such webhook is available.
    * @throws IllegalArgumentException if spaceId is null.
    * @throws IllegalArgumentException if webhookId is null.
-   * @throws CMANotWithEnvironmentsException if environmentId was set using
-   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-   *                                         throws a runtime exception.
    */
   public CMAWebhook fetchOne(String spaceId, String webhookId) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(webhookId, "webhookId");
-    throwIfEnvironmentIdIsNotDefault();
 
     return service.fetchOne(spaceId, webhookId).blockingFirst();
   }
@@ -317,11 +329,11 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
      * @param webhook  data to be used for creation.
      * @param callback the callback to be called once finished.
      * @return the callback passed in.
-     * @throws IllegalArgumentException if space's id is null.
-     * @throws IllegalArgumentException if webhook is null.
+     * @throws IllegalArgumentException        if configured space id is null.
+     * @throws IllegalArgumentException        if webhook is null.
      * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
+     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+     * @see CMAClient.Builder#setSpaceId(String)
      */
     public CMACallback<CMAWebhook> create(
         final CMAWebhook webhook,
@@ -335,16 +347,17 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
 
     /**
      * Asynchronous variant of {@link ModuleWebhooks#create(String, CMAWebhook)}
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+     * {@link CMAClient.Builder#setEnvironmentId(String)}.
      *
      * @param spaceId  id of the space to be used.
      * @param webhook  data to be used for creation.
      * @param callback the callback to be called once finished.
      * @return the callback passed in.
-     * @throws IllegalArgumentException if space's id is null.
+     * @throws IllegalArgumentException if space id is null.
      * @throws IllegalArgumentException if webhook is null.
-     * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
      */
     public CMACallback<CMAWebhook> create(
         final String spaceId,
@@ -381,10 +394,10 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
      *
      * @param callback the callback to be called once finished.
      * @return the callback passed in.
-     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException        if spaceId is null.
      * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
+     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+     * @see CMAClient.Builder#setSpaceId(String)
      */
     public CMACallback<CMAArray<CMAWebhook>> fetchAll(CMACallback<CMAArray<CMAWebhook>> callback) {
       return defer(new RxExtensions.DefFunc<CMAArray<CMAWebhook>>() {
@@ -396,14 +409,15 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
 
     /**
      * Asynchronous variant of {@link ModuleWebhooks#fetchAll(String)}
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+     * {@link CMAClient.Builder#setEnvironmentId(String)}.
      *
      * @param spaceId  id of the space to be used.
      * @param callback the callback to be called once finished.
      * @return the callback passed in.
      * @throws IllegalArgumentException if spaceId is null.
-     * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
      */
     public CMACallback<CMAArray<CMAWebhook>> fetchAll(
         final String spaceId,
@@ -421,10 +435,10 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
      * @param query    description map of which webhooks to be returned.
      * @param callback the callback to be called once finished.
      * @return the callback passed in.
-     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException        if configured spaceId is null.
      * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
+     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+     * @see CMAClient.Builder#setSpaceId(String)
      */
     public CMACallback<CMAArray<CMAWebhook>> fetchAll(
         final Map<String, String> query,
@@ -438,15 +452,16 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
 
     /**
      * Asynchronous variant of {@link ModuleWebhooks#fetchAll(String, Map)}
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+     * {@link CMAClient.Builder#setEnvironmentId(String)}.
      *
      * @param spaceId  id of the space to be used.
      * @param query    description map of which webhooks to be returned.
      * @param callback the callback to be called once finished.
      * @return the callback passed in.
      * @throws IllegalArgumentException if spaceId is null.
-     * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
      */
     public CMACallback<CMAArray<CMAWebhook>> fetchAll(
         final String spaceId,
@@ -465,11 +480,11 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
      * @param webhookId id of the webhook to be retrieved.
      * @param callback  the callback to be called once finished.
      * @return the callback passed in.
-     * @throws IllegalArgumentException if spaceId is null.
-     * @throws IllegalArgumentException if webhookId is null.
+     * @throws IllegalArgumentException        if spaceId is null.
+     * @throws IllegalArgumentException        if webhookId is null.
      * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
+     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+     * @see CMAClient.Builder#setSpaceId(String)
      */
     public CMACallback<CMAWebhook> fetchOne(
         final String webhookId,
@@ -481,9 +496,12 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
       }, callback);
     }
 
-
     /**
      * Asynchronous variant of {@link ModuleWebhooks#fetchOne(String, String)}
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+     * {@link CMAClient.Builder#setEnvironmentId(String)}.
      *
      * @param spaceId   id of the space to be used.
      * @param webhookId id of the webhook to be retrieved.
@@ -491,9 +509,6 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
      * @return the callback passed in.
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if webhookId is null.
-     * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
      */
     public CMACallback<CMAWebhook> fetchOne(
         final String spaceId,

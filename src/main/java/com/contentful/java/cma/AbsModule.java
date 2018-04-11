@@ -113,7 +113,7 @@ abstract class AbsModule<T> {
   }
 
   /**
-   * Throw an {@link CMANotWithEnvironmentsException} if an environment id was
+   * Throw a {@link CMANotWithEnvironmentsException} if an environment id was
    * configured in
    *
    * @see CMAClient.Builder#setEnvironmentId(String)

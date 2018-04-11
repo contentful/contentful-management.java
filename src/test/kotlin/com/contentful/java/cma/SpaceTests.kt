@@ -21,14 +21,46 @@ import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMASpace
 import com.contentful.java.cma.model.CMAType
+import com.google.gson.Gson
 import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockWebServer
+import org.junit.After
+import org.junit.Before
+import java.util.logging.LogManager
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
-import kotlin.test.assertTrue
 import org.junit.Test as test
 
-class SpaceTests : BaseTest() {
+class SpaceTests {
+    var server: MockWebServer? = null
+    var client: CMAClient? = null
+    var gson: Gson? = null
+
+    @Before
+    fun setUp() {
+        LogManager.getLogManager().reset()
+        // MockWebServer
+        server = MockWebServer()
+        server!!.start()
+
+        // Client
+        client = CMAClient.Builder().apply {
+            accessToken = "token"
+            coreEndpoint = server!!.url("/").toString()
+            uploadEndpoint = server!!.url("/").toString()
+            spaceId = "configuredSpaceId"
+            environmentId = "configuredEnvironmentId"
+        }.build()
+
+        gson = CMAClient.createGson()
+    }
+
+    @After
+    fun tearDown() {
+        server!!.shutdown()
+    }
+
     @test
     fun testCreate() {
         val requestBody = TestUtils.fileToString("space_create_request.json")

@@ -22,12 +22,45 @@ import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAEnvironment
 import com.contentful.java.cma.model.CMAEnvironmentStatus
 import com.contentful.java.cma.model.CMAType
+import com.google.gson.Gson
 import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockWebServer
+import org.junit.After
+import org.junit.Before
+import java.util.logging.LogManager
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 import org.junit.Test as test
 
-class EnvironmentsTests : BaseTest() {
+class EnvironmentsTests {
+    var server: MockWebServer? = null
+    var client: CMAClient? = null
+    var gson: Gson? = null
+
+    @Before
+    fun setUp() {
+        LogManager.getLogManager().reset()
+        // MockWebServer
+        server = MockWebServer()
+        server!!.start()
+
+        // Client
+        client = CMAClient.Builder().apply {
+            accessToken = "token"
+            coreEndpoint = server!!.url("/").toString()
+            uploadEndpoint = server!!.url("/").toString()
+            spaceId = "configuredSpaceId"
+            environmentId = "configuredEnvironmentId"
+        }.build()
+
+        gson = CMAClient.createGson()
+    }
+
+    @After
+    fun tearDown() {
+        server!!.shutdown()
+    }
+
     @test
     fun testCreate() {
         val responseBody = TestUtils.fileToString("environments_create.json")
@@ -61,14 +94,13 @@ class EnvironmentsTests : BaseTest() {
 
         val environment = CMAEnvironment().setName("environment_name")
 
-        val result = assertTestCallback(
-                client!!
-                        .environments()
-                        .async()
-                        .create(
-                                environment,
-                                TestCallback()
-                        ) as TestCallback)!!
+        assertTestCallback(client!!
+                .environments()
+                .async()
+                .create(
+                        environment,
+                        TestCallback()
+                ) as TestCallback)!!
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -215,7 +247,7 @@ class EnvironmentsTests : BaseTest() {
         val responseBody = TestUtils.fileToString("environments_get_all.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
-        val result = assertTestCallback(
+        assertTestCallback(
                 client!!
                         .environments()
                         .async()
@@ -268,12 +300,13 @@ class EnvironmentsTests : BaseTest() {
         assertEquals("GET", request.method)
         assertEquals("/spaces/%3Cspace_id%3E/environments/staging", request.path)
     }
+
     @test
     fun testFetchWithIdWithConfiguredSpaceAndEnvironment() {
         val responseBody = TestUtils.fileToString("environments_get_one.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
-        val result = assertTestCallback(
+        assertTestCallback(
                 client!!
                         .environments()
                         .async()

@@ -53,46 +53,56 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
   }
 
   /**
+   * Fetch one ui extension from the configured space.
+   *
    * @param extensionId the id of the extension to be fetched.
    * @return the ui extension for a specific space.
-   * @throws IllegalArgumentException        if spaceId is null.
+   * @throws IllegalArgumentException        if configured spaceId is null.
    * @throws IllegalArgumentException        if extensionId is null.
    * @throws CMANotWithEnvironmentsException if environmentId was set using
-   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-   *                                         throws a runtime exception.
+   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+   * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAUiExtension fetchOne(String extensionId) {
+    throwIfEnvironmentIdIsNotDefault();
+
     return fetchOne(spaceId, extensionId);
   }
 
   /**
+   * Fetch one extension from the given space.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
+   *
    * @param spaceId     the id of the space this is valid on.
    * @param extensionId the id of the extension to be fetched.
    * @return the ui extension for a specific space.
    * @throws IllegalArgumentException        if spaceId is null.
    * @throws IllegalArgumentException        if extensionId is null.
    * @throws CMANotWithEnvironmentsException if environmentId was set using
-   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-   *                                         throws a runtime exception.
+   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
    */
   public CMAUiExtension fetchOne(String spaceId, String extensionId) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(extensionId, "extensionId");
-    throwIfEnvironmentIdIsNotDefault();
 
     return service.fetchOne(spaceId, extensionId).blockingFirst();
   }
 
   /**
-   * Fetch ui extensions from a given space.
+   * Fetch all ui extensions from the configured space.
    *
    * @return all the ui extensions for a specific space.
    * @throws IllegalArgumentException        if spaceId is null.
    * @throws CMANotWithEnvironmentsException if environmentId was set using
-   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-   *                                         throws a runtime exception.
+   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+   * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAArray<CMAUiExtension> fetchAll() {
+    throwIfEnvironmentIdIsNotDefault();
+
     return fetchAll(spaceId);
   }
 
@@ -103,22 +113,25 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
    * @return specific ui extensions for a specific space.
    * @throws IllegalArgumentException        if spaceId is null.
    * @throws CMANotWithEnvironmentsException if environmentId was set using
-   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-   *                                         throws a runtime exception.
+   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+   * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAArray<CMAUiExtension> fetchAll(Map<String, String> query) {
+    throwIfEnvironmentIdIsNotDefault();
+
     return fetchAll(spaceId, query);
   }
 
   /**
    * Fetch ui extensions from a given space.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
    *
    * @param spaceId the id of the space this is valid on.
    * @return all the ui extensions for a specific space.
-   * @throws IllegalArgumentException        if spaceId is null.
-   * @throws CMANotWithEnvironmentsException if environmentId was set using
-   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-   *                                         throws a runtime exception.
+   * @throws IllegalArgumentException if spaceId is null.
    */
   public CMAArray<CMAUiExtension> fetchAll(String spaceId) {
     return fetchAll(spaceId, null);
@@ -126,18 +139,20 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
 
   /**
    * Fetch all ui extensions from a given space.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
    *
    * @param spaceId the id of the space this is valid on.
    * @param query   controls what to return.
    * @return specific ui extensions for a specific space.
    * @throws IllegalArgumentException        if spaceId is null.
    * @throws CMANotWithEnvironmentsException if environmentId was set using
-   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-   *                                         throws a runtime exception.
+   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
    */
   public CMAArray<CMAUiExtension> fetchAll(String spaceId, Map<String, String> query) {
     assertNotNull(spaceId, "spaceId");
-    throwIfEnvironmentIdIsNotDefault();
 
     if (query == null) {
       return service.fetchAll(spaceId).blockingFirst();
@@ -203,38 +218,39 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
    *
    * @param extension the ui extension to be added.
    * @return the created ui extension.
-   * @throws IllegalArgumentException        if spaceId is null.
+   * @throws IllegalArgumentException        if configured spaceId is null.
    * @throws IllegalArgumentException        if extension is null.
    * @throws IllegalArgumentException        if extension's id is null.
    * @throws IllegalArgumentException        if extension's version is null.
-   * @throws IllegalArgumentException        if extension's spaceId is null.
    * @throws CMANotWithEnvironmentsException if environmentId was set using
-   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-   *                                         throws a runtime exception.
+   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+   * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAUiExtension create(CMAUiExtension extension) {
+    throwIfEnvironmentIdIsNotDefault();
+
     return create(spaceId, extension);
   }
 
   /**
    * Create a new ui extension.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
    *
    * @param spaceId   the id of the space this ui extension should be created in.
    * @param extension the ui extension to be added.
    * @return the created ui extension.
-   * @throws IllegalArgumentException        if spaceId is null.
-   * @throws IllegalArgumentException        if extension is null.
-   * @throws IllegalArgumentException        if extension's id is null.
-   * @throws IllegalArgumentException        if extension's version is null.
-   * @throws IllegalArgumentException        if extension's spaceId is null.
-   * @throws CMANotWithEnvironmentsException if environmentId was set using
-   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-   *                                         throws a runtime exception.
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if extension is null.
+   * @throws IllegalArgumentException if extension's id is null.
+   * @throws IllegalArgumentException if extension's version is null.
+   * @throws IllegalArgumentException if extension's spaceId is null.
    */
   public CMAUiExtension create(String spaceId, CMAUiExtension extension) {
     assertNotNull(extension, "extension");
     assertNotNull(spaceId, "spaceId");
-    throwIfEnvironmentIdIsNotDefault();
 
     final String id = extension.getId();
 
@@ -269,11 +285,11 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
      * @param extensionId the id of the extension to be fetched.
      * @param callback    the callback to be informed about success or failure.
      * @return the callback passed in.
-     * @throws IllegalArgumentException        if spaceId is null.
+     * @throws IllegalArgumentException        if configured spaceId is null.
      * @throws IllegalArgumentException        if extensionId is null.
      * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
+     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+     * @see CMAClient.Builder#setSpaceId(String)
      */
     public CMACallback<CMAUiExtension> fetchOne(
         final String extensionId,
@@ -287,16 +303,17 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
 
     /**
      * Fetch ui extension to given content type from a given space.
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+     * {@link CMAClient.Builder#setEnvironmentId(String)}.
      *
      * @param spaceId     the id of the space this is valid on.
      * @param extensionId the id of the extension to be fetched.
      * @param callback    the callback to be informed about success or failure.
      * @return the callback passed in.
-     * @throws IllegalArgumentException        if spaceId is null.
-     * @throws IllegalArgumentException        if extensionId is null.
-     * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if extensionId is null.
      */
     public CMACallback<CMAUiExtension> fetchOne(
         final String spaceId,
@@ -311,14 +328,15 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
 
     /**
      * Fetch ui extensions from a given space.
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+     * {@link CMAClient.Builder#setEnvironmentId(String)}.
      *
      * @param spaceId  the id of the space this is valid on.
      * @param callback the callback to be informed about success or failure.
      * @return the callback passed in.
-     * @throws IllegalArgumentException        if spaceId is null.
-     * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
+     * @throws IllegalArgumentException if spaceId is null.
      */
     public CMACallback<CMAArray<CMAUiExtension>> fetchAll(
         final String spaceId,
@@ -335,10 +353,10 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
      *
      * @param callback the callback to be informed about success or failure.
      * @return the callback passed in.
-     * @throws IllegalArgumentException        if spaceId is null.
+     * @throws IllegalArgumentException        if configured spaceId is null.
      * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
+     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+     * @see CMAClient.Builder#setSpaceId(String)
      */
     public CMACallback<CMAArray<CMAUiExtension>> fetchAll(
         CMACallback<CMAArray<CMAUiExtension>> callback) {
@@ -350,15 +368,15 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
     }
 
     /**
-     * Fetch specific ui extensions from a given space.
+     * Fetch specific ui extensions from the configured space.
      *
      * @param query    the query identifying specific ui extensions.
      * @param callback the callback to be informed about success or failure.
      * @return the callback passed in.
-     * @throws IllegalArgumentException        if spaceId is null.
+     * @throws IllegalArgumentException        if configured spaceId is null.
      * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
+     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+     * @see CMAClient.Builder#setSpaceId(String)
      */
     public CMACallback<CMAArray<CMAUiExtension>> fetchAll(
         final Map<String, String> query,
@@ -372,15 +390,16 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
 
     /**
      * Fetch specific ui extensions from a given space.
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+     * {@link CMAClient.Builder#setEnvironmentId(String)}.
      *
      * @param spaceId  the id of the space to search in.
      * @param query    the query identifying specific ui extensions.
      * @param callback the callback to be informed about success or failure.
      * @return the callback passed in.
-     * @throws IllegalArgumentException        if spaceId is null.
-     * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
+     * @throws IllegalArgumentException if spaceId is null.
      */
     public CMACallback<CMAArray<CMAUiExtension>> fetchAll(
         final String spaceId,
@@ -416,19 +435,20 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
 
     /**
      * Create a new ui extension.
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+     * {@link CMAClient.Builder#setEnvironmentId(String)}.
      *
      * @param spaceId   the id of the space this ui extension should be created in.
      * @param extension the ui extension to be added.
      * @param callback  the callback to be informed about success or failure.
      * @return the callback passed in.
-     * @throws IllegalArgumentException        if spaceId is null.
-     * @throws IllegalArgumentException        if extension is null.
-     * @throws IllegalArgumentException        if extension's version is null.
-     * @throws IllegalArgumentException        if extension's id is null.
-     * @throws IllegalArgumentException        if extension's spaceId is null.
-     * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if extension is null.
+     * @throws IllegalArgumentException if extension's version is null.
+     * @throws IllegalArgumentException if extension's id is null.
+     * @throws IllegalArgumentException if extension's spaceId is null.
      */
     public CMACallback<CMAUiExtension> create(
         final String spaceId,
@@ -447,14 +467,14 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
      * @param extension the ui extension to be added.
      * @param callback  the callback to be informed about success or failure.
      * @return the callback passed in.
-     * @throws IllegalArgumentException        if spaceId is null.
+     * @throws IllegalArgumentException        if configured spaceId is null.
      * @throws IllegalArgumentException        if extension is null.
      * @throws IllegalArgumentException        if extension's version is null.
      * @throws IllegalArgumentException        if extension's id is null.
      * @throws IllegalArgumentException        if extension's spaceId is null.
      * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
+     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+     * @see CMAClient.Builder#setSpaceId(String)
      */
     public CMACallback<CMAUiExtension> create(
         final CMAUiExtension extension,

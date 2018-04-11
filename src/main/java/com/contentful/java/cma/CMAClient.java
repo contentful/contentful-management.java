@@ -359,10 +359,11 @@ public class CMAClient {
     }
 
     /**
-     * Set which space to use if none is specified specifically.
+     * Configure which space to use if none is specified.
      *
      * @param spaceId the id of the space to be used.
-     * @return this {@link Builder} instance
+     * @return this {@link Builder} instance.
+     * @see ModuleEntries#fetchAll()
      */
     public Builder setSpaceId(String spaceId) {
       this.spaceId = spaceId;
@@ -370,14 +371,11 @@ public class CMAClient {
     }
 
     /**
-     * Set which environment to use if none is specified specifically.
-     * <p>
-     * Please be aware that some endpoints (like {@link CMAClient#webhooks()}) do not support
-     * environments and will throw an exception if used with something else then
-     * {@link Constants#DEFAULT_ENVIRONMENT} here.
+     * Configure  which environment to use if none is specified.
      *
      * @param environmentId the id of the environment to be used.
-     * @return this {@link Builder} instance
+     * @return this {@link Builder} instance.
+     * @see ModuleEntries#fetchAll()
      */
     public Builder setEnvironmentId(String environmentId) {
       this.environmentId = environmentId;

@@ -65,7 +65,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
   }
 
   /**
-   * Create a new Entry in master environment.
+   * Create a new Entry in the configured space and environment.
    * <p>
    * In case the given {@code entry} has an ID associated with it, that ID will be used,
    * otherwise the server will auto-generate an ID that will be contained in the response upon
@@ -74,8 +74,12 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
    * @param contentTypeId Content Type ID
    * @param entry         Entry
    * @return {@link CMAEntry} result instance
-   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if configured space id is null.
+   * @throws IllegalArgumentException if configured environment id is null.
+   * @throws IllegalArgumentException if contentTypeId is null.
    * @throws IllegalArgumentException if entry is null.
+   * @see CMAClient.Builder#setSpaceId(String)
+   * @see CMAClient.Builder#setEnvironmentId(String)
    */
   @SuppressWarnings("unchecked")
   public CMAEntry create(String contentTypeId, CMAEntry entry) {
@@ -88,6 +92,10 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
    * In case the given {@code entry} has an ID associated with it, that ID will be used,
    * otherwise the server will auto-generate an ID that will be contained in the response upon
    * success.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
    *
    * @param spaceId       Space ID
    * @param environmentId Environment ID
@@ -95,6 +103,8 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
    * @param entry         Entry
    * @return {@link CMAEntry} result instance
    * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if environmentId is null.
+   * @throws IllegalArgumentException if contentTypeId is null.
    * @throws IllegalArgumentException if entry is null.
    */
   @SuppressWarnings("unchecked")
@@ -130,6 +140,8 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
    * @param entry Entry ID
    * @return Integer representing the success (204) of the action
    * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if environmentId is null.
+   * @throws IllegalArgumentException if entryId is null.
    * @throws IllegalArgumentException if entry is null.
    */
   public Integer delete(CMAEntry entry) {
@@ -145,36 +157,44 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
   }
 
   /**
-   * Fetch all Entries from a Space.
+   * Fetch all Entries from the configured space and environment.
    * <p>
-   * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH} and uses
-   * the default Environment {@link Constants#DEFAULT_ENVIRONMENT}.
+   * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH}.
    *
    * @return {@link CMAArray} result instance
-   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if configured space id is null.
+   * @throws IllegalArgumentException if configured environment id is null.
+   * @see CMAClient.Builder#setSpaceId(String)
+   * @see CMAClient.Builder#setEnvironmentId(String)
    */
   public CMAArray<CMAEntry> fetchAll() {
     return fetchAll(spaceId, environmentId);
   }
 
   /**
-   * Fetch all Entries from a Space.
+   * Fetch all entries matching the query from the configured space and environment.
    * <p>
-   * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH} and uses
-   * the default Environment {@link Constants#DEFAULT_ENVIRONMENT}.
+   * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH}
    *
-   * @param query Query
+   * @param query the criteria to filter on.
    * @return {@link CMAArray} result instance
-   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if configured space id is null.
+   * @throws IllegalArgumentException if configured environment id is null.
+   * @see CMAClient.Builder#setSpaceId(String)
+   * @see CMAClient.Builder#setEnvironmentId(String)
    */
   public CMAArray<CMAEntry> fetchAll(Map<String, String> query) {
     return fetchAll(spaceId, environmentId, query);
   }
 
   /**
-   * Fetch all Entries from an Environment.
+   * Fetch all entries from the given space and environment.
    * <p>
    * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH}
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
    *
    * @param spaceId       Space ID
    * @param environmentId Environment ID
@@ -187,12 +207,12 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
   }
 
   /**
-   * Fetch all Entries from a Space with a query url parameter map.
+   * Fetch all entries from the given space and environment matching the query.
    *
    * @param spaceId       Space ID
    * @param environmentId Environment ID
    * @param query         Query
-   * @return {@link CMAArray} result instance
+   * @return {@link CMAArray} of entries matching the query.
    * @throws IllegalArgumentException if spaceId is null.
    * @throws IllegalArgumentException if environmentId is null.
    */
@@ -208,22 +228,30 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
   }
 
   /**
-   * Fetch an Entry with the given {@code entryId} from an Environment.
+   * Fetch an entry with the given {@code entryId} from the configured space and environment.
    *
    * @param entryId Entry ID
    * @return {@link CMAEntry} result instance
+   * @throws IllegalArgumentException if configured space id is null.
+   * @throws IllegalArgumentException if configured environment id is null.
+   * @throws IllegalArgumentException if entry id is null.
+   * @see CMAClient.Builder#setSpaceId(String)
+   * @see CMAClient.Builder#setEnvironmentId(String)
    */
   public CMAEntry fetchOne(String entryId) {
     return fetchOne(spaceId, environmentId, entryId);
   }
 
   /**
-   * Fetch an Entry with the given {@code entryId} from an Environment.
+   * Fetch an entry with the given entryId from the given environment and space.
    *
    * @param spaceId       Space ID
    * @param environmentId Environment ID
    * @param entryId       Entry ID
    * @return {@link CMAEntry} result instance
+   * @throws IllegalArgumentException if space id is null.
+   * @throws IllegalArgumentException if environment id is null.
+   * @throws IllegalArgumentException if entry id is null.
    */
   public CMAEntry fetchOne(String spaceId, String environmentId, String entryId) {
     assertNotNull(spaceId, "spaceId");
@@ -373,7 +401,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
      *
      * @param entry    Entry
      * @param callback Callback
-     * @return the given {@code CMACallback} instance
+     * @return the given CMACallback instance
      * @throws IllegalArgumentException if entry is null.
      * @throws IllegalArgumentException if entry's id is null.
      */
@@ -386,7 +414,8 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     }
 
     /**
-     * Create a new Entry.
+     * Create a new Entry on the configured space and environment.
+     * <p>
      * In case the given {@code entry} has an ID associated with it, that ID will be used,
      * otherwise the server will auto-generate an ID that will be contained in the response upon
      * success.
@@ -394,9 +423,13 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
      * @param contentTypeId Content Type ID
      * @param entry         Entry
      * @param callback      Callback
-     * @return the given {@code CMACallback} instance
-     * @throws IllegalArgumentException if spaceId is null.
+     * @return the given CMACallback instance
+     * @throws IllegalArgumentException if configured spaceId is null.
+     * @throws IllegalArgumentException if configured entry is null.
+     * @throws IllegalArgumentException if contentTypeId is null.
      * @throws IllegalArgumentException if entry is null.
+     * @see CMAClient.Builder#setSpaceId(String)
+     * @see CMAClient.Builder#setEnvironmentId(String)
      */
     public CMACallback<CMAEntry> create(
         final String contentTypeId,
@@ -410,19 +443,25 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     }
 
     /**
-     * Create a new Entry in an Environment.
+     * Create a new entry in the given space and environment.
+     * <p>
      * In case the given {@code entry} has an ID associated with it, that ID will be used,
      * otherwise the server will auto-generate an ID that will be contained in the response upon
      * success.
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)} and
+     * {@link CMAClient.Builder#setEnvironmentId(String)}.
      *
      * @param spaceId       Space ID
      * @param environmentId Environment ID
      * @param contentTypeId Content Type ID
      * @param entry         Entry
      * @param callback      Callback
-     * @return the given {@code CMACallback} instance
+     * @return the given CMACallback instance
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if environmentId is null.
+     * @throws IllegalArgumentException if contentTypeId is null.
      * @throws IllegalArgumentException if entry is null.
      */
     public CMACallback<CMAEntry> create(
@@ -443,7 +482,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
      *
      * @param entry    Entry
      * @param callback Callback
-     * @return the given {@code CMACallback} instance
+     * @return the given CMACallback instance
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if entry is null.
      */
@@ -456,11 +495,14 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     }
 
     /**
-     * Fetch all Entries from a Space.
+     * Fetch all Entries from the configured space and environment.
      *
      * @param callback Callback
-     * @return the given {@code CMACallback} instance
-     * @throws IllegalArgumentException if spaceId is null.
+     * @return the given CMACallback instance
+     * @throws IllegalArgumentException if configured spaceId is null.
+     * @throws IllegalArgumentException if configured environmentId is null.
+     * @see CMAClient.Builder#setSpaceId(String)
+     * @see CMAClient.Builder#setEnvironmentId(String)
      */
     public CMACallback<CMAArray<CMAEntry>> fetchAll(
         CMACallback<CMAArray<CMAEntry>> callback) {
@@ -472,12 +514,15 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     }
 
     /**
-     * Fetch all Entries from a Space.
+     * Fetch all entries in the space and environment matching the given query.
      *
      * @param query    query to be performed
      * @param callback Callback
-     * @return the given {@code CMACallback} instance
-     * @throws IllegalArgumentException if spaceId is null.
+     * @return the given CMACallback instance
+     * @throws IllegalArgumentException if configured spaceId is null.
+     * @throws IllegalArgumentException if configured environmentId is null.
+     * @see CMAClient.Builder#setSpaceId(String)
+     * @see CMAClient.Builder#setEnvironmentId(String)
      */
     public CMACallback<CMAArray<CMAEntry>> fetchAll(
         final Map<String, String> query,
@@ -490,12 +535,16 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
     }
 
     /**
-     * Fetch all Entries from an Environment.
+     * Fetch all entries from the given space and environment.
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)} and
+     * {@link CMAClient.Builder#setEnvironmentId(String)}.
      *
      * @param spaceId       Space ID
      * @param environmentId Environment ID
      * @param callback      Callback
-     * @return the given {@code CMACallback} instance
+     * @return the given CMACallback instance
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if environmentId is null.
      */
@@ -517,8 +566,9 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
      * @param environmentId Environment ID
      * @param query         Query
      * @param callback      Callback
-     * @return the given {@code CMACallback} instance
+     * @return the given CMACallback instance
      * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if environmentId is null.
      */
     public CMACallback<CMAArray<CMAEntry>> fetchAll(
         final String spaceId,
@@ -527,18 +577,19 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
         CMACallback<CMAArray<CMAEntry>> callback) {
       return defer(new RxExtensions.DefFunc<CMAArray<CMAEntry>>() {
         @Override CMAArray<CMAEntry> method() {
-          DefaultQueryParameter.putIfNotSet(query, DefaultQueryParameter.FETCH);
           return ModuleEntries.this.fetchAll(spaceId, environmentId, query);
         }
       }, callback);
     }
 
     /**
-     * Fetch an Entry with the given {@code entryId} from a Space.
+     * Fetch an Entry with the given {@code entryId} from the configured space and environment.
      *
      * @param entryId  Entry ID
      * @param callback Callback
-     * @return the given {@code CMACallback} instance
+     * @return the given CMACallback instance
+     * @throws IllegalArgumentException if configured spaceId is null.
+     * @throws IllegalArgumentException if configured environmentId is null.
      */
     public CMACallback<CMAEntry> fetchOne(
         final String entryId,
@@ -557,7 +608,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
      * @param environmentId Environment ID
      * @param entryId       Entry ID
      * @param callback      Callback
-     * @return the given {@code CMACallback} instance
+     * @return the given CMACallback instance
      */
     public CMACallback<CMAEntry> fetchOne(
         final String spaceId,
@@ -576,7 +627,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
      *
      * @param entry    Entry
      * @param callback Callback
-     * @return the given {@code CMACallback} instance
+     * @return the given CMACallback instance
      * @throws IllegalArgumentException if entry is null.
      * @throws IllegalArgumentException if entry's id is null.
      * @throws IllegalArgumentException if entry's space id is null.
@@ -594,7 +645,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
      *
      * @param entry    Entry
      * @param callback Callback
-     * @return the given {@code CMACallback} instance
+     * @return the given CMACallback instance
      * @throws IllegalArgumentException if entry is null.
      * @throws IllegalArgumentException if entry's id is null.
      * @throws IllegalArgumentException if entry's space id is null.
@@ -612,7 +663,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
      *
      * @param entry    Entry
      * @param callback Callback
-     * @return the given {@code CMACallback} instance
+     * @return the given CMACallback instance
      * @throws IllegalArgumentException if entry is null.
      * @throws IllegalArgumentException if entry's id is null.
      * @throws IllegalArgumentException if entry's space id is null.
@@ -630,7 +681,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
      *
      * @param entry    Entry
      * @param callback Callback
-     * @return the given {@code CMACallback} instance
+     * @return the given CMACallback instance
      */
     public CMACallback<CMAEntry> update(final CMAEntry entry, CMACallback<CMAEntry> callback) {
       return defer(new RxExtensions.DefFunc<CMAEntry>() {
@@ -639,7 +690,6 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
         }
       }, callback);
     }
-
 
     /**
      * Fetch all snapshots of an entry.

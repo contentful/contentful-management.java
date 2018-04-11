@@ -24,17 +24,50 @@ import com.contentful.java.cma.model.CMAContentType
 import com.contentful.java.cma.model.CMAField
 import com.contentful.java.cma.model.CMAHttpException
 import com.contentful.java.cma.model.CMAType
+import com.google.gson.Gson
 import okhttp3.HttpUrl
 import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockWebServer
+import org.junit.After
+import org.junit.Before
 import java.io.IOException
 import java.util.*
+import java.util.logging.LogManager
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 import org.junit.Test as test
 
-class ContentTypeTests : BaseTest() {
+class ContentTypeTests{
+    var server: MockWebServer? = null
+    var client: CMAClient? = null
+    var gson: Gson? = null
+
+    @Before
+    fun setUp() {
+        LogManager.getLogManager().reset()
+        // MockWebServer
+        server = MockWebServer()
+        server!!.start()
+
+        // Client
+        client = CMAClient.Builder().apply {
+            accessToken = "token"
+            coreEndpoint = server!!.url("/").toString()
+            uploadEndpoint = server!!.url("/").toString()
+            spaceId = "configuredSpaceId"
+            environmentId = "configuredEnvironmentId"
+        }.build()
+
+        gson = CMAClient.createGson()
+    }
+
+    @After
+    fun tearDown() {
+        server!!.shutdown()
+    }
+
     @test
     fun testCreate() {
         val requestBody = TestUtils.fileToString("content_type_create_request.json")

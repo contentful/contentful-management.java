@@ -22,13 +22,46 @@ import com.contentful.java.cma.model.CMAHttpException
 import com.contentful.java.cma.model.CMAPersonalAccessToken
 import com.contentful.java.cma.model.CMAPersonalAccessToken.Scope.Manage
 import com.contentful.java.cma.model.CMAPersonalAccessToken.Scope.Read
+import com.google.gson.Gson
 import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockWebServer
+import org.junit.After
+import org.junit.Before
+import java.util.logging.LogManager
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import org.junit.Test as test
 
-class PersonalAccessTokenTests : BaseTest() {
+class PersonalAccessTokenTests{
+    var server: MockWebServer? = null
+    var client: CMAClient? = null
+    var gson: Gson? = null
+
+    @Before
+    fun setUp() {
+        LogManager.getLogManager().reset()
+        // MockWebServer
+        server = MockWebServer()
+        server!!.start()
+
+        // Client
+        client = CMAClient.Builder().apply {
+            accessToken = "token"
+            coreEndpoint = server!!.url("/").toString()
+            uploadEndpoint = server!!.url("/").toString()
+            spaceId = "configuredSpaceId"
+            environmentId = "configuredEnvironmentId"
+        }.build()
+
+        gson = CMAClient.createGson()
+    }
+
+    @After
+    fun tearDown() {
+        server!!.shutdown()
+    }
+
     @test
     fun testFetchAll() {
         val responseBody = TestUtils.fileToString("personal_access_token_get_all.json")

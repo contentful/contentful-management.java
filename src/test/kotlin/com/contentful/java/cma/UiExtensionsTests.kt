@@ -21,15 +21,28 @@ import com.contentful.java.cma.Constants.CMAFieldType.Text
 import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAUiExtension
+import com.google.gson.Gson
 import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockWebServer
+import org.junit.After
+import org.junit.Before
+import java.util.logging.LogManager
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import org.junit.Test as test
 
-class UiExtensionsTests : BaseTest() {
-    override fun setUp() {
-        super.setUp()
+class UiExtensionsTests {
+    var server: MockWebServer? = null
+    var client: CMAClient? = null
+    var gson: Gson? = null
+
+    @Before
+    fun setUp() {
+        LogManager.getLogManager().reset()
+        // MockWebServer
+        server = MockWebServer()
+        server!!.start()
 
         // overwrite client to not use environments
         client = CMAClient.Builder().apply {
@@ -38,6 +51,12 @@ class UiExtensionsTests : BaseTest() {
             uploadEndpoint = server!!.url("/").toString()
             spaceId = "configuredSpaceId"
         }.build()
+        gson = CMAClient.createGson()
+    }
+
+    @After
+    fun tearDown() {
+        server!!.shutdown()
     }
 
     @test

@@ -142,8 +142,8 @@ final CMAClient client =
     new CMAClient
         .Builder()
         .setAccessToken("<access_token>")
-        .setSpaceId("space_id")
-        .setEnvironmentId("space_id")
+        .setSpaceId("<space_id>")
+        .setEnvironmentId("<environment_id>")
         .build();
 ```
 

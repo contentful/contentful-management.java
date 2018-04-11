@@ -17,13 +17,46 @@
 package com.contentful.java.cma
 
 import com.contentful.java.cma.model.*
+import com.google.gson.Gson
 import okhttp3.Protocol
 import okhttp3.Request
 import okhttp3.Response
+import okhttp3.mockwebserver.MockWebServer
+import org.junit.After
+import org.junit.Before
+import java.util.logging.LogManager
 import kotlin.test.assertEquals
 import org.junit.Test as test
 
-class ModelTests : BaseTest() {
+class ModelTests{
+    var server: MockWebServer? = null
+    var client: CMAClient? = null
+    var gson: Gson? = null
+
+    @Before
+    fun setUp() {
+        LogManager.getLogManager().reset()
+        // MockWebServer
+        server = MockWebServer()
+        server!!.start()
+
+        // Client
+        client = CMAClient.Builder().apply {
+            accessToken = "token"
+            coreEndpoint = server!!.url("/").toString()
+            uploadEndpoint = server!!.url("/").toString()
+            spaceId = "configuredSpaceId"
+            environmentId = "configuredEnvironmentId"
+        }.build()
+
+        gson = CMAClient.createGson()
+    }
+
+    @After
+    fun tearDown() {
+        server!!.shutdown()
+    }
+
     @test
     fun testCMAArrayToString() {
         assertEquals(

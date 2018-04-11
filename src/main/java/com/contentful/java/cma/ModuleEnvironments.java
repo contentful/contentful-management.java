@@ -45,24 +45,28 @@ public final class ModuleEnvironments extends AbsModule<ServiceEnvironments> {
   }
 
   /**
-   * Create an environment.
+   * Create an environment in the configured space.
    *
    * @param environment CMAEnvironment
    * @return {@link CMAEnvironment} result instance
-   * @throws IllegalArgumentException if environment's space id is null.
+   * @throws IllegalArgumentException if the configured space id is null.
    * @throws IllegalArgumentException if environment is null.
+   * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAEnvironment create(CMAEnvironment environment) {
     return create(spaceId, environment);
   }
 
   /**
-   * Create an environment.
+   * Create an environment using the given space id.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)}.
    *
    * @param spaceId     the id of the space to be used
    * @param environment CMAEnvironment
    * @return {@link CMAEnvironment} result instance
-   * @throws IllegalArgumentException if environment's space id is null.
+   * @throws IllegalArgumentException if space id is null.
    * @throws IllegalArgumentException if environment is null.
    */
   public CMAEnvironment create(String spaceId, CMAEnvironment environment) {
@@ -105,17 +109,21 @@ public final class ModuleEnvironments extends AbsModule<ServiceEnvironments> {
   }
 
   /**
-   * Fetch all environments.
+   * Fetch all environments of the configured space.
    *
    * @return {@link CMAArray} result instance
-   * @throws IllegalArgumentException if environment's space id is null.
+   * @throws IllegalArgumentException if configured space id is null.
+   * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAArray<CMAEnvironment> fetchAll() {
     return fetchAll(spaceId);
   }
 
   /**
-   * Fetch all environments.
+   * Fetch all environments of the given space.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)}.
    *
    * @param spaceId space ID
    * @return {@link CMAArray} result instance
@@ -127,24 +135,28 @@ public final class ModuleEnvironments extends AbsModule<ServiceEnvironments> {
   }
 
   /**
-   * Fetch an environment with a given {@code environmentId}.
+   * Fetch an environment with a given {@code environmentId} from the configured space.
    *
    * @param environmentId environment ID
    * @return {@link CMAEnvironment} result instance
-   * @throws IllegalArgumentException if environment's space id is null.
+   * @throws IllegalArgumentException if the configured space id is null.
    * @throws IllegalArgumentException if environment's id is null.
+   * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAEnvironment fetchOne(String environmentId) {
     return fetchOne(spaceId, environmentId);
   }
 
   /**
-   * Fetch an environment with a given {@code environmentId}.
+   * Fetch an environment with a given {@code environmentId} and space.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)}.
    *
    * @param spaceId       space ID
    * @param environmentId environment ID
    * @return {@link CMAEnvironment} result instance
-   * @throws IllegalArgumentException if environment's space id is null.
+   * @throws IllegalArgumentException if space id is null.
    * @throws IllegalArgumentException if environment's id is null.
    */
   public CMAEnvironment fetchOne(String spaceId, String environmentId) {
@@ -199,13 +211,14 @@ public final class ModuleEnvironments extends AbsModule<ServiceEnvironments> {
    */
   public final class Async {
     /**
-     * Create an environment.
+     * Create an environment in the configured space.
      *
      * @param environment CMAEnvironment
      * @param callback    Callback
-     * @return the given {@code CMACallback} instance
-     * @throws IllegalArgumentException if space id is null.
+     * @return the given CMACallback instance
+     * @throws IllegalArgumentException if the configured space id is null.
      * @throws IllegalArgumentException if environment is null.
+     * @see CMAClient.Builder#setSpaceId(String)
      */
     public CMACallback<CMAEnvironment> create(
         final CMAEnvironment environment,
@@ -218,12 +231,15 @@ public final class ModuleEnvironments extends AbsModule<ServiceEnvironments> {
     }
 
     /**
-     * Create an environment.
+     * Create an environment using the given space id.
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)}.
      *
      * @param spaceId     Id of the space to host environment in
      * @param environment CMAEnvironment
      * @param callback    Callback
-     * @return the given {@code CMACallback} instance
+     * @return the given CMACallback instance
      * @throws IllegalArgumentException if space id is null.
      * @throws IllegalArgumentException if environment is null.
      */
@@ -243,7 +259,7 @@ public final class ModuleEnvironments extends AbsModule<ServiceEnvironments> {
      *
      * @param environment environment to be deleted
      * @param callback    Callback
-     * @return the given {@code CMACallback} instance
+     * @return the given CMACallback instance
      * @throws IllegalArgumentException if environment's space id is null.
      * @throws IllegalArgumentException if environment's id is null.
      */
@@ -257,13 +273,14 @@ public final class ModuleEnvironments extends AbsModule<ServiceEnvironments> {
     }
 
     /**
-     * Fetch all environments.
+     * Fetch all environments of the configured space.
      * <p>
      * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH}.
      *
      * @param callback Inform about results on the callback.
      * @return the given {@link CMACallback} instance.
-     * @throws IllegalArgumentException if environment's space id is null.
+     * @throws IllegalArgumentException if configured space id is null.
+     * @see CMAClient.Builder#setSpaceId(String)
      */
     public CMACallback<CMAArray<CMAEnvironment>> fetchAll(
         CMACallback<CMAArray<CMAEnvironment>> callback) {
@@ -275,14 +292,17 @@ public final class ModuleEnvironments extends AbsModule<ServiceEnvironments> {
     }
 
     /**
-     * Fetch all environments.
+     * Fetch all environments of the given space.
      * <p>
      * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH}.
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)}.
      *
      * @param spaceId  Id of the space to host environment in
      * @param callback Inform about results on the callback.
      * @return the given {@link CMACallback} instance.
-     * @throws IllegalArgumentException if environment's space id is null.
+     * @throws IllegalArgumentException if space id is null.
      */
     public CMACallback<CMAArray<CMAEnvironment>> fetchAll(
         final String spaceId,
@@ -295,13 +315,15 @@ public final class ModuleEnvironments extends AbsModule<ServiceEnvironments> {
     }
 
     /**
-     * Fetch an environment with a given {@code environmentId}.
+     * Fetch an environment with a given environmentId and the configured space.
      *
      * @param environmentId environment ID
      * @param callback      Callback
-     * @return the given {@code CMACallback} instance
+     * @return the given CMACallback instance
      * @throws IllegalArgumentException if environment's space id is null.
      * @throws IllegalArgumentException if environment's id is null.
+     * @see CMAClient.Builder#setSpaceId(String)
+     * @see CMAClient.Builder#setEnvironmentId(String)
      */
     public CMACallback<CMAEnvironment> fetchOne(
         final String environmentId,
@@ -314,14 +336,17 @@ public final class ModuleEnvironments extends AbsModule<ServiceEnvironments> {
     }
 
     /**
-     * Fetch an environment with a given {@code environmentId}.
+     * Fetch an environment with a given {@code environmentId} from the space given.
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)}.
      *
      * @param spaceId       Id of the space to host environment in
      * @param environmentId environment ID
      * @param callback      Callback
-     * @return the given {@code CMACallback} instance
-     * @throws IllegalArgumentException if environment's space id is null.
-     * @throws IllegalArgumentException if environment's id is null.
+     * @return the given CMACallback instance
+     * @throws IllegalArgumentException if space id is null.
+     * @throws IllegalArgumentException if environment id is null.
      */
     public CMACallback<CMAEnvironment> fetchOne(
         final String spaceId,
@@ -339,7 +364,7 @@ public final class ModuleEnvironments extends AbsModule<ServiceEnvironments> {
      *
      * @param environment environment
      * @param callback    Callback
-     * @return the given {@code CMACallback} instance
+     * @return the given CMACallback instance
      * @throws IllegalArgumentException if environment is null.
      * @throws IllegalArgumentException if environment's space id is null.
      * @throws IllegalArgumentException if environment's name is null.

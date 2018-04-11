@@ -22,14 +22,47 @@ import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAEntry
 import com.contentful.java.cma.model.CMAHttpException
 import com.contentful.java.cma.model.CMAType
+import com.google.gson.Gson
 import okhttp3.HttpUrl
 import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockWebServer
+import org.junit.After
+import org.junit.Before
 import java.io.IOException
 import java.util.*
+import java.util.logging.LogManager
 import kotlin.test.*
 import org.junit.Test as test
 
-class EntryTests : BaseTest() {
+class EntryTests {
+    var server: MockWebServer? = null
+    var client: CMAClient? = null
+    var gson: Gson? = null
+
+    @Before
+    fun setUp() {
+        LogManager.getLogManager().reset()
+        // MockWebServer
+        server = MockWebServer()
+        server!!.start()
+
+        // Client
+        client = CMAClient.Builder().apply {
+            accessToken = "token"
+            coreEndpoint = server!!.url("/").toString()
+            uploadEndpoint = server!!.url("/").toString()
+            spaceId = "configuredSpaceId"
+            environmentId = "configuredEnvironmentId"
+        }.build()
+
+        gson = CMAClient.createGson()
+    }
+
+    @After
+    fun tearDown() {
+        server!!.shutdown()
+    }
+
     @test
     fun testArchive() {
         val responseBody = TestUtils.fileToString("entry_archive_response.json")
@@ -79,7 +112,6 @@ class EntryTests : BaseTest() {
 
     @test
     fun testCreateWithConfiguredSpaceAndEnvironment() {
-        val requestBody = TestUtils.fileToString("entry_create_request.json")
         val responseBody = TestUtils.fileToString("entry_create_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -275,7 +307,7 @@ class EntryTests : BaseTest() {
         val responseBody = TestUtils.fileToString("entry_fetch_one_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
-        val result = assertTestCallback(client!!.entries().async().fetchOne("entry", TestCallback())
+        assertTestCallback(client!!.entries().async().fetchOne("entry", TestCallback())
                 as TestCallback)!!
 
         // Request

@@ -58,24 +58,26 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
    * Fetch all roles of the configured space.
    *
    * @return the array of roles.
-   * @throws IllegalArgumentException        if spaceId is null.
+   * @throws IllegalArgumentException        if configured spaceId is null.
    * @throws CMANotWithEnvironmentsException if environmentId was set using
-   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-   *                                         throws a runtime exception.
+   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+   * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAArray<CMARole> fetchAll() {
+    throwIfEnvironmentIdIsNotDefault();
     return fetchAll(spaceId);
   }
 
   /**
    * Fetch all roles of this space.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
    *
    * @param spaceId the space identifier identifying the space.
    * @return the array of roles.
-   * @throws IllegalArgumentException        if spaceId is null.
-   * @throws CMANotWithEnvironmentsException if environmentId was set using
-   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-   *                                         throws a runtime exception.
+   * @throws IllegalArgumentException if spaceId is null.
    */
   public CMAArray<CMARole> fetchAll(String spaceId) {
     assertNotNull(spaceId, "spaceId");
@@ -87,29 +89,31 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
    *
    * @param query the search criteria to search for.
    * @return the array of roles.
-   * @throws IllegalArgumentException        if spaceId is null.
+   * @throws IllegalArgumentException        if configured spaceId is null.
    * @throws CMANotWithEnvironmentsException if environmentId was set using
-   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-   *                                         throws a runtime exception.
+   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+   * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAArray<CMARole> fetchAll(Map<String, String> query) {
+    throwIfEnvironmentIdIsNotDefault();
+
     return fetchAll(spaceId, query);
   }
 
   /**
    * Fetch specific roles of this space.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
    *
    * @param spaceId the space identifier identifying the space.
    * @param query   the search criteria to search for.
    * @return the array of roles.
-   * @throws IllegalArgumentException        if spaceId is null.
-   * @throws CMANotWithEnvironmentsException if environmentId was set using
-   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-   *                                         throws a runtime exception.
+   * @throws IllegalArgumentException if spaceId is null.
    */
   public CMAArray<CMARole> fetchAll(String spaceId, Map<String, String> query) {
     assertNotNull(spaceId, "spaceId");
-    throwIfEnvironmentIdIsNotDefault();
 
     if (query == null) {
       return service.fetchAll(spaceId).blockingFirst();
@@ -123,32 +127,34 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
    *
    * @param roleId the id of the role to be found.
    * @return null if no role was found, otherwise the found role.
-   * @throws IllegalArgumentException        if space id is null.
+   * @throws IllegalArgumentException        if configured space id is null.
    * @throws IllegalArgumentException        if role id is null.
    * @throws CMANotWithEnvironmentsException if environmentId was set using
-   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-   *                                         throws a runtime exception.
+   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+   * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMARole fetchOne(String roleId) {
+    throwIfEnvironmentIdIsNotDefault();
+
     return fetchOne(spaceId, roleId);
   }
 
   /**
    * Fetches one role by its id from Contentful.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
    *
    * @param spaceId the space this role is hosted by.
    * @param roleId  the id of the role to be found.
    * @return null if no role was found, otherwise the found role.
-   * @throws IllegalArgumentException        if space id is null.
-   * @throws IllegalArgumentException        if role id is null.
-   * @throws CMANotWithEnvironmentsException if environmentId was set using
-   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-   *                                         throws a runtime exception.
+   * @throws IllegalArgumentException if space id is null.
+   * @throws IllegalArgumentException if role id is null.
    */
   public CMARole fetchOne(String spaceId, String roleId) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(roleId, "roleId");
-    throwIfEnvironmentIdIsNotDefault();
 
     return service.fetchOne(spaceId, roleId).blockingFirst();
   }
@@ -158,32 +164,34 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
    *
    * @param role the new role to be created.
    * @return the newly created role.
-   * @throws IllegalArgumentException        if space id is null.
+   * @throws IllegalArgumentException        if the configured space id is null.
    * @throws IllegalArgumentException        if role is null.
    * @throws CMANotWithEnvironmentsException if environmentId was set using
-   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-   *                                         throws a runtime exception.
+   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+   * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMARole create(CMARole role) {
+    throwIfEnvironmentIdIsNotDefault();
+
     return create(spaceId, role);
   }
 
   /**
    * Create a new role.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
    *
    * @param spaceId the space id to host the role.
    * @param role    the new role to be created.
    * @return the newly created role.
-   * @throws IllegalArgumentException        if space id is null.
-   * @throws IllegalArgumentException        if role is null.
-   * @throws CMANotWithEnvironmentsException if environmentId was set using
-   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-   *                                         throws a runtime exception.
+   * @throws IllegalArgumentException if space id is null.
+   * @throws IllegalArgumentException if role is null.
    */
   public CMARole create(String spaceId, CMARole role) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(role, "role");
-    throwIfEnvironmentIdIsNotDefault();
 
     final CMASystem sys = role.getSystem();
     role.setSystem(null);
@@ -262,8 +270,7 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
      * @return a callback for the array fetched.
      * @throws IllegalArgumentException        if spaceId is null.
      * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
+     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
      * @see ModuleRoles#fetchAll(String)
      */
     public CMACallback<CMAArray<CMARole>> fetchAll(
@@ -277,14 +284,15 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
 
     /**
      * Fetch all roles of this space, asynchronously.
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+     * {@link CMAClient.Builder#setEnvironmentId(String)}.
      *
      * @param spaceId  the space identifier identifying the space.
      * @param callback a callback to be called, once the results are present.
      * @return a callback for the array fetched.
-     * @throws IllegalArgumentException        if spaceId is null.
-     * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
+     * @throws IllegalArgumentException if spaceId is null.
      * @see ModuleRoles#fetchAll(String)
      */
     public CMACallback<CMAArray<CMARole>> fetchAll(
@@ -303,10 +311,10 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
      * @param query    the search criteria to search for.
      * @param callback the callback to be informed about success or failure.
      * @return the callback passed in.
-     * @throws IllegalArgumentException        if spaceId is null.
+     * @throws IllegalArgumentException        if configured spaceId is null.
      * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
+     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+     * @see CMAClient.Builder#setSpaceId(String)
      * @see ModuleRoles#fetchAll(String)
      */
     public CMACallback<CMAArray<CMARole>> fetchAll(
@@ -321,15 +329,16 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
 
     /**
      * Fetch specific roles of this space.
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+     * {@link CMAClient.Builder#setEnvironmentId(String)}.
      *
      * @param spaceId  the space identifier identifying the space.
      * @param query    the search criteria to search for.
      * @param callback the callback to be informed about success or failure.
      * @return the callback passed in.
-     * @throws IllegalArgumentException        if spaceId is null.
-     * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
+     * @throws IllegalArgumentException if spaceId is null.
      * @see ModuleRoles#fetchAll(String)
      */
     public CMACallback<CMAArray<CMARole>> fetchAll(
@@ -345,16 +354,17 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
 
     /**
      * Fetches one role by its id from Contentful asynchronously.
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+     * {@link CMAClient.Builder#setEnvironmentId(String)}.
      *
      * @param spaceId  the space this role is hosted by.
      * @param roleId   the id of the role to be found.
      * @param callback a callback to be called, once the results are present.
      * @return a callback handling the response.
-     * @throws IllegalArgumentException        if space id is null.
-     * @throws IllegalArgumentException        if role id is null.
-     * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
+     * @throws IllegalArgumentException if space id is null.
+     * @throws IllegalArgumentException if role id is null.
      * @see ModuleRoles#fetchOne(String, String)
      */
     public CMACallback<CMARole> fetchOne(
@@ -363,9 +373,7 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
         final CMACallback<CMARole> callback) {
       return defer(new DefFunc<CMARole>() {
         @Override CMARole method() {
-          return ModuleRoles.this.fetchOne(
-              spaceId, roleId
-          );
+          return ModuleRoles.this.fetchOne(spaceId, roleId);
         }
       }, callback);
     }
@@ -379,8 +387,8 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
      * @throws IllegalArgumentException        if space id is null.
      * @throws IllegalArgumentException        if role id is null.
      * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
+     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+     * @see CMAClient.Builder#setSpaceId(String)
      * @see ModuleRoles#fetchOne(String, String)
      */
     public CMACallback<CMARole> fetchOne(
@@ -395,16 +403,17 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
 
     /**
      * Asynchronously create a new role.
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+     * {@link CMAClient.Builder#setEnvironmentId(String)}.
      *
      * @param spaceId  the space id to host the role.
      * @param role     the new role to be created.
      * @param callback a callback to be called, once the results are present.
      * @return a callback for the responses.
-     * @throws IllegalArgumentException        if space id is null.
-     * @throws IllegalArgumentException        if role is null.
-     * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
+     * @throws IllegalArgumentException if space id is null.
+     * @throws IllegalArgumentException if role is null.
      * @see ModuleRoles#create(String, CMARole)
      */
     public CMACallback<CMARole> create(
@@ -427,8 +436,8 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
      * @throws IllegalArgumentException        if space id is null.
      * @throws IllegalArgumentException        if role is null.
      * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
+     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+     * @see CMAClient.Builder#setSpaceId(String)
      * @see ModuleRoles#create(String, CMARole)
      */
     public CMACallback<CMARole> create(

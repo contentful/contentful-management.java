@@ -66,9 +66,14 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
 
   /**
    * Create a new Asset.
+   * <p>
    * In case the given {@code asset} has an ID associated with it, that ID will be used,
    * otherwise the server will auto-generate an ID that will be contained in the response upon
    * success.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
    *
    * @param spaceId       Space ID
    * @param environmentId Environment ID
@@ -78,9 +83,9 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
    * @throws IllegalArgumentException if asset space id is null.
    * @throws IllegalArgumentException if asset environment id is null.
    */
-  @SuppressWarnings("unchecked")
   public CMAAsset create(String spaceId, String environmentId, CMAAsset asset) {
     assertNotNull(spaceId, "spaceId");
+    assertNotNull(environmentId, "environmentId");
     assertNotNull(asset, "asset");
 
     final String assetId = asset.getId();
@@ -101,6 +106,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
 
   /**
    * Create a new Asset in the configured space and environment.
+   * <p>
    * In case the given {@code asset} has an ID associated with it, that ID will be used,
    * otherwise the server will auto-generate an ID that will be contained in the response upon
    * success.
@@ -108,9 +114,11 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
    * @param asset Asset
    * @return {@link CMAAsset} result instance
    * @throws IllegalArgumentException if asset is null.
-   * @throws IllegalArgumentException if asset space id is null.
+   * @throws IllegalArgumentException if configured space id is null.
+   * @throws IllegalArgumentException if configured environment id is null.
+   * @see CMAClient.Builder#setSpaceId(String)
+   * @see CMAClient.Builder#setEnvironmentId(String)
    */
-  @SuppressWarnings("unchecked")
   public CMAAsset create(CMAAsset asset) {
     return create(spaceId, environmentId, asset);
   }
@@ -132,33 +140,38 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
   }
 
   /**
-   * Fetch all Assets from a Space.
+   * Fetch all Assets using configured space id and environment id.
    * <p>
    * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH}
    *
-   * @return {@link CMAArray} result instance
-   * @throws IllegalArgumentException if spaceId is null.
+   * @return all assets of this space environment.
+   * @throws IllegalArgumentException if configured space id is null.
+   * @throws IllegalArgumentException if configured environment id is null.
+   * @see CMAClient.Builder#setSpaceId(String)
+   * @see CMAClient.Builder#setEnvironmentId(String)
    */
   public CMAArray<CMAAsset> fetchAll() {
     return fetchAll(spaceId, environmentId, new HashMap<>());
   }
 
   /**
-   * Fetch all Assets from an Environment.
+   * Fetch all Assets matching a query using configured space id and environment id.
    * <p>
    * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH}
    *
    * @param map the query to narrow down the results.
-   * @return {@link CMAArray} result instance
-   * @throws IllegalArgumentException if spaceId is null.
-   * @throws IllegalArgumentException if environment id is null.
+   * @return matching assets.
+   * @throws IllegalArgumentException if configured space id is null.
+   * @throws IllegalArgumentException if configured environment id is null.
+   * @see CMAClient.Builder#setSpaceId(String)
+   * @see CMAClient.Builder#setEnvironmentId(String)
    */
   public CMAArray<CMAAsset> fetchAll(Map<String, String> map) {
     return fetchAll(spaceId, environmentId, map);
   }
 
   /**
-   * Fetch all Assets from an Environment.
+   * Fetch all Assets from the given space and environment.
    * <p>
    * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH}
    *
@@ -173,7 +186,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
   }
 
   /**
-   * Fetch all Assets from a Space with query parameter.
+   * Fetch all Assets matching the given query from the given space and environment.
    *
    * @param spaceId       Space ID
    * @param environmentId Environment ID
@@ -193,19 +206,21 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
   }
 
   /**
-   * Fetch an Asset with the given {@code assetId}..
+   * Fetch an Asset with the given {@code assetId} from the configured space and environment.
    *
    * @param assetId Asset ID
    * @return {@link CMAAsset} result instance
-   * @throws IllegalArgumentException if spaceId is null.
-   * @throws IllegalArgumentException if assetId is null.
+   * @throws IllegalArgumentException if configured space id is null.
+   * @throws IllegalArgumentException if configured environment id is null.
+   * @see CMAClient.Builder#setSpaceId(String)
+   * @see CMAClient.Builder#setEnvironmentId(String)
    */
   public CMAAsset fetchOne(String assetId) {
     return fetchOne(spaceId, environmentId, assetId);
   }
 
   /**
-   * Fetch an Asset with the given {@code assetId} from an Environment.
+   * Fetch an Asset with the given {@code assetId} from the given space and environment.
    *
    * @param spaceId       Space ID
    * @param environmentId Environment ID
@@ -346,7 +361,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
      *
      * @param asset    Asset
      * @param callback Callback
-     * @return the given {@code CMACallback} instance
+     * @return the given CMACallback instance
      * @throws IllegalArgumentException if asset is null.
      * @throws IllegalArgumentException if asset id is null.
      * @throws IllegalArgumentException if asset space id is null.
@@ -360,17 +375,20 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     }
 
     /**
-     * Create a new Asset.
+     * Create a new Asset in the configured space and environment.
+     * <p>
      * In case the given {@code asset} has an ID associated with it, that ID will be used,
      * otherwise the server will auto-generate an ID that will be contained in the response upon
      * success.
      *
      * @param asset    Asset
      * @param callback Callback
-     * @return the given {@code CMACallback} instance
+     * @return the given CMACallback instance
      * @throws IllegalArgumentException if asset is null.
      * @throws IllegalArgumentException if asset id is null.
      * @throws IllegalArgumentException if asset space id is null.
+     * @see CMAClient.Builder#setSpaceId(String)
+     * @see CMAClient.Builder#setEnvironmentId(String)
      */
     public CMACallback<CMAAsset> create(final CMAAsset asset,
                                         CMACallback<CMAAsset> callback) {
@@ -382,16 +400,21 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     }
 
     /**
-     * Create a new Asset in an Environment.
+     * Create a new Asset in the given space and environment.
+     * <p>
      * In case the given {@code asset} has an ID associated with it, that ID will be used,
      * otherwise the server will auto-generate an ID that will be contained in the response upon
      * success.
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)} and
+     * {@link CMAClient.Builder#setEnvironmentId(String)}.
      *
      * @param spaceId       Space ID
      * @param environmentId Environment ID
      * @param asset         Asset
      * @param callback      Callback
-     * @return the given {@code CMACallback} instance
+     * @return the given CMACallback instance
      * @throws IllegalArgumentException if asset is null.
      * @throws IllegalArgumentException if asset id is null.
      * @throws IllegalArgumentException if asset space id is null.
@@ -414,7 +437,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
      *
      * @param asset    Asset
      * @param callback Callback
-     * @return the given {@code CMACallback} instance
+     * @return the given CMACallback instance
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if assetId is null.
      */
@@ -428,10 +451,12 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     }
 
     /**
-     * Fetch all Assets.
+     * Fetch all Assets from the configured space and environmentS.
      *
      * @param callback Callback
-     * @return the given {@code CMACallback} instance
+     * @return the given CMACallback instance.
+     * @see CMAClient.Builder#setSpaceId(String)
+     * @see CMAClient.Builder#setEnvironmentId(String)
      */
     public CMACallback<CMAArray<CMAAsset>> fetchAll(
         CMACallback<CMAArray<CMAAsset>> callback) {
@@ -447,7 +472,9 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
      *
      * @param query    The query to narrow down the results.
      * @param callback Callback
-     * @return the given {@code CMACallback} instance
+     * @return the given CMACallback instance
+     * @see CMAClient.Builder#setSpaceId(String)
+     * @see CMAClient.Builder#setEnvironmentId(String)
      */
     public CMACallback<CMAArray<CMAAsset>> fetchAll(
         final Map<String, String> query,
@@ -461,11 +488,15 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
 
     /**
      * Fetch all Assets from a Space's Environment.
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)} and
+     * {@link CMAClient.Builder#setEnvironmentId(String)}.
      *
      * @param spaceId       Space ID
      * @param environmentId Environment ID
      * @param callback      Callback
-     * @return the given {@code CMACallback} instance
+     * @return the given CMACallback instance
      */
     public CMACallback<CMAArray<CMAAsset>> fetchAll(
         String spaceId,
@@ -480,12 +511,16 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
 
     /**
      * Fetch all Assets from a Space's Environment with a query.
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)} and
+     * {@link CMAClient.Builder#setEnvironmentId(String)}.
      *
      * @param spaceId       Space ID
      * @param environmentId Environment ID
      * @param query         Query
      * @param callback      Callback
-     * @return the given {@code CMACallback} instance
+     * @return the given CMACallback instance
      * @throws IllegalArgumentException if spaceId is null.
      */
     public CMACallback<CMAArray<CMAAsset>> fetchAll(
@@ -501,13 +536,16 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     }
 
     /**
-     * Fetch an Asset with the given {@code assetId} from a Space.
+     * Fetch an Asset with the given {@code assetId} from the configured space.
      *
      * @param assetId  Asset ID
      * @param callback Callback
-     * @return the given {@code CMACallback} instance
-     * @throws IllegalArgumentException if spaceId is null.
-     * @throws IllegalArgumentException if assetId is null.
+     * @return the given CMACallback instance
+     * @throws IllegalArgumentException if configured space id is null.
+     * @throws IllegalArgumentException if configured environment id is null.
+     * @throws IllegalArgumentException if asset id is null.
+     * @see CMAClient.Builder#setSpaceId(String)
+     * @see CMAClient.Builder#setEnvironmentId(String)
      */
     public CMACallback<CMAAsset> fetchOne(
         final String assetId,
@@ -520,14 +558,19 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
     }
 
     /**
-     * Fetch an Asset with the given {@code assetId} from a Space's Environment.
+     * Fetch an Asset with the given {@code assetId} from a the given space and environment.
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)} and
+     * {@link CMAClient.Builder#setEnvironmentId(String)}.
      *
      * @param spaceId       Space ID
      * @param environmentId Environment ID
      * @param assetId       Asset ID
      * @param callback      Callback
-     * @return the given {@code CMACallback} instance
+     * @return the given CMACallback instance
      * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if environmentId is null.
      * @throws IllegalArgumentException if assetId is null.
      */
     public CMACallback<CMAAsset> fetchOne(
@@ -548,11 +591,13 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
      * @param asset    Asset
      * @param locale   Locale
      * @param callback Callback
-     * @return the given {@code CMACallback} instance
+     * @return the given CMACallback instance
      * @throws IllegalArgumentException if asset is null.
      * @throws IllegalArgumentException if asset has no id.
      * @throws IllegalArgumentException if asset has no space.
      * @throws IllegalArgumentException if locale is null.
+     * @see CMAClient.Builder#setSpaceId(String)
+     * @see CMAClient.Builder#setEnvironmentId(String)
      */
     public CMACallback<Integer> process(
         final CMAAsset asset,
@@ -570,7 +615,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
      *
      * @param asset    Asset
      * @param callback Callback
-     * @return the given {@code CMACallback} instance
+     * @return the given CMACallback instance
      * @throws IllegalArgumentException if asset is null.
      * @throws IllegalArgumentException if asset has no id.
      * @throws IllegalArgumentException if asset has no space id.
@@ -588,7 +633,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
      *
      * @param asset    Asset
      * @param callback Callback
-     * @return the given {@code CMACallback} instance
+     * @return the given CMACallback instance
      * @throws IllegalArgumentException if asset is null.
      * @throws IllegalArgumentException if asset id is empty.
      * @throws IllegalArgumentException if asset's space id is empty.
@@ -606,7 +651,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
      *
      * @param asset    Asset
      * @param callback Callback
-     * @return the given {@code CMACallback} instance
+     * @return the given CMACallback instance
      * @throws IllegalArgumentException if asset is null.
      * @throws IllegalArgumentException if asset's id is not set.
      * @throws IllegalArgumentException if asset's space id is not set.
@@ -624,7 +669,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
      *
      * @param asset    Asset
      * @param callback Callback
-     * @return the given {@code CMACallback} instance
+     * @return the given CMACallback instance
      * @throws IllegalArgumentException if asset is null.
      * @throws IllegalArgumentException if asset's id is null.
      * @throws IllegalArgumentException if asset's space id is null.

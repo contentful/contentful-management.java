@@ -23,13 +23,46 @@ import com.contentful.java.cma.model.CMAAsset
 import com.contentful.java.cma.model.CMAAssetFile
 import com.contentful.java.cma.model.CMALink
 import com.contentful.java.cma.model.CMAType
+import com.google.gson.Gson
 import okhttp3.HttpUrl
 import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockWebServer
+import org.junit.After
+import org.junit.Before
 import java.io.IOException
+import java.util.logging.LogManager
 import kotlin.test.*
 import org.junit.Test as test
 
-class AssetTests : BaseTest() {
+class AssetTests {
+    var server: MockWebServer? = null
+    var client: CMAClient? = null
+    var gson: Gson? = null
+
+    @Before
+    fun setUp() {
+        LogManager.getLogManager().reset()
+        // MockWebServer
+        server = MockWebServer()
+        server!!.start()
+
+        // Client
+        client = CMAClient.Builder().apply {
+            accessToken = "token"
+            coreEndpoint = server!!.url("/").toString()
+            uploadEndpoint = server!!.url("/").toString()
+            spaceId = "configuredSpaceId"
+            environmentId = "configuredEnvironmentId"
+        }.build()
+
+        gson = CMAClient.createGson()
+    }
+
+    @After
+    fun tearDown() {
+        server!!.shutdown()
+    }
+
     @test
     fun testArchive() {
         val cli = CMAClient.Builder()
@@ -612,5 +645,21 @@ class AssetTests : BaseTest() {
         assertEquals("DELETE", request.method)
         assertEquals("/spaces/spaceid/environments/staging/assets/1fgii3GZo4euykA6u6mKmi",
                 request.path)
+    }
+
+    @test(expected = IllegalArgumentException::class)
+    fun testThrowIfNotConfigured() {
+        val client = CMAClient.Builder().apply {
+            accessToken = "token"
+            coreEndpoint = server!!.url("/").toString()
+            uploadEndpoint = server!!.url("/").toString()
+        }.build()!!
+
+        try {
+            client.assets().fetchAll()
+        } catch (e: IllegalArgumentException) {
+            assertTrue(e.message!!.contains("spaceId may not be null"))
+            throw e
+        }
     }
 }

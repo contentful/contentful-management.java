@@ -94,8 +94,8 @@ public final class ModuleUploads extends AbsModule<ServiceUploads> {
   /**
    * Create a new upload on the configured space.
    * <p>
-   * Once an upload is created, you can use it in CMAClient#assets for creating an asset
-   * based on a local file.
+   * Once an upload is created, you can use it in {@link ModuleAssets} through
+   * {@link CMAClient#assets()} for creating an asset based on a local file.
    *
    * @param stream the actual binary representation of the upload. Cannot be null.
    * @return the upload created, containing the id to be used further on.
@@ -103,33 +103,35 @@ public final class ModuleUploads extends AbsModule<ServiceUploads> {
    * @throws IllegalArgumentException        if stream is null.
    * @throws java.io.IOException             if the stream could not be read.
    * @throws CMANotWithEnvironmentsException if environmentId was set using
-   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-   *                                         throws a runtime exception.
+   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+   * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAUpload create(InputStream stream) throws IOException {
+    throwIfEnvironmentIdIsNotDefault();
+
     return create(spaceId, stream);
   }
 
   /**
    * Create a new upload.
    * <p>
-   * Once an upload is created, you can use it in CMAClient#assets for creating an asset
-   * based on a local file.
+   * Once an upload is created, you can use it in {@link ModuleAssets} through
+   * {@link CMAClient#assets()} for creating an asset based on a local file.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
    *
    * @param spaceId a nonnull id representing the space to add the upload to.
    * @param stream  the actual binary representation of the upload. Cannot be null.
    * @return the upload created, containing the id to be used further on.
-   * @throws IllegalArgumentException        if spaceId is null.
-   * @throws IllegalArgumentException        if stream is null.
-   * @throws java.io.IOException             if the stream could not be read.
-   * @throws CMANotWithEnvironmentsException if environmentId was set using
-   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-   *                                         throws a runtime exception.
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if stream is null.
+   * @throws java.io.IOException      if the stream could not be read.
    */
   public CMAUpload create(String spaceId, InputStream stream) throws IOException {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(stream, "stream");
-    throwIfEnvironmentIdIsNotDefault();
 
     final byte[] content = readAllBytes(stream);
 
@@ -142,32 +144,34 @@ public final class ModuleUploads extends AbsModule<ServiceUploads> {
    *
    * @param uploadId what id does the upload have?
    * @return an CMAUpload based on this id and space combination.
-   * @throws IllegalArgumentException        if spaceId is null.
+   * @throws IllegalArgumentException        if configured spaceId is null.
    * @throws IllegalArgumentException        if uploadId is null.
    * @throws CMANotWithEnvironmentsException if environmentId was set using
-   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-   *                                         throws a runtime exception.
+   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+   * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAUpload fetchOne(String uploadId) {
+    throwIfEnvironmentIdIsNotDefault();
+
     return fetchOne(spaceId, uploadId);
   }
 
   /**
    * Get information about the given upload.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
    *
    * @param spaceId  which space is this upload hosted under?
    * @param uploadId what id does the upload have?
    * @return an CMAUpload based on this id and space combination.
-   * @throws IllegalArgumentException        if spaceId is null.
-   * @throws IllegalArgumentException        if uploadId is null.
-   * @throws CMANotWithEnvironmentsException if environmentId was set using
-   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-   *                                         throws a runtime exception.
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if uploadId is null.
    */
   public CMAUpload fetchOne(String spaceId, String uploadId) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(uploadId, "uploadId");
-    throwIfEnvironmentIdIsNotDefault();
 
     return service.fetchOne(spaceId, uploadId).blockingFirst();
   }
@@ -208,12 +212,12 @@ public final class ModuleUploads extends AbsModule<ServiceUploads> {
      * @param stream   the actual binary representation of the upload. Cannot be null.
      * @param callback the callback to be informed about success or failure.
      * @return the callback passed in.
-     * @throws IllegalArgumentException        if spaceId is null.
+     * @throws IllegalArgumentException        if configured spaceId is null.
      * @throws IllegalArgumentException        if file is null.
      * @throws IllegalStateException           if something in the transmittal went wrong.
      * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
+     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+     * @see CMAClient.Builder#setSpaceId(String)
      */
     public CMACallback<CMAUpload> create(
         final InputStream stream,
@@ -234,17 +238,18 @@ public final class ModuleUploads extends AbsModule<ServiceUploads> {
      * <p>
      * Once an upload is created, you can use it in CMAClient#assets for creating an asset
      * based on a local file.
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+     * {@link CMAClient.Builder#setEnvironmentId(String)}.
      *
      * @param spaceId  a nonnull id representing the space to add the upload to.
      * @param stream   the actual binary representation of the upload. Cannot be null.
      * @param callback the callback to be informed about success or failure.
      * @return the callback passed in.
-     * @throws IllegalArgumentException        if spaceId is null.
-     * @throws IllegalArgumentException        if file is null.
-     * @throws IllegalStateException           if something in the transmittal went wrong.
-     * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if file is null.
+     * @throws IllegalStateException    if something in the transmittal went wrong.
      */
     public CMACallback<CMAUpload> create(
         final String spaceId,
@@ -267,11 +272,11 @@ public final class ModuleUploads extends AbsModule<ServiceUploads> {
      * @param uploadId what id does the upload have?
      * @param callback the callback to be informed about success or failure.
      * @return the callback passed in.
-     * @throws IllegalArgumentException        if spaceId is null.
+     * @throws IllegalArgumentException        if configured spaceId is null.
      * @throws IllegalArgumentException        if uploadId is null.
      * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
+     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+     * @see CMAClient.Builder#setSpaceId(String)
      */
     public CMACallback<CMAUpload> fetchOne(
         final String uploadId,
@@ -285,6 +290,10 @@ public final class ModuleUploads extends AbsModule<ServiceUploads> {
 
     /**
      * Get information about the given upload, asynchronously.
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+     * {@link CMAClient.Builder#setEnvironmentId(String)}.
      *
      * @param spaceId  which space is this upload hosted under?
      * @param uploadId what id does the upload have?
@@ -292,9 +301,6 @@ public final class ModuleUploads extends AbsModule<ServiceUploads> {
      * @return the callback passed in.
      * @throws IllegalArgumentException        if spaceId is null.
      * @throws IllegalArgumentException        if uploadId is null.
-     * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
      */
     public CMACallback<CMAUpload> fetchOne(
         final String spaceId,

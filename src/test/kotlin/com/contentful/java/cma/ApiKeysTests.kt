@@ -19,24 +19,47 @@ package com.contentful.java.cma
 import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAApiKey
+import com.contentful.java.cma.model.CMANotWithEnvironmentsException
 import com.contentful.java.cma.model.CMAType
+import com.google.gson.Gson
 import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockWebServer
+import org.junit.After
+import org.junit.Before
+import java.util.concurrent.Executor
+import java.util.logging.LogManager
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import org.junit.Test as test
 
-class ApiKeysTests : BaseTest() {
-    override fun setUp() {
-        super.setUp()
+class ApiKeysTests {
+    var server: MockWebServer? = null
+    var client: CMAClient? = null
+    var gson: Gson? = null
 
-        // overwrite client to not use environments
+    @Before
+    fun setUp() {
+        LogManager.getLogManager().reset()
+        // MockWebServer
+        server = MockWebServer()
+        server!!.start()
+
+        // Client
         client = CMAClient.Builder().apply {
             accessToken = "token"
             coreEndpoint = server!!.url("/").toString()
             uploadEndpoint = server!!.url("/").toString()
             spaceId = "configuredSpaceId"
+            callbackExecutor = Executor { command -> command.run() }
         }.build()
+
+        gson = CMAClient.createGson()
+    }
+
+    @After
+    fun tearDown() {
+        server!!.shutdown()
     }
 
     @test
@@ -183,6 +206,40 @@ class ApiKeysTests : BaseTest() {
         val recordedRequest = server!!.takeRequest()
         assertEquals("GET", recordedRequest.method)
         assertEquals("/spaces/configuredSpaceId/api_keys?skip=6", recordedRequest.path)
+    }
+
+    @test(expected = CMANotWithEnvironmentsException::class)
+    fun testThrowsIfConfiguredEnvironmentIsUsed() {
+        client = CMAClient.Builder().apply {
+            accessToken = "token"
+            coreEndpoint = server!!.url("/").toString()
+            uploadEndpoint = server!!.url("/").toString()
+            spaceId = "configuredSpaceId"
+            environmentId = "someEnvironmentIdThatShouldNotBeSet"
+        }.build()
+
+        client!!.apiKeys().fetchAll()
+    }
+
+    @test
+    fun testOverrideConfigurationDoesNotThrow() {
+        client = CMAClient.Builder().apply {
+            accessToken = "token"
+            coreEndpoint = server!!.url("/").toString()
+            uploadEndpoint = server!!.url("/").toString()
+            spaceId = "configuredSpaceId"
+            environmentId = "someEnvironmentIdThatShouldNotBeSet"
+        }.build()
+
+        val responseBody = TestUtils.fileToString("apikeys_get_all.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        client!!.apiKeys().fetchAll("overwrittenSpaceId")
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/overwrittenSpaceId/api_keys", recordedRequest.path)
     }
 
 }

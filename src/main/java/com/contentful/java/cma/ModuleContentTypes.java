@@ -48,15 +48,19 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
   }
 
   /**
-   * Create a new Content Type.
+   * Create a new Content Type in the configured space and environment.
+   * <p>
    * In case the given {@code contentType} has an ID associated with it, that ID will be used,
    * otherwise the server will auto-generate an ID that will be contained in the response upon
    * success.
    *
    * @param contentType Content Type
    * @return {@link CMAContentType} result instance
-   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if configured space id is null.
+   * @throws IllegalArgumentException if configured environment id is null.
    * @throws IllegalArgumentException if contentType is null.
+   * @see CMAClient.Builder#setSpaceId(String)
+   * @see CMAClient.Builder#setEnvironmentId(String)
    */
   @SuppressWarnings("unchecked")
   public CMAContentType create(CMAContentType contentType) {
@@ -65,9 +69,14 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
 
   /**
    * Create a new Content Type in an Environment.
+   * <p>
    * In case the given {@code contentType} has an ID associated with it, that ID will be used,
    * otherwise the server will auto-generate an ID that will be contained in the response upon
    * success.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
    *
    * @param spaceId       Space ID
    * @param environmentId Environment ID
@@ -120,25 +129,31 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
   }
 
   /**
-   * Fetch all Content Types from a Space, using default query parameter.
+   * Fetch all Content Types from the configured space and environment, using default query
+   * parameter.
    * <p>
    * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH}
    *
    * @return {@link CMAArray} result instance
    * @throws IllegalArgumentException if spaceId is null.
+   * @see CMAClient.Builder#setSpaceId(String)
+   * @see CMAClient.Builder#setEnvironmentId(String)
    */
   public CMAArray<CMAContentType> fetchAll() {
     return fetchAll(spaceId, environmentId);
   }
 
   /**
-   * Fetch all Content Types from a Space, using default query parameter.
+   * Fetch all Content Types from the configured space and environment, using default query
+   * parameter.
    * <p>
    * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH}
    *
    * @param query to specify to narrow down results.
    * @return {@link CMAArray} result instance
    * @throws IllegalArgumentException if spaceId is null.
+   * @see CMAClient.Builder#setSpaceId(String)
+   * @see CMAClient.Builder#setEnvironmentId(String)
    */
   public CMAArray<CMAContentType> fetchAll(Map<String, String> query) {
     return fetchAll(spaceId, environmentId, query);
@@ -148,6 +163,10 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
    * Fetch all Content Types from an Environment, using default query parameter.
    * <p>
    * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH}
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
    *
    * @param spaceId       Space ID
    * @param environmentId Environment ID
@@ -178,19 +197,28 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
   }
 
   /**
-   * Fetch a Content Type with the given {@code contentTypeId} from a Space.
+   * Fetch a Content Type with the given {@code contentTypeId} from the configured environment and
+   * space.
    *
    * @param contentTypeId Content Type ID
    * @return {@link CMAContentType} result instance
-   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if configured space id is null.
+   * @throws IllegalArgumentException if configured environment id is null.
    * @throws IllegalArgumentException if contentTypeId is null.
+   * @see CMAClient.Builder#setSpaceId(String)
+   * @see CMAClient.Builder#setEnvironmentId(String)
    */
   public CMAContentType fetchOne(String contentTypeId) {
     return fetchOne(spaceId, environmentId, contentTypeId);
   }
 
   /**
-   * Fetch a Content Type with the given {@code contentTypeId} from an Environment.
+   * Fetch a Content Type with the given {@code contentTypeId} from a given space environment
+   * combination.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
    *
    * @param spaceId       Space ID
    * @param environmentId Environment ID
@@ -344,17 +372,21 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
    */
   public final class Async {
     /**
-     * Create a new Content Type.
+     * Create a new Content Type using the configured space and environment.
+     * <p>
      * In case the given {@code contentType} has an ID associated with it, that ID will be used,
      * otherwise the server will auto-generate an ID that will be contained in the response upon
      * success.
      *
      * @param contentType Content Type
      * @param callback    Callback
-     * @return the given {@code CMACallback} instance
-     * @throws IllegalArgumentException if spaceId is null.
+     * @return the given CMACallback instance
+     * @throws IllegalArgumentException if configured space id is null.
+     * @throws IllegalArgumentException if configured environment id is null.
      * @throws IllegalArgumentException if contentType is null.
      * @throws IllegalArgumentException if contentTypeId is null.
+     * @see CMAClient.Builder#setSpaceId(String)
+     * @see CMAClient.Builder#setEnvironmentId(String)
      */
     public CMACallback<CMAContentType> create(
         final CMAContentType contentType,
@@ -367,16 +399,21 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
     }
 
     /**
-     * Create a new Content Type in an environment.
+     * Create a new Content Type in the given environment.
+     * <p>
      * In case the given {@code contentType} has an ID associated with it, that ID will be used,
      * otherwise the server will auto-generate an ID that will be contained in the response upon
      * success.
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)} and
+     * {@link CMAClient.Builder#setEnvironmentId(String)}.
      *
      * @param spaceId       Space ID
      * @param environmentId Environment ID
      * @param contentType   Content Type
      * @param callback      Callback
-     * @return the given {@code CMACallback} instance
+     * @return the given CMACallback instance
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if environmentId is null.
      * @throws IllegalArgumentException if contentType is null.
@@ -399,7 +436,7 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
      *
      * @param contentType Content Type
      * @param callback    Callback
-     * @return the given {@code CMACallback} instance
+     * @return the given CMACallback instance
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if contentTypeId is null.
      */
@@ -413,11 +450,14 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
     }
 
     /**
-     * Fetch all Content Types from a Space.
+     * Fetch all Content Types from the configured space and environment.
      *
      * @param callback Callback
-     * @return the given {@code CMACallback} instance
-     * @throws IllegalArgumentException if spaceId is null.
+     * @return the given CMACallback instance
+     * @throws IllegalArgumentException if configured space id is null.
+     * @throws IllegalArgumentException if configured environment id is null.
+     * @see CMAClient.Builder#setSpaceId(String)
+     * @see CMAClient.Builder#setEnvironmentId(String)
      */
     public CMACallback<CMAArray<CMAContentType>> fetchAll(
         CMACallback<CMAArray<CMAContentType>> callback) {
@@ -429,12 +469,15 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
     }
 
     /**
-     * Fetch all Content Types from a Space with a query.
+     * Fetch all Content Types from the configured space and environment with a query.
      *
      * @param query    Query
      * @param callback Callback
-     * @return the given {@code CMACallback} instance
-     * @throws IllegalArgumentException if spaceId is null.
+     * @return the given CMACallback instance
+     * @throws IllegalArgumentException if the configured space id is null.
+     * @throws IllegalArgumentException if the configured environment id is null.
+     * @see CMAClient.Builder#setSpaceId(String)
+     * @see CMAClient.Builder#setEnvironmentId(String)
      */
     public CMACallback<CMAArray<CMAContentType>> fetchAll(
         final Map<String, String> query,
@@ -447,13 +490,18 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
     }
 
     /**
-     * Fetch all Content Types from an Environment.
+     * Fetch all Content Types from the given space and environment.
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)} and
+     * {@link CMAClient.Builder#setEnvironmentId(String)}.
      *
      * @param spaceId       Space ID
      * @param environmentId Environment ID
      * @param callback      Callback
-     * @return the given {@code CMACallback} instance
-     * @throws IllegalArgumentException if spaceId is null.
+     * @return the given CMACallback instance
+     * @throws IllegalArgumentException if space id is null.
+     * @throws IllegalArgumentException if environment id is null.
      */
     public CMACallback<CMAArray<CMAContentType>> fetchAll(
         final String spaceId,
@@ -467,14 +515,20 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
     }
 
     /**
-     * Fetch all Content Types from an Environment.
+     * Fetch all Content Types from the given space and environment using a query.
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)} and
+     * {@link CMAClient.Builder#setEnvironmentId(String)}.
      *
      * @param spaceId       Space ID
      * @param environmentId Environment ID
      * @param callback      Callback
      * @param query         Query
-     * @return the given {@code CMACallback} instance
-     * @throws IllegalArgumentException if spaceId is null.
+     * @return the given CMACallback instance
+     * @throws IllegalArgumentException if space id is null.
+     * @throws IllegalArgumentException if environment id is null.
+     * @throws IllegalArgumentException if query is null.
      */
     public CMACallback<CMAArray<CMAContentType>> fetchAll(
         final String spaceId,
@@ -489,13 +543,17 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
     }
 
     /**
-     * Fetch a Content Type with the given {@code contentTypeId} from a Space.
+     * Fetch a Content Type with the given {@code contentTypeId} from the configured space and
+     * environment.
      *
      * @param contentTypeId Content Type ID
      * @param callback      Callback
-     * @return the given {@code CMACallback} instance
-     * @throws IllegalArgumentException if spaceId is null.
+     * @return the given CMACallback instance
+     * @throws IllegalArgumentException if configured space id is null.
+     * @throws IllegalArgumentException if configured environment id is null.
      * @throws IllegalArgumentException if contentTypeId is null.
+     * @see CMAClient.Builder#setSpaceId(String)
+     * @see CMAClient.Builder#setEnvironmentId(String)
      */
     public CMACallback<CMAContentType> fetchOne(
         final String contentTypeId,
@@ -508,14 +566,19 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
     }
 
     /**
-     * Fetch a Content Type with the given {@code contentTypeId} from a Space.
+     * Fetch a Content Type with the given {@code contentTypeId} from the given space.
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)} and
+     * {@link CMAClient.Builder#setEnvironmentId(String)}.
      *
      * @param spaceId       Space ID
      * @param environmentId Environment ID
      * @param contentTypeId Content Type ID
      * @param callback      Callback
-     * @return the given {@code CMACallback} instance
-     * @throws IllegalArgumentException if spaceId is null.
+     * @return the given CMACallback instance
+     * @throws IllegalArgumentException if space id is null.
+     * @throws IllegalArgumentException if environment id is null.
      * @throws IllegalArgumentException if contentTypeId is null.
      */
     public CMACallback<CMAContentType> fetchOne(
@@ -535,7 +598,7 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
      *
      * @param contentType Content Type
      * @param callback    Callback
-     * @return the given {@code CMACallback} instance
+     * @return the given CMACallback instance
      * @throws IllegalArgumentException if contentType is null.
      * @throws IllegalArgumentException if contentType's id is null.
      * @throws IllegalArgumentException if contentType's space id is null.
@@ -554,7 +617,7 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
      *
      * @param contentType Content Type
      * @param callback    Callback
-     * @return the given {@code CMACallback} instance
+     * @return the given CMACallback instance
      * @throws IllegalArgumentException if contentType is null.
      * @throws IllegalArgumentException if contentType's id is null.
      * @throws IllegalArgumentException if contentType's space id is null.
@@ -573,7 +636,7 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
      *
      * @param contentType Content Type
      * @param callback    Callback
-     * @return the given {@code CMACallback} instance
+     * @return the given CMACallback instance
      * @throws IllegalArgumentException if contentType is null.
      * @throws IllegalArgumentException if contentType's name is null.
      * @throws IllegalArgumentException if contentType's id is null.

@@ -52,20 +52,40 @@ public final class ModuleEditorInterfaces extends AbsModule<ServiceEditorInterfa
   }
 
   /**
+   * Return an editor interface by id using the configured space and environment.
+   *
    * @param contentTypeId the contentTypeId this editor interface is valid on.
    * @return the editor interface for a specific content type on a specific space.
+   * @throws IllegalArgumentException if configured space id is null.
+   * @throws IllegalArgumentException if configured environment id is null.
+   * @throws IllegalArgumentException if content type id is null.
+   * @see CMAClient.Builder#setSpaceId(String)
+   * @see CMAClient.Builder#setEnvironmentId(String)
    */
   public CMAEditorInterface fetchOne(String contentTypeId) {
     return fetchOne(spaceId, environmentId, contentTypeId);
   }
 
   /**
+   * Get the editor interface by id, using the given space and environment.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
+   *
    * @param spaceId       the id of the space this environment is part of.
    * @param environmentId the id of the environment this editor interface is valid on.
    * @param contentTypeId the contentTypeId this editor interface is valid on.
    * @return the editor interface for a specific content type on a specific space.
+   * @throws IllegalArgumentException if space id is null.
+   * @throws IllegalArgumentException if environment id is null.
+   * @throws IllegalArgumentException if content type id is null.
    */
   public CMAEditorInterface fetchOne(String spaceId, String environmentId, String contentTypeId) {
+    assertNotNull(spaceId, "spaceId");
+    assertNotNull(environmentId, "environmentId");
+    assertNotNull(contentTypeId, "contentTypeId");
+
     return service.fetchOne(spaceId, environmentId, contentTypeId).blockingFirst();
   }
 
@@ -113,11 +133,16 @@ public final class ModuleEditorInterfaces extends AbsModule<ServiceEditorInterfa
    */
   public final class Async {
     /**
-     * Fetch editor interface to given content type in a given space.
+     * Fetch editor interface to given content type in the configured space and environment.
      *
      * @param contentTypeId the id of the content type controlled by this editor interface.
      * @param callback      the callback to be informed about success or failure.
      * @return the callback.
+     * @throws IllegalArgumentException if configured space id is null.
+     * @throws IllegalArgumentException if configured environment id is null.
+     * @throws IllegalArgumentException if content type id is null.
+     * @see CMAClient.Builder#setSpaceId(String)
+     * @see CMAClient.Builder#setEnvironmentId(String)
      */
     public CMACallback<CMAEditorInterface> fetchOne(
         final String contentTypeId,
@@ -130,13 +155,18 @@ public final class ModuleEditorInterfaces extends AbsModule<ServiceEditorInterfa
     }
 
     /**
-     * Fetch editor interface to given content type in a given space.
+     * Fetch editor interface to given content type in a given space and environment.
      *
      * @param spaceId       the space this environment is defined on.
      * @param environmentId the environment this editor interface is defined on.
      * @param contentTypeId the id of the content type controlled by this editor interface.
      * @param callback      the callback to be informed about success or failure.
      * @return the callback.
+     * @throws IllegalArgumentException if space id is null.
+     * @throws IllegalArgumentException if environment id is null.
+     * @throws IllegalArgumentException if content type id is null.
+     * @see CMAClient.Builder#setSpaceId(String)
+     * @see CMAClient.Builder#setEnvironmentId(String)
      */
     public CMACallback<CMAEditorInterface> fetchOne(
         final String spaceId,

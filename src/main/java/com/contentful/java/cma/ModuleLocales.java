@@ -51,17 +51,24 @@ public class ModuleLocales extends AbsModule<ServiceLocales> {
   }
 
   /**
-   * Fetch all locales of this space.
+   * Fetch all locales of the configured space.
    *
    * @return the array of locales.
-   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if configured space id is null.
+   * @throws IllegalArgumentException if configured environment id is null.
+   * @see CMAClient.Builder#setSpaceId(String)
+   * @see CMAClient.Builder#setEnvironmentId(String)
    */
   public CMAArray<CMALocale> fetchAll() {
     return fetchAll(spaceId, environmentId);
   }
 
   /**
-   * Fetch all locales of this space's environment.
+   * Fetch all locales of the given space and environment.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
    *
    * @param spaceId       the space identifier, identifying the space.
    * @param environmentId the environment identifier, identifying the environment.
@@ -77,19 +84,25 @@ public class ModuleLocales extends AbsModule<ServiceLocales> {
   }
 
   /**
-   * Fetches one locale by its id.
+   * Fetches one locale by its id using the configured space and environment.
    *
    * @param localeId the id of the locale to be found.
    * @return null if no locale was found, otherwise the found locale.
    * @throws IllegalArgumentException if space id is null.
    * @throws IllegalArgumentException if locale id is null.
+   * @see CMAClient.Builder#setSpaceId(String)
+   * @see CMAClient.Builder#setEnvironmentId(String)
    */
   public CMALocale fetchOne(String localeId) {
     return fetchOne(spaceId, environmentId, localeId);
   }
 
   /**
-   * Fetches one locale by its id from an environment.
+   * Fetches one locale by its id from the given space and environment.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
    *
    * @param spaceId       the space this environment is hosted in.
    * @param environmentId the environment this locale is hosted in.
@@ -108,19 +121,25 @@ public class ModuleLocales extends AbsModule<ServiceLocales> {
   }
 
   /**
-   * Create a new locale.
+   * Create a new locale in the configured space and environment.
    *
    * @param locale the new locale to be created.
    * @return the newly created locale.
-   * @throws IllegalArgumentException if space id is null.
-   * @throws IllegalArgumentException if locale is null.
+   * @throws IllegalArgumentException if the configured space id is null.
+   * @throws IllegalArgumentException if the configured locale is null.
+   * @see CMAClient.Builder#setSpaceId(String)
+   * @see CMAClient.Builder#setEnvironmentId(String)
    */
   public CMALocale create(CMALocale locale) {
     return create(spaceId, environmentId, locale);
   }
 
   /**
-   * Create a new locale in an Environment.
+   * Create a new locale in the given space and environment.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
    *
    * @param spaceId       the space id hosting the environment.
    * @param environmentId the environment id to host the locale.
@@ -208,11 +227,14 @@ public class ModuleLocales extends AbsModule<ServiceLocales> {
    */
   public final class Async {
     /**
-     * Fetch all locales, asynchronously.
+     * Fetch all locales from the configured space and environment, asynchronously.
      *
      * @param callback a callback to be called, once the results are present.
      * @return a callback for the array fetched.
-     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if configured space id is null.
+     * @throws IllegalArgumentException if configured environment id is null.
+     * @see CMAClient.Builder#setSpaceId(String)
+     * @see CMAClient.Builder#setEnvironmentId(String)
      * @see ModuleLocales#fetchAll()
      */
     public CMACallback<CMAArray<CMALocale>> fetchAll(
@@ -225,13 +247,18 @@ public class ModuleLocales extends AbsModule<ServiceLocales> {
     }
 
     /**
-     * Fetch all locales of this space's environment, asynchronously.
+     * Fetch all locales of the given space and environment, asynchronously.
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)} and
+     * {@link CMAClient.Builder#setEnvironmentId(String)}.
      *
      * @param spaceId       the space identifier identifying the space.
      * @param environmentId the environment identifier identifying the space.
      * @param callback      a callback to be called, once the results are present.
      * @return a callback for the array fetched.
-     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if space id is null.
+     * @throws IllegalArgumentException if environment id is null.
      * @see ModuleLocales#fetchAll(String, String)
      */
     public CMACallback<CMAArray<CMALocale>> fetchAll(
@@ -246,14 +273,17 @@ public class ModuleLocales extends AbsModule<ServiceLocales> {
     }
 
     /**
-     * Fetches one locale by its id from Contentful asynchronously.
+     * Fetches one locale by the configured space and environment, asynchronously.
      *
      * @param localeId the id of the locale to be found.
      * @param callback a callback to be called, once the results are present.
      * @return a callback handling the response.
-     * @throws IllegalArgumentException if space id is null.
+     * @throws IllegalArgumentException if configured space id is null.
+     * @throws IllegalArgumentException if configured environment id is null.
      * @throws IllegalArgumentException if locale id is null.
      * @see ModuleLocales#fetchOne(String)
+     * @see CMAClient.Builder#setSpaceId(String)
+     * @see CMAClient.Builder#setEnvironmentId(String)
      */
     public CMACallback<CMALocale> fetchOne(
         final String localeId,
@@ -266,7 +296,11 @@ public class ModuleLocales extends AbsModule<ServiceLocales> {
     }
 
     /**
-     * Fetches one locale by its id from Contentful asynchronously.
+     * Fetches one locale by its id and the given space and environment, asynchronously.
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)} and
+     * {@link CMAClient.Builder#setEnvironmentId(String)}.
      *
      * @param spaceId       the space the given environment is hosted in.
      * @param environmentId the environment this locale is hosted in.
@@ -294,14 +328,17 @@ public class ModuleLocales extends AbsModule<ServiceLocales> {
     }
 
     /**
-     * Asynchronously create a new locale.
+     * Asynchronously create a new locale in the configured space and environment.
      *
      * @param locale   the new locale to be created.
      * @param callback a callback to be called, once the results are present.
      * @return a callback for the responses.
-     * @throws IllegalArgumentException if space id is null.
+     * @throws IllegalArgumentException if configured space id is null.
+     * @throws IllegalArgumentException if configured environment id is null.
      * @throws IllegalArgumentException if locale is null.
      * @see ModuleLocales#create(CMALocale)
+     * @see CMAClient.Builder#setSpaceId(String)
+     * @see CMAClient.Builder#setEnvironmentId(String)
      */
     public CMACallback<CMALocale> create(
         final CMALocale locale,
@@ -314,7 +351,11 @@ public class ModuleLocales extends AbsModule<ServiceLocales> {
     }
 
     /**
-     * Asynchronously create a new locale. Using an environment as a host.
+     * Asynchronously create a new locale. Using the given space and environment.
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)} and
+     * {@link CMAClient.Builder#setEnvironmentId(String)}.
      *
      * @param spaceId       the space id hosting the environment.
      * @param environmentId the environment id to host the locale.

@@ -46,75 +46,81 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
   }
 
   /**
-   * Fetch all delivery api keys.
+   * Fetch all delivery API keys from the configured space.
    *
    * @return a list of delivery api keys.
-   * @throws IllegalArgumentException        if spaceId is null.
+   * @throws IllegalArgumentException        if configured space Id is null.
    * @throws CMANotWithEnvironmentsException if environmentId was set using
-   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-   *                                         throws a runtime exception.
+   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+   * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAArray<CMAApiKey> fetchAll() {
+    throwIfEnvironmentIdIsNotDefault();
     return fetchAll(spaceId);
   }
 
   /**
-   * Fetch all delivery api keys.
+   * Fetch all delivery api keys from the given space.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
    *
    * @param spaceId the id of the space to host the api keys.
    * @return a list of delivery api keys.
-   * @throws IllegalArgumentException        if spaceId is null.
-   * @throws CMANotWithEnvironmentsException if environmentId was set using
-   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-   *                                         throws a runtime exception.
+   * @throws IllegalArgumentException if spaceId is null.
    */
   public CMAArray<CMAApiKey> fetchAll(String spaceId) {
     assertNotNull(spaceId, "spaceId");
-    throwIfEnvironmentIdIsNotDefault();
     return service.fetchAll(spaceId).blockingFirst();
   }
 
   /**
-   * Query for specific api keys.
+   * Query for specific api keys from the configured space.
    *
-   * @param query the terms to query for specific keys.
    * @return a list of delivery api keys.
-   * @throws IllegalArgumentException        if spaceId is null.
+   * @throws IllegalArgumentException        if configured space Id is null.
    * @throws CMANotWithEnvironmentsException if environmentId was set using
-   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-   *                                         throws a runtime exception.
+   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+   * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAArray<CMAApiKey> fetchAll(Map<String, String> query) {
+    throwIfEnvironmentIdIsNotDefault();
     return fetchAll(spaceId, query);
   }
 
   /**
-   * Query for specific api keys.
+   * Query for specific api keys, overriding the configuration set.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
    *
    * @param spaceId the id of the space to host the api keys.
    * @param query   the terms to query for specific keys.
    * @return a list of delivery api keys.
-   * @throws IllegalArgumentException        if spaceId is null.
-   * @throws CMANotWithEnvironmentsException if environmentId was set using
-   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-   *                                         throws a runtime exception.
+   * @throws IllegalArgumentException if spaceId is null.
    */
   public CMAArray<CMAApiKey> fetchAll(String spaceId, Map<String, String> query) {
     assertNotNull(spaceId, "spaceId");
-    throwIfEnvironmentIdIsNotDefault();
+
     return service.fetchAll(spaceId, query).blockingFirst();
   }
 
   /**
-   * Fetch only one delivery api key.
+   * Fetch only one delivery api key from the configured space.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
    *
    * @param keyId the id of the key itself.
    * @return one delivery api key.
-   * @throws IllegalArgumentException        if spaceId is null.
+   * @throws IllegalArgumentException        if configured spaceId is null.
    * @throws IllegalArgumentException        if keyId is null.
    * @throws CMANotWithEnvironmentsException if environmentId was set using
-   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-   *                                         throws a runtime exception.
+   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+   * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAApiKey fetchOne(String keyId) {
     return fetchOne(spaceId, keyId);
@@ -122,34 +128,38 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
 
   /**
    * Fetch only one delivery api key.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
    *
    * @param spaceId the id of the space this is valid on.
    * @param keyId   the id of the key itself.
    * @return one delivery api key.
    * @throws IllegalArgumentException        if spaceId is null.
    * @throws IllegalArgumentException        if keyId is null.
-   * @throws CMANotWithEnvironmentsException if environmentId was set using
-   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-   *                                         throws a runtime exception.
    */
   public CMAApiKey fetchOne(String spaceId, String keyId) {
     assertNotNull(spaceId, "entry");
     assertNotNull(keyId, "keyId");
-    throwIfEnvironmentIdIsNotDefault();
 
     return service.fetchOne(spaceId, keyId).blockingFirst();
   }
 
   /**
-   * Create a new delivery api key.
+   * Create a new delivery api key from the configured space.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
    *
    * @param key the key to be created.
    * @return the just created key, containing the delivery token.
-   * @throws IllegalArgumentException        if spaceId is null.
+   * @throws IllegalArgumentException        if configured spaceId is null.
    * @throws IllegalArgumentException        if key is null.
    * @throws CMANotWithEnvironmentsException if environmentId was set using
-   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-   *                                         throws a runtime exception.
+   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+   * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAApiKey create(CMAApiKey key) {
     return create(spaceId, key);
@@ -163,9 +173,6 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
    * @return the just created key, containing the delivery token.
    * @throws IllegalArgumentException        if spaceId is null.
    * @throws IllegalArgumentException        if key is null.
-   * @throws CMANotWithEnvironmentsException if environmentId was set using
-   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-   *                                         throws a runtime exception.
    */
   public CMAApiKey create(String spaceId, CMAApiKey key) {
     assertNotNull(spaceId, "spaceId");
@@ -190,10 +197,10 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
      *
      * @param callback the callback to be informed about success or failure.
      * @return the callback to be informed about success or failure.
-     * @throws IllegalArgumentException        if spaceId is null.
+     * @throws IllegalArgumentException        if configured spaceId is null.
      * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
+     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+     * @see CMAClient.Builder#setSpaceId(String)
      */
     public CMACallback<CMAArray<CMAApiKey>> fetchAll(CMACallback<CMAArray<CMAApiKey>> callback) {
       return defer(new DefFunc<CMAArray<CMAApiKey>>() {
@@ -209,10 +216,7 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
      * @param spaceId  the id of the space this is valid on.
      * @param callback the callback to be informed about success or failure.
      * @return the callback to be informed about success or failure.
-     * @throws IllegalArgumentException        if spaceId is null.
-     * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
+     * @throws IllegalArgumentException if spaceId is null.
      */
     public CMACallback<CMAArray<CMAApiKey>> fetchAll(final String spaceId,
                                                      CMACallback<CMAArray<CMAApiKey>> callback) {
@@ -229,10 +233,10 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
      * @param query    the terms to query for specific keys.
      * @param callback the callback to be informed about success or failure.
      * @return the callback to be informed about success of failure.
-     * @throws IllegalArgumentException        if spaceId is null.
+     * @throws IllegalArgumentException        if configured spaceId is null.
      * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
+     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+     * @see CMAClient.Builder#setSpaceId(String)
      */
     public CMACallback<CMAArray<CMAApiKey>> fetchAll(final Map<String, String> query,
                                                      CMACallback<CMAArray<CMAApiKey>> callback) {
@@ -250,10 +254,7 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
      * @param query    the terms to query for specific keys.
      * @param callback the callback to be informed about success or failure.
      * @return the callback to be informed about success of failure.
-     * @throws IllegalArgumentException        if spaceId is null.
-     * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
+     * @throws IllegalArgumentException if spaceId is null.
      */
     public CMACallback<CMAArray<CMAApiKey>> fetchAll(final String spaceId,
                                                      final Map<String, String> query,
@@ -271,11 +272,11 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
      * @param keyId    the id of the key itself.
      * @param callback the callback to be called once the key is available.
      * @return the callback to be informed about success or failure.
-     * @throws IllegalArgumentException        if spaceId is null.
+     * @throws IllegalArgumentException        if configured spaceId is null.
      * @throws IllegalArgumentException        if keyId is null.
      * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
+     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+     * @see CMAClient.Builder#setSpaceId(String)
      */
     public CMACallback<CMAApiKey> fetchOne(final String keyId,
                                            CMACallback<CMAApiKey> callback) {
@@ -293,11 +294,8 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
      * @param keyId    the id of the key itself.
      * @param callback the callback to be called once the key is available.
      * @return the callback to be informed about success or failure.
-     * @throws IllegalArgumentException        if spaceId is null.
-     * @throws IllegalArgumentException        if keyId is null.
-     * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if keyId is null.
      */
     public CMACallback<CMAApiKey> fetchOne(final String spaceId,
                                            final String keyId,
@@ -315,11 +313,11 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
      * @param key      the key to be created.
      * @param callback the callback to be called once the key is available.
      * @return the callback to be informed about success or failure.
-     * @throws IllegalArgumentException        if spaceId is null.
+     * @throws IllegalArgumentException        if configured spaceId is null.
      * @throws IllegalArgumentException        if key is null.
      * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
+     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+     * @see CMAClient.Builder#setSpaceId(String)
      */
     public CMACallback<CMAApiKey> create(final CMAApiKey key,
                                          CMACallback<CMAApiKey> callback) {
@@ -337,11 +335,8 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
      * @param key      the key to be created.
      * @param callback the callback to be called once the key is available.
      * @return the callback to be informed about success or failure.
-     * @throws IllegalArgumentException        if spaceId is null.
-     * @throws IllegalArgumentException        if key is null.
-     * @throws CMANotWithEnvironmentsException if environmentId was set using
-     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}
-     *                                         throws a runtime exception.
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if key is null.
      */
     public CMACallback<CMAApiKey> create(final String spaceId,
                                          final CMAApiKey key,

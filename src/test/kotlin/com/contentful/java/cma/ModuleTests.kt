@@ -24,12 +24,11 @@ import kotlin.test.assertNotEquals
 import org.junit.Before as before
 import org.junit.Test as test
 
-class ModuleTests : BaseTest() {
+class ModuleTests {
     private var module: AbsModule<Any>? = null
 
     @before
     fun setup() {
-        super.setUp()
         module = object : AbsModule<Any>(null, SynchronousExecutor(), "", "") {
             override fun createService(retrofit: Retrofit?): Any? {
                 return null

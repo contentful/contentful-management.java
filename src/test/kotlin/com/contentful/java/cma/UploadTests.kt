@@ -20,13 +20,26 @@ import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAType
 import com.contentful.java.cma.model.CMAUpload
+import com.google.gson.Gson
 import junit.framework.TestCase.assertEquals
 import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockWebServer
+import org.junit.After
+import org.junit.Before
+import java.util.logging.LogManager
 import org.junit.Test as test
 
-class UploadTests : BaseTest() {
-    override fun setUp() {
-        super.setUp()
+class UploadTests {
+    var server: MockWebServer? = null
+    var client: CMAClient? = null
+    var gson: Gson? = null
+
+    @Before
+    fun setUp() {
+        LogManager.getLogManager().reset()
+        // MockWebServer
+        server = MockWebServer()
+        server!!.start()
 
         // overwrite client to not use environments
         client = CMAClient.Builder().apply {
@@ -35,6 +48,13 @@ class UploadTests : BaseTest() {
             uploadEndpoint = server!!.url("/").toString()
             spaceId = "configuredSpaceId"
         }.build()
+
+        gson = CMAClient.createGson()
+    }
+
+    @After
+    fun tearDown() {
+        server!!.shutdown()
     }
 
     @test
