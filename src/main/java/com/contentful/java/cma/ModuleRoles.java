@@ -30,8 +30,9 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
       Retrofit retrofit,
       Executor callbackExecutor,
       String spaceId,
-      String environmentId) {
-    super(retrofit, callbackExecutor, spaceId, environmentId);
+      String environmentId,
+      boolean environmentIdConfigured) {
+    super(retrofit, callbackExecutor, spaceId, environmentId, environmentIdConfigured);
     async = new Async();
   }
 
@@ -64,7 +65,7 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
    * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAArray<CMARole> fetchAll() {
-    throwIfEnvironmentIdIsNotDefault();
+    throwIfEnvironmentIdIsSet();
     return fetchAll(spaceId);
   }
 
@@ -95,7 +96,7 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
    * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAArray<CMARole> fetchAll(Map<String, String> query) {
-    throwIfEnvironmentIdIsNotDefault();
+    throwIfEnvironmentIdIsSet();
 
     return fetchAll(spaceId, query);
   }
@@ -134,7 +135,7 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
    * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMARole fetchOne(String roleId) {
-    throwIfEnvironmentIdIsNotDefault();
+    throwIfEnvironmentIdIsSet();
 
     return fetchOne(spaceId, roleId);
   }
@@ -171,7 +172,7 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
    * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMARole create(CMARole role) {
-    throwIfEnvironmentIdIsNotDefault();
+    throwIfEnvironmentIdIsSet();
 
     return create(spaceId, role);
   }

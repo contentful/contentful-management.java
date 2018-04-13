@@ -46,13 +46,12 @@ class ApiKeysTests {
         server!!.start()
 
         // Client
-        client = CMAClient.Builder().apply {
-            accessToken = "token"
-            coreEndpoint = server!!.url("/").toString()
-            uploadEndpoint = server!!.url("/").toString()
-            spaceId = "configuredSpaceId"
-            callbackExecutor = Executor { command -> command.run() }
-        }.build()
+        client = CMAClient.Builder()
+                .setAccessToken("token")
+                .setCoreEndpoint(server!!.url("/").toString())
+                .setUploadEndpoint(server!!.url("/").toString())
+                .setSpaceId("configuredSpaceId")
+                .build()
 
         gson = CMAClient.createGson()
     }
@@ -210,26 +209,26 @@ class ApiKeysTests {
 
     @test(expected = CMANotWithEnvironmentsException::class)
     fun testThrowsIfConfiguredEnvironmentIsUsed() {
-        client = CMAClient.Builder().apply {
-            accessToken = "token"
-            coreEndpoint = server!!.url("/").toString()
-            uploadEndpoint = server!!.url("/").toString()
-            spaceId = "configuredSpaceId"
-            environmentId = "someEnvironmentIdThatShouldNotBeSet"
-        }.build()
+        client = CMAClient.Builder()
+                .setAccessToken("token")
+                .setCoreEndpoint(server!!.url("/").toString())
+                .setUploadEndpoint(server!!.url("/").toString())
+                .setSpaceId("configuredSpaceId")
+                .setEnvironmentId("configuredEnvironmentId")
+                .build()
 
         client!!.apiKeys().fetchAll()
     }
 
     @test
     fun testOverrideConfigurationDoesNotThrow() {
-        client = CMAClient.Builder().apply {
-            accessToken = "token"
-            coreEndpoint = server!!.url("/").toString()
-            uploadEndpoint = server!!.url("/").toString()
-            spaceId = "configuredSpaceId"
-            environmentId = "someEnvironmentIdThatShouldNotBeSet"
-        }.build()
+        client = CMAClient.Builder()
+                .setAccessToken("token")
+                .setCoreEndpoint(server!!.url("/").toString())
+                .setUploadEndpoint(server!!.url("/").toString())
+                .setSpaceId("configuredSpaceId")
+                .setEnvironmentId("configuredEnvironmentId")
+                .build()
 
         val responseBody = TestUtils.fileToString("apikeys_get_all.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))

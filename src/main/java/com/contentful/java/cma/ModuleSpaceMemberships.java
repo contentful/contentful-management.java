@@ -30,8 +30,9 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
       Retrofit retrofit,
       Executor callbackExecutor,
       String spaceId,
-      String environmentId) {
-    super(retrofit, callbackExecutor, spaceId, environmentId);
+      String environmentId,
+      boolean environmentIdConfigured) {
+    super(retrofit, callbackExecutor, spaceId, environmentId, environmentIdConfigured);
     async = new Async();
   }
 
@@ -64,7 +65,7 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
    * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAArray<CMASpaceMembership> fetchAll() {
-    throwIfEnvironmentIdIsNotDefault();
+    throwIfEnvironmentIdIsSet();
 
     return fetchAll(spaceId);
   }
@@ -95,7 +96,7 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
    * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAArray<CMASpaceMembership> fetchAll(Map<String, String> query) {
-    throwIfEnvironmentIdIsNotDefault();
+    throwIfEnvironmentIdIsSet();
     return fetchAll(spaceId, query);
   }
 
@@ -132,7 +133,7 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
    * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMASpaceMembership fetchOne(String membershipId) {
-    throwIfEnvironmentIdIsNotDefault();
+    throwIfEnvironmentIdIsSet();
 
     return fetchOne(spaceId, membershipId);
   }
@@ -165,7 +166,7 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
    * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMASpaceMembership create(CMASpaceMembership membership) {
-    throwIfEnvironmentIdIsNotDefault();
+    throwIfEnvironmentIdIsSet();
 
     return create(spaceId, membership);
   }

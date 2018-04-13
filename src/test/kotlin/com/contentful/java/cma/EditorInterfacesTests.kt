@@ -48,13 +48,13 @@ class EditorInterfacesTests{
         server!!.start()
 
         // Client
-        client = CMAClient.Builder().apply {
-            accessToken = "token"
-            coreEndpoint = server!!.url("/").toString()
-            uploadEndpoint = server!!.url("/").toString()
-            spaceId = "configuredSpaceId"
-            environmentId = "configuredEnvironmentId"
-        }.build()
+        client = CMAClient.Builder()
+                .setAccessToken("token")
+                .setCoreEndpoint(server!!.url("/").toString())
+                .setUploadEndpoint(server!!.url("/").toString())
+                .setSpaceId("configuredSpaceId")
+                .setEnvironmentId("configuredEnvironmentId")
+                .build()
 
         gson = CMAClient.createGson()
     }

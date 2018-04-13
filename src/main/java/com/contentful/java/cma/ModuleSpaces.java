@@ -33,8 +33,11 @@ import retrofit2.Retrofit;
 public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
   final Async async;
 
-  public ModuleSpaces(Retrofit retrofit, Executor callbackExecutor) {
-    super(retrofit, callbackExecutor, null, null);
+  public ModuleSpaces(
+      Retrofit retrofit,
+      Executor callbackExecutor,
+      boolean environmentIdConfigured) {
+    super(retrofit, callbackExecutor, null, null, environmentIdConfigured);
     this.async = new Async();
   }
 

@@ -43,12 +43,12 @@ class WebhookTests {
         server!!.start()
 
         // Client
-        client = CMAClient.Builder().apply {
-            accessToken = "token"
-            coreEndpoint = server!!.url("/").toString()
-            uploadEndpoint = server!!.url("/").toString()
-            spaceId = "configuredSpaceId"
-        }.build()
+        client = CMAClient.Builder()
+                .setAccessToken("token")
+                .setCoreEndpoint(server!!.url("/").toString())
+                .setUploadEndpoint(server!!.url("/").toString())
+                .setSpaceId("configuredSpaceId")
+                .build()
 
         gson = CMAClient.createGson()
     }

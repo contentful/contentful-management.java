@@ -26,8 +26,9 @@ public class ModuleLocales extends AbsModule<ServiceLocales> {
       Retrofit retrofit,
       Executor callbackExecutor,
       String spaceId,
-      String environmentId) {
-    super(retrofit, callbackExecutor, spaceId, environmentId);
+      String environmentId,
+      boolean environmentIdConfigured) {
+    super(retrofit, callbackExecutor, spaceId, environmentId, environmentIdConfigured);
     async = new Async();
   }
 

@@ -37,8 +37,9 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
       Retrofit retrofit,
       Executor callbackExecutor,
       String spaceId,
-      String environmentId) {
-    super(retrofit, callbackExecutor, spaceId, environmentId);
+      String environmentId,
+      boolean environmentIdConfigured) {
+    super(retrofit, callbackExecutor, spaceId, environmentId, environmentIdConfigured);
     this.async = new Async();
   }
 

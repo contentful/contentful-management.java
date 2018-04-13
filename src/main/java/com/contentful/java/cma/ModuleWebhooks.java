@@ -48,8 +48,9 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
       Retrofit retrofit,
       Executor callbackExecutor,
       String spaceId,
-      String environmentId) {
-    super(retrofit, callbackExecutor, spaceId, environmentId);
+      String environmentId,
+      boolean environmentIdConfigured) {
+    super(retrofit, callbackExecutor, spaceId, environmentId, environmentIdConfigured);
     this.async = new Async();
   }
 
@@ -86,7 +87,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
    * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAWebhook create(CMAWebhook webhook) {
-    throwIfEnvironmentIdIsNotDefault();
+    throwIfEnvironmentIdIsSet();
 
     return create(spaceId, webhook);
   }
@@ -149,7 +150,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
    * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAArray<CMAWebhook> fetchAll() {
-    throwIfEnvironmentIdIsNotDefault();
+    throwIfEnvironmentIdIsSet();
 
     return fetchAll(spaceId);
   }
@@ -165,7 +166,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
    * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAArray<CMAWebhook> fetchAll(Map<String, String> query) {
-    throwIfEnvironmentIdIsNotDefault();
+    throwIfEnvironmentIdIsSet();
 
     return fetchAll(spaceId, query);
   }
@@ -219,7 +220,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
    * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAWebhook fetchOne(String webhookId) {
-    throwIfEnvironmentIdIsNotDefault();
+    throwIfEnvironmentIdIsSet();
 
     return fetchOne(spaceId, webhookId);
   }

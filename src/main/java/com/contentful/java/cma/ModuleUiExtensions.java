@@ -43,8 +43,9 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
       Retrofit retrofit,
       Executor callbackExecutor,
       String spaceId,
-      String environmentId) {
-    super(retrofit, callbackExecutor, spaceId, environmentId);
+      String environmentId,
+      boolean environmentIdConfigured) {
+    super(retrofit, callbackExecutor, spaceId, environmentId, environmentIdConfigured);
     this.async = new Async();
   }
 
@@ -64,7 +65,7 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
    * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAUiExtension fetchOne(String extensionId) {
-    throwIfEnvironmentIdIsNotDefault();
+    throwIfEnvironmentIdIsSet();
 
     return fetchOne(spaceId, extensionId);
   }
@@ -101,7 +102,7 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
    * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAArray<CMAUiExtension> fetchAll() {
-    throwIfEnvironmentIdIsNotDefault();
+    throwIfEnvironmentIdIsSet();
 
     return fetchAll(spaceId);
   }
@@ -117,7 +118,7 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
    * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAArray<CMAUiExtension> fetchAll(Map<String, String> query) {
-    throwIfEnvironmentIdIsNotDefault();
+    throwIfEnvironmentIdIsSet();
 
     return fetchAll(spaceId, query);
   }
@@ -227,7 +228,7 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
    * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAUiExtension create(CMAUiExtension extension) {
-    throwIfEnvironmentIdIsNotDefault();
+    throwIfEnvironmentIdIsSet();
 
     return create(spaceId, extension);
   }

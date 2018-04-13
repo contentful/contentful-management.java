@@ -31,8 +31,11 @@ import retrofit2.Retrofit;
 public final class ModuleOrganizations extends AbsModule<ServiceOrganizations> {
   final Async async;
 
-  public ModuleOrganizations(Retrofit retrofit, Executor callbackExecutor) {
-    super(retrofit, callbackExecutor, null, null);
+  public ModuleOrganizations(
+      Retrofit retrofit,
+      Executor callbackExecutor,
+      boolean environmentIdConfigured) {
+    super(retrofit, callbackExecutor, null, null, environmentIdConfigured);
     this.async = new Async();
   }
 

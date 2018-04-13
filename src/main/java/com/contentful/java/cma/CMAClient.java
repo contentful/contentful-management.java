@@ -121,29 +121,30 @@ public class CMAClient {
     // Modules
     final String spaceId = cmaBuilder.spaceId;
     final String environmentId = cmaBuilder.environmentId;
+    final boolean configured = cmaBuilder.environmentIdConfigured;
 
-    this.moduleApiKeys = new ModuleApiKeys(retrofit, callbackExecutor, spaceId, environmentId);
-    this.moduleAssets = new ModuleAssets(retrofit, callbackExecutor, spaceId, environmentId);
+    this.moduleApiKeys = new ModuleApiKeys(retrofit, callbackExecutor, spaceId, environmentId, configured);
+    this.moduleAssets = new ModuleAssets(retrofit, callbackExecutor, spaceId, environmentId, configured);
     this.moduleContentTypes = new ModuleContentTypes(retrofit, callbackExecutor, spaceId,
-        environmentId);
+        environmentId, configured);
     this.moduleEditorInterfaces = new ModuleEditorInterfaces(retrofit, callbackExecutor, spaceId,
-        environmentId);
-    this.moduleEntries = new ModuleEntries(retrofit, callbackExecutor, spaceId, environmentId);
+        environmentId, configured);
+    this.moduleEntries = new ModuleEntries(retrofit, callbackExecutor, spaceId, environmentId, configured);
     this.moduleEnvironments = new ModuleEnvironments(retrofit, callbackExecutor, spaceId,
-        environmentId);
-    this.moduleLocales = new ModuleLocales(retrofit, callbackExecutor, spaceId, environmentId);
-    this.moduleOrganizations = new ModuleOrganizations(retrofit, callbackExecutor);
-    this.modulePersonalAccessTokens = new ModulePersonalAccessTokens(retrofit, callbackExecutor);
-    this.moduleRoles = new ModuleRoles(retrofit, callbackExecutor, spaceId, environmentId);
+        environmentId, configured);
+    this.moduleLocales = new ModuleLocales(retrofit, callbackExecutor, spaceId, environmentId, configured);
+    this.moduleOrganizations = new ModuleOrganizations(retrofit, callbackExecutor, configured);
+    this.modulePersonalAccessTokens = new ModulePersonalAccessTokens(retrofit, callbackExecutor, configured);
+    this.moduleRoles = new ModuleRoles(retrofit, callbackExecutor, spaceId, environmentId, configured);
     this.moduleSpaceMemberships = new ModuleSpaceMemberships(retrofit, callbackExecutor, spaceId,
-        environmentId);
-    this.moduleSpaces = new ModuleSpaces(retrofit, callbackExecutor);
+        environmentId, configured);
+    this.moduleSpaces = new ModuleSpaces(retrofit, callbackExecutor, configured);
     this.moduleUiExtensions = new ModuleUiExtensions(retrofit, callbackExecutor, spaceId,
-        environmentId);
+        environmentId, configured);
     this.moduleUploads = new ModuleUploads(uploadRetrofit, callbackExecutor, spaceId,
-        environmentId);
-    this.moduleUsers = new ModuleUsers(retrofit, callbackExecutor);
-    this.moduleWebhooks = new ModuleWebhooks(retrofit, callbackExecutor, spaceId, environmentId);
+        environmentId, configured);
+    this.moduleUsers = new ModuleUsers(retrofit, callbackExecutor, configured);
+    this.moduleWebhooks = new ModuleWebhooks(retrofit, callbackExecutor, spaceId, environmentId, configured);
   }
 
   /**
@@ -300,19 +301,20 @@ public class CMAClient {
    * Builder.
    */
   public static class Builder {
-    String accessToken;
-    Call.Factory coreCallFactory;
-    Call.Factory uploadCallFactory;
-    Logger logger;
-    Logger.Level logLevel = NONE;
-    String coreEndpoint;
-    String uploadEndpoint;
-    Section application;
-    Section integration;
-    String environmentId = Constants.DEFAULT_ENVIRONMENT;
-    String spaceId;
-    Executor callbackExecutor;
-    RateLimitsListener rateLimitListener;
+    private String accessToken;
+    private Call.Factory coreCallFactory;
+    private Call.Factory uploadCallFactory;
+    private Logger logger;
+    private Logger.Level logLevel = NONE;
+    private String coreEndpoint;
+    private String uploadEndpoint;
+    private Section application;
+    private Section integration;
+    private String environmentId = Constants.DEFAULT_ENVIRONMENT;
+    private boolean environmentIdConfigured = false;
+    private String spaceId;
+    private Executor callbackExecutor;
+    private RateLimitsListener rateLimitListener;
 
     /**
      * Overrides the default remote URL for core modules.
@@ -378,6 +380,7 @@ public class CMAClient {
      * @see ModuleEntries#fetchAll()
      */
     public Builder setEnvironmentId(String environmentId) {
+      this.environmentIdConfigured = true;
       this.environmentId = environmentId;
       return this;
     }

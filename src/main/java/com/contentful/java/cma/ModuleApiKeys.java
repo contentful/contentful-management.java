@@ -36,8 +36,9 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
       Retrofit retrofit,
       Executor callbackExecutor,
       String spaceId,
-      String environmentId) {
-    super(retrofit, callbackExecutor, spaceId, environmentId);
+      String environmentId,
+      boolean environmentIdConfigured) {
+    super(retrofit, callbackExecutor, spaceId, environmentId, environmentIdConfigured);
     this.async = new Async();
   }
 
@@ -55,7 +56,7 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
    * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAArray<CMAApiKey> fetchAll() {
-    throwIfEnvironmentIdIsNotDefault();
+    throwIfEnvironmentIdIsSet();
     return fetchAll(spaceId);
   }
 
@@ -85,7 +86,7 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
    * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAArray<CMAApiKey> fetchAll(Map<String, String> query) {
-    throwIfEnvironmentIdIsNotDefault();
+    throwIfEnvironmentIdIsSet();
     return fetchAll(spaceId, query);
   }
 

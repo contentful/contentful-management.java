@@ -34,9 +34,10 @@ public final class ModuleEnvironments extends AbsModule<ServiceEnvironments> {
   public ModuleEnvironments(
       Retrofit retrofit,
       Executor callbackExecutor,
-      String spaceid,
-      String environmentId) {
-    super(retrofit, callbackExecutor, spaceid, environmentId);
+      String spaceId,
+      String environmentId,
+      boolean environmentIdConfigured) {
+    super(retrofit, callbackExecutor, spaceId, environmentId, environmentIdConfigured);
     this.async = new Async();
   }
 

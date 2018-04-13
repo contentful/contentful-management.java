@@ -47,13 +47,13 @@ class AssetTests {
         server!!.start()
 
         // Client
-        client = CMAClient.Builder().apply {
-            accessToken = "token"
-            coreEndpoint = server!!.url("/").toString()
-            uploadEndpoint = server!!.url("/").toString()
-            spaceId = "configuredSpaceId"
-            environmentId = "configuredEnvironmentId"
-        }.build()
+        client = CMAClient.Builder()
+                .setAccessToken("token")
+                .setCoreEndpoint(server!!.url("/").toString())
+                .setUploadEndpoint(server!!.url("/").toString())
+                .setSpaceId("configuredSpaceId")
+                .setEnvironmentId("configuredEnvironmentId")
+                .build()
 
         gson = CMAClient.createGson()
     }
@@ -212,8 +212,7 @@ class AssetTests {
         val responseBody = TestUtils.fileToString("asset_fetch_all_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
-        val result = assertTestCallback(client!!.assets().async().fetchAll(TestCallback())
-                as TestCallback)!!
+        assertTestCallback(client!!.assets().async().fetchAll(TestCallback()) as TestCallback)!!
 
         // Request
         val request = server!!.takeRequest()
@@ -649,11 +648,11 @@ class AssetTests {
 
     @test(expected = IllegalArgumentException::class)
     fun testThrowIfNotConfigured() {
-        val client = CMAClient.Builder().apply {
-            accessToken = "token"
-            coreEndpoint = server!!.url("/").toString()
-            uploadEndpoint = server!!.url("/").toString()
-        }.build()!!
+        val client = CMAClient.Builder()
+                .setAccessToken("token")
+                .setCoreEndpoint(server!!.url("/").toString())
+                .setUploadEndpoint(server!!.url("/").toString())
+                .build()
 
         try {
             client.assets().fetchAll()

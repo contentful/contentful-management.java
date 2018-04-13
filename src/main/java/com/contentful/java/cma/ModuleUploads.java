@@ -48,8 +48,9 @@ public final class ModuleUploads extends AbsModule<ServiceUploads> {
       Retrofit retrofit,
       Executor callbackExecutor,
       String spaceId,
-      String environmentId) {
-    super(retrofit, callbackExecutor, spaceId, environmentId);
+      String environmentId,
+      boolean environmentIdConfigured) {
+    super(retrofit, callbackExecutor, spaceId, environmentId, environmentIdConfigured);
     this.async = new Async();
   }
 
@@ -107,7 +108,7 @@ public final class ModuleUploads extends AbsModule<ServiceUploads> {
    * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAUpload create(InputStream stream) throws IOException {
-    throwIfEnvironmentIdIsNotDefault();
+    throwIfEnvironmentIdIsSet();
 
     return create(spaceId, stream);
   }
@@ -151,7 +152,7 @@ public final class ModuleUploads extends AbsModule<ServiceUploads> {
    * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAUpload fetchOne(String uploadId) {
-    throwIfEnvironmentIdIsNotDefault();
+    throwIfEnvironmentIdIsSet();
 
     return fetchOne(spaceId, uploadId);
   }
@@ -299,8 +300,8 @@ public final class ModuleUploads extends AbsModule<ServiceUploads> {
      * @param uploadId what id does the upload have?
      * @param callback the callback to be informed about success or failure.
      * @return the callback passed in.
-     * @throws IllegalArgumentException        if spaceId is null.
-     * @throws IllegalArgumentException        if uploadId is null.
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if uploadId is null.
      */
     public CMACallback<CMAUpload> fetchOne(
         final String spaceId,

@@ -36,12 +36,19 @@ abstract class AbsModule<T> {
   final Executor callbackExecutor;
   final String spaceId;
   final String environmentId;
+  final Boolean environmentIdConfigured;
 
-  AbsModule(Retrofit retrofit, Executor callbackExecutor, String spaceId, String environmentId) {
+  AbsModule(
+      Retrofit retrofit,
+      Executor callbackExecutor,
+      String spaceId,
+      String environmentId,
+      boolean environmentIdConfigured) {
     this.service = createService(retrofit);
     this.callbackExecutor = callbackExecutor;
     this.spaceId = spaceId;
     this.environmentId = environmentId;
+    this.environmentIdConfigured = environmentIdConfigured;
   }
 
   protected abstract T createService(Retrofit retrofit);
@@ -118,8 +125,8 @@ abstract class AbsModule<T> {
    *
    * @see CMAClient.Builder#setEnvironmentId(String)
    */
-  void throwIfEnvironmentIdIsNotDefault() {
-    if (!Constants.DEFAULT_ENVIRONMENT.equals(environmentId)) {
+  void throwIfEnvironmentIdIsSet() {
+    if (environmentIdConfigured) {
       throw new CMANotWithEnvironmentsException();
     }
   }
