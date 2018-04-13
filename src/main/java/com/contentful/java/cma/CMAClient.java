@@ -123,19 +123,25 @@ public class CMAClient {
     final String environmentId = cmaBuilder.environmentId;
     final boolean configured = cmaBuilder.environmentIdConfigured;
 
-    this.moduleApiKeys = new ModuleApiKeys(retrofit, callbackExecutor, spaceId, environmentId, configured);
-    this.moduleAssets = new ModuleAssets(retrofit, callbackExecutor, spaceId, environmentId, configured);
+    this.moduleApiKeys = new ModuleApiKeys(retrofit, callbackExecutor, spaceId, environmentId,
+        configured);
+    this.moduleAssets = new ModuleAssets(retrofit, callbackExecutor, spaceId, environmentId,
+        configured);
     this.moduleContentTypes = new ModuleContentTypes(retrofit, callbackExecutor, spaceId,
         environmentId, configured);
     this.moduleEditorInterfaces = new ModuleEditorInterfaces(retrofit, callbackExecutor, spaceId,
         environmentId, configured);
-    this.moduleEntries = new ModuleEntries(retrofit, callbackExecutor, spaceId, environmentId, configured);
+    this.moduleEntries = new ModuleEntries(retrofit, callbackExecutor, spaceId, environmentId,
+        configured);
     this.moduleEnvironments = new ModuleEnvironments(retrofit, callbackExecutor, spaceId,
         environmentId, configured);
-    this.moduleLocales = new ModuleLocales(retrofit, callbackExecutor, spaceId, environmentId, configured);
+    this.moduleLocales = new ModuleLocales(retrofit, callbackExecutor, spaceId, environmentId,
+        configured);
     this.moduleOrganizations = new ModuleOrganizations(retrofit, callbackExecutor, configured);
-    this.modulePersonalAccessTokens = new ModulePersonalAccessTokens(retrofit, callbackExecutor, configured);
-    this.moduleRoles = new ModuleRoles(retrofit, callbackExecutor, spaceId, environmentId, configured);
+    this.modulePersonalAccessTokens = new ModulePersonalAccessTokens(retrofit, callbackExecutor,
+        configured);
+    this.moduleRoles = new ModuleRoles(retrofit, callbackExecutor, spaceId, environmentId,
+        configured);
     this.moduleSpaceMemberships = new ModuleSpaceMemberships(retrofit, callbackExecutor, spaceId,
         environmentId, configured);
     this.moduleSpaces = new ModuleSpaces(retrofit, callbackExecutor, configured);
@@ -144,7 +150,8 @@ public class CMAClient {
     this.moduleUploads = new ModuleUploads(uploadRetrofit, callbackExecutor, spaceId,
         environmentId, configured);
     this.moduleUsers = new ModuleUsers(retrofit, callbackExecutor, configured);
-    this.moduleWebhooks = new ModuleWebhooks(retrofit, callbackExecutor, spaceId, environmentId, configured);
+    this.moduleWebhooks = new ModuleWebhooks(retrofit, callbackExecutor, spaceId, environmentId,
+        configured);
   }
 
   /**
