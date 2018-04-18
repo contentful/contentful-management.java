@@ -22,14 +22,48 @@ import com.contentful.java.cma.model.CMAHttpException
 import com.contentful.java.cma.model.CMAPersonalAccessToken
 import com.contentful.java.cma.model.CMAPersonalAccessToken.Scope.Manage
 import com.contentful.java.cma.model.CMAPersonalAccessToken.Scope.Read
+import com.google.gson.Gson
 import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockWebServer
+import org.junit.After
+import org.junit.Before
+import java.util.logging.LogManager
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import org.junit.Test as test
 
-class PersonalAccessTokenTests : BaseTest() {
-    @test fun testFetchAll() {
+class PersonalAccessTokenTests{
+    var server: MockWebServer? = null
+    var client: CMAClient? = null
+    var gson: Gson? = null
+
+    @Before
+    fun setUp() {
+        LogManager.getLogManager().reset()
+        // MockWebServer
+        server = MockWebServer()
+        server!!.start()
+
+        // Client
+        client = CMAClient.Builder()
+                .setAccessToken("token")
+                .setCoreEndpoint(server!!.url("/").toString())
+                .setUploadEndpoint(server!!.url("/").toString())
+                .setSpaceId("configuredSpaceId")
+                .setEnvironmentId("configuredEnvironmentId")
+                .build()
+
+        gson = CMAClient.createGson()
+    }
+
+    @After
+    fun tearDown() {
+        server!!.shutdown()
+    }
+
+    @test
+    fun testFetchAll() {
         val responseBody = TestUtils.fileToString("personal_access_token_get_all.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -53,7 +87,8 @@ class PersonalAccessTokenTests : BaseTest() {
         assertEquals("/users/me/access_tokens", recordedRequest.path)
     }
 
-    @test fun testFetchAllWithQuery() {
+    @test
+    fun testFetchAllWithQuery() {
         val responseBody = TestUtils.fileToString("personal_access_token_get_all.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -66,7 +101,8 @@ class PersonalAccessTokenTests : BaseTest() {
         assertEquals("/users/me/access_tokens?limit=3", recordedRequest.path)
     }
 
-    @test fun testFetchOne() {
+    @test
+    fun testFetchOne() {
         val responseBody = TestUtils.fileToString("personal_access_token_get_one.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -85,7 +121,8 @@ class PersonalAccessTokenTests : BaseTest() {
         assertEquals("/users/me/access_tokens/id", recordedRequest.path)
     }
 
-    @test fun testCreate() {
+    @test
+    fun testCreate() {
         val responseBody = TestUtils.fileToString("personal_access_token_create.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -120,7 +157,8 @@ class PersonalAccessTokenTests : BaseTest() {
         client!!.personalAccessTokens().create(token);
     }
 
-    @test fun testRevoke() {
+    @test
+    fun testRevoke() {
         val responseBody = TestUtils.fileToString("personal_access_token_revoke.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 

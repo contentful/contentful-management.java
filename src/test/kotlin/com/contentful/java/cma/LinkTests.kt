@@ -20,12 +20,46 @@ import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAEntry
 import com.contentful.java.cma.model.CMALink
 import com.contentful.java.cma.model.CMAType
+import com.google.gson.Gson
 import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockWebServer
+import org.junit.After
+import org.junit.Before
+import java.util.logging.LogManager
 import kotlin.test.assertTrue
 import org.junit.Test as test
 
-class LinkTests : BaseTest() {
-    @test fun testCreateLink() {
+class LinkTests{
+    var server: MockWebServer? = null
+    var client: CMAClient? = null
+    var gson: Gson? = null
+
+    @Before
+    fun setUp() {
+        LogManager.getLogManager().reset()
+        // MockWebServer
+        server = MockWebServer()
+        server!!.start()
+
+        // Client
+        client = CMAClient.Builder()
+                .setAccessToken("token")
+                .setCoreEndpoint(server!!.url("/").toString())
+                .setUploadEndpoint(server!!.url("/").toString())
+                .setSpaceId("configuredSpaceId")
+                .setEnvironmentId("configuredEnvironmentId")
+                .build()
+
+        gson = CMAClient.createGson()
+    }
+
+    @After
+    fun tearDown() {
+        server!!.shutdown()
+    }
+
+    @test
+    fun testCreateLink() {
         val requestBody = TestUtils.fileToString("asset_update_request.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(requestBody))
         val cmaLink = CMALink(CMAType.Asset).setId("linkedTargetId")
@@ -33,7 +67,7 @@ class LinkTests : BaseTest() {
         val cmaEntry = CMAEntry()
         cmaEntry.localize("en-US").setField("link", cmaLink)
 
-        client!!.entries().create("spaceId", "contentTypeId", cmaEntry)
+        client!!.entries().create("spaceId", "master", "contentTypeId", cmaEntry)
 
         val cmaRequest = server!!.takeRequest()
 

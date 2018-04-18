@@ -18,16 +18,46 @@ package com.contentful.java.cma
 
 import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.lib.TestUtils
-import com.contentful.java.cma.model.CMAType
-import com.contentful.java.cma.model.CMAWebhook
-import com.contentful.java.cma.model.CMAWebhookTopic
+import com.contentful.java.cma.model.*
+import com.google.gson.Gson
 import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockWebServer
+import org.junit.After
+import org.junit.Before
 import java.io.IOException
+import java.util.logging.LogManager
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import org.junit.Test as test
 
-class WebhookTests : BaseTest() {
+class WebhookTests {
+    var server: MockWebServer? = null
+    var client: CMAClient? = null
+    var gson: Gson? = null
+
+    @Before
+    fun setUp() {
+        LogManager.getLogManager().reset()
+        // MockWebServer
+        server = MockWebServer()
+        server!!.start()
+
+        // Client
+        client = CMAClient.Builder()
+                .setAccessToken("token")
+                .setCoreEndpoint(server!!.url("/").toString())
+                .setUploadEndpoint(server!!.url("/").toString())
+                .setSpaceId("configuredSpaceId")
+                .build()
+
+        gson = CMAClient.createGson()
+    }
+
+    @After
+    fun tearDown() {
+        server!!.shutdown()
+    }
+
     @test
     fun testCreate() {
         val requestBody = TestUtils.fileToString("webhook_create_request.json")
@@ -52,6 +82,27 @@ class WebhookTests : BaseTest() {
     }
 
     @test
+    fun testCreateWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("webhook_create_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val webhook = CMAWebhook()
+                .setName("cma-created")
+                .setUrl("http://lorempixel.com/200/200/cats")
+                .addTopic(CMAWebhookTopic.All)
+                .addHeader("key", "value")
+                .setBasicAuthorization("user", "password")
+
+        assertTestCallback(client!!.webhooks().async().create(webhook, TestCallback())
+                as TestCallback)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("POST", recordedRequest.method)
+        assertEquals("/spaces/configuredSpaceId/webhook_definitions", recordedRequest.path)
+    }
+
+    @test
     fun testCreateWithId() {
         val requestBody = TestUtils.fileToString("webhook_create_with_id_request.json")
         val responseBody = TestUtils.fileToString("webhook_create_with_id_response.json")
@@ -66,7 +117,7 @@ class WebhookTests : BaseTest() {
                 .setBasicAuthorization("user", "password")
 
         assertTestCallback(client!!.webhooks().async().create(
-                "spaceid", "webhookid", webhook, TestCallback()) as TestCallback)
+                "spaceid", webhook, TestCallback()) as TestCallback)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -79,9 +130,14 @@ class WebhookTests : BaseTest() {
     fun testDelete() {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody("200"))
 
+        val webhook = CMAWebhook().apply {
+            spaceId = "spaceid"
+            id = "webhookid"
+        }
+
         val callback: TestCallback<Int> = TestCallback(true)
         assertTestCallback(client!!.webhooks().async().delete(
-                "spaceid", "webhookid", callback) as TestCallback)
+                webhook, callback) as TestCallback)
 
         assertEquals(200, callback.value)
 
@@ -120,6 +176,18 @@ class WebhookTests : BaseTest() {
     }
 
     @test
+    fun testFetchAllWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("webhook_fetch_all_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.webhooks().async().fetchAll(TestCallback()) as TestCallback)!!
+
+        val request = server!!.takeRequest()
+        assertEquals("GET", request.method)
+        assertEquals("/spaces/configuredSpaceId/webhook_definitions", request.path)
+    }
+
+    @test
     fun testFetchAllWithQuery() {
         val responseBody = TestUtils.fileToString("webhook_fetch_all_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
@@ -132,6 +200,20 @@ class WebhookTests : BaseTest() {
         val request = server!!.takeRequest()
         assertEquals("GET", request.method)
         assertEquals("/spaces/spaceid/webhook_definitions?limit=3", request.path)
+    }
+
+    @test
+    fun testFetchAllWithQueryWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("webhook_fetch_all_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.webhooks().async().fetchAll(
+                hashMapOf("limit" to "3"),
+                TestCallback()) as TestCallback)!!
+
+        val request = server!!.takeRequest()
+        assertEquals("GET", request.method)
+        assertEquals("/spaces/configuredSpaceId/webhook_definitions?limit=3", request.path)
     }
 
     @test
@@ -158,6 +240,20 @@ class WebhookTests : BaseTest() {
     }
 
     @test
+    fun testFetchWithIdWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("webhook_fetch_id_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.webhooks().async().fetchOne("webhookid", TestCallback())
+                as TestCallback)
+
+        // Request
+        val request = server!!.takeRequest()
+        assertEquals("GET", request.method)
+        assertEquals("/spaces/configuredSpaceId/webhook_definitions/webhookid", request.path)
+    }
+
+    @test
     fun testUpdate() {
         val requestBody = TestUtils.fileToString("webhook_update_request.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(requestBody))
@@ -176,7 +272,7 @@ class WebhookTests : BaseTest() {
         assertEquals(recordedRequest.getHeader("X-Contentful-Version"), "5")
     }
 
-    @org.junit.Test(expected = RuntimeException::class)
+    @test(expected = RuntimeException::class)
     fun testRetainsSysOnNetworkError() {
         val badClient = CMAClient.Builder()
                 .setAccessToken("accesstoken")
@@ -198,7 +294,7 @@ class WebhookTests : BaseTest() {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         assertTestCallback(client!!.webhooks().async().calls(
-                "spaceid", "webhookid",
+                CMAWebhook().setSpaceId("spaceid").setId("webhookid"),
                 TestCallback(true)) as TestCallback)
 
         // Request
@@ -212,8 +308,11 @@ class WebhookTests : BaseTest() {
         val responseBody = TestUtils.fileToString("webhook_calls_detail_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
+        val call: CMAWebhookCall = CMAWebhookCall().setSpaceId("spaceid").setId("callid")
+        call.system.setCreatedBy(CMALink(CMAType.Webhook).setId("webhookid"))
+
         assertTestCallback(client!!.webhooks().async().callDetails(
-                "spaceid", "webhookid", "callid",
+                call,
                 TestCallback(true)) as TestCallback)
 
         // Request
@@ -228,7 +327,7 @@ class WebhookTests : BaseTest() {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         assertTestCallback(client!!.webhooks().async().health(
-                "spaceid", "webhookid",
+                CMAWebhook().setSpaceId("spaceid").setId("webhookid"),
                 TestCallback(true)) as TestCallback)
 
         // Request
@@ -236,5 +335,4 @@ class WebhookTests : BaseTest() {
         assertEquals("GET", recordedRequest.method)
         assertEquals("/spaces/spaceid/webhooks/webhookid/health", recordedRequest.path)
     }
-
 }

@@ -17,14 +17,48 @@
 package com.contentful.java.cma
 
 import com.contentful.java.cma.model.*
+import com.google.gson.Gson
 import okhttp3.Protocol
 import okhttp3.Request
 import okhttp3.Response
+import okhttp3.mockwebserver.MockWebServer
+import org.junit.After
+import org.junit.Before
+import java.util.logging.LogManager
 import kotlin.test.assertEquals
 import org.junit.Test as test
 
-class ModelTests : BaseTest() {
-    @test fun testCMAArrayToString() {
+class ModelTests{
+    var server: MockWebServer? = null
+    var client: CMAClient? = null
+    var gson: Gson? = null
+
+    @Before
+    fun setUp() {
+        LogManager.getLogManager().reset()
+        // MockWebServer
+        server = MockWebServer()
+        server!!.start()
+
+        // Client
+        client = CMAClient.Builder()
+                .setAccessToken("token")
+                .setCoreEndpoint(server!!.url("/").toString())
+                .setUploadEndpoint(server!!.url("/").toString())
+                .setSpaceId("configuredSpaceId")
+                .setEnvironmentId("configuredEnvironmentId")
+                .build()
+
+        gson = CMAClient.createGson()
+    }
+
+    @After
+    fun tearDown() {
+        server!!.shutdown()
+    }
+
+    @test
+    fun testCMAArrayToString() {
         assertEquals(
                 "CMAArray { "
                         + "CMAResource { system = CMASystem { type = Array } } "
@@ -32,7 +66,8 @@ class ModelTests : BaseTest() {
                 CMAArray<CMAEntry>().toString())
     }
 
-    @test fun testCMAAssetToString() {
+    @test
+    fun testCMAAssetToString() {
         val asset = CMAAsset()
         asset
                 .fields
@@ -46,7 +81,8 @@ class ModelTests : BaseTest() {
                 asset.toString())
     }
 
-    @test fun testCMAAssetFileToString() {
+    @test
+    fun testCMAAssetFileToString() {
         val assetFile = CMAAssetFile()
         assetFile
                 .setContentType("image/jpeg")
@@ -59,23 +95,27 @@ class ModelTests : BaseTest() {
                 assetFile.toString())
     }
 
-    @test fun testCMAAssetFileDetailsToString() {
+    @test
+    fun testCMAAssetFileDetailsToString() {
         assertEquals("Details { imageMeta = null, size = null }",
                 CMAAssetFile.Details().toString())
     }
 
-    @test fun testCMAAssetFileDetailsImageMetaToString() {
+    @test
+    fun testCMAAssetFileDetailsImageMetaToString() {
         assertEquals("ImageMeta { height = null, width = null }",
                 CMAAssetFile.Details.ImageMeta().toString())
     }
 
-    @test fun testCMAConstraintToString() {
+    @test
+    fun testCMAConstraintToString() {
         assertEquals("CMAConstraint { and = null, equals = null, not = null, or = null, "
                 + "fieldKeyPaths = null }",
                 CMAConstraint().toString())
     }
 
-    @test fun testCMAContentTypeToString() {
+    @test
+    fun testCMAContentTypeToString() {
         assertEquals("CMAContentType { CMAResource { system = CMASystem { "
                 + "type = ContentType } } description = description, displayField = null, "
                 + "fields = null, name = name }",
@@ -85,7 +125,8 @@ class ModelTests : BaseTest() {
                         .toString())
     }
 
-    @test fun testCMAEntryToString() {
+    @test
+    fun testCMAEntryToString() {
         val entry = CMAEntry()
         entry.localize("en-US").setField("foo", "bar")
         entry.id = "myid";
@@ -95,14 +136,16 @@ class ModelTests : BaseTest() {
                 entry.toString())
     }
 
-    @test fun testCMAFieldToString() {
+    @test
+    fun testCMAFieldToString() {
         assertEquals("CMAField { arrayItems = null, disabled = false, id = null, "
                 + "linkType = null, localized = false, name = null, omitted = false, "
                 + "required = false, type = null, validations = null }",
                 CMAField().toString())
     }
 
-    @test fun testCMAHttpExceptionToString() {
+    @test
+    fun testCMAHttpExceptionToString() {
         val request = Request.Builder().url("https://example.com").build()
         val response = Response.Builder()
                 .request(request)
@@ -120,80 +163,93 @@ class ModelTests : BaseTest() {
                 CMAHttpException(request, response).toString())
     }
 
-    @test fun testCMALinkToString() {
+    @test
+    fun testCMALinkToString() {
         assertEquals("CMALink { CMAResource { system = CMASystem { type = Link } } }",
                 CMALink().toString())
     }
 
-    @test fun testCMALocaleToString() {
+    @test
+    fun testCMALocaleToString() {
         assertEquals("CMALocale { CMAResource { system = CMASystem { type = Locale } }" +
                 " code = null, contentDeliveryApi = false, contentManagementApi = false," +
                 " fallbackCode = null, isDefault = false, name = null, optional = false }",
                 CMALocale().toString())
     }
 
-    @test fun testCMAPermissionsToString() {
+    @test
+    fun testCMAPermissionsToString() {
         assertEquals("CMAPermissions { contentDelivery = null, " +
                 "contentModel = null, settings = null }",
                 CMAPermissions().toString())
     }
 
-    @test fun testCMAPolicyToString() {
+    @test
+    fun testCMAPolicyToString() {
         assertEquals("CMAPolicy { actions = null, constraint = null, effect = null }",
                 CMAPolicy().toString())
     }
 
-    @test fun testCMARoleToString() {
+    @test
+    fun testCMARoleToString() {
         assertEquals("CMARole { CMAResource { system = CMASystem "
                 + "{ type = Role } } description = null, name = null, "
                 + "permissions = null, policies = null }",
                 CMARole().toString())
     }
 
-    @test fun testCMASpaceToString() {
+    @test
+    fun testCMASpaceToString() {
         assertEquals("CMASpace { CMAResource { system = CMASystem "
                 + "{ type = Space } } defaultLocale = null, name = null }",
                 CMASpace().toString())
     }
 
-    @test fun testCMASpaceMembershipToString() {
+    @test
+    fun testCMASpaceMembershipToString() {
         assertEquals("CMASpaceMembership { CMAResource { system = CMASystem"
                 + " { type = SpaceMembership } } admin = false, email = null, "
                 + "roles = null, user = null }",
                 CMASpaceMembership().toString())
     }
 
-    @test fun testCMASystemToString() {
+    @test
+    fun testCMASystemToString() {
         assertEquals("CMASystem {  }", CMASystem().toString())
     }
 
-    @test fun testCMAUploadToString() {
+    @test
+    fun testCMAUploadToString() {
         assertEquals("CMAUpload { CMAResource { system = CMASystem { type = Upload } } }",
                 CMAUpload().toString())
     }
 
-    @test fun testCMAUserToString() {
+    @test
+    fun testCMAUserToString() {
         assertEquals("CMAUser { CMAResource { system = CMASystem { type = User } } "
                 + "activated = null, avatarUrl = null, confirmed = null, email = null, "
                 + "firstName = null, lastName = null, signInCount = null }",
                 CMAUser().toString())
     }
 
-    @test fun testCMAWebhookToString() {
+    @test
+    fun testCMAWebhookToString() {
         assertEquals("CMAWebhook { CMAResource { system = CMASystem { "
                 + "type = WebhookDefinition } } url = null, name = null, "
                 + "password = null, user = null, }",
                 CMAWebhook().toString())
     }
 
-    @test fun testCMAWebhookCallToString() {
+    @test
+    fun testCMAWebhookCallToString() {
         assertEquals("CMAWebhookCall { CMAResource { system = CMASystem {"
                 + " type = WebhookCallOverview } } errors = null, eventType = null, "
                 + "requestAt = null, responseAt = null, statusCode = null, url = null }",
                 CMAWebhookCall().toString())
     }
 
-    @test fun testCMAWebhookCallDetailToString() {
+    @test
+    fun testCMAWebhookCallDetailToString() {
         assertEquals("CMAWebhookCallDetail { CMAResource { system = CMASystem "
                 + "{ type = WebhookCallOverview } } errors = null, eventType = null, "
                 + "request = null, requestAt = null, response = null, "
@@ -201,42 +257,49 @@ class ModelTests : BaseTest() {
                 CMAWebhookCallDetail().toString())
     }
 
-    @test fun testCMAWebhookHeaderToString() {
+    @test
+    fun testCMAWebhookHeaderToString() {
         assertEquals("CMAWebhookHeader { key = foo, value = bar }",
                 CMAWebhookHeader("foo", "bar").toString())
     }
 
-    @test fun testCMAWebhookHealthToString() {
+    @test
+    fun testCMAWebhookHealthToString() {
         assertEquals("CMAWebhookHealth { CMAResource "
                 + "{ system = CMASystem { type = Webhook } } "
                 + "calls = null }",
                 CMAWebhookHealth().toString())
     }
 
-    @test fun testCMAWebhookHealthCallToString() {
+    @test
+    fun testCMAWebhookHealthCallToString() {
         assertEquals("CMAWebhookHealthCall {healthy = null, total = null}",
                 CMAWebhookHealth.CMAWebhookHealthCall().toString())
     }
 
-    @test fun testCMAWebhookRequestToString() {
+    @test
+    fun testCMAWebhookRequestToString() {
         assertEquals("CMAWebhookRequest { body = null, headers = null, "
                 + "method = null, url = null }",
                 CMAWebhookRequest().toString())
     }
 
-    @test fun testCMAWebhookResponseToString() {
+    @test
+    fun testCMAWebhookResponseToString() {
         assertEquals("CMAWebhookResponse { body = null, "
                 + "headers = null, statusCode = null, url = null }",
                 CMAWebhookResponse().toString())
     }
 
-    @test fun testOrganizationsToString() {
+    @test
+    fun testOrganizationsToString() {
         assertEquals("CMAOrganizations { CMAResource { system = CMASystem { "
                 + "type = Organization } } name = foo }",
                 CMAOrganization().setName("foo").toString())
     }
 
-    @test fun testApiKeyToString() {
+    @test
+    fun testApiKeyToString() {
         assertEquals("CMAApiKey { CMAResource { system = CMASystem { type = ApiKey } } "
                 + "accessToken = null, description = bar, name = foo, previewApiKey = null }",
                 CMAApiKey().setName("foo").setDescription("bar").toString())

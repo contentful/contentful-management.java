@@ -79,6 +79,15 @@ public class CMAWebhookCall extends CMAResource {
   }
 
   /**
+   * @param spaceId the id to be set.
+   * @return this object for chaining.
+   */
+  @SuppressWarnings("unchecked")
+  @Override public CMAWebhookCall setSpaceId(String spaceId) {
+    return super.setSpaceId(spaceId);
+  }
+
+  /**
    * @return a human readable string, representing the object.
    */
   @Override public String toString() {

@@ -184,6 +184,17 @@ public class CMAContentType extends CMAResource {
   }
 
   /**
+   * Convenience method for setting an environment id.
+   *
+   * @param environmentId the id to be set.
+   * @return the calling {@link CMAResource} for chaining.
+   */
+  @SuppressWarnings("unchecked")
+  public CMAContentType setEnvironmentId(String environmentId) {
+    return super.setEnvironmentId(environmentId);
+  }
+
+  /**
    * @return a human readable string, representing the object.
    */
   @Override public String toString() {

@@ -16,17 +16,31 @@ Grab via Maven:
 <dependency>
   <groupId>com.contentful.java</groupId>
   <artifactId>cma-sdk</artifactId>
-  <version>2.2.3</version>
+  <version>3.0.0</version>
 </dependency>
 ```
 or Gradle:
 ```groovy
-compile 'com.contentful.java:cma-sdk:2.2.3'
+compile 'com.contentful.java:cma-sdk:3.0.0'
 ```
 
 The SDK requires at minimum Java 6 or Android 2.3.
 
-Snapshots of the development version are available in [Sonatype's `snapshots` repository][snap].
+#### Snapshots
+
+Snapshots of the development version are available through [Sonatype's `snapshots` repository][snap]
+
+```groovy
+maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+compile 'com.contentful.java:cma-sdk:3.0.0-SNAPSHOT'
+```
+
+and through [jitpack.io][jitpack]:
+
+```groovy
+maven { url 'https://jitpack.io' }
+compile 'com.github.contentful:contentful.java:cma-sdk-3.0.0-SNAPSHOT'
+```
 
 ### Default Client
 
@@ -106,6 +120,49 @@ final CMAArray<CMASpace> array =
 Please note that the default `CMACallback` has an empty `onFailure()` implementation, which makes it optional to override it.
 
 If you want to see the SDK in action, please check with [our CMA documentation][docs], which offers snippets for all the relevant and supported parts, just select an endpoint and select the language java.
+
+### Client Configuration
+
+Instead of repeating the space and environment id with every call like so
+
+```java
+final CMAArray<CMAEntry> array =
+    client
+        .entries()
+        .fetchAll(
+            "space_id",
+            "environment_id",
+        );
+```
+
+you can configure the client to use some default values for space and environment like so
+
+```java
+final CMAClient client =
+    new CMAClient
+        .Builder()
+        .setAccessToken("<access_token>")
+        .setSpaceId("<space_id>")
+        .setEnvironmentId("<environment_id>")
+        .build();
+```
+
+This way your calls to the entries would look like this
+
+```java
+final CMAArray<CMAEntry> array =
+    client
+        .entries()
+        .fetchAll();
+```
+
+#### Words of warning
+
+Currently `apiKeys`, `environments`, `roles`, `spaceMemberships`, `uiExtensions`, `uploads`, and
+`webhooks`, do not support environments different to `master` (or Constants.DEFAULT_ENVIRONMENT). If
+you want to use the configuration explained above with theses endpoints, be aware that they will
+throw an exception symbolising that you cannot use them with a defined environment id. Please create
+a new client without specifying an environment id to perform an action like this.
 
 Documentation
 =============

@@ -24,12 +24,12 @@ import kotlin.test.assertNotEquals
 import org.junit.Before as before
 import org.junit.Test as test
 
-class ModuleTests : BaseTest() {
+class ModuleTests {
     private var module: AbsModule<Any>? = null
 
-    @before fun setup() {
-        super.setUp()
-        module = object : AbsModule<Any>(null, SynchronousExecutor()) {
+    @before
+    fun setup() {
+        module = object : AbsModule<Any>(null, SynchronousExecutor(), "", "", false) {
             override fun createService(retrofit: Retrofit?): Any? {
                 return null
             }
@@ -66,11 +66,12 @@ class ModuleTests : BaseTest() {
         }
     }
 
-    @test fun testDefersToBackgroundThread() {
+    @test
+    fun testDefersToBackgroundThread() {
         val currentThreadId = Thread.currentThread().id
         var workerThreadId: Long? = null
 
-        val module = object : AbsModule<Any>(null, SynchronousExecutor()) {
+        val module = object : AbsModule<Any>(null, SynchronousExecutor(), null, null, false) {
             override fun createService(retrofit: Retrofit?): Any? = null
 
             fun work() {

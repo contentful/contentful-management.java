@@ -77,6 +77,17 @@ public class CMAEntry extends CMAResource {
   }
 
   /**
+   * Convenience: Update the environment id, without going through {@link #getSystem()}.
+   *
+   * @param environmentId to be set.
+   * @return the calling instance for chaining.
+   */
+  @SuppressWarnings("unchecked")
+  @Override public CMAEntry setEnvironmentId(String environmentId) {
+    return super.setEnvironmentId(environmentId);
+  }
+
+  /**
    * Creates a new field with the given {@code value}.
    * If a field named {@code key} already exists it will be replaced.
    *

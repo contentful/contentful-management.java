@@ -1,0 +1,46 @@
+{
+  "name":"Chinese",
+  "internal_code":"cn",
+  "code":"cn",
+  "fallbackCode":"en-US",
+  "default":false,
+  "contentManagementApi":true,
+  "contentDeliveryApi":true,
+  "optional":false,
+  "sys":{
+    "type":"Locale",
+    "id":"5j47OUo10BOIqAw3iqsRRi",
+    "version":0,
+    "space":{
+      "sys":{
+        "type":"Link",
+        "linkType":"Space",
+        "id":"<space_id>"
+      }
+    },
+    "environment":{
+      "sys":{
+        "type":"Link",
+        "linkType":"Environment",
+        "id":"staging"
+      }
+    },
+    "createdBy":{
+      "sys":{
+        "type":"Link",
+        "linkType":"User",
+        "id":"<user_id>"
+      }
+    },
+    "createdAt":"2018-03-29T11:24:34Z",
+    "updatedBy":{
+      "sys":{
+        "type":"Link",
+        "linkType":"User",
+        "id":"<user_id>"
+      }
+    },
+    "updatedAt":"2018-03-29T11:24:34Z"
+  }
+}
+

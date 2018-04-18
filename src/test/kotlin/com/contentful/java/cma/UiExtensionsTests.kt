@@ -21,19 +21,53 @@ import com.contentful.java.cma.Constants.CMAFieldType.Text
 import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAUiExtension
+import com.google.gson.Gson
 import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockWebServer
+import org.junit.After
+import org.junit.Before
+import java.util.logging.LogManager
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import org.junit.Test as test
 
-class UiExtensionsTests : BaseTest() {
-    @test fun testFetchAll() {
+class UiExtensionsTests {
+    var server: MockWebServer? = null
+    var client: CMAClient? = null
+    var gson: Gson? = null
+
+    @Before
+    fun setUp() {
+        LogManager.getLogManager().reset()
+        // MockWebServer
+        server = MockWebServer()
+        server!!.start()
+
+        // overwrite client to not use environments
+        client = CMAClient.Builder()
+                .setAccessToken("token")
+                .setCoreEndpoint(server!!.url("/").toString())
+                .setUploadEndpoint(server!!.url("/").toString())
+                .setSpaceId("configuredSpaceId")
+                .setEnvironmentId("configuredEnvironmentId")
+                .build()
+
+        gson = CMAClient.createGson()
+    }
+
+    @After
+    fun tearDown() {
+        server!!.shutdown()
+    }
+
+    @test
+    fun testFetchAll() {
         val responseBody = TestUtils.fileToString("ui_extensions_get_all.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val result = assertTestCallback(client!!.uiExtensions().async()
-                .fetchAll("spaceId", TestCallback()) as TestCallback)!!
+                .fetchAll("spaceId", "environmentId", TestCallback()) as TestCallback)!!
 
         assertEquals(6, result.total)
 
@@ -48,33 +82,66 @@ class UiExtensionsTests : BaseTest() {
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("GET", recordedRequest.method)
-        assertEquals("/spaces/spaceId/extensions",
+        assertEquals("/spaces/spaceId/environments/environmentId/extensions",
                 recordedRequest.path)
     }
 
-    @test fun testFetchAllWithQuery() {
+    @test
+    fun testFetchAllWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("ui_extensions_get_all.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.uiExtensions().async().fetchAll(TestCallback())
+                as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/configuredSpaceId/environments/configuredEnvironmentId/extensions",
+                recordedRequest.path)
+    }
+
+    @test
+    fun testFetchAllWithQuery() {
         val responseBody = TestUtils.fileToString("ui_extensions_get_all.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         assertTestCallback(client!!.uiExtensions().async()
                 .fetchAll(
                         "spaceId",
+                        "environmentId",
                         hashMapOf("skip" to "3"),
                         TestCallback()) as TestCallback)!!
 
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("GET", recordedRequest.method)
-        assertEquals("/spaces/spaceId/extensions?skip=3",
+        assertEquals("/spaces/spaceId/environments/environmentId/extensions?skip=3",
                 recordedRequest.path)
     }
 
-    @test fun testFetchOne() {
+    @test
+    fun testFetchAllWithQueryWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("ui_extensions_get_all.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.uiExtensions().async()
+                .fetchAll(mapOf("skip" to "3"), TestCallback()) as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/configuredSpaceId/environments/configuredEnvironmentId/extensions?skip=3",
+                recordedRequest.path)
+    }
+
+    @test
+    fun testFetchOne() {
         val responseBody = TestUtils.fileToString("ui_extensions_get_one.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val intermediate = assertTestCallback(client!!.uiExtensions().async()
-                .fetchOne("spaceId", "extensionId", TestCallback()) as TestCallback)!!
+                .fetchOne("spaceId", "environmentId", "extensionId", TestCallback()) as TestCallback)!!
 
         val result = intermediate.extension
 
@@ -88,11 +155,27 @@ class UiExtensionsTests : BaseTest() {
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("GET", recordedRequest.method)
-        assertEquals("/spaces/spaceId/extensions/extensionId",
+        assertEquals("/spaces/spaceId/environments/environmentId/extensions/extensionId",
                 recordedRequest.path)
     }
 
-    @test fun testCreateWithSourceContent() {
+    @test
+    fun testFetchOneWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("ui_extensions_get_one.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.uiExtensions().async().fetchOne("extensionId", TestCallback())
+                as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/configuredSpaceId/environments/configuredEnvironmentId/extensions/extensionId",
+                recordedRequest.path)
+    }
+
+    @test
+    fun testCreateWithSourceContent() {
         val responseBody = TestUtils.fileToString("ui_extensions_create_with_html_data.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -106,7 +189,7 @@ class UiExtensionsTests : BaseTest() {
                 .setIsOnSidebar(false)
 
         val intermediate = assertTestCallback(client!!.uiExtensions().async()
-                .create("spaceId", uiExtension, TestCallback()) as TestCallback)!!
+                .create("spaceId", "environmentId", uiExtension, TestCallback()) as TestCallback)!!
         val result = intermediate.extension
 
         assertNotNull(result.sourceContent)
@@ -120,11 +203,35 @@ class UiExtensionsTests : BaseTest() {
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("POST", recordedRequest.method)
-        assertEquals("/spaces/spaceId/extensions",
+        assertEquals("/spaces/spaceId/environments/environmentId/extensions",
                 recordedRequest.path)
     }
 
-    @test fun testCreateWithSourceLink() {
+    @test
+    fun testCreateWithSourceContentWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("ui_extensions_create_with_html_data.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val uiExtension = CMAUiExtension()
+        uiExtension
+                .extension
+                .setSourceContent("<html>")
+                .setName("My awesome extensions by srcDoc")
+                .addFieldType(Symbol)
+                .addFieldType(Text)
+                .setIsOnSidebar(false)
+
+        assertTestCallback(client!!.uiExtensions().async().create(uiExtension, TestCallback())
+                as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("POST", recordedRequest.method)
+        assertEquals("/spaces/configuredSpaceId/environments/configuredEnvironmentId/extensions", recordedRequest.path)
+    }
+
+    @test
+    fun testCreateWithSourceLink() {
         val responseBody = TestUtils.fileToString("ui_extensions_create_with_url.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -138,7 +245,7 @@ class UiExtensionsTests : BaseTest() {
                 .setIsOnSidebar(false)
 
         val intermediate = assertTestCallback(client!!.uiExtensions().async()
-                .create("spaceId", uiExtension, TestCallback()) as TestCallback)!!
+                .create("spaceId", "environmentId", uiExtension, TestCallback()) as TestCallback)!!
 
         val result = intermediate.extension
 
@@ -153,11 +260,12 @@ class UiExtensionsTests : BaseTest() {
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("POST", recordedRequest.method)
-        assertEquals("/spaces/spaceId/extensions",
+        assertEquals("/spaces/spaceId/environments/environmentId/extensions",
                 recordedRequest.path)
     }
 
-    @test fun testCreateWithId() {
+    @test
+    fun testCreateWithId() {
         val responseBody = TestUtils.fileToString("ui_extensions_create_with_url.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -174,7 +282,7 @@ class UiExtensionsTests : BaseTest() {
         assertEquals("newId", uiExtension.id)
 
         val intermediate = assertTestCallback(client!!.uiExtensions().async()
-                .create("spaceId", uiExtension, TestCallback()) as TestCallback)!!
+                .create("spaceId", "environmentId", uiExtension, TestCallback()) as TestCallback)!!
 
         assertEquals("newId", intermediate.id)
 
@@ -191,7 +299,7 @@ class UiExtensionsTests : BaseTest() {
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("PUT", recordedRequest.method)
-        assertEquals("/spaces/spaceId/extensions/newId",
+        assertEquals("/spaces/spaceId/environments/environmentId/extensions/newId",
                 recordedRequest.path)
     }
 
@@ -208,7 +316,8 @@ class UiExtensionsTests : BaseTest() {
                 .setIsOnSidebar(false)
     }
 
-    @test fun testUpdate() {
+    @test
+    fun testUpdate() {
         val responseBody = TestUtils.fileToString("ui_extensions_update.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -219,6 +328,7 @@ class UiExtensionsTests : BaseTest() {
                 .setId("extensionId")
                 .setVersion<CMAUiExtension>(1213)
                 .setSpaceId<CMAUiExtension>("spaceId")
+                .setEnvironmentId<CMAUiExtension>("environmentId")
                 .extension
                 .setSourceUrl("http://example.com/my")
                 .setName("My awesome extension by srcUrl")
@@ -240,11 +350,12 @@ class UiExtensionsTests : BaseTest() {
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("PUT", recordedRequest.method)
-        assertEquals("/spaces/spaceId/extensions/extensionId",
+        assertEquals("/spaces/spaceId/environments/environmentId/extensions/extensionId",
                 recordedRequest.path)
     }
 
-    @test fun testDelete() {
+    @test
+    fun testDelete() {
         server!!.enqueue(MockResponse().setResponseCode(204))
 
         // usually you would fetch this from Contentful
@@ -254,6 +365,7 @@ class UiExtensionsTests : BaseTest() {
                 .setId("extensionId")
                 .setVersion<CMAUiExtension>(1)
                 .setSpaceId<CMAUiExtension>("spaceId")
+                .setEnvironmentId<CMAUiExtension>("environmentId")
                 .extension
                 .setSourceUrl("http://example.com/my")
                 .setName("My awesome extension")
@@ -269,8 +381,7 @@ class UiExtensionsTests : BaseTest() {
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("DELETE", recordedRequest.method)
-        assertEquals("/spaces/spaceId/extensions/extensionId",
+        assertEquals("/spaces/spaceId/environments/environmentId/extensions/extensionId",
                 recordedRequest.path)
     }
-
 }

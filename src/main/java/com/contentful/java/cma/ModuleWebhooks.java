@@ -17,6 +17,7 @@
 package com.contentful.java.cma;
 
 import com.contentful.java.cma.model.CMAArray;
+import com.contentful.java.cma.model.CMANotWithEnvironmentsException;
 import com.contentful.java.cma.model.CMASystem;
 import com.contentful.java.cma.model.CMAWebhook;
 import com.contentful.java.cma.model.CMAWebhookCall;
@@ -43,9 +44,24 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
    * @param retrofit         An instance to an already setup Retrofit module
    * @param callbackExecutor Use this executor for this module.
    */
-  public ModuleWebhooks(Retrofit retrofit, Executor callbackExecutor) {
-    super(retrofit, callbackExecutor);
+  public ModuleWebhooks(
+      Retrofit retrofit,
+      Executor callbackExecutor,
+      String spaceId,
+      String environmentId,
+      boolean environmentIdConfigured) {
+    super(retrofit, callbackExecutor, spaceId, environmentId, environmentIdConfigured);
     this.async = new Async();
+  }
+
+  /**
+   * Internal method used for creating the service.
+   *
+   * @param retrofit A {@link Retrofit} instance to create the service from.
+   * @return The service, to be used for calls to the backend.
+   */
+  @Override protected ServiceWebhooks createService(Retrofit retrofit) {
+    return retrofit.create(ServiceWebhooks.class);
   }
 
   /**
@@ -62,88 +78,124 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
    * <p>
    * This will create a new ID and return the newly created webhook as a return value.
    *
+   * @param webhook A representation of the Webhook to be used.
+   * @return The webhook returned from the backend, containing created its ID and more.
+   * @throws IllegalArgumentException        if configured space id is null.
+   * @throws IllegalArgumentException        if webhook is null.
+   * @throws CMANotWithEnvironmentsException if environmentId was set using
+   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+   * @see CMAClient.Builder#setSpaceId(String)
+   */
+  public CMAWebhook create(CMAWebhook webhook) {
+    throwIfEnvironmentIdIsSet();
+
+    return create(spaceId, webhook);
+  }
+
+  /**
+   * Create a new webhook.
+   * <p>
+   * This will create a new ID and return the newly created webhook as a return value.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
+   *
    * @param spaceId Which space should be used?
    * @param webhook A representation of the Webhook to be used.
    * @return The webhook returned from the backend, containing created its ID and more.
-   * @throws IllegalArgumentException if space's id is null.
+   * @throws IllegalArgumentException if space id is null.
    * @throws IllegalArgumentException if webhook is null.
    */
   public CMAWebhook create(String spaceId, CMAWebhook webhook) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(webhook, "webhook");
+    final String webhookId = webhook.getId();
 
     final CMASystem system = webhook.getSystem();
     webhook.setSystem(null);
     try {
-      return service.create(spaceId, webhook).blockingFirst();
+      if (webhookId == null) {
+        return service.create(spaceId, webhook).blockingFirst();
+      } else {
+        return service.create(spaceId, webhookId, webhook).blockingFirst();
+      }
     } finally {
       webhook.setSystem(system);
     }
   }
 
   /**
-   * Create a new webhook with specified ID.
-   * <p>
-   * Similar to {@link ModuleWebhooks#create(String, CMAWebhook)} but uses an id for this Webhook.
+   * Delete a given Webhook.
    *
-   * @param spaceId   the space, this Webhook should be created in.
-   * @param webhookId What id should be given to the new webhook?
-   * @param webhook   Contains the actual data of the webhook to be created.
-   * @return The webhook as returned from the backend, enriched by the backend.
-   * @throws IllegalArgumentException if space's id is null.
-   * @throws IllegalArgumentException if webhookId is null.
-   * @throws IllegalArgumentException if webhook is null.
-   */
-  public CMAWebhook create(String spaceId, String webhookId, CMAWebhook webhook) {
-    assertNotNull(spaceId, "spaceId");
-    assertNotNull(webhookId, "webhookId");
-    assertNotNull(webhook, "webhook");
-
-    final CMASystem system = webhook.getSystem();
-    webhook.setSystem(null);
-
-    try {
-      return service.create(spaceId, webhookId, webhook).blockingFirst();
-    } finally {
-      webhook.setSystem(system);
-    }
-  }
-
-  /**
-   * Delete a given Webhook by its ID.
-   *
-   * @param spaceId   The id of the space hosting the webhook to be deleted.
-   * @param webhookId The id of the actual webhook to be deleted.
+   * @param webhook actual webhook to be deleted.
    * @return the response code of the request (aka 200 if successful)
    * @throws IllegalArgumentException if spaceId is null.
    * @throws IllegalArgumentException if webhookId is null.
    */
-  public Integer delete(String spaceId, String webhookId) {
-    assertNotNull(spaceId, "spaceId");
-    assertNotNull(webhookId, "webhookId");
+  public Integer delete(CMAWebhook webhook) {
+    final String webhookId = getResourceIdOrThrow(webhook, "webhook");
+    final String spaceId = getSpaceIdOrThrow(webhook, "webhook");
 
     return service.delete(spaceId, webhookId).blockingFirst().code();
   }
 
   /**
+   * Retrieve all the webhooks defined the configured space.
+   *
+   * @return An {@link CMAArray} containing all found webhooks for this space.
+   * @throws IllegalArgumentException        if configured spaceId is null.
+   * @throws CMANotWithEnvironmentsException if environmentId was set using
+   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+   * @see CMAClient.Builder#setSpaceId(String)
+   */
+  public CMAArray<CMAWebhook> fetchAll() {
+    throwIfEnvironmentIdIsSet();
+
+    return fetchAll(spaceId);
+  }
+
+  /**
+   * Retrieve specific webhooks matching a query for this space.
+   *
+   * @param query Specifying the criteria on which webhooks to return.
+   * @return An {@link CMAArray} containing all found webhooks for this space.
+   * @throws IllegalArgumentException        if configured spaceId is null.
+   * @throws CMANotWithEnvironmentsException if environmentId was set using
+   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+   * @see CMAClient.Builder#setSpaceId(String)
+   */
+  public CMAArray<CMAWebhook> fetchAll(Map<String, String> query) {
+    throwIfEnvironmentIdIsSet();
+
+    return fetchAll(spaceId, query);
+  }
+
+  /**
    * Retrieve all the webhooks defined for this space.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
    *
    * @param spaceId The id of the space to be asked for all of its spaces.
    * @return An {@link CMAArray} containing all found webhooks for this space.
    * @throws IllegalArgumentException if spaceId is null.
    */
   public CMAArray<CMAWebhook> fetchAll(String spaceId) {
-    assertNotNull(spaceId, "spaceId");
-
-    return service.fetchAll(spaceId).blockingFirst();
+    return fetchAll(spaceId, null);
   }
 
   /**
    * Retrieve specific webhooks matching a query for this space.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
    *
    * @param spaceId The id of the space to be asked for all of its spaces.
    * @param query   Specifying the criteria on which webhooks to return.
-   * @return An {@link CMAArray} containing all found webhooks for this space.
+   * @return A {@link CMAArray} containing all found webhooks for this space.
    * @throws IllegalArgumentException if spaceId is null.
    */
   public CMAArray<CMAWebhook> fetchAll(String spaceId, Map<String, String> query) {
@@ -158,6 +210,27 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
 
   /**
    * Retrieve exactly one webhook, whose id you know.
+   *
+   * @param webhookId The id of the webhook to be returned.
+   * @return The webhook found, or null, if no such webhook is available.
+   * @throws IllegalArgumentException        if configured spaceId is null.
+   * @throws IllegalArgumentException        if webhookId is null.
+   * @throws CMANotWithEnvironmentsException if environmentId was set using
+   *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+   * @see CMAClient.Builder#setSpaceId(String)
+   */
+  public CMAWebhook fetchOne(String webhookId) {
+    throwIfEnvironmentIdIsSet();
+
+    return fetchOne(spaceId, webhookId);
+  }
+
+  /**
+   * Retrieve exactly one webhook, whose id you know.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
    *
    * @param spaceId   The id of the space to be hosting this webhook.
    * @param webhookId The id of the webhook to be returned.
@@ -197,16 +270,15 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
   /**
    * Get more information about a specific webhook.
    *
-   * @param spaceId   The id of the space hosting the webhook
-   * @param webhookId The id of the webhook to be asked for more detail.
+   * @param webhook webhook to be asked for more detail.
    * @return A detailed object for the given webhook.
    * @throws IllegalArgumentException if spaceId is null.
    * @throws IllegalArgumentException if webhook is null.
    * @see CMAWebhookCall
    */
-  public CMAArray<CMAWebhookCall> calls(String spaceId, String webhookId) {
-    assertNotNull(spaceId, "spaceId");
-    assertNotNull(webhookId, "webhookId");
+  public CMAArray<CMAWebhookCall> calls(CMAWebhook webhook) {
+    final String spaceId = getSpaceIdOrThrow(webhook, "webhook");
+    final String webhookId = getResourceIdOrThrow(webhook, "webhook");
 
     return service.calls(spaceId, webhookId).blockingFirst();
   }
@@ -215,46 +287,34 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
    * Get more information about one specific call to one specific webhook, hosted by one specific
    * space.
    *
-   * @param spaceId   A space id, identifying the space containing the webhook.
-   * @param webhookId A webhook id containing the webhook containing the call.
-   * @param callId    A call id identifying the call to be informed about.
+   * @param call A call to be get more information about.
    * @return A Call Detail to be used to gather more information about this call.
    * @throws IllegalArgumentException if spaceId is null.
    * @throws IllegalArgumentException if webhook is null.
    * @throws IllegalArgumentException if callId is null.
    */
-  public CMAWebhookCallDetail callDetails(String spaceId, String webhookId, String callId) {
-    assertNotNull(spaceId, "spaceId");
-    assertNotNull(webhookId, "webhookId");
-    assertNotNull(callId, "callId");
+  public CMAWebhookCallDetail callDetails(CMAWebhookCall call) {
+    final String spaceId = getSpaceIdOrThrow(call, "call");
+    final String callId = getResourceIdOrThrow(call, "call");
+    assertNotNull(call.getSystem().getCreatedBy().getId(), "webhook.sys.createdBy");
+    final String webhookId = call.getSystem().getCreatedBy().getId();
 
     return service.callDetails(spaceId, webhookId, callId).blockingFirst();
   }
 
   /**
-   * Return a general understanding of the health of the webhooks.
+   * Return a general understanding of the health of the webhook.
    *
-   * @param spaceId   Which space does host this webhook?
-   * @param webhookId Which webhook should be asked for its health?
+   * @param webhook Which webhook should be asked for its health?
    * @return A health indicator summarizing healthy/total calls to the Webhook.
    * @throws IllegalArgumentException if spaceId is null.
    * @throws IllegalArgumentException if webhook is null.
    */
-  public CMAWebhookHealth health(String spaceId, String webhookId) {
-    assertNotNull(spaceId, "spaceId");
-    assertNotNull(webhookId, "webhookId");
+  public CMAWebhookHealth health(CMAWebhook webhook) {
+    final String spaceId = getSpaceIdOrThrow(webhook, "webhook");
+    final String webhookId = getResourceIdOrThrow(webhook, "webhook");
 
     return service.health(spaceId, webhookId).blockingFirst();
-  }
-
-  /**
-   * Internal method used for creating the service.
-   *
-   * @param retrofit A {@link Retrofit} instance to create the service from.
-   * @return The service, to be used for calls to the backend.
-   */
-  @Override protected ServiceWebhooks createService(Retrofit retrofit) {
-    return retrofit.create(ServiceWebhooks.class);
   }
 
   /**
@@ -267,15 +327,43 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
     /**
      * Asynchronous variant of {@link ModuleWebhooks#create(String, CMAWebhook)}
      *
+     * @param webhook  data to be used for creation.
+     * @param callback the callback to be called once finished.
+     * @return the callback passed in.
+     * @throws IllegalArgumentException        if configured space id is null.
+     * @throws IllegalArgumentException        if webhook is null.
+     * @throws CMANotWithEnvironmentsException if environmentId was set using
+     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+     * @see CMAClient.Builder#setSpaceId(String)
+     */
+    public CMACallback<CMAWebhook> create(
+        final CMAWebhook webhook,
+        CMACallback<CMAWebhook> callback) {
+      return defer(new RxExtensions.DefFunc<CMAWebhook>() {
+        @Override CMAWebhook method() {
+          return ModuleWebhooks.this.create(webhook);
+        }
+      }, callback);
+    }
+
+    /**
+     * Asynchronous variant of {@link ModuleWebhooks#create(String, CMAWebhook)}
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+     * {@link CMAClient.Builder#setEnvironmentId(String)}.
+     *
      * @param spaceId  id of the space to be used.
      * @param webhook  data to be used for creation.
      * @param callback the callback to be called once finished.
      * @return the callback passed in.
-     * @throws IllegalArgumentException if space's id is null.
+     * @throws IllegalArgumentException if space id is null.
      * @throws IllegalArgumentException if webhook is null.
      */
-    public CMACallback<CMAWebhook> create(final String spaceId, final CMAWebhook webhook,
-                                          CMACallback<CMAWebhook> callback) {
+    public CMACallback<CMAWebhook> create(
+        final String spaceId,
+        final CMAWebhook webhook,
+        CMACallback<CMAWebhook> callback) {
       return defer(new RxExtensions.DefFunc<CMAWebhook>() {
         @Override CMAWebhook method() {
           return ModuleWebhooks.this.create(spaceId, webhook);
@@ -284,57 +372,57 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
     }
 
     /**
-     * Asynchronous variant of {@link ModuleWebhooks#create(String, String, CMAWebhook)}
+     * Asynchronous variant of {@link ModuleWebhooks#delete(CMAWebhook)}
      *
-     * @param spaceId   id of the space to be used.
-     * @param webhookId id for the webhook to be created/updated.
-     * @param webhook   data to be used for creation.
-     * @param callback  the callback to be called once finished.
+     * @param webhook  webhook to be deleted.
+     * @param callback the callback to be called once finished.
      * @return the callback passed in.
-     * @throws IllegalArgumentException if space's id is null.
+     * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if webhookId is null.
-     * @throws IllegalArgumentException if webhook is null.
      */
-    public CMACallback<CMAWebhook> create(final String spaceId,
-                                          final String webhookId,
-                                          final CMAWebhook webhook,
-                                          CMACallback<CMAWebhook> callback) {
-      return defer(new RxExtensions.DefFunc<CMAWebhook>() {
-        @Override CMAWebhook method() {
-          return ModuleWebhooks.this.create(spaceId, webhookId, webhook);
+    public CMACallback<Integer> delete(
+        final CMAWebhook webhook,
+        CMACallback<Integer> callback) {
+      return defer(new RxExtensions.DefFunc<Integer>() {
+        @Override Integer method() {
+          return ModuleWebhooks.this.delete(webhook);
         }
       }, callback);
     }
 
     /**
-     * Asynchronous variant of {@link ModuleWebhooks#delete(String, String)}
+     * Asynchronous variant of {@link ModuleWebhooks#fetchAll()}
      *
-     * @param spaceId   id of the space to be used.
-     * @param webhookId id of the webhook to be deleted.
-     * @param callback  the callback to be called once finished.
+     * @param callback the callback to be called once finished.
      * @return the callback passed in.
-     * @throws IllegalArgumentException if spaceId is null.
-     * @throws IllegalArgumentException if webhookId is null.
+     * @throws IllegalArgumentException        if spaceId is null.
+     * @throws CMANotWithEnvironmentsException if environmentId was set using
+     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+     * @see CMAClient.Builder#setSpaceId(String)
      */
-    public CMACallback<Integer> delete(final String spaceId, final String webhookId,
-                                       CMACallback<Integer> callback) {
-      return defer(new RxExtensions.DefFunc<Integer>() {
-        @Override Integer method() {
-          return ModuleWebhooks.this.delete(spaceId, webhookId);
+    public CMACallback<CMAArray<CMAWebhook>> fetchAll(CMACallback<CMAArray<CMAWebhook>> callback) {
+      return defer(new RxExtensions.DefFunc<CMAArray<CMAWebhook>>() {
+        @Override CMAArray<CMAWebhook> method() {
+          return ModuleWebhooks.this.fetchAll();
         }
       }, callback);
     }
 
     /**
      * Asynchronous variant of {@link ModuleWebhooks#fetchAll(String)}
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+     * {@link CMAClient.Builder#setEnvironmentId(String)}.
      *
      * @param spaceId  id of the space to be used.
      * @param callback the callback to be called once finished.
      * @return the callback passed in.
      * @throws IllegalArgumentException if spaceId is null.
      */
-    public CMACallback<CMAArray<CMAWebhook>> fetchAll(final String spaceId,
-                                                      CMACallback<CMAArray<CMAWebhook>> callback) {
+    public CMACallback<CMAArray<CMAWebhook>> fetchAll(
+        final String spaceId,
+        CMACallback<CMAArray<CMAWebhook>> callback) {
       return defer(new RxExtensions.DefFunc<CMAArray<CMAWebhook>>() {
         @Override CMAArray<CMAWebhook> method() {
           return ModuleWebhooks.this.fetchAll(spaceId);
@@ -343,7 +431,32 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
     }
 
     /**
+     * Asynchronous variant of {@link ModuleWebhooks#fetchAll(Map)}
+     *
+     * @param query    description map of which webhooks to be returned.
+     * @param callback the callback to be called once finished.
+     * @return the callback passed in.
+     * @throws IllegalArgumentException        if configured spaceId is null.
+     * @throws CMANotWithEnvironmentsException if environmentId was set using
+     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+     * @see CMAClient.Builder#setSpaceId(String)
+     */
+    public CMACallback<CMAArray<CMAWebhook>> fetchAll(
+        final Map<String, String> query,
+        CMACallback<CMAArray<CMAWebhook>> callback) {
+      return defer(new RxExtensions.DefFunc<CMAArray<CMAWebhook>>() {
+        @Override CMAArray<CMAWebhook> method() {
+          return ModuleWebhooks.this.fetchAll(query);
+        }
+      }, callback);
+    }
+
+    /**
      * Asynchronous variant of {@link ModuleWebhooks#fetchAll(String, Map)}
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+     * {@link CMAClient.Builder#setEnvironmentId(String)}.
      *
      * @param spaceId  id of the space to be used.
      * @param query    description map of which webhooks to be returned.
@@ -351,9 +464,10 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
      * @return the callback passed in.
      * @throws IllegalArgumentException if spaceId is null.
      */
-    public CMACallback<CMAArray<CMAWebhook>> fetchAll(final String spaceId,
-                                                      final Map<String, String> query,
-                                                      CMACallback<CMAArray<CMAWebhook>> callback) {
+    public CMACallback<CMAArray<CMAWebhook>> fetchAll(
+        final String spaceId,
+        final Map<String, String> query,
+        CMACallback<CMAArray<CMAWebhook>> callback) {
       return defer(new RxExtensions.DefFunc<CMAArray<CMAWebhook>>() {
         @Override CMAArray<CMAWebhook> method() {
           return ModuleWebhooks.this.fetchAll(spaceId, query);
@@ -362,7 +476,33 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
     }
 
     /**
+     * Asynchronous variant of {@link ModuleWebhooks#fetchOne(String)}
+     *
+     * @param webhookId id of the webhook to be retrieved.
+     * @param callback  the callback to be called once finished.
+     * @return the callback passed in.
+     * @throws IllegalArgumentException        if spaceId is null.
+     * @throws IllegalArgumentException        if webhookId is null.
+     * @throws CMANotWithEnvironmentsException if environmentId was set using
+     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+     * @see CMAClient.Builder#setSpaceId(String)
+     */
+    public CMACallback<CMAWebhook> fetchOne(
+        final String webhookId,
+        CMACallback<CMAWebhook> callback) {
+      return defer(new RxExtensions.DefFunc<CMAWebhook>() {
+        @Override CMAWebhook method() {
+          return ModuleWebhooks.this.fetchOne(webhookId);
+        }
+      }, callback);
+    }
+
+    /**
      * Asynchronous variant of {@link ModuleWebhooks#fetchOne(String, String)}
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
+     * {@link CMAClient.Builder#setEnvironmentId(String)}.
      *
      * @param spaceId   id of the space to be used.
      * @param webhookId id of the webhook to be retrieved.
@@ -371,8 +511,10 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if webhookId is null.
      */
-    public CMACallback<CMAWebhook> fetchOne(final String spaceId, final String webhookId,
-                                            CMACallback<CMAWebhook> callback) {
+    public CMACallback<CMAWebhook> fetchOne(
+        final String spaceId,
+        final String webhookId,
+        CMACallback<CMAWebhook> callback) {
       return defer(new RxExtensions.DefFunc<CMAWebhook>() {
         @Override CMAWebhook method() {
           return ModuleWebhooks.this.fetchOne(spaceId, webhookId);
@@ -401,65 +543,58 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
     }
 
     /**
-     * Asynchronous variant of {@link ModuleWebhooks#calls(String, String)}
+     * Asynchronous variant of {@link ModuleWebhooks#calls(CMAWebhook)}
      *
-     * @param spaceId   id of the space to be used.
-     * @param webhookId id to be used to retrieve calls from.
-     * @param callback  the callback to be called once finished.
+     * @param webhook  to be used to retrieve calls from.
+     * @param callback the callback to be called once finished.
      * @return the callback passed in.
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if webhook is null.
      */
-    public CMACallback<CMAArray<CMAWebhookCall>> calls(final String spaceId,
-                                                       final String webhookId,
-                                                       CMACallback<CMAArray<CMAWebhookCall>>
-                                                           callback) {
+    public CMACallback<CMAArray<CMAWebhookCall>> calls(
+        final CMAWebhook webhook,
+        CMACallback<CMAArray<CMAWebhookCall>> callback) {
       return defer(new RxExtensions.DefFunc<CMAArray<CMAWebhookCall>>() {
         @Override CMAArray<CMAWebhookCall> method() {
-          return ModuleWebhooks.this.calls(spaceId, webhookId);
+          return ModuleWebhooks.this.calls(webhook);
         }
       }, callback);
     }
 
     /**
-     * Asynchronous variant of {@link ModuleWebhooks#callDetails(String, String, String)}
+     * Asynchronous variant of {@link ModuleWebhooks#callDetails(CMAWebhookCall)}
      *
-     * @param spaceId   id of the space to be used.
-     * @param webhookId id of webhook.
-     * @param callId    id of call.
-     * @param callback  the callback to be called once finished.
+     * @param call     call to get more details about.
+     * @param callback the callback to be called once finished.
      * @return the callback passed in.
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if webhook is null.
      * @throws IllegalArgumentException if callId is null.
      */
-    public CMACallback<CMAWebhookCallDetail> callDetails(final String spaceId,
-                                                         final String webhookId,
-                                                         final String callId,
-                                                         CMACallback<CMAWebhookCallDetail>
-                                                             callback) {
+    public CMACallback<CMAWebhookCallDetail> callDetails(
+        final CMAWebhookCall call,
+        CMACallback<CMAWebhookCallDetail> callback) {
       return defer(new RxExtensions.DefFunc<CMAWebhookCallDetail>() {
         @Override CMAWebhookCallDetail method() {
-          return ModuleWebhooks.this.callDetails(spaceId, webhookId, callId);
+          return ModuleWebhooks.this.callDetails(call);
         }
       }, callback);
     }
 
     /**
-     * Asynchronous variant of {@link ModuleWebhooks#health(String, String)}
+     * Asynchronous variant of {@link ModuleWebhooks#health(CMAWebhook)}
      *
-     * @param spaceId   id of the space to be used.
-     * @param webhookId id to be used for healthy check.
-     * @param callback  the callback to be called once finished.
+     * @param webhook  webhook to be used for healthy check.
+     * @param callback the callback to be called once finished.
      * @return the callback passed in.
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if webhook is null.
      */
-    public CMACallback<CMAWebhookHealth> health(final String spaceId, final String webhookId,
+    public CMACallback<CMAWebhookHealth> health(final CMAWebhook webhook,
                                                 CMACallback<CMAWebhookHealth> callback) {
       return defer(new RxExtensions.DefFunc<CMAWebhookHealth>() {
         @Override CMAWebhookHealth method() {
-          return ModuleWebhooks.this.health(spaceId, webhookId);
+          return ModuleWebhooks.this.health(webhook);
         }
       }, callback);
     }

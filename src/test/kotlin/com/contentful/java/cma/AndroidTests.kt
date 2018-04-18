@@ -7,18 +7,52 @@ import android.os.Looper
 import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAArray
 import com.contentful.java.cma.model.CMAAsset
+import com.google.gson.Gson
 import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockWebServer
+import org.junit.After
+import org.junit.Before
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import java.util.logging.LogManager
 import kotlin.test.assertEquals
 import org.junit.Test as test
 
 @RunWith(RobolectricTestRunner::class)
 @Config(manifest = Config.NONE)
-class AndroidTests : BaseTest() {
-    @test fun testCallbackExecutesOnMainThread() {
+class AndroidTests {
+    var server: MockWebServer? = null
+    var client: CMAClient? = null
+    var gson: Gson? = null
+
+    @Before
+    fun setUp() {
+        LogManager.getLogManager().reset()
+        // MockWebServer
+        server = MockWebServer()
+        server!!.start()
+
+        // Client
+        client = CMAClient.Builder()
+                .setAccessToken("token")
+                .setCoreEndpoint(server!!.url("/").toString())
+                .setUploadEndpoint(server!!.url("/").toString())
+                .setSpaceId("configuredSpaceId")
+                .setEnvironmentId("configuredEnvironmentId")
+                .build()
+
+        gson = CMAClient.createGson()
+    }
+
+    @After
+    fun tearDown() {
+        server!!.shutdown()
+    }
+
+    @test
+    fun testCallbackExecutesOnMainThread() {
         val responseBody = TestUtils.fileToString("asset_fetch_all_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -51,7 +85,7 @@ class AndroidTests : BaseTest() {
                     .setCoreEndpoint(intent.getStringExtra("EXTRA_URL"))
                     .build()
 
-            androidClient.assets().async().fetchAll("space-id", cb)
+            androidClient.assets().async().fetchAll("space-id", "environment-id", cb)
         }
     }
 }

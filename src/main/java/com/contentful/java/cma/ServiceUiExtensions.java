@@ -36,45 +36,54 @@ import retrofit2.http.QueryMap;
  * Ui Extensions Service.
  */
 interface ServiceUiExtensions {
-  @GET("/spaces/{spaceId}/extensions")
-  Flowable<CMAArray<CMAUiExtension>> fetchAll(@Path("spaceId") String spaceId);
-
-  @GET("/spaces/{spaceId}/extensions")
+  @GET("/spaces/{spaceId}/environments/{environmentId}/extensions")
   Flowable<CMAArray<CMAUiExtension>> fetchAll(
       @Path("spaceId") String spaceId,
+      @Path("environmentId") String environmentId
+  );
+
+  @GET("/spaces/{spaceId}/environments/{environmentId}/extensions")
+  Flowable<CMAArray<CMAUiExtension>> fetchAll(
+      @Path("spaceId") String spaceId,
+      @Path("environmentId") String environmentId,
       @QueryMap Map<String, String> query
   );
 
-  @GET("/spaces/{spaceId}/extensions/{extensionId}")
+  @GET("/spaces/{spaceId}/environments/{environmentId}/extensions/{extensionId}")
   Flowable<CMAUiExtension> fetchOne(
       @Path("spaceId") String spaceId,
+      @Path("environmentId") String environmentId,
       @Path("extensionId") String extensionId
   );
 
-  @POST("/spaces/{spaceId}/extensions")
+  @POST("/spaces/{spaceId}/environments/{environmentId}/extensions")
   Flowable<CMAUiExtension> create(
       @Path("spaceId") String spaceId,
+      @Path("environmentId") String environmentId,
       @Body CMAUiExtension extension
   );
 
-  @PUT("/spaces/{spaceId}/extensions/{extensionId}")
+  @PUT("/spaces/{spaceId}/environments/{environmentId}/extensions/{extensionId}")
   Flowable<CMAUiExtension> create(
       @Path("spaceId") String spaceId,
+      @Path("environmentId") String environmentId,
       @Path("extensionId") String extensionId,
       @Body CMAUiExtension extension
   );
 
-  @PUT("/spaces/{spaceId}/extensions/{extensionId}")
+  @PUT("/spaces/{spaceId}/environments/{environmentId}/extensions/{extensionId}")
   Flowable<CMAUiExtension> update(
       @Path("spaceId") String spaceId,
+      @Path("environmentId") String environmentId,
       @Path("extensionId") String extensionId,
       @Body CMAUiExtension extension,
       @Header("X-Contentful-Version") Integer version
   );
 
-  @DELETE("/spaces/{spaceId}/extensions/{extensionId}")
+  @DELETE("/spaces/{spaceId}/environments/{environmentId}/extensions/{extensionId}")
   Flowable<Response<Void>> delete(
       @Path("spaceId") String spaceId,
+      @Path("environmentId") String environmentId,
       @Path("extensionId") String extensionId,
       @Header("X-Contentful-Version") Integer version
   );

@@ -17,41 +17,12 @@
 package com.contentful.java.cma
 
 import com.contentful.java.cma.lib.TestCallback
-import com.google.gson.Gson
 import com.google.gson.JsonParser
-import okhttp3.mockwebserver.MockWebServer
-import java.util.logging.LogManager
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import org.junit.After as after
 import org.junit.Before as before
-
-open class BaseTest {
-    var server: MockWebServer? = null
-    var client: CMAClient? = null
-    var gson: Gson? = null
-
-    @before fun setUp() {
-        LogManager.getLogManager().reset()
-        // MockWebServer
-        server = MockWebServer()
-        server!!.start()
-
-        // Client
-        client = CMAClient.Builder()
-                .setAccessToken("token")
-                .setCoreEndpoint(server!!.url("/").toString())
-                .setUploadEndpoint(server!!.url("/").toString())
-                .build()
-
-        gson = CMAClient.createGson()
-    }
-
-    @after fun tearDown() {
-        server!!.shutdown()
-    }
-}
 
 // Extensions
 fun <T : Any> assertTestCallback(cb: TestCallback<T>): T? {

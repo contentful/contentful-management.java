@@ -2,6 +2,20 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Version [3.0.0] - (2018-04-18)
+- Add: [`/environments` module](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/environments) endpoint.
+- Add: make environment aware:
+  * assets
+  * content types
+  * editor interfaces
+  * entries
+  * locales and
+  * ui extensions.
+- Add: space id and environment id parameter on client creation, to remove need of repeating the same value in almost all calls.
+- Break: use JDK 1.8 for building the SDK.
+- Break: move queries for locales from spaces to locales. (i.e. use `client.locales().fetchAll()`).
+- Break: remove non resource variants of delete, update and webhook calls. (use a resource you fetched first instead)
+
 ## Version [2.2.3] - 2018-03-08
 - Fix: Parsing error in error response
 

@@ -1,0 +1,49 @@
+{
+  "sys": {
+    "space": {
+      "sys": {
+        "type": "Link",
+        "linkType": "Space",
+        "id": "<space_id>"
+      }
+    },
+    "id": "6AwRL4Sw2QMQCG6QG64GmM",
+    "type": "Entry",
+    "createdAt": "2018-03-28T12:58:26.611Z",
+    "updatedAt": "2018-03-28T12:58:26.611Z",
+    "environment": {
+      "sys": {
+        "id": "staging",
+        "type": "Link",
+        "linkType": "Environment"
+      }
+    },
+    "createdBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "<user_id>"
+      }
+    },
+    "updatedBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "<user_id>"
+      }
+    },
+    "version": 1,
+    "contentType": {
+      "sys": {
+        "type": "Link",
+        "linkType": "ContentType",
+        "id": "deleteme"
+      }
+    }
+  },
+  "fields": {
+    "name": {
+      "en-US": "Pete"
+    }
+  }
+}

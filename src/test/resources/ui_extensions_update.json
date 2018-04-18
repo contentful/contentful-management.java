@@ -21,14 +21,14 @@
       "sys": {
         "type": "Link",
         "linkType": "User",
-        "id": "7uJNojWP0gbuP7Pplz7Syo"
+        "id": "<user_id>"
       }
     },
     "space": {
       "sys": {
         "type": "Link",
         "linkType": "Space",
-        "id": "arqlnkt58eul"
+        "id": "<space_id>"
       }
     },
     "updatedAt": "2017-06-29T11:04:33.874Z",
@@ -36,7 +36,7 @@
       "sys": {
         "type": "Link",
         "linkType": "User",
-        "id": "7uJNojWP0gbuP7Pplz7Syo"
+        "id": "<user_id>"
       }
     }
   }

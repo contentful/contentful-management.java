@@ -11,7 +11,7 @@
           "sys": {
             "type": "Link",
             "linkType": "Space",
-            "id": "arqlnkt58eul"
+            "id": "<space_id>"
           }
         },
         "createdBy": {
@@ -40,7 +40,7 @@
           "sys": {
             "type": "Link",
             "linkType": "Space",
-            "id": "arqlnkt58eul"
+            "id": "<space_id>"
           }
         },
         "createdBy": {
@@ -69,7 +69,7 @@
           "sys": {
             "type": "Link",
             "linkType": "Space",
-            "id": "arqlnkt58eul"
+            "id": "<space_id>"
           }
         },
         "createdBy": {
@@ -98,7 +98,7 @@
           "sys": {
             "type": "Link",
             "linkType": "Space",
-            "id": "arqlnkt58eul"
+            "id": "<space_id>"
           }
         },
         "createdBy": {
@@ -127,7 +127,7 @@
           "sys": {
             "type": "Link",
             "linkType": "Space",
-            "id": "arqlnkt58eul"
+            "id": "<space_id>"
           }
         },
         "createdBy": {

@@ -25,15 +25,49 @@ import com.contentful.java.cma.model.CMAPermissions
 import com.contentful.java.cma.model.CMAPolicy
 import com.contentful.java.cma.model.CMAPolicy.ALLOW
 import com.contentful.java.cma.model.CMARole
+import com.google.gson.Gson
 import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockWebServer
+import org.junit.After
+import org.junit.Before
+import java.util.logging.LogManager
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import org.junit.Test as test
 
-class RolesTests : BaseTest() {
-    @test fun testFetchOne() {
+class RolesTests{
+    var server: MockWebServer? = null
+    var client: CMAClient? = null
+    var gson: Gson? = null
+
+    @Before
+    fun setUp() {
+        LogManager.getLogManager().reset()
+        // MockWebServer
+        server = MockWebServer()
+        server!!.start()
+
+        // Client
+        // overwrite client to not use environments
+        client = CMAClient.Builder()
+                .setAccessToken("token")
+                .setCoreEndpoint(server!!.url("/").toString())
+                .setUploadEndpoint(server!!.url("/").toString())
+                .setSpaceId("configuredSpaceId")
+                .build()
+
+        gson = CMAClient.createGson()
+    }
+
+    @After
+    fun tearDown() {
+        server!!.shutdown()
+    }
+
+    @test
+    fun testFetchOne() {
         val responseBody = TestUtils.fileToString("roles_get_one.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -75,7 +109,21 @@ class RolesTests : BaseTest() {
         assertEquals("/spaces/SPACE_ID/roles/ROLE_ID", recordedRequest.path)
     }
 
-    @test fun testFetchAll() {
+    @test
+    fun testFetchOneWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("roles_get_one.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.roles().async().fetchOne("ROLE_ID", TestCallback()) as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/configuredSpaceId/roles/ROLE_ID", recordedRequest.path)
+    }
+
+    @test
+    fun testFetchAll() {
         val responseBody = TestUtils.fileToString("roles_get_all.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -99,7 +147,22 @@ class RolesTests : BaseTest() {
         assertEquals("/spaces/SPACE_ID/roles", recordedRequest.path)
     }
 
-    @test fun testFetchAllWithQuery() {
+    @test
+    fun testFetchAllWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("roles_get_all.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.roles().async()
+                .fetchAll(TestCallback()) as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/configuredSpaceId/roles", recordedRequest.path)
+    }
+
+    @test
+    fun testFetchAllWithQuery() {
         val responseBody = TestUtils.fileToString("roles_get_all.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -114,7 +177,22 @@ class RolesTests : BaseTest() {
         assertEquals("/spaces/SPACE_ID/roles?skip=3", recordedRequest.path)
     }
 
-    @test fun testCreateNew() {
+    @test
+    fun testFetchAllWithQueryWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("roles_get_all.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.roles().async().fetchAll(mapOf("skip" to "3"), TestCallback())
+                as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/configuredSpaceId/roles?skip=3", recordedRequest.path)
+    }
+
+    @test
+    fun testCreateNew() {
         val responseBody = TestUtils.fileToString("roles_create.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -139,7 +217,28 @@ class RolesTests : BaseTest() {
         assertEquals("/spaces/SPACE_ID/roles/", recordedRequest.path)
     }
 
-    @test fun testUpdate() {
+    @test
+    fun testCreateNewWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("roles_create.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val role = CMARole()
+                .setName("Manage Settings Role is actually all")
+                .setDescription("Test role")
+                .setPermissions(
+                        CMAPermissions().setSettings("all")
+                )
+
+        assertTestCallback(client!!.roles().async().create(role, TestCallback()) as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("POST", recordedRequest.method)
+        assertEquals("/spaces/configuredSpaceId/roles/", recordedRequest.path)
+    }
+
+    @test
+    fun testUpdate() {
         val responseBody = TestUtils.fileToString("roles_update.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -206,14 +305,14 @@ class RolesTests : BaseTest() {
         assertEquals("/spaces/SPACE_ID/roles/sampleId", recordedRequest.path)
     }
 
-    @test fun testDeleteOne() {
+    @test
+    fun testDeleteOne() {
         val responseBody = TestUtils.fileToString("roles_delete.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         assertTestCallback(client!!.roles().async()
                 .delete(
-                        "SPACE_ID",
-                        CMARole().setId("ROLE_ID"),
+                        CMARole().setId("ROLE_ID").setSpaceId("SPACE_ID"),
                         TestCallback()
                 ) as TestCallback)
 

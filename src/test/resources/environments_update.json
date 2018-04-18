@@ -1,0 +1,39 @@
+{
+  "name":"environment_new_name",
+  "sys":{
+    "type":"Environment",
+    "id":"environment_id",
+    "version":12,
+    "space":{
+      "sys":{
+        "type":"Link",
+        "linkType":"Space",
+        "id":"<space_id>"
+      }
+    },
+    "status":{
+      "sys":{
+        "type":"Link",
+        "linkType":"Status",
+        "id":"queued"
+      }
+    },
+    "createdBy":{
+      "sys":{
+        "type":"Link",
+        "linkType":"User",
+        "id":"<user_id>"
+      }
+    },
+    "createdAt":"2018-03-26T15:47:36Z",
+    "updatedBy":{
+      "sys":{
+        "type":"Link",
+        "linkType":"User",
+        "id":"<user_id>"
+      }
+    },
+    "updatedAt":"2018-03-26T15:47:36Z"
+  }
+}
+

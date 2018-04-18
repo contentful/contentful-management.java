@@ -37,58 +37,69 @@ import retrofit2.http.QueryMap;
  * ContentTypes Service.
  */
 interface ServiceContentTypes {
-  @POST("/spaces/{space}/content_types")
+  @POST("/spaces/{space}/environments/{environment}/content_types")
   Flowable<CMAContentType> create(
       @Path("space") String spaceId,
+      @Path("environment") String environmentId,
       @Body CMAContentType contentType);
 
-  @PUT("/spaces/{space}/content_types/{content_type}")
+  @PUT("/spaces/{space}/environments/{environment}/content_types/{content_type}")
   Flowable<CMAContentType> create(
       @Path("space") String spaceId,
+      @Path("environment") String environmentId,
       @Path("content_type") String contentTypeId,
       @Body CMAContentType contentType);
 
-  @DELETE("/spaces/{space}/content_types/{content_type}")
+  @DELETE("/spaces/{space}/environments/{environment}/content_types/{content_type}")
   Flowable<Response<Void>> delete(
       @Path("space") String spaceId,
+      @Path("environment") String environmentId,
       @Path("content_type") String contentTypeId);
 
-  @GET("/spaces/{space}/content_types")
+  @GET("/spaces/{space}/environments/{environment}/content_types")
   Flowable<CMAArray<CMAContentType>> fetchAll(
       @Path("space") String spaceId,
+      @Path("environment") String environmentId,
       @QueryMap Map<String, String> query);
 
-  @GET("/spaces/{spaceId}/content_types/{contentTypeId}/snapshots")
+  @GET("/spaces/{space}/environments/{environment}/content_types/{contentTypeId}/snapshots")
   Flowable<CMAArray<CMASnapshot>> fetchAllSnapshots(
-      @Path("spaceId") String spaceId,
+      @Path("space") String spaceId,
+      @Path("environment") String environmentId,
       @Path("contentTypeId") String contentTypeId);
 
-  @GET("/spaces/{space}/content_types/{content_type}")
+  @GET("/spaces/{space}/environments/{environment}/content_types/{content_type}")
   Flowable<CMAContentType> fetchOne(
       @Path("space") String spaceId,
+      @Path("environment") String environmentId,
       @Path("content_type") String contentTypeId);
 
-  @GET("/spaces/{spaceId}/content_types/{contentTypeId}/snapshots/{snapshotId}")
+  @GET("/spaces/{space}/environments/{environment}"
+      + "/content_types/{contentTypeId}/snapshots/{snapshotId}")
   Flowable<CMASnapshot> fetchOneSnapshot(
-      @Path("spaceId") String spaceId,
+      @Path("space") String spaceId,
+      @Path("environment") String environmentId,
       @Path("contentTypeId") String contentTypeId,
       @Path("snapshotId") String snapshotId);
 
-  @PUT("/spaces/{space}/content_types/{content_type}/published")
+  @PUT("/spaces/{space}/environments/{environment}/content_types/{content_type}/published")
   Flowable<CMAContentType> publish(
       @Header("X-Contentful-Version") Integer version,
       @Path("space") String spaceId,
+      @Path("environment") String environmentId,
       @Path("content_type") String contentTypeId);
 
-  @DELETE("/spaces/{space}/content_types/{content_type}/published")
+  @DELETE("/spaces/{space}/environments/{environment}/content_types/{content_type}/published")
   Flowable<CMAContentType> unPublish(
       @Path("space") String spaceId,
+      @Path("environment") String environmentId,
       @Path("content_type") String contentTypeId);
 
-  @PUT("/spaces/{space}/content_types/{content_type}")
+  @PUT("/spaces/{space}/environments/{environment}/content_types/{content_type}")
   Flowable<CMAContentType> update(
       @Header("X-Contentful-Version") Integer version,
       @Path("space") String spaceId,
+      @Path("environment") String environmentId,
       @Path("content_type") String contentTypeId,
       @Body CMAContentType resource);
 }

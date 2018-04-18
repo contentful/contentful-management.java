@@ -13,6 +13,7 @@ public enum CMAType {
   ContentType,
   EditorInterface,
   Entry,
+  Environment,
   Link,
   Locale,
   Organization,

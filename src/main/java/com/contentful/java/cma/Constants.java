@@ -27,9 +27,7 @@ public final class Constants {
 
   //BEGIN TO LONG CODE LINES
   public static final String OCTET_STREAM_CONTENT_TYPE = "application/octet-stream";
-  // Properties
-  static final String SDK_PROPERTIES = "contentful_cma.properties";
-  static final String PROP_VERSION_NAME = "version.name";
+  public static final String DEFAULT_ENVIRONMENT = "master";
 
   private Constants() {
     throw new UnsupportedOperationException();

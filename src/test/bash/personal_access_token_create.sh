@@ -8,4 +8,7 @@ curl --verbose \
     -H 'Authorization: Bearer '$CMA_TOKEN  \
     -d '{"name":"Test Token","scopes":["content_management_read"]}' \
     'https://api.contentful.com/users/me/access_tokens' \
+    | sed 's/'${SPACE_ID}'/<space_id>/g' \
+    | sed 's/'${CMA_TOKEN}'/<access_token>/g' \
+    | sed 's/'${USER_ID}'/<user_id>/g' \
     | tee ${output}
