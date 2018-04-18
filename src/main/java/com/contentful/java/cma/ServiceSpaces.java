@@ -17,7 +17,6 @@
 package com.contentful.java.cma;
 
 import com.contentful.java.cma.model.CMAArray;
-import com.contentful.java.cma.model.CMALocale;
 import com.contentful.java.cma.model.CMASpace;
 
 import java.util.Map;
@@ -58,12 +57,6 @@ interface ServiceSpaces {
   @GET("/spaces/{space}")
   Flowable<CMASpace> fetchOne(
       @Path("space") String spaceId);
-
-  @GET("/spaces/{space}/locales")
-  Flowable<CMAArray<CMALocale>> fetchLocales(
-      @Path("space") String spaceId,
-      @QueryMap Map<String, String> query
-  );
 
   @PUT("/spaces/{space}")
   Flowable<CMASpace> update(
