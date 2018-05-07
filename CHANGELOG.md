@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Version [3.0.1] - To be announced
+- Add E2E tests
+  * Entries
+  * Webhooks
+
 ## Version [3.0.0] - (2018-04-18)
 - Add: [`/environments` module](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/environments) endpoint.
 - Add: make environment aware:
