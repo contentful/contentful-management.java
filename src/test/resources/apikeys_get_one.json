@@ -1,6 +1,6 @@
 {
-  "name":"Test",
-  "description":"Some Description",
+  "name":"Master Key - Do not share",
+  "description":"",
   "accessToken":"<token>",
   "policies":[
     {
@@ -10,8 +10,8 @@
   ],
   "sys":{
     "type":"ApiKey",
-    "id":"3iaYyIZdC1YyXaAmvm1oRE",
-    "version":0,
+    "id":"5syMy6BsUtcVXlD6PpE6LA",
+    "version":1,
     "space":{
       "sys":{
         "type":"Link",
@@ -26,7 +26,7 @@
         "id":"<user_id>"
       }
     },
-    "createdAt":"2017-06-07T14:13:37Z",
+    "createdAt":"2018-04-17T12:56:42Z",
     "updatedBy":{
       "sys":{
         "type":"Link",
@@ -34,13 +34,50 @@
         "id":"<user_id>"
       }
     },
-    "updatedAt":"2017-06-07T14:13:37Z"
+    "updatedAt":"2018-04-17T12:57:18Z"
   },
+  "environments":[
+    {
+      "sys":{
+        "id":"master",
+        "type":"Link",
+        "linkType":"Environment"
+      }
+    },
+    {
+      "sys":{
+        "id":"staging",
+        "type":"Link",
+        "linkType":"Environment"
+      }
+    },
+    {
+      "sys":{
+        "id":"develop",
+        "type":"Link",
+        "linkType":"Environment"
+      }
+    },
+    {
+      "sys":{
+        "id":"khaled",
+        "type":"Link",
+        "linkType":"Environment"
+      }
+    },
+    {
+      "sys":{
+        "id":"io",
+        "type":"Link",
+        "linkType":"Environment"
+      }
+    }
+  ],
   "preview_api_key":{
     "sys":{
       "type":"Link",
       "linkType":"PreviewApiKey",
-      "id":"3ic3lbeOZIffgpNvgKJ0Ym"
+      "id":"5szEuycyXqACwhWgwNwX2m"
     }
   }
 }

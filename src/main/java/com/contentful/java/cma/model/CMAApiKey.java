@@ -2,6 +2,9 @@ package com.contentful.java.cma.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Class representing api keys created.
  */
@@ -12,6 +15,8 @@ public class CMAApiKey extends CMAResource {
   private String accessToken;
   @SerializedName("preview_api_key")
   private CMALink previewApiKey;
+
+  private List<CMALink> environments = new ArrayList<>();
 
   /**
    * Create a new api key.
@@ -70,6 +75,24 @@ public class CMAApiKey extends CMAResource {
     return previewApiKey;
   }
 
+  /**
+   * @return list of links to environments this key is active on.
+   */
+  public List<CMALink> getEnvironments() {
+    return environments;
+  }
+
+  /**
+   * Add environment ids to the api key.
+   * <p>
+   * A link for the payload will be created automatically.
+   */
+  public CMAApiKey addEnvironment(String environment) {
+    environments.add(
+        new CMALink(CMAType.Environment).setId(environment)
+    );
+    return this;
+  }
 
   /**
    * @return a human readable string, representing the object.
@@ -79,6 +102,7 @@ public class CMAApiKey extends CMAResource {
         + "accessToken = " + getAccessToken() + ", "
         + "description = " + getDescription() + ", "
         + "name = " + getName() + ", "
+        + "environments = " + getEnvironments() + ", "
         + "previewApiKey = " + getPreviewApiKey() + " "
         + "}";
   }

@@ -1,46 +1,62 @@
 {
-  "name":"Test",
-  "description":"some Description",
-  "accessToken":"<token>",
-  "policies":[
+  "name": "Test",
+  "description": "some Description",
+  "accessToken": "<token>",
+  "policies": [
     {
-      "effect":"allow",
-      "actions":"all"
+      "effect": "allow",
+      "actions": "all"
     }
   ],
-  "sys":{
-    "type":"ApiKey",
-    "id":"3iaYyIZdC1YyXaAmvm1oRE",
-    "version":0,
-    "space":{
-      "sys":{
-        "type":"Link",
-        "linkType":"Space",
-        "id":"<space_id>"
+  "sys": {
+    "type": "ApiKey",
+    "id": "2APoXwV3okKBrdkKNKOifo",
+    "version": 0,
+    "space": {
+      "sys": {
+        "type": "Link",
+        "linkType": "Space",
+        "id": "<space_id>"
       }
     },
-    "createdBy":{
-      "sys":{
-        "type":"Link",
-        "linkType":"User",
-        "id":"<user_id>"
+    "createdBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "<user_id>"
       }
     },
-    "createdAt":"2017-06-07T14:13:37Z",
-    "updatedBy":{
-      "sys":{
-        "type":"Link",
-        "linkType":"User",
-        "id":"<user_id>"
+    "createdAt": "2018-05-16T13:38:25Z",
+    "updatedBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "<user_id>"
       }
     },
-    "updatedAt":"2017-06-07T14:13:37Z"
+    "updatedAt": "2018-05-16T13:38:25Z"
   },
-  "preview_api_key":{
-    "sys":{
-      "type":"Link",
-      "linkType":"PreviewApiKey",
-      "id":"3ic3lbeOZIffgpNvgKJ0Ym"
+  "environments": [
+    {
+      "sys": {
+        "id": "master",
+        "type": "Link",
+        "linkType": "Environment"
+      }
+    },
+    {
+      "sys": {
+        "id": "staging",
+        "type": "Link",
+        "linkType": "Environment"
+      }
+    }
+  ],
+  "preview_api_key": {
+    "sys": {
+      "type": "Link",
+      "linkType": "PreviewApiKey",
+      "id": "2AQ2dSH1WrSrI9G2MNA8cW"
     }
   }
 }
