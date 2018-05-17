@@ -29,7 +29,6 @@ import org.junit.Before
 import java.util.logging.LogManager
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
-import kotlin.test.assertNull
 import org.junit.Test as test
 
 class ApiKeysTests {
@@ -78,7 +77,7 @@ class ApiKeysTests {
         assertEquals("<token>", first.accessToken)
         assertEquals("5szEuycyXqACwhWgwNwX2m", first.previewApiKey.id)
         assertEquals(CMAType.Link, first.previewApiKey.system.type)
-        assertNull(first.previewApiKey.system.linkType)
+        assertEquals(CMAType.PreviewApiKey, first.previewApiKey.system.linkType)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -100,7 +99,8 @@ class ApiKeysTests {
 
         assertNotNull(result.previewApiKey)
         assertEquals(CMAType.Link, result.previewApiKey.system.type)
-        assertNull(result.previewApiKey.system.linkType)
+        assertEquals(CMAType.PreviewApiKey, result.previewApiKey.system.linkType)
+        assertEquals("5szEuycyXqACwhWgwNwX2m", result.previewApiKey.id)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -131,7 +131,8 @@ class ApiKeysTests {
 
         assertNotNull(result.previewApiKey)
         assertEquals(CMAType.Link, result.previewApiKey.system.type)
-        assertNull(result.previewApiKey.system.linkType)
+        assertEquals(CMAType.PreviewApiKey, result.previewApiKey.system.linkType)
+        assertEquals("2AQ2dSH1WrSrI9G2MNA8cW", result.previewApiKey.id)
 
         // Request
         val recordedRequest = server!!.takeRequest()

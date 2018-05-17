@@ -18,6 +18,7 @@ public enum CMAType {
   Locale,
   Organization,
   PersonalAccessToken,
+  PreviewApiKey,
   Role,
   Snapshot,
   Space,

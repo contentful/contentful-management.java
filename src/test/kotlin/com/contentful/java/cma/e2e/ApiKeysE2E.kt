@@ -24,7 +24,6 @@ import org.junit.AfterClass
 import org.junit.BeforeClass
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
-import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import org.junit.Test as test
 
@@ -69,7 +68,8 @@ class ApiKeysE2E : Base() {
         assertEquals(FIRST_DESCRIPTION, first.description)
         assertNotNull(first.previewApiKey)
         assertEquals(CMAType.Link, first.previewApiKey.system.type)
-        assertNull(first.previewApiKey.system.linkType)
+        assertEquals(CMAType.PreviewApiKey, first.previewApiKey.system.linkType)
+        assertTrue(first.previewApiKey.id.isNotBlank())
     }
 
     @test
@@ -82,7 +82,8 @@ class ApiKeysE2E : Base() {
 
         assertNotNull(result.previewApiKey)
         assertEquals(CMAType.Link, result.previewApiKey.system.type)
-        assertNull(result.previewApiKey.system.linkType)
+        assertEquals(CMAType.PreviewApiKey, result.previewApiKey.system.linkType)
+        assertTrue(result.previewApiKey.id.isNotBlank())
     }
 
     @test
@@ -106,7 +107,11 @@ class ApiKeysE2E : Base() {
 
         assertNotNull(result.previewApiKey)
         assertEquals(CMAType.Link, result.previewApiKey.system.type)
-        assertNull(result.previewApiKey.system.linkType)
+        assertEquals(CMAType.PreviewApiKey, result.previewApiKey.system.linkType)
+        assertTrue(result.previewApiKey.id.isNotBlank())
+
+        val preview = client.previewApiKeys().fetchOne(result.previewApiKey.id)
+        assertTrue(preview.accessToken.isNotBlank())
     }
 
     @test
