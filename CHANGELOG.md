@@ -2,7 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Version [3.0.1] - To be announced
+## Version [3.1.0] - To be announced
+- Add preview api keys endpoint.
+- Add environments to delivery api key.
 - Add E2E tests
   * Entries
   * Webhooks
@@ -143,7 +145,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Version 0.9.0 - 2014-11-18
 Initial release.
 
-[unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.2.3...HEAD
+[unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-3.1.0...HEAD
+[3.0.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-3.0.0...cma-sdk-3.1.0
+[3.0.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.2.2...cma-sdk-3.0.0
 [2.2.3]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.2.2...cma-sdk-2.2.3
 [2.2.2]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.2.1...cma-sdk-2.2.2
 [2.2.1]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.2.0...cma-sdk-2.2.1

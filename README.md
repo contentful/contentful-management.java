@@ -16,12 +16,12 @@ Grab via Maven:
 <dependency>
   <groupId>com.contentful.java</groupId>
   <artifactId>cma-sdk</artifactId>
-  <version>3.0.0</version>
+  <version>3.1.0</version>
 </dependency>
 ```
 or Gradle:
 ```groovy
-compile 'com.contentful.java:cma-sdk:3.0.0'
+compile 'com.contentful.java:cma-sdk:3.1.0'
 ```
 
 The SDK requires at minimum Java 6 or Android 2.3.
@@ -32,14 +32,14 @@ Snapshots of the development version are available through [Sonatype's `snapshot
 
 ```groovy
 maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-compile 'com.contentful.java:cma-sdk:3.0.0-SNAPSHOT'
+compile 'com.contentful.java:cma-sdk:3.1.0-SNAPSHOT'
 ```
 
 and through [jitpack.io][jitpack]:
 
 ```groovy
 maven { url 'https://jitpack.io' }
-compile 'com.github.contentful:contentful.java:cma-sdk-3.0.0-SNAPSHOT'
+compile 'com.github.contentful:contentful.java:cma-sdk-3.1.0-SNAPSHOT'
 ```
 
 ### Default Client
