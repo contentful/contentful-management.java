@@ -22,7 +22,9 @@ import com.contentful.java.cma.model.CMAArray;
 import java.util.Map;
 
 import io.reactivex.Flowable;
+import retrofit2.Response;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -42,11 +44,18 @@ interface ServiceApiKeys {
   );
 
   @GET("/spaces/{spaceId}/api_keys/{keyId}")
-  Flowable<CMAApiKey> fetchOne(@Path("spaceId") String spaceId,
-                               @Path("keyId") String keyId);
+  Flowable<CMAApiKey> fetchOne(
+      @Path("spaceId") String spaceId,
+      @Path("keyId") String keyId);
 
   @POST("/spaces/{spaceId}/api_keys")
-  Flowable<CMAApiKey> create(@Path("spaceId") String spaceId,
-                             @Body CMAApiKey key);
+  Flowable<CMAApiKey> create(
+      @Path("spaceId") String spaceId,
+      @Body CMAApiKey key);
+
+  @DELETE("/spaces/{spaceId}/api_keys/{keyId}")
+  Flowable<Response<Void>> delete(
+      @Path("spaceId") String spaceId,
+      @Path("keyId") String keyId);
 
 }

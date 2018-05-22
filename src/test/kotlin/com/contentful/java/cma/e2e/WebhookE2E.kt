@@ -33,7 +33,7 @@ open class WebhookE2E : Base() {
 
         @AfterClass
         @JvmStatic
-        fun tearDownTestClass() {
+        fun tearDownWebhooks() {
             val hooks = client.webhooks().fetchAll(SPACE_ID)
             for (hook in hooks.items) {
                 if (hook.name.startsWith(WEBHOOK_NAME, ignoreCase = true)) {

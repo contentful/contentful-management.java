@@ -137,8 +137,8 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
    * @param spaceId the id of the space this is valid on.
    * @param keyId   the id of the key itself.
    * @return one delivery api key.
-   * @throws IllegalArgumentException        if spaceId is null.
-   * @throws IllegalArgumentException        if keyId is null.
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if keyId is null.
    */
   public CMAApiKey fetchOne(String spaceId, String keyId) {
     assertNotNull(spaceId, "entry");
@@ -172,14 +172,30 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
    * @param spaceId the id of the space this is valid on.
    * @param key     the key to be created.
    * @return the just created key, containing the delivery token.
-   * @throws IllegalArgumentException        if spaceId is null.
-   * @throws IllegalArgumentException        if key is null.
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if key is null.
    */
   public CMAApiKey create(String spaceId, CMAApiKey key) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(key, "key");
 
     return service.create(spaceId, key).blockingFirst();
+  }
+
+  /**
+   * Delete a given api key from the configured space.
+   *
+   * @param key the key to be deleted.
+   * @return 204 upon success.
+   * @throws IllegalArgumentException if key is null.
+   * @throws IllegalArgumentException if key's spaceId is null.
+   */
+  public int delete(CMAApiKey key) {
+    assertNotNull(key, "key");
+    final String space = getSpaceIdOrThrow(key, "key");
+    final String id = getResourceIdOrThrow(key, "key");
+
+    return service.delete(space, id).blockingFirst().code();
   }
 
   /**
@@ -345,6 +361,27 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
       return defer(new DefFunc<CMAApiKey>() {
         @Override CMAApiKey method() {
           return ModuleApiKeys.this.create(spaceId, key);
+        }
+      }, callback);
+    }
+
+    /**
+     * Delete a given delivery api key.
+     *
+     * @param key      the key to be deleted.
+     * @param callback the callback to be called once the key is available.
+     * @return the callback to be informed about success or failure.
+     * @throws IllegalArgumentException        if key is null.
+     * @throws IllegalArgumentException        if key's spaceId is null.
+     * @throws CMANotWithEnvironmentsException if environmentId was set using
+     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+     * @see CMAClient.Builder#setSpaceId(String)
+     */
+    public CMACallback<Integer> delete(final CMAApiKey key,
+                                       CMACallback<Integer> callback) {
+      return defer(new DefFunc<Integer>() {
+        @Override Integer method() {
+          return ModuleApiKeys.this.delete(key);
         }
       }, callback);
     }

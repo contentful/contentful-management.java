@@ -1,17 +1,11 @@
 {
-  "name": "Test",
-  "description": "some Description",
+  "name": "Playground 5",
+  "description": null,
   "accessToken": "<token>",
-  "policies": [
-    {
-      "effect": "allow",
-      "actions": "all"
-    }
-  ],
   "sys": {
-    "type": "ApiKey",
-    "id": "2APoXwV3okKBrdkKNKOifo",
-    "version": 0,
+    "type": "PreviewApiKey",
+    "id": "5szEuycyXqACwhWgwNwX2m",
+    "version": 1,
     "space": {
       "sys": {
         "type": "Link",
@@ -26,7 +20,7 @@
         "id": "<user_id>"
       }
     },
-    "createdAt": "2018-05-16T13:38:25Z",
+    "createdAt": "2018-04-17T12:56:42Z",
     "updatedBy": {
       "sys": {
         "type": "Link",
@@ -34,7 +28,7 @@
         "id": "<user_id>"
       }
     },
-    "updatedAt": "2018-05-16T13:38:25Z"
+    "updatedAt": "2018-04-17T12:57:18Z"
   },
   "environments": [
     {
@@ -51,13 +45,6 @@
         "linkType": "Environment"
       }
     }
-  ],
-  "preview_api_key": {
-    "sys": {
-      "type": "Link",
-      "linkType": "PreviewApiKey",
-      "id": "2AQ2dSH1WrSrI9G2MNA8cW"
-    }
-  }
+  ]
 }
 

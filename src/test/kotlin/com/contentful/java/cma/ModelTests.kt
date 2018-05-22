@@ -28,7 +28,7 @@ import java.util.logging.LogManager
 import kotlin.test.assertEquals
 import org.junit.Test as test
 
-class ModelTests{
+class ModelTests {
     var server: MockWebServer? = null
     var client: CMAClient? = null
     var gson: Gson? = null
@@ -301,7 +301,8 @@ class ModelTests{
     @test
     fun testApiKeyToString() {
         assertEquals("CMAApiKey { CMAResource { system = CMASystem { type = ApiKey } } "
-                + "accessToken = null, description = bar, name = foo, previewApiKey = null }",
+                + "accessToken = null, description = bar, name = foo, environments = [], "
+                + "previewApiKey = null }",
                 CMAApiKey().setName("foo").setDescription("bar").toString())
     }
 }

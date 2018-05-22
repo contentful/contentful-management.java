@@ -4,7 +4,7 @@ output="$(basename $(echo $0) | sed 's#sh#json#g' | sed 's#^#../resources/#g')"
 
 curl --verbose \
     -H 'Authorization: Bearer '$CMA_TOKEN  \
-    'https://api.contentful.com/spaces/'$SPACE_ID'/api_keys/3iaYyIZdC1YyXaAmvm1oRE' \
+    'https://api.contentful.com/spaces/'$SPACE_ID'/api_keys/5syMy6BsUtcVXlD6PpE6LA' \
     | sed 's/'${SPACE_ID}'/<space_id>/g' \
     | sed 's/'${CMA_TOKEN}'/<access_token>/g' \
     | sed 's/'${USER_ID}'/<user_id>/g' \

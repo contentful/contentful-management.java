@@ -26,11 +26,9 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
 import org.junit.Before
-import java.util.concurrent.Executor
 import java.util.logging.LogManager
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
-import kotlin.test.assertNull
 import org.junit.Test as test
 
 class ApiKeysTests {
@@ -74,11 +72,12 @@ class ApiKeysTests {
         assertEquals(0, result.skip)
 
         val first = result.items[0]
-        assertEquals("Website Key", first.name)
-        assertEquals("Use this key for your website. Create separate keys for your other apps.",
-                first.description)
+        assertEquals("Master Key - Do not share", first.name)
+        assertEquals("", first.description)
         assertEquals("<token>", first.accessToken)
-        assertNull(first.previewApiKey)
+        assertEquals("5szEuycyXqACwhWgwNwX2m", first.previewApiKey.id)
+        assertEquals(CMAType.Link, first.previewApiKey.system.type)
+        assertEquals(CMAType.PreviewApiKey, first.previewApiKey.system.linkType)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -94,14 +93,14 @@ class ApiKeysTests {
         val result = assertTestCallback(client!!.apiKeys().async()
                 .fetchOne("spaceid", "keyid", TestCallback()) as TestCallback)!!
 
-        assertEquals("Test", result.name)
-        assertEquals("Some Description",
-                result.description)
+        assertEquals("Master Key - Do not share", result.name)
+        assertEquals("", result.description)
         assertEquals("<token>", result.accessToken)
 
         assertNotNull(result.previewApiKey)
         assertEquals(CMAType.Link, result.previewApiKey.system.type)
-        assertNull(result.previewApiKey.system.linkType)
+        assertEquals(CMAType.PreviewApiKey, result.previewApiKey.system.linkType)
+        assertEquals("5szEuycyXqACwhWgwNwX2m", result.previewApiKey.id)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -117,6 +116,8 @@ class ApiKeysTests {
         val apiKey = CMAApiKey()
                 .setName("Test")
                 .setDescription("Some Description.")
+                .addEnvironment("master")
+                .addEnvironment("staging")
 
         val result = assertTestCallback(client!!.apiKeys().async()
                 .create("spaceid", apiKey, TestCallback()) as TestCallback)!!
@@ -125,15 +126,37 @@ class ApiKeysTests {
         assertEquals("some Description",
                 result.description)
         assertEquals("<token>", result.accessToken)
+        assertEquals("master", result.environments.first().id)
+        assertEquals("staging", result.environments.last().id)
 
         assertNotNull(result.previewApiKey)
         assertEquals(CMAType.Link, result.previewApiKey.system.type)
-        assertNull(result.previewApiKey.system.linkType)
+        assertEquals(CMAType.PreviewApiKey, result.previewApiKey.system.linkType)
+        assertEquals("2AQ2dSH1WrSrI9G2MNA8cW", result.previewApiKey.id)
 
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("POST", recordedRequest.method)
         assertEquals("/spaces/spaceid/api_keys", recordedRequest.path)
+    }
+
+    @test
+    fun testDelete() {
+        server!!.enqueue(MockResponse().setResponseCode(204).setBody(""))
+
+        val apiKey = CMAApiKey()
+                .setId<CMAApiKey>("id")
+                .setSpaceId<CMAApiKey>("spaceid")
+
+        val result = assertTestCallback(client!!.apiKeys().async()
+                .delete(apiKey, TestCallback()) as TestCallback)!!
+
+        assertEquals(204, result)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("DELETE", recordedRequest.method)
+        assertEquals("/spaces/spaceid/api_keys/id", recordedRequest.path)
     }
 
     @test

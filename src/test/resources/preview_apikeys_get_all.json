@@ -1,0 +1,100 @@
+{
+  "total": 2,
+  "limit": 25,
+  "skip": 0,
+  "sys": {
+    "type": "Array"
+  },
+  "items": [
+    {
+      "accessToken": "<token>",
+      "sys": {
+        "type": "PreviewApiKey",
+        "id": "5szEuycyXqACwhWgwNwX2m",
+        "version": 1,
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "<space_id>"
+          }
+        },
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "<user_id>"
+          }
+        },
+        "createdAt": "2018-04-17T12:56:42Z",
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "<user_id>"
+          }
+        },
+        "updatedAt": "2018-04-17T12:57:18Z"
+      },
+      "environments": [
+        {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        {
+          "sys": {
+            "id": "staging",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Test",
+      "description": "some Description",
+      "accessToken": "<token>",
+      "sys": {
+        "type": "PreviewApiKey",
+        "id": "2AQ2dSH1WrSrI9G2MNA8cW",
+        "version": 0,
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "<space_id>"
+          }
+        },
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "<user_id>"
+          }
+        },
+        "createdAt": "2018-05-16T13:38:25Z",
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "<user_id>"
+          }
+        },
+        "updatedAt": "2018-05-16T13:38:25Z"
+      },
+      "environments": [
+        {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        }
+      ]
+    }
+  ]
+}
+

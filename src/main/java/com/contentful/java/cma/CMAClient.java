@@ -75,13 +75,14 @@ public class CMAClient {
   private final ModuleLocales moduleLocales;
   private final ModuleOrganizations moduleOrganizations;
   private final ModulePersonalAccessTokens modulePersonalAccessTokens;
+  private final ModulePreviewApiKeys modulePreviewApiKeys;
   private final ModuleRoles moduleRoles;
   private final ModuleSpaceMemberships moduleSpaceMemberships;
   private final ModuleSpaces moduleSpaces;
-  private final ModuleUsers moduleUsers;
-  private final ModuleWebhooks moduleWebhooks;
   private final ModuleUiExtensions moduleUiExtensions;
   private final ModuleUploads moduleUploads;
+  private final ModuleUsers moduleUsers;
+  private final ModuleWebhooks moduleWebhooks;
 
   // Executors
   Executor callbackExecutor;
@@ -140,6 +141,8 @@ public class CMAClient {
     this.moduleOrganizations = new ModuleOrganizations(retrofit, callbackExecutor, configured);
     this.modulePersonalAccessTokens = new ModulePersonalAccessTokens(retrofit, callbackExecutor,
         configured);
+    this.modulePreviewApiKeys = new ModulePreviewApiKeys(retrofit, callbackExecutor, spaceId,
+        environmentId, configured);
     this.moduleRoles = new ModuleRoles(retrofit, callbackExecutor, spaceId, environmentId,
         configured);
     this.moduleSpaceMemberships = new ModuleSpaceMemberships(retrofit, callbackExecutor, spaceId,
@@ -196,6 +199,13 @@ public class CMAClient {
    */
   public ModuleApiKeys apiKeys() {
     return moduleApiKeys;
+  }
+
+  /**
+   * @return the preview api keys module.
+   */
+  public ModulePreviewApiKeys previewApiKeys() {
+    return modulePreviewApiKeys;
   }
 
   /**
