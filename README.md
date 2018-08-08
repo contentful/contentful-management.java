@@ -10,7 +10,7 @@
 </p>
 
 contentful-management.java - Contentful Java Management SDK
-===="======================================================
+===========================================================
 
 [![Build Status](https://travis-ci.org/contentful/contentful-management.java.svg)](https://travis-ci.org/contentful/contentful-management.java/builds#) 
 [![codecov](https://codecov.io/gh/contentful/contentful-management.java/branch/master/graph/badge.svg)](https://codecov.io/gh/contentful/contentful-management.java)
@@ -73,7 +73,7 @@ maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
 compile 'com.contentful.java:cma-sdk:3.1.0-SNAPSHOT'
 ```
 
-* [jitpack.io][jitpack]:
+* [jitpack.io](https://jitpack.io/#contentful/contentful-management.java/master-SNAPSHOT):
 
 ```groovy
 maven { url 'https://jitpack.io' }
@@ -224,7 +224,7 @@ final CMAArray<CMAApiKey> array =
 Documentation
 =============
 
-[Javadoc reference documentation][4] is is available, but if you want to get more information, please refer to [our CMA documentation][docs]. In case of anything still being unclear [issues can be opened on this github repository](../../issues)).
+[Javadoc reference documentation][4] is is available, but if you want to get more information, please refer to [our CMA documentation][docs]. In case of anything still being unclear [issues can be opened on this github repository](https://github.com/contentful/contentful-management.java/issues/new)).
 
 License
 =======
