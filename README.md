@@ -71,8 +71,8 @@ Core Features
   * [Users](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/users)
   * [Webhooks](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/webhooks)
 
-Gettings Started
-================
+Getting Started
+===============
 
 Setup
 -----
