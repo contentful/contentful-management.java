@@ -26,7 +26,7 @@ What is Contentful?
   <summary>Table of contents</summary>
   <!-- TOC -->
 
-- [Core Features](#core-features)
+- [Core Features](#core-fProGuardeatures)
 - [Getting Started](#getting-started)
   - [Setup](#setup)
   - [Client Creation](#client-creation)
@@ -34,10 +34,10 @@ What is Contentful?
 - [Usage](#usage)
   - [Modules](#modules)
   - [Calls in Parralel](#calls-in-parallel)
-  - [Environment Configuration](#environment_configuration)
+  - [Environment Configuration](#environment-configuration)
   - [Default HTTP Client](#default-http-client)
-  - [Proguard](proguard)
-  - [Pre-Releases](#pre-releases)filtering
+  - [ProGuard](#proguard)
+  - [Pre-Releases](#pre-releases)
 - [Documentation](#documentation)
 - [License](#license)
 - [Reaching Contentful](#reaching-contentful)
@@ -56,13 +56,13 @@ Core Features
   * [ApiKeys](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/api-keys)
   * [Assets](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/assets)
   * [ContentTypes](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/content-types)
-  * [EditorInterfaces](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/editor-interfaces)
+  * [EditorInterface](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/editor-interface)
   * [Entries](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/entries)
   * [Environments](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/environments)
   * [Locales](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/locales)
   * [Organizations](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/organizations)
   * [PersonalAccessTokens](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/personal-access-tokens)
-  * [PreviewApiKeys](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/preview-api-keys)
+  * [PreviewApiKeys](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/api-keys/preview-api-keys-collection)
   * [Roles](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/roles)
   * [SpaceMemberships](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/space-memberships)
   * [Spaces](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/spaces)
