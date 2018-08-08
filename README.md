@@ -20,30 +20,64 @@ contentful-management.java - Contentful Java Management SDK
 
 What is Contentful?
 -------------------
-
-[Contentful](https://www.contentful.com) provides a content infrastructure for digital teams to power content in websites, apps, and devices. Unlike a CMS, Contentful was built to integrate with the modern software stack. It offers a central hub for structured content, powerful management and delivery APIs, and a customizable web app that enable developers and content creators to ship digital products faster.
+[Contentful](https://www.contentful.com) provides a content infrastructure for digital teams to power content in websites, apps, and devices. Contentful, unlike any other CMS, is built to integrate with the modern software stack. It offers a central hub for structured content, powerful management and delivery APIs, and a customizable web app that enable developers and content creators to ship digital products faster.
 
 <details open>
   <summary>Table of contents</summary>
   <!-- TOC -->
 
-- [Setup](#setup)
-  - [Snapshots](#snapshots)
-  - [Default HTTP Client](#default-http-client)
-  - [Proguard](#proguard)
+- [Core Features](#core-features)
+- [Getting Started](#getting-started)
+  - [Setup](#setup)
+  - [Client Creation](#client-creation)
+  - [First Request](#first-request)
 - [Usage](#usage)
-  - [Client](#client)
   - [Modules](#modules)
-  - [Environment Configuration](#environment-configuration)
+  - [Calls in Parralel](#calls-in-parallel)
+  - [Environment Configuration](#environment_configuration)
+  - [Default HTTP Client](#default-http-client)
+  - [Proguard](proguard)
+  - [Pre-Releases](#pre-releases)filtering
 - [Documentation](#documentation)
-- [Licence](#licence)
+- [License](#license)
+- [Reaching Contentful](#reaching-contentful)
+  - [Bugs and Feature Requests](#bugs-and-feature-requests)
+  - [Sharing Confidential Information](#sharing-confidential-information)
+  - [Getting involved](#getting-involved)
+- [Code of Conduct](#code-of-conduct)
   <!-- /TOC -->
 </details>
 
-Setup
-=====
+Core Features
+=============
 
-Install the dependency via 
+- Content manipulation through [Content Management API](https://www.contentful.com/developers/docs/references/content-management-api/).
+- Supported Endpoints
+  * [ApiKeys](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/api-keys)
+  * [Assets](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/assets)
+  * [ContentTypes](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/content-types)
+  * [EditorInterfaces](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/editor-interfaces)
+  * [Entries](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/entries)
+  * [Environments](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/environments)
+  * [Locales](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/locales)
+  * [Organizations](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/organizations)
+  * [PersonalAccessTokens](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/personal-access-tokens)
+  * [PreviewApiKeys](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/preview-api-keys)
+  * [Roles](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/roles)
+  * [SpaceMemberships](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/space-memberships)
+  * [Spaces](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/spaces)
+  * [UiExtensions](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/ui-extensions)
+  * [Uploads](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/uploads)
+  * [Users](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/users)
+  * [Webhooks](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/webhooks)
+
+Gettings Started
+================
+
+Setup
+-----
+
+Install the Contentful dependency:
 
 * _Maven_
 ```xml
@@ -59,58 +93,12 @@ Install the dependency via
 compile 'com.contentful.java:cma-sdk:3.1.0'
 ```
 
-The SDK requires at minimum Java 7 or Android 5.
+This SDK requires Java 7 (or higher version) or Android 5.
 
-Snapshots
----------
+Client Creation
+---------------
 
-Snapshots of the development version are available through
-
-* [Sonatype's `snapshots` repository][snap]
-
-```groovy
-maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-compile 'com.contentful.java:cma-sdk:3.1.0-SNAPSHOT'
-```
-
-* [jitpack.io](https://jitpack.io/#contentful/contentful-management.java/master-SNAPSHOT):
-
-```groovy
-maven { url 'https://jitpack.io' }
-compile 'com.github.contentful:contentful.java:cma-sdk-3.1.0-SNAPSHOT'
-```
-
-Default HTTP Client
--------------------
-
-The SDK uses [Retrofit][2] as a REST client, which detects [OkHttp][3] in your classpath and uses it if it's available, otherwise falls back to the default `HttpURLConnection`.
-
-The recommended approach would be to add [OkHttp][3] as a dependency to your project, but that is completely optional.
-
-You can also specify a custom client to be used, refer to the [official documentation][4] for instructions.
-
-ProGuard
---------
-
-The following lines are the start of a `proguard` file used for minifying Android distributions.
-
-```
--keepattributes Signature
--dontwarn rx.**
--dontwarn retrofit.**
--keep class retrofit.** { *; }
--keep class com.contentful.java.cma.** { *; }
--keep class com.google.gson.** { *; }
--keep class sun.misc.Unsafe { *; }
-```
-
-Usage
-=====
-
-Client
-------
-
-The CMA Client instance is created like so:
+The `CMAClient` manages all interactions with the _Content Management API_.
 
 ```java
 final CMAClient client =
@@ -120,12 +108,28 @@ final CMAClient client =
         .build();
 ```
 
-The _AccessToken_ can easily be obtained through the [management API documentation](https://www.contentful.com/developers/docs/references/authentication/#getting-a-personal-access-token).
+The _Access Token_ can easily be obtained through the [management API documentation](https://www.contentful.com/developers/docs/references/authentication/#getting-a-personal-access-token).
+
+First Request
+-------------
+
+Selecting a [Module](#modules), like `.entries()` in this case, and using its manipulator methods, like `.fetchAll()`, changes can be applied to the underlying Resources. Fetching Resources can be achieved like so: 
+
+```java
+final CMAArray<CMAEntry> array =
+    client
+        .entries()
+        .fetchAll();
+```
+
+Usage
+=====
+
 
 Modules
 -------
 
-A client can perform various operations on different types of _Resources_ (such as _Assets_, _Content Types_, _Entries_, _Spaces_, etc). Every type of Resource is represented by a _Module_ in the `CMAClient` class, for example:
+A client performs various operations on different types of _Resources_ (such as _Assets_, _Content Types_, _Entries_, _Spaces_, etc). Every type of Resource is represented by a _Module_ in the `CMAClient` class, for example:
 
 ```java
 client.spaces() // returns the Spaces Module
@@ -133,6 +137,9 @@ client.entries() // returns the Entries Module
 client.assets() // returns the Assets Module
 …
 ```
+
+Calls in Parallel
+-----------------
 
 Each Module contains a set of methods which can be used to perform various operations on the specified Resource type. Every method has a corresponding asynchronous extension which can be accessed through the `async()` method of the Module, for example the following synchronous call
 
@@ -169,7 +176,7 @@ final CMAArray<CMASpace> array =
 
 > Note: The default `CMACallback` has an empty `onFailure()` implementation. If failures are of interest, overriding this methods is immanent.
 
-> Note: [Our CMA documentation][docs] offers more code snippets for all Modules.
+> Note: [The CMA documentation][docs] offers more code snippets for all Modules.
 
 
 Environment Configuration
@@ -180,14 +187,14 @@ Instead of repeating the _Space_ and _Environment _ids with every call like so
 ```java
 final CMAArray<CMAEntry> array =
     client
-        .entries()
+        .entries()Our
         .fetchAll(
             "space_id",
             "environment_id",
         );
 ```
 
-the client can be configured to use always use the same values:
+the client can be configured to always use the same values:
 
 ```java
 final CMAClient client =
@@ -221,16 +228,93 @@ final CMAArray<CMAApiKey> array =
 	);
 ```
 
+Default HTTP Client
+-------------------
+
+The SDK uses [Retrofit][2] as a REST client, which detects [OkHttp][3] in your classpath and uses it if it's available, otherwise falls back to the default `HttpURLConnection`.
+
+The recommended approach would be to add [OkHttp][3] as a dependency to your project, but that is completely optional.
+
+You can also specify a custom client to be used, refer to the [official documentation][4] for instructions.
+
+ProGuard
+--------
+
+The following lines are the start of a `proguard` file used for minifying Android distributions.
+
+```
+-keepattributes Signature
+-dontwarn rx.**
+-dontwarn retrofit.**
+-keep class retrofit.** { *; }
+-keep class com.contentful.java.cma.** { *; }
+-keep class com.google.gson.** { *; }
+-keep class sun.misc.Unsafe { *; }
+```
+
+
+Pre-releases
+------------
+
+Snapshots of the development version are available through
+
+* [Sonatype's `snapshots` repository][snap]
+
+```groovy
+maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+compile 'com.contentful.java:cma-sdk:3.1.0-SNAPSHOT'
+```
+
+* [jitpack.io](https://jitpack.io/#contentful/contentful-management.java/master-SNAPSHOT):
+
+```groovy
+maven { url 'https://jitpack.io' }
+compile 'com.github.contentful:contentful.java:cma-sdk-3.1.0-SNAPSHOT'
+```
+
 Documentation
 =============
 
-[Javadoc reference documentation][4] is is available, but if you want to get more information, please refer to [our CMA documentation][docs]. In case of anything still being unclear [issues can be opened on this github repository](https://github.com/contentful/contentful-management.java/issues/new)).
+See
+* [JavaDoc](https://contentful.github.io/contentful-management.java/) 
+* [API documentation](https://www.contentful.com/developers/documentation/content-management-api/)
 
 License
 =======
 
-Copyright (c) 2018 Contentful GmbH. See [LICENSE.txt][5] for further details.
+> Copyright (c) 2018 Contentful GmbH. See [LICENSE.txt](LICENSE.txt) for further details.
 
+
+Reaching Contentful
+===================
+
+Questions
+---------
+
+* Use the community forum: [![Contentful Community Forum](https://img.shields.io/badge/-Join%20Community%20Forum-3AB2E6.svg?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MiA1OSI+CiAgPHBhdGggZmlsbD0iI0Y4RTQxOCIgZD0iTTE4IDQxYTE2IDE2IDAgMCAxIDAtMjMgNiA2IDAgMCAwLTktOSAyOSAyOSAwIDAgMCAwIDQxIDYgNiAwIDEgMCA5LTkiIG1hc2s9InVybCgjYikiLz4KICA8cGF0aCBmaWxsPSIjNTZBRUQyIiBkPSJNMTggMThhMTYgMTYgMCAwIDEgMjMgMCA2IDYgMCAxIDAgOS05QTI5IDI5IDAgMCAwIDkgOWE2IDYgMCAwIDAgOSA5Ii8+CiAgPHBhdGggZmlsbD0iI0UwNTM0RSIgZD0iTTQxIDQxYTE2IDE2IDAgMCAxLTIzIDAgNiA2IDAgMSAwLTkgOSAyOSAyOSAwIDAgMCA0MSAwIDYgNiAwIDAgMC05LTkiLz4KICA8cGF0aCBmaWxsPSIjMUQ3OEE0IiBkPSJNMTggMThhNiA2IDAgMSAxLTktOSA2IDYgMCAwIDEgOSA5Ii8+CiAgPHBhdGggZmlsbD0iI0JFNDMzQiIgZD0iTTE4IDUwYTYgNiAwIDEgMS05LTkgNiA2IDAgMCAxIDkgOSIvPgo8L3N2Zz4K&maxAge=31557600)](https://support.contentful.com/)
+* Use the community slack channel: [![Contentful Community Slack](https://img.shields.io/badge/-Join%20Community%20Slack-2AB27B.svg?logo=slack&maxAge=31557600)](https://www.contentful.com/slack/)
+
+Bugs and Feature Requests
+-------------------------
+
+* File an issue here [![File an issue](https://img.shields.io/badge/-Create%20Issue-6cc644.svg?logo=github&maxAge=31557600)](https://github.com/contentful/contentful-management.java/issues/new).
+
+Sharing Confidential Information
+--------------------------------
+
+* File a support ticket at our Contentful Customer Support: [![File support ticket](https://img.shields.io/badge/-Submit%20Support%20Ticket-3AB2E6.svg?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MiA1OSI+CiAgPHBhdGggZmlsbD0iI0Y4RTQxOCIgZD0iTTE4IDQxYTE2IDE2IDAgMCAxIDAtMjMgNiA2IDAgMCAwLTktOSAyOSAyOSAwIDAgMCAwIDQxIDYgNiAwIDEgMCA5LTkiIG1hc2s9InVybCgjYikiLz4KICA8cGF0aCBmaWxsPSIjNTZBRUQyIiBkPSJNMTggMThhMTYgMTYgMCAwIDEgMjMgMCA2IDYgMCAxIDAgOS05QTI5IDI5IDAgMCAwIDkgOWE2IDYgMCAwIDAgOSA5Ii8+CiAgPHBhdGggZmlsbD0iI0UwNTM0RSIgZD0iTTQxIDQxYTE2IDE2IDAgMCAxLTIzIDAgNiA2IDAgMSAwLTkgOSAyOSAyOSAwIDAgMCA0MSAwIDYgNiAwIDAgMC05LTkiLz4KICA8cGF0aCBmaWxsPSIjMUQ3OEE0IiBkPSJNMTggMThhNiA2IDAgMSAxLTktOSA2IDYgMCAwIDEgOSA5Ii8+CiAgPHBhdGggZmlsbD0iI0JFNDMzQiIgZD0iTTE4IDUwYTYgNiAwIDEgMS05LTkgNiA2IDAgMCAxIDkgOSIvPgo8L3N2Zz4K&maxAge=31557600)](https://www.contentful.com/support/)
+
+Getting involved
+----------------
+
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?maxAge=31557600)](http://makeapullrequest.com)
+
+Code of Conduct
+===============
+
+Contentful wants to provide a safe, inclusive, welcoming, and harassment-free space and experience for all participants, regardless of gender identity and expression, sexual orientation, disability, physical appearance, socioeconomic status, body size, ethnicity, nationality, level of experience, age, religion (or lack thereof), or other identity markers.
+
+[Full Code of Conduct](https://github.com/contentful-developer-relations/community-code-of-conduct).
 
  [1]: https://www.contentful.com
  [2]: https://square.github.io/retrofit
