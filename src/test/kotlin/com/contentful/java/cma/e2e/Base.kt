@@ -34,15 +34,17 @@ import kotlin.test.fail
 
 open class Base {
     companion object {
-        private const val ENVIRONMENT_ID = "java_e2e"
         private const val INTERMEDIATE_WAIT_TIME = 500L
+        private const val RETRY_ATTEMPTS = 20
+
+        const val ENVIRONMENT_ID = "java_e2e"
 
         val SPACE_ID: String = System.getenv("JAVA_CMA_E2E_SPACE_ID")!!
         private val ACCESS_TOKEN: String = System.getenv("JAVA_CMA_E2E_TOKEN")!!
         private val PROXY: String? = System.getenv("JAVA_CMA_E2E_PROXY")
 
         lateinit var client: CMAClient
-        lateinit var environment: CMAEnvironment;
+        lateinit var environment: CMAEnvironment
 
         @BeforeClass
         @JvmStatic
@@ -59,10 +61,19 @@ open class Base {
                 setUploadCallFactory(createCallFactory())
             }.build()
 
+
+            // delete existing environment
+            try {
+                val environment = client.environments().fetchOne(ENVIRONMENT_ID)
+                client.environments().delete(environment)
+            } catch (throwable:Throwable) {
+                // no environment to be deleted found, so carry on.
+            }
+
             environment = CMAEnvironment().setName("testing $ENVIRONMENT_ID").setId(ENVIRONMENT_ID)
             environment = client.environments().create(environment)
 
-            var maxAttempts = 20
+            var maxAttempts = RETRY_ATTEMPTS
             var current: CMAEnvironment
             do {
                 current = client.environments().fetchOne(SPACE_ID, environment.id)
