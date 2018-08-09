@@ -40,8 +40,8 @@ open class Base {
         const val ENVIRONMENT_ID = "java_e2e"
 
         val SPACE_ID: String = System.getenv("JAVA_CMA_E2E_SPACE_ID")!!
-        private val ACCESS_TOKEN: String = System.getenv("JAVA_CMA_E2E_TOKEN")!!
-        private val PROXY: String? = System.getenv("JAVA_CMA_E2E_PROXY")
+        val ACCESS_TOKEN: String = System.getenv("JAVA_CMA_E2E_TOKEN")!!
+        val PROXY: String? = System.getenv("JAVA_CMA_E2E_PROXY")
 
         lateinit var client: CMAClient
         lateinit var environment: CMAEnvironment
@@ -66,7 +66,7 @@ open class Base {
             try {
                 val environment = client.environments().fetchOne(ENVIRONMENT_ID)
                 client.environments().delete(environment)
-            } catch (throwable:Throwable) {
+            } catch (throwable: Throwable) {
                 // no environment to be deleted found, so carry on.
             }
 
@@ -98,7 +98,7 @@ open class Base {
             client.environments().delete(environment)
         }
 
-        private fun createCallFactory(): Call.Factory? {
+        fun createCallFactory(): Call.Factory? {
             val okBuilder: OkHttpClient.Builder = OkHttpClient.Builder()
                     .addInterceptor(AuthorizationHeaderInterceptor(ACCESS_TOKEN))
                     .addInterceptor(UserAgentHeaderInterceptor("E2EUserAgent"))
