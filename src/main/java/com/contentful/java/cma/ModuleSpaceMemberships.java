@@ -2,6 +2,7 @@ package com.contentful.java.cma;
 
 import com.contentful.java.cma.RxExtensions.DefFunc;
 import com.contentful.java.cma.model.CMAArray;
+import com.contentful.java.cma.model.CMALink;
 import com.contentful.java.cma.model.CMANotWithEnvironmentsException;
 import com.contentful.java.cma.model.CMASpaceMembership;
 import com.contentful.java.cma.model.CMASystem;
@@ -235,7 +236,7 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
    * get an exception thrown.
    *
    * @param membership the membership fetched from Contentful, updated by caller, to be deleted.
-   * @return the code of the response (200 means success).
+   * @return the code of the response (204 means success).
    * @throws IllegalArgumentException if space id is null.
    * @throws IllegalArgumentException if membership id is null.
    */

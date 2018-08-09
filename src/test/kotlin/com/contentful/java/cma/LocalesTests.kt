@@ -200,7 +200,7 @@ class LocalesTests{
     @Test
     fun testDeleteOne() {
         val responseBody = TestUtils.fileToString("locales_delete.json")
-        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+        server!!.enqueue(MockResponse().setResponseCode(204).setBody(responseBody))
 
         assertTestCallback(client!!.locales().async()
                 .delete(
