@@ -26,7 +26,9 @@ import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
 
@@ -51,6 +53,13 @@ interface ServiceApiKeys {
   @POST("/spaces/{spaceId}/api_keys")
   Flowable<CMAApiKey> create(
       @Path("spaceId") String spaceId,
+      @Body CMAApiKey key);
+
+  @PUT("/spaces/{spaceId}/api_keys/{keyId}")
+  Flowable<CMAApiKey> update(
+      @Header("X-Contentful-Version") Integer version,
+      @Path("spaceId") String spaceId,
+      @Path("keyId") String keyId,
       @Body CMAApiKey key);
 
   @DELETE("/spaces/{spaceId}/api_keys/{keyId}")

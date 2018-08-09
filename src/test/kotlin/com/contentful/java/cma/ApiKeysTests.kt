@@ -19,6 +19,7 @@ package com.contentful.java.cma
 import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAApiKey
+import com.contentful.java.cma.model.CMALink
 import com.contentful.java.cma.model.CMANotWithEnvironmentsException
 import com.contentful.java.cma.model.CMAType
 import com.google.gson.Gson
@@ -105,6 +106,39 @@ class ApiKeysTests {
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/spaceid/api_keys/keyid", recordedRequest.path)
+    }
+
+    @test
+    fun testUpdate() {
+        val responseBody = TestUtils.fileToString("apikeys_update.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val key = CMAApiKey().apply {
+            setId<CMAApiKey>("keyid")
+            setSpaceId<CMAApiKey>("spaceid")
+            setVersion<CMAApiKey>(4)
+            name = "Master Key - Do not update"
+            addEnvironment("develop")
+        }
+
+        val result = assertTestCallback(client!!.apiKeys().async()
+                .update(key, TestCallback()) as TestCallback)!!
+
+        assertEquals("First API Key Name", result.name)
+        assertEquals("Updated API Key Description", result.description)
+        assertEquals("<access_token>", result.accessToken)
+        assertEquals("master", result.environments[0].id)
+        assertEquals("java_e2e", result.environments[1].id)
+
+        assertNotNull(result.previewApiKey)
+        assertEquals(CMAType.Link, result.previewApiKey.system.type)
+        assertEquals(CMAType.PreviewApiKey, result.previewApiKey.system.linkType)
+        assertEquals("5szEuycyXqACwhWgwNwX2m", result.previewApiKey.id)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("PUT", recordedRequest.method)
         assertEquals("/spaces/spaceid/api_keys/keyid", recordedRequest.path)
     }
 
