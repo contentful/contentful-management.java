@@ -4,13 +4,16 @@ import com.contentful.java.cma.model.RateLimits.DefaultParser;
 import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import okhttp3.Headers;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
+import okio.Buffer;
 
 import static java.lang.String.format;
 
@@ -268,20 +271,38 @@ public class CMAHttpException extends RuntimeException {
     if (errorBody == null) {
       return format(
           Locale.getDefault(),
-          "FAILED \n\t%s\n\t↳ Header{%s}\n\t%s\n\t↳ Header{%s}",
+          "FAILED \n\t%s\n\t↳ Header{%s}%s\n\t%s\n\t↳ Header{%s}",
           request.toString(),
           headersToString(request.headers()),
+          maybeBodyToString(request.body()),
           response.toString(),
           headersToString(response.headers()));
     } else {
       return format(
           Locale.getDefault(),
-          "FAILED %s\n\t%s\n\t↳ Header{%s}\n\t%s\n\t↳ Header{%s}",
+          "FAILED %s\n\t%s\n\t↳ Header{%s}%s\n\t%s\n\t↳ Header{%s}",
           errorBody.toString(),
           request.toString(),
           headersToString(request.headers()),
+          maybeBodyToString(request.body()),
           response.toString(),
           headersToString(response.headers()));
+    }
+  }
+
+  private String maybeBodyToString(RequestBody body) {
+    if (body != null) {
+      final Buffer sink = new Buffer();
+      try {
+        body.writeTo(sink);
+        final String bodyContent = sink.readString(Charset.defaultCharset());
+
+        return "\n\t↳ Body " + bodyContent;
+      } catch (IOException e) {
+        return "";
+      }
+    } else {
+      return "";
     }
   }
 
