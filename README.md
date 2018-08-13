@@ -15,7 +15,7 @@ contentful-management.java - Contentful Java Management SDK
 [![Build Status](https://travis-ci.org/contentful/contentful-management.java.svg)](https://travis-ci.org/contentful/contentful-management.java/builds#) 
 [![codecov](https://codecov.io/gh/contentful/contentful-management.java/branch/master/graph/badge.svg)](https://codecov.io/gh/contentful/contentful-management.java)
 
-> Java SDK for [Content Management API](https://www.contentful.com/developers/docs/references/content-management-api/). It helps you to easily editing and creating your content stored in Contentful with your Java applications.
+> Java SDK for [Content Management API](https://www.contentful.com/developers/docs/references/content-management-api/). It helps in editing and creating content stored in Contentful with Java applications.
 
 
 What is Contentful?
@@ -113,7 +113,7 @@ The _Access Token_ can easily be obtained through the [management API documentat
 First Request
 -------------
 
-Selecting a [Module](#modules), like `.entries()` in this case, and using its manipulator methods, like `.fetchAll()`, changes can be applied to the underlying Resources. Fetching Resources can be achieved like so: 
+By selecting a [Module](#modules), say `.entries()` and using its manipulator methods, like `.fetchAll()`, changes can be applied to the underlying resources. Resources can be fetched as following:
 
 ```java
 final CMAArray<CMAEntry> array =
@@ -141,7 +141,7 @@ client.assets() // returns the Assets Module
 Calls in Parallel
 -----------------
 
-Each Module contains a set of methods which can be used to perform various operations on the specified Resource type. Every method has a corresponding asynchronous extension which can be accessed through the `async()` method of the Module, for example the following synchronous call
+Each Module contains a set of methods that perform various operations on the specified Resource type. Every method has a corresponding asynchronous extension which can be accessed through the `async()` method of the Module, for example the following synchronous call
 
 ```java
 final CMAArray<CMASpace> array =
@@ -174,7 +174,7 @@ final CMAArray<CMASpace> array =
 });
 ```
 
-> Note: The default `CMACallback` has an empty `onFailure()` implementation. If failures are of interest, overriding this methods is immanent.
+> Note: The default `CMACallback` has an empty `onFailure()` implementation. If failures are of interest, overriding this method is mandatory.
 
 > Note: [The CMA documentation][docs] offers more code snippets for all Modules.
 
@@ -187,7 +187,7 @@ Instead of repeating the _Space_ and _Environment _ids with every call like so
 ```java
 final CMAArray<CMAEntry> array =
     client
-        .entries()Our
+        .entries()
         .fetchAll(
             "space_id",
             "environment_id",
@@ -217,7 +217,7 @@ final CMAArray<CMAEntry> array =
 
 *Words of warning*
 
-The Modules `apiKeys`, `environments`, `roles`, `spaceMemberships`, `uiExtensions`, `uploads`, and `webhooks`, do not support Environments different to `master`. If the configuration explained is used with these Modules, they will throw an `exception`. Creation of a new client without specifying an Environment id is needed and repeating of the ids in the call is needed:
+The Modules `apiKeys`, `environments`, `roles`, `spaceMemberships`, `uiExtensions`, `uploads`, and `webhooks`, do not support Environments different to `master`. If the above configuration is used with these Modules, they throw an `exception`. Creation of a new client without specifying an Environment id is needed:
 
 ```
 final CMAArray<CMAApiKey> array = 
@@ -231,17 +231,17 @@ final CMAArray<CMAApiKey> array =
 Default HTTP Client
 -------------------
 
-The SDK uses [Retrofit][2] as a REST client, which detects [OkHttp][3] in your classpath and uses it if it's available, otherwise falls back to the default `HttpURLConnection`.
+The SDK uses [Retrofit][2] as a REST client, which detects [OkHttp][3] in the classpath and uses it if available, or else it falls back to the default `HttpURLConnection`.
 
 The recommended approach would be to add [OkHttp][3] as a dependency to your project, but that is completely optional.
 
-You can also specify a custom client to be used, refer to the [official documentation][4] for instructions.
+YIt is possible to specify a custom client to be used, refer to the [official documentation][4] for instructions.
 
 ProGuard
 --------
 
 The following lines are the start of a `proguard` file used for minifying Android distributions.
-
+https://github.com/contentful/contentful-management.java/pull/110#issuecomment-411362987)Ou
 ```
 -keepattributes Signature
 -dontwarn rx.**
