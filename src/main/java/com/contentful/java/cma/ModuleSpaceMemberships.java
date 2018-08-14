@@ -2,7 +2,6 @@ package com.contentful.java.cma;
 
 import com.contentful.java.cma.RxExtensions.DefFunc;
 import com.contentful.java.cma.model.CMAArray;
-import com.contentful.java.cma.model.CMALink;
 import com.contentful.java.cma.model.CMANotWithEnvironmentsException;
 import com.contentful.java.cma.model.CMASpaceMembership;
 import com.contentful.java.cma.model.CMASystem;
