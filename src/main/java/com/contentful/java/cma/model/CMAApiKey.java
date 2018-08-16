@@ -68,11 +68,22 @@ public class CMAApiKey extends CMAResource {
     return accessToken;
   }
 
+  public CMAApiKey setAccessToken(String accessToken) {
+    this.accessToken = accessToken;
+    return this;
+  }
+
   /**
    * @return readonly preview api key part.
    */
   public CMALink getPreviewApiKey() {
     return previewApiKey;
+  }
+
+  //HIDE
+  public CMAApiKey setPreviewApiKey(CMALink previewApiKey) {
+    this.previewApiKey = previewApiKey;
+    return this;
   }
 
   /**

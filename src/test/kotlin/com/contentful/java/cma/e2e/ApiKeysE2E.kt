@@ -32,6 +32,7 @@ class ApiKeysE2E : Base() {
         var FIRST_ID = "first_e2e_key"
         private const val FIRST_NAME = "First API Key Name"
         private const val FIRST_DESCRIPTION = "First API Key Description"
+        private const val UPDATED_DESCRIPTION = "Updated API Key Description"
 
         @BeforeClass
         @JvmStatic
@@ -79,6 +80,26 @@ class ApiKeysE2E : Base() {
 
         assertEquals(FIRST_NAME, result.name)
         assertEquals(FIRST_DESCRIPTION, result.description)
+
+        assertNotNull(result.previewApiKey)
+        assertEquals(CMAType.Link, result.previewApiKey.system.type)
+        assertEquals(CMAType.PreviewApiKey, result.previewApiKey.system.linkType)
+        assertTrue(result.previewApiKey.id.isNotBlank())
+    }
+
+    @test
+    fun testUpdate() {
+        val toBeUpdated = assertTestCallback(client.apiKeys().async()
+                .fetchOne(SPACE_ID, FIRST_ID, TestCallback()) as TestCallback)!!
+
+        toBeUpdated.description = UPDATED_DESCRIPTION
+        toBeUpdated.addEnvironment(ENVIRONMENT_ID)
+
+        val result = assertTestCallback(client.apiKeys().async()
+                .update(toBeUpdated, TestCallback()) as TestCallback)!!
+
+        assertEquals(FIRST_NAME, result.name)
+        assertEquals(UPDATED_DESCRIPTION, result.description)
 
         assertNotNull(result.previewApiKey)
         assertEquals(CMAType.Link, result.previewApiKey.system.type)

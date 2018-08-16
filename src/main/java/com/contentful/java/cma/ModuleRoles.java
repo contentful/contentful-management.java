@@ -241,7 +241,7 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
    * get an exception thrown.
    *
    * @param role the role fetched from Contentful, updated by caller, to be deleted.
-   * @return the code of the response (200 means success).
+   * @return the code of the response (204 means success).
    * @throws IllegalArgumentException if space id is null.
    * @throws IllegalArgumentException if role id is null.
    */

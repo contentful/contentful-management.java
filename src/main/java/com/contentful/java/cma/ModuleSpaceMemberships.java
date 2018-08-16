@@ -235,7 +235,7 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
    * get an exception thrown.
    *
    * @param membership the membership fetched from Contentful, updated by caller, to be deleted.
-   * @return the code of the response (200 means success).
+   * @return the code of the response (204 means success).
    * @throws IllegalArgumentException if space id is null.
    * @throws IllegalArgumentException if membership id is null.
    */

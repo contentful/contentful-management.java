@@ -19,7 +19,9 @@ package com.contentful.java.cma;
 import com.contentful.java.cma.RxExtensions.DefFunc;
 import com.contentful.java.cma.model.CMAApiKey;
 import com.contentful.java.cma.model.CMAArray;
+import com.contentful.java.cma.model.CMALink;
 import com.contentful.java.cma.model.CMANotWithEnvironmentsException;
+import com.contentful.java.cma.model.CMASystem;
 
 import java.util.Map;
 import java.util.concurrent.Executor;
@@ -164,6 +166,39 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
    */
   public CMAApiKey create(CMAApiKey key) {
     return create(spaceId, key);
+  }
+
+  /**
+   * Updates a delivery api key from the configured space.
+   *
+   * @param key the key to be updated.
+   * @return the just updated key.
+   * @throws IllegalArgumentException if key is null.
+   * @throws IllegalArgumentException if keys id is null.
+   * @throws IllegalArgumentException if keys spaceId is null.
+   */
+  public CMAApiKey update(CMAApiKey key) {
+    assertNotNull(key, "key");
+    final String keyId = getResourceIdOrThrow(key, "key");
+    final String spaceId = getSpaceIdOrThrow(key, "key");
+    final Integer version = getVersionOrThrow(key, "update");
+
+    final CMASystem system = key.getSystem();
+    key.setSystem(null);
+
+    final String token = key.getAccessToken();
+    key.setAccessToken(null);
+
+    final CMALink previewKey = key.getPreviewApiKey();
+    key.setPreviewApiKey(null);
+
+    try {
+      return service.update(version, spaceId, keyId, key).blockingFirst();
+    } finally {
+      key.setPreviewApiKey(previewKey);
+      key.setAccessToken(token);
+      key.setSystem(system);
+    }
   }
 
   /**
@@ -361,6 +396,27 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
       return defer(new DefFunc<CMAApiKey>() {
         @Override CMAApiKey method() {
           return ModuleApiKeys.this.create(spaceId, key);
+        }
+      }, callback);
+    }
+
+    /**
+     * Update an existing delivery api key.
+     *
+     * @param key      the key to be updated.
+     * @param callback the callback to be called once the key is available.
+     * @return the callback to be informed about success or failure.
+     * @throws IllegalArgumentException        if configured spaceId is null.
+     * @throws IllegalArgumentException        if key is null.
+     * @throws CMANotWithEnvironmentsException if environmentId was set using
+     *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
+     * @see CMAClient.Builder#setSpaceId(String)
+     */
+    public CMACallback<CMAApiKey> update(final CMAApiKey key,
+                                         CMACallback<CMAApiKey> callback) {
+      return defer(new DefFunc<CMAApiKey>() {
+        @Override CMAApiKey method() {
+          return ModuleApiKeys.this.update(key);
         }
       }, callback);
     }
