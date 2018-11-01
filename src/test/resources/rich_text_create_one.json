@@ -1,0 +1,73 @@
+{
+  "sys": {
+    "space": {
+      "sys": {
+        "type": "Link",
+        "linkType": "Space",
+        "id": "<space_id>"
+      }
+    },
+    "id": "richtexttestentry",
+    "type": "Entry",
+    "createdAt": "2018-10-31T14:02:38.966Z",
+    "updatedAt": "2018-10-31T14:02:38.966Z",
+    "environment": {
+      "sys": {
+        "id": "master",
+        "type": "Link",
+        "linkType": "Environment"
+      }
+    },
+    "createdBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "<user_id>"
+      }
+    },
+    "updatedBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "<user_id>"
+      }
+    },
+    "version": 1,
+    "contentType": {
+      "sys": {
+        "type": "Link",
+        "linkType": "ContentType",
+        "id": "rich"
+      }
+    }
+  },
+  "fields": {
+    "name": {
+      "en-US": "testing_created_this_entry_and_will_delete_it_soon"
+    },
+    "rich": {
+      "en-US": {
+        "content": [
+          {
+            "data": {},
+            "content": [
+              {
+                "marks": [
+                  {
+                    "data": {},
+                    "type": "bold",
+                    "object": "mark"
+                  }
+                ],
+                "value": "delete me soon™",
+                "nodeType": "text"
+              }
+            ],
+            "nodeType": "paragraph"
+          }
+        ],
+        "nodeType": "document"
+      }
+    }
+  }
+}
