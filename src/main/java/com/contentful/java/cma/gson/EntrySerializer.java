@@ -5,9 +5,14 @@ import com.contentful.java.cma.model.CMAEntry;
 import com.contentful.java.cma.model.CMAResource;
 import com.contentful.java.cma.model.CMASystem;
 import com.contentful.java.cma.model.CMAType;
+import com.contentful.java.cma.model.rich.RichTextFactory;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
@@ -21,7 +26,7 @@ import static com.contentful.java.cma.model.CMAType.Link;
 /**
  * Serialize an entry from Contentful
  */
-public class EntrySerializer implements JsonSerializer<CMAEntry> {
+public class EntrySerializer implements JsonSerializer<CMAEntry>, JsonDeserializer<CMAEntry> {
   /**
    * Make sure all fields are mapped in the locale - value way.
    *
@@ -53,6 +58,14 @@ public class EntrySerializer implements JsonSerializer<CMAEntry> {
       result.add("sys", context.serialize(sys));
     }
     return result;
+  }
+
+  @Override
+  public CMAEntry deserialize(JsonElement json, Type type, JsonDeserializationContext context)
+      throws JsonParseException {
+    final CMAEntry entry = new Gson().fromJson(json, CMAEntry.class); // default deserialization
+    RichTextFactory.resolveRichTextField(entry);
+    return entry;
   }
 
   private JsonObject serializeField(JsonSerializationContext context,
