@@ -1,7 +1,84 @@
 {
   "sys": {
-    "type": "Error",
-    "id": "VersionMismatch"
+    "space": {
+      "sys": {
+        "type": "Link",
+        "linkType": "Space",
+        "id": "<space_id>"
+      }
+    },
+    "id": "6VkkamQ5zO4qWIugKkWowK",
+    "type": "Entry",
+    "createdAt": "2018-10-17T13:32:24.855Z",
+    "updatedAt": "2018-11-06T12:54:13.327Z",
+    "environment": {
+      "sys": {
+        "id": "master",
+        "type": "Link",
+        "linkType": "Environment"
+      }
+    },
+    "createdBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "<user_id>"
+      }
+    },
+    "updatedBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "<user_id>"
+      }
+    },
+    "publishedCounter": 1,
+    "version": 4,
+    "publishedBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "<user_id>"
+      }
+    },
+    "publishedVersion": 1,
+    "firstPublishedAt": "2018-10-17T13:32:33.090Z",
+    "publishedAt": "2018-10-17T13:32:33.090Z",
+    "contentType": {
+      "sys": {
+        "type": "Link",
+        "linkType": "ContentType",
+        "id": "rich"
+      }
+    }
   },
-  "requestId": "3a892bebc11d88c5dc0632478f524656"
+  "fields": {
+    "name": {
+      "en-US": "simple_text_code"
+    },
+    "rich": {
+      "en-US": {
+        "content": [
+          {
+            "data": {},
+            "content": [
+              {
+                "marks": [
+                  {
+                    "data": {},
+                    "type": "code",
+                    "object": "mark"
+                  }
+                ],
+                "value": "This is some updated simple rich text",
+                "nodeType": "text"
+              }
+            ],
+            "nodeType": "paragraph"
+          }
+        ],
+        "nodeType": "document"
+      }
+    }
+  }
 }
