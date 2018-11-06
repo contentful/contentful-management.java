@@ -27,7 +27,7 @@ public class CMAArray<T extends CMAResource> extends CMAResource {
   List<T> items;
 
   // Map of included resources
-  Map includes;
+  Map<String, Object> includes;
 
   // Total number of items
   int total;
@@ -76,7 +76,7 @@ public class CMAArray<T extends CMAResource> extends CMAResource {
   /**
    * @return a map of included resources.
    */
-  public Map getIncludes() {
+  public Map<String, Object> getIncludes() {
     return includes;
   }
 

@@ -57,7 +57,7 @@ public class CMAAsset extends CMAResource {
    * @return this instance for chaining.
    */
   @SuppressWarnings("unchecked")
-  public CMAAsset setSystem(CMASystem system) {
+  @Override public CMAAsset setSystem(CMASystem system) {
     this.system = system;
     return this;
   }

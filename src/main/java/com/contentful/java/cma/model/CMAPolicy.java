@@ -173,7 +173,7 @@ public class CMAPolicy {
     }
 
     if (actions instanceof List) {
-      List actionList = (List) actions;
+      List<String> actionList = (List<String>) actions;
       if (!actionList.contains(action)) {
         actionList.add(action);
       }

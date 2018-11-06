@@ -63,7 +63,7 @@ public class EntrySerializer implements JsonSerializer<CMAEntry> {
       if (localized instanceof CMAResource) {
         field.add(locale, toLink(context, (CMAResource) localized));
       } else if (localized instanceof List) {
-        field.add(locale, serializeList(context, (List) localized));
+        field.add(locale, serializeList(context, (List<Object>) localized));
       } else if (localized != null) {
         field.add(locale, context.serialize(localized));
       }
@@ -74,7 +74,7 @@ public class EntrySerializer implements JsonSerializer<CMAEntry> {
     return null;
   }
 
-  private JsonArray serializeList(JsonSerializationContext context, List list) {
+  private JsonArray serializeList(JsonSerializationContext context, List<Object> list) {
     JsonArray array = new JsonArray();
     for (Object item : list) {
       if (item instanceof CMAResource) {

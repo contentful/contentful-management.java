@@ -72,7 +72,6 @@ class PreviewApiKeysE2E : Base() {
         val result = assertTestCallback(client.previewApiKeys().async()
                 .fetchOne(SPACE_ID, FIRST_ID, TestCallback()) as TestCallback)!!
 
-        assertTrue(result is CMAPreviewApiKey)
         assertTrue(result.accessToken.isNotBlank())
     }
 }

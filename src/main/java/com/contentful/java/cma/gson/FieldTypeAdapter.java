@@ -77,15 +77,15 @@ public final class FieldTypeAdapter implements JsonSerializer<CMAField> {
     add(json, ATTR_OMITTED, field.isOmitted());
     add(json, ATTR_LOCALIZED, field.isLocalized());
 
-    List<Map> validations = field.getValidations();
+    List<Map<String, Object>> validations = field.getValidations();
     if (validations != null) {
       json.add(ATTR_VALIDATIONS, context.serialize(validations,
-          new TypeToken<List<Map>>() {
+          new TypeToken<List<Map<String, Object>>>() {
           }
           .getType()));
     }
 
-    Map arrayItems = field.getArrayItems();
+    Map<String, Object> arrayItems = field.getArrayItems();
     if (arrayItems != null) {
       json.add(ATTR_ARRAY_ITEMS, context.serialize(arrayItems, Map.class));
     }
