@@ -79,6 +79,7 @@ class RichFieldTests {
 
         val entry = CMAEntry()
                 .setId("richtexttestentry")
+                .setField("name", "en-US", "testing_created_this_entry_and_will_delete_it_soon")
                 .setField("rich", "en-US", document)
 
         assertTestCallback(client!!.entries().async().create(
@@ -233,12 +234,8 @@ class RichFieldTests {
         assertNotNull(text.marks)
         assertEquals(0, text.marks.size)
 
-        assertTrue(link.data is Map<*, *>)
-        val data = link.data as Map<*, *>
-        assertTrue(data.contains("target"))
-        assertTrue(data["target"] is CMALink)
-
-        val target = data["target"] as CMALink
+        assertTrue(link.data is CMALink)
+        val target = link.data as CMALink
         assertEquals("BvBm2SNTEs40wUwyoI0Qo", target.id)
         assertEquals(CMAType.Entry, target.system.linkType)
     }
@@ -275,12 +272,8 @@ class RichFieldTests {
         assertNotNull(text.marks)
         assertEquals(0, text.marks.size)
 
-        assertTrue(link.data is Map<*, *>)
-        val data = link.data as Map<*, *>
-        assertTrue(data.contains("target"))
-        assertTrue(data["target"] is CMALink)
-
-        val target = data["target"] as CMALink
+        assertTrue(link.data is CMALink)
+        val target = link.data as CMALink
         assertEquals("47Q1142uaI6SuK8UoGeeQy", target.id)
         assertEquals(CMAType.Asset, target.system.linkType)
     }
@@ -295,7 +288,6 @@ class RichFieldTests {
         val result = array.items.first {
             it.getField<String>("name", "en-US") == "simple_hyperlink"
         }
-
 
         val document = result.getField<CMARichDocument>("rich", "en-US")
         assertNotNull(document)
@@ -317,13 +309,9 @@ class RichFieldTests {
         assertNotNull(text.marks)
         assertEquals(0, text.marks.size)
 
-        assertTrue(link.data is Map<*, *>)
-        val data = link.data as Map<*, *>
-        assertTrue(data.contains("uri"))
-        assertTrue(data["uri"] is String)
-
-        val uri = data["uri"] as String
-        assertEquals("https://www.example.com/", uri)
+        assertTrue(link.data is String)
+        val target = link.data as String
+        assertEquals("https://www.example.com/", target)
     }
 
     @test
@@ -348,15 +336,10 @@ class RichFieldTests {
         val link = paragraph.content.first { it is CMARichHyperLink } as CMARichHyperLink
 
         assertNotNull(link)
-        assertEquals(1, link.content.size)
-        assertTrue(link.content.first() is CMARichText)
+        assertEquals(0, link.content.size)
 
-        assertTrue(link.data is Map<*, *>)
-        val data = link.data as Map<*, *>
-        assertTrue(data.contains("target"))
-        assertTrue(data["target"] is CMALink)
-
-        val target = data["target"] as CMALink
+        assertTrue(link.data is CMALink)
+        val target = link.data as CMALink
         assertEquals("BvBm2SNTEs40wUwyoI0Qo", target.id)
         assertEquals(CMAType.Entry, target.system.linkType)
     }
@@ -376,18 +359,13 @@ class RichFieldTests {
         val document = result.getField<CMARichDocument>("rich", "en-US")
         assertNotNull(document)
 
-        val link = document.content.first { it is CMARichHyperLink } as CMARichHyperLink
+        val link = document.content.first { it is CMARichEmbeddedLink } as CMARichEmbeddedLink
 
         assertNotNull(link)
-        assertEquals(1, link.content.size)
-        assertTrue(link.content.first() is CMARichText)
+        assertEquals(0, link.content.size)
 
-        assertTrue(link.data is Map<*, *>)
-        val data = link.data as Map<*, *>
-        assertTrue(data.contains("target"))
-        assertTrue(data["target"] is CMALink)
-
-        val target = data["target"] as CMALink
+        assertTrue(link.data is CMALink)
+        val target = link.data as CMALink
         assertEquals("47Q1142uaI6SuK8UoGeeQy", target.id)
         assertEquals(CMAType.Asset, target.system.linkType)
     }
@@ -654,12 +632,8 @@ class RichFieldTests {
         assertNotNull(embeddedBlock)
         assertEquals(1, embeddedBlock.content.size)
 
-        assertTrue(embeddedBlock.data is Map<*, *>)
-        val data = embeddedBlock.data as Map<*, *>
-        assertTrue(data.contains("target"))
-        assertTrue(data["target"] is CMALink)
-
-        val target = data["target"] as CMALink
+        assertTrue(embeddedBlock.data is CMALink)
+        val target = embeddedBlock.data as CMALink
         assertEquals("ybxKk5Avzqam6KymAOgIG", target.id)
         assertEquals(CMAType.Entry, target.system.linkType)
     }
@@ -731,7 +705,7 @@ class RichFieldTests {
                 TestCallback()) as TestCallback)!!
 
         val result = array.items.first {
-            it.getField<String>("name", "en-US") == "simple_text_code"
+            it.getField<String>("name", "en-US") == "simple_text_bold"
         }
 
 
@@ -744,7 +718,7 @@ class RichFieldTests {
 
         val text = paragraph.content.first() as CMARichText
         assertNotNull(text)
-        assertEquals("This is some updated simple rich text", text.value)
+        assertEquals("This is some simple text", text.value)
 
         assertNotNull(text.marks)
         assertEquals(1, text.marks.size)

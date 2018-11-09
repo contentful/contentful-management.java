@@ -10,7 +10,17 @@ import io.reactivex.annotations.NonNull;
  * A collection of several nodes.
  */
 public class CMARichBlock extends CMARichNode {
+
   @NonNull final List<CMARichNode> content = new LinkedList<>();
+
+  /**
+   * Create a new block of type type
+   *
+   * @param type the type to be used for creating this block. Used by implementors.
+   */
+  protected CMARichBlock(String type) {
+    super(type);
+  }
 
   /**
    * Updates the old content by overwriting it with the new content.

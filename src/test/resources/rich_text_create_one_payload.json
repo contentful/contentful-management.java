@@ -1,1 +1,1 @@
-{"fields":{"name":{"en-US":"testing_created_this_entry_and_will_delete_it_soon"},"rich":{"en-US":{"content":[{"data":{},"content":[{"marks":[{"data":{},"type":"bold","object":"mark"}],"value":"delete me soon™","nodeType":"text"}],"nodeType":"paragraph"}],"nodeType":"document"}}}}
+{"fields":{"name":{"en-US":"testing_created_this_entry_and_will_delete_it_soon"},"rich":{"en-US":{"content":[{"content":[{"marks":[{"type":"bold","object":"mark"}],"value":"delete me soon™","nodeType":"text"}],"nodeType":"paragraph"}],"nodeType":"document"}}}}

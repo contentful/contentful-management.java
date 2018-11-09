@@ -1,7 +1,5 @@
 package com.contentful.java.cma.model.rich;
 
-import java.util.List;
-
 /**
  * Defines a headline of the text.
  * <p>
@@ -16,14 +14,8 @@ public class CMARichHeading extends CMARichBlock {
    * @param level a number indicating the level of this heading.
    */
   public CMARichHeading(int level) {
+    super("heading-" + level);
     this.level = level;
-  }
-
-  /**
-   * Create a level one heading block.
-   */
-  public CMARichHeading() {
-    this(1);
   }
 
   /**
@@ -31,15 +23,5 @@ public class CMARichHeading extends CMARichBlock {
    */
   public int getLevel() {
     return level;
-  }
-
-  @Override public CMARichHeading setContent(List<CMARichNode> content) {
-    super.setContent(content);
-    return this;
-  }
-
-  @Override public CMARichHeading addContent(CMARichNode... content) {
-    super.addContent(content);
-    return this;
   }
 }

@@ -1,6 +1,7 @@
 package com.contentful.java.cma.model.rich;
 
-import java.util.List;
+import com.contentful.java.cma.model.CMALink;
+import com.contentful.java.cma.model.CMAType;
 
 /**
  * This node is an inline link to a CMAEntry
@@ -17,13 +18,18 @@ public class CMARichEmbeddedLink extends CMARichHyperLink {
     super(target);
   }
 
-  @Override public CMARichEmbeddedLink setContent(List<CMARichNode> content) {
-    super.setContent(content);
-    return this;
-  }
-
-  @Override public CMARichEmbeddedLink addContent(CMARichNode... content) {
-    super.addContent(content);
-    return this;
+  /**
+   * @return the internal representation of this node type.
+   */
+  @Override public String getNodeType() {
+    if (data instanceof CMALink) {
+      final CMAType linkType = ((CMALink) data).getSystem().getLinkType();
+      if (linkType == CMAType.Asset) {
+        return "embedded-asset-block";
+      } else if (linkType == CMAType.Entry) {
+        return "embedded-entry-block";
+      }
+    }
+    return super.getNodeType();
   }
 }

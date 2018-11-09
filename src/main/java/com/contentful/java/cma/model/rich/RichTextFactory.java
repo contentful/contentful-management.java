@@ -1,6 +1,8 @@
 package com.contentful.java.cma.model.rich;
 
 import com.contentful.java.cma.model.CMAEntry;
+import com.contentful.java.cma.model.CMALink;
+import com.contentful.java.cma.model.CMAType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,12 +17,12 @@ import java.util.function.Supplier;
  */
 @SuppressWarnings("unchecked")
 public class RichTextFactory {
-  private static final int HEADING_LEVEL_1 = 1;
-  private static final int HEADING_LEVEL_2 = 2;
-  private static final int HEADING_LEVEL_3 = 3;
-  private static final int HEADING_LEVEL_4 = 4;
-  private static final int HEADING_LEVEL_5 = 5;
-  private static final int HEADING_LEVEL_6 = 6;
+  private static final int LEVEL_1 = 1;
+  private static final int LEVEL_2 = 2;
+  private static final int LEVEL_3 = 3;
+  private static final int LEVEL_4 = 4;
+  private static final int LEVEL_5 = 5;
+  private static final int LEVEL_6 = 6;
 
   /**
    * Interface for resolving the type of a node by its raw representation.
@@ -54,7 +56,7 @@ public class RichTextFactory {
      * @return the rich node if resolving was successful.
      */
     @Override public CMARichNode resolve(Map<String, Object> raw) {
-      final T resolved = getcmaType(raw);
+      final T resolved = getType(raw);
 
       final List<Map<String, Object>> contents = (List<Map<String, Object>>) raw.get("content");
       for (final Map<String, Object> rawNode : contents) {
@@ -72,7 +74,7 @@ public class RichTextFactory {
      * @param raw a map coming from Contentful, parsed from the json response.
      * @return a new node based on the type of T.
      */
-    T getcmaType(Map<String, Object> raw) {
+    T getType(Map<String, Object> raw) {
       return supplier.get();
     }
   }
@@ -138,8 +140,26 @@ public class RichTextFactory {
      * @return an object of Type T.
      */
     @Override
-    T getcmaType(Map<String, Object> raw) {
-      return supplier.get(raw.get(dataFieldKey));
+    T getType(Map<String, Object> raw) {
+      Object data = raw.get(dataFieldKey);
+      if (data instanceof Map && ((Map<String, Object>) data).containsKey("target")) {
+        final Object target = ((Map<String, Object>) data).get("target");
+        if (target instanceof Map) {
+          final Map<String, Object> targetMap = (Map<String, Object>) target;
+          final Map<String, Object> sys = (Map<String, Object>) targetMap.get("sys");
+
+          final CMALink link = new CMALink();
+          link.getSystem().setId((String) sys.get("id"));
+          link.getSystem().setType(CMAType.Link);
+          link.getSystem().setLinkType(CMAType.valueOf((String) sys.get("linkType")));
+
+          data = link;
+        }
+      } else if (data instanceof Map && ((Map<String, Object>) data).containsKey("uri")) {
+        data = ((Map<String, String>) data).get("uri");
+      }
+
+      return supplier.get(data);
     }
   }
 
@@ -154,39 +174,58 @@ public class RichTextFactory {
     RESOLVER_MAP.put("hr", raw -> new CMARichHorizontalRule());
 
     // add blocks
-    RESOLVER_MAP.put("blockquote", new BlockResolver<>(CMARichQuote::new));
-    RESOLVER_MAP.put("paragraph", new BlockResolver<>(CMARichParagraph::new));
-    RESOLVER_MAP.put("document", new BlockResolver<>(CMARichDocument::new));
-    RESOLVER_MAP.put("list-item", new BlockResolver<>(CMARichListItem::new));
-    RESOLVER_MAP.put("ordered-list", new BlockResolver<>(CMARichOrderedList::new));
-    RESOLVER_MAP.put("unordered-list", new BlockResolver<>(CMARichUnorderedList::new));
-    RESOLVER_MAP.put("hyperlink", new BlockAndDataResolver<>(CMARichHyperLink::new, "data"));
-    RESOLVER_MAP.put("embedded-entry-block",
+    RESOLVER_MAP.put(new CMARichQuote().getNodeType(),
+        new BlockResolver<>(CMARichQuote::new));
+    RESOLVER_MAP.put(new CMARichParagraph().getNodeType(),
+        new BlockResolver<>(CMARichParagraph::new));
+    RESOLVER_MAP.put(new CMARichDocument().getNodeType(),
+        new BlockResolver<>(CMARichDocument::new));
+    RESOLVER_MAP.put(new CMARichListItem().getNodeType(),
+        new BlockResolver<>(CMARichListItem::new));
+    RESOLVER_MAP.put(new CMARichOrderedList().getNodeType(),
+        new BlockResolver<>(CMARichOrderedList::new));
+    RESOLVER_MAP.put(new CMARichUnorderedList().getNodeType(),
+        new BlockResolver<>(CMARichUnorderedList::new));
+    RESOLVER_MAP.put(new CMARichHyperLink().getNodeType(),
+        new BlockAndDataResolver<>(CMARichHyperLink::new, "data"));
+    RESOLVER_MAP.put(new CMARichHyperLink(new CMALink(CMAType.Entry)).getNodeType(),
+        new BlockAndDataResolver<>(CMARichHyperLink::new, "data"));
+    RESOLVER_MAP.put(new CMARichHyperLink(new CMALink(CMAType.Asset)).getNodeType(),
+        new BlockAndDataResolver<>(CMARichHyperLink::new, "data"));
+    RESOLVER_MAP.put(new CMARichEmbeddedLink(new CMALink(CMAType.Entry)).getNodeType(),
         new BlockAndDataResolver<>(CMARichEmbeddedLink::new, "data"));
-    RESOLVER_MAP.put("heading-1", new HeadingResolver(HEADING_LEVEL_1));
-    RESOLVER_MAP.put("heading-2", new HeadingResolver(HEADING_LEVEL_2));
-    RESOLVER_MAP.put("heading-3", new HeadingResolver(HEADING_LEVEL_3));
-    RESOLVER_MAP.put("heading-4", new HeadingResolver(HEADING_LEVEL_4));
-    RESOLVER_MAP.put("heading-5", new HeadingResolver(HEADING_LEVEL_5));
-    RESOLVER_MAP.put("heading-6", new HeadingResolver(HEADING_LEVEL_6));
+    RESOLVER_MAP.put(new CMARichEmbeddedLink(new CMALink(CMAType.Asset)).getNodeType(),
+        new BlockAndDataResolver<>(CMARichEmbeddedLink::new, "data"));
+    RESOLVER_MAP.put("embedded-entry-inline", new BlockAndDataResolver<>(CMARichEmbeddedLink::new,
+        "data"));
+    RESOLVER_MAP.put("embedded-asset-inline", new BlockAndDataResolver<>(CMARichEmbeddedLink::new,
+        "data"));
+    RESOLVER_MAP.put(new CMARichHeading(LEVEL_1).getNodeType(), new HeadingResolver(LEVEL_1));
+    RESOLVER_MAP.put(new CMARichHeading(LEVEL_2).getNodeType(), new HeadingResolver(LEVEL_2));
+    RESOLVER_MAP.put(new CMARichHeading(LEVEL_3).getNodeType(), new HeadingResolver(LEVEL_3));
+    RESOLVER_MAP.put(new CMARichHeading(LEVEL_4).getNodeType(), new HeadingResolver(LEVEL_4));
+    RESOLVER_MAP.put(new CMARichHeading(LEVEL_5).getNodeType(), new HeadingResolver(LEVEL_5));
+    RESOLVER_MAP.put(new CMARichHeading(LEVEL_6).getNodeType(), new HeadingResolver(LEVEL_6));
   }
 
   public static void resolveRichTextField(CMAEntry entry) {
-    for (final Map.Entry<String, LinkedHashMap<String, Object>> field
-        : entry.getFields().entrySet()) {
-      final String fieldId = field.getKey();
-      for (final String locale : field.getValue().keySet()) {
-        final Object value = field.getValue().get(locale);
-        if (value instanceof Map && ((Map) value).containsKey("nodeType")) {
-          entry.setField(
-              fieldId,
-              locale,
-              RESOLVER_MAP
-                  .get("document")
-                  .resolve(
-                      (Map<String, Object>) value
-                  )
-          );
+    if (entry.getFields() != null) {
+      for (final Map.Entry<String, LinkedHashMap<String, Object>> field
+          : entry.getFields().entrySet()) {
+        final String fieldId = field.getKey();
+        for (final String locale : field.getValue().keySet()) {
+          final Object value = field.getValue().get(locale);
+          if (value instanceof Map && ((Map) value).containsKey("nodeType")) {
+            entry.setField(
+                fieldId,
+                locale,
+                RESOLVER_MAP
+                    .get("document")
+                    .resolve(
+                        (Map<String, Object>) value
+                    )
+            );
+          }
         }
       }
     }

@@ -5,8 +5,9 @@ package com.contentful.java.cma.model.rich;
  */
 public class CMARichHorizontalRule extends CMARichNode {
   /**
-   * Construct this node.
+   * Construct a horizontal rule node.
    */
   public CMARichHorizontalRule() {
+    super("hr");
   }
 }

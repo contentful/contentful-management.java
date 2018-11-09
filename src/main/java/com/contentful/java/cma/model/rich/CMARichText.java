@@ -24,6 +24,8 @@ public class CMARichText extends CMARichNode {
    * @throws NullPointerException if one of the arguments is null.
    */
   public CMARichText(@NonNull CharSequence value, @NonNull List<CMARichMark> marks) {
+    super("text");
+
     if (value == null) {
       throw new NullPointerException("value was null");
     }
