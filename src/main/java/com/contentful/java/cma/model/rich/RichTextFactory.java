@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 /**
- * This factory will be used in order to create the {@see cmaRichTextNode}-graph representation of
+ * This factory will be used in order to create the {@link CMARichNode}-graph representation of
  * the Contentful data returned by a rich text - field.
  */
 @SuppressWarnings("unchecked")
