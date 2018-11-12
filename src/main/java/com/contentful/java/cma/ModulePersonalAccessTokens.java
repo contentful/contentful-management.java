@@ -35,8 +35,9 @@ public final class ModulePersonalAccessTokens extends AbsModule<ServicePersonalA
   /**
    * Create this module.
    *
-   * @param retrofit         the retrofit instance to be used to create the service.
-   * @param callbackExecutor to tell on which thread it should run.
+   * @param retrofit                the retrofit instance to be used to create the service.
+   * @param callbackExecutor        to tell on which thread it should run.
+   * @param environmentIdConfigured internal helper to see if environment was set.
    */
   public ModulePersonalAccessTokens(
       Retrofit retrofit,

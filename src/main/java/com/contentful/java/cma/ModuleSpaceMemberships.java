@@ -21,10 +21,12 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
   /**
    * Create a new membership module.
    *
-   * @param retrofit         the retrofit instance to be used to create the service.
-   * @param callbackExecutor to tell on which thread it should run.
-   * @param spaceId          the id of the space to be used if not specified in the module call.
-   * @param environmentId    the id of the environment used, if not specified before.
+   * @param retrofit                the retrofit instance to be used to create the service.
+   * @param callbackExecutor        to tell on which thread it should run.
+   * @param spaceId                 the id of the space to be used if not specified in the module
+   *                                call.
+   * @param environmentId           the id of the environment used, if not specified before.
+   * @param environmentIdConfigured internal helper to see if environment was set.
    */
   public ModuleSpaceMemberships(
       Retrofit retrofit,

@@ -44,6 +44,15 @@ import static okhttp3.MediaType.parse;
 public final class ModuleUploads extends AbsModule<ServiceUploads> {
   final Async async;
 
+  /**
+   * Create uploads module.
+   *
+   * @param retrofit                the retrofit instance to be used to create the service.
+   * @param callbackExecutor        to tell on which thread it should run.
+   * @param spaceId                 the space to be used when not given.
+   * @param environmentId           the environment to be used when not given.
+   * @param environmentIdConfigured internal helper to see if environment was set.
+   */
   public ModuleUploads(
       Retrofit retrofit,
       Executor callbackExecutor,

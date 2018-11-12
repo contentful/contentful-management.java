@@ -33,6 +33,15 @@ import retrofit2.Retrofit;
 public final class ModuleAssets extends AbsModule<ServiceAssets> {
   final Async async;
 
+  /**
+   * Create the assets module.
+   *
+   * @param retrofit                the retrofit instance to be used to create the service.
+   * @param callbackExecutor        to tell on which thread it should run.
+   * @param spaceId                 the space to be used when not given.
+   * @param environmentId           the environment to be used when not given.
+   * @param environmentIdConfigured internal helper to see if environment was set.
+   */
   public ModuleAssets(
       Retrofit retrofit,
       Executor callbackExecutor,

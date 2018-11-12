@@ -36,8 +36,11 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
   /**
    * Create this module.
    *
-   * @param retrofit         the retrofit instance to be used to create the service.
-   * @param callbackExecutor to tell on which thread it should run.
+   * @param retrofit                the retrofit instance to be used to create the service.
+   * @param callbackExecutor        to tell on which thread it should run.
+   * @param spaceId                 the space to be used when not given.
+   * @param environmentId           the environment to be used when not given.
+   * @param environmentIdConfigured internal helper to see if environment was set.
    */
   public ModuleUiExtensions(
       Retrofit retrofit,

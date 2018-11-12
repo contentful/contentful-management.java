@@ -37,6 +37,7 @@ public final class ModuleEditorInterfaces extends AbsModule<ServiceEditorInterfa
    * @param callbackExecutor to tell on which thread it should run.
    * @param spaceId          the space to be used when not given.
    * @param environmentId    the environment to be used when not given.
+   * @param environmentIdConfigured internal helper to see if environment was set.
    */
   public ModuleEditorInterfaces(
       Retrofit retrofit,

@@ -31,6 +31,13 @@ import retrofit2.Retrofit;
 public final class ModuleOrganizations extends AbsModule<ServiceOrganizations> {
   final Async async;
 
+  /**
+   * Create  the organizations module.
+   *
+   * @param retrofit                the retrofit instance to be used to create the service.
+   * @param callbackExecutor        to tell on which thread it should run.
+   * @param environmentIdConfigured internal helper to see if environment was set.
+   */
   public ModuleOrganizations(
       Retrofit retrofit,
       Executor callbackExecutor,

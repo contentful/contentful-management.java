@@ -21,10 +21,11 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
   /**
    * Create a new role module.
    *
-   * @param retrofit         the retrofit instance to be used to create the service.
-   * @param callbackExecutor to tell on which thread it should run.
-   * @param spaceId          id of the space to be configured.
-   * @param environmentId    id of the environment to be configured.
+   * @param retrofit                the retrofit instance to be used to create the service.
+   * @param callbackExecutor        to tell on which thread it should run.
+   * @param spaceId                 id of the space to be configured.
+   * @param environmentId           id of the environment to be configured.
+   * @param environmentIdConfigured internal helper to see if environment was set.
    */
   public ModuleRoles(
       Retrofit retrofit,

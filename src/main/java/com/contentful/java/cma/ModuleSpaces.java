@@ -33,6 +33,13 @@ import retrofit2.Retrofit;
 public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
   final Async async;
 
+  /**
+   * Create the spaces module.
+   *
+   * @param retrofit                the retrofit instance to be used to create the service.
+   * @param callbackExecutor        to tell on which thread it should run.
+   * @param environmentIdConfigured internal helper to see if environment was set.
+   */
   public ModuleSpaces(
       Retrofit retrofit,
       Executor callbackExecutor,

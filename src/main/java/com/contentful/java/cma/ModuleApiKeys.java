@@ -34,6 +34,15 @@ import retrofit2.Retrofit;
 public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
   final Async async;
 
+  /**
+   * Create api keys module.
+   *
+   * @param retrofit                the retrofit instance to be used to create the service.
+   * @param callbackExecutor        to tell on which thread it should run.
+   * @param spaceId                 the space to be used when not given.
+   * @param environmentId           the environment to be used when not given.
+   * @param environmentIdConfigured internal helper to see if environment was set.
+   */
   public ModuleApiKeys(
       Retrofit retrofit,
       Executor callbackExecutor,
@@ -81,6 +90,7 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
   /**
    * Query for specific api keys from the configured space.
    *
+   * @param query the terms to query for specific keys.
    * @return a list of delivery api keys.
    * @throws IllegalArgumentException        if configured space Id is null.
    * @throws CMANotWithEnvironmentsException if environmentId was set using
