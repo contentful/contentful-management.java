@@ -10,6 +10,8 @@ public class CMARichNode {
 
   /**
    * Create an instance, settings its node type.
+   *
+   * @param nodeType the type of node to be used for creating json.
    */
   protected CMARichNode(String nodeType) {
     this.nodeType = nodeType;

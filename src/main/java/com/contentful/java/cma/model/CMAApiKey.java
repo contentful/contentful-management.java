@@ -96,7 +96,10 @@ public class CMAApiKey extends CMAResource {
   /**
    * Add environment ids to the api key.
    * <p>
-   * A link for the payload will be created automatically.
+   *
+   * @param environment a new environment to be affected by this key.
+   *                    A link for the payload will be created automatically.
+   * @return the api key for easy chaining.
    */
   public CMAApiKey addEnvironment(String environment) {
     environments.add(

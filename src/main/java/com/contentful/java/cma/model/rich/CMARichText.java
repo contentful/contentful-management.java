@@ -57,6 +57,7 @@ public class CMARichText extends CMARichNode {
   /**
    * Update the value of this text.
    *
+   * @param value the new value of the text.
    * @return this instance for chaining.
    */
   @NonNull public CMARichText setValue(@NonNull CharSequence value) {
@@ -77,6 +78,7 @@ public class CMARichText extends CMARichNode {
   /**
    * Adds the given marks to this texts marks.
    *
+   * @param marks defines which marks to be added.
    * @return this instance for chaining.
    * @throws NullPointerException if marks is null.
    */
@@ -88,6 +90,7 @@ public class CMARichText extends CMARichNode {
   /**
    * Updates the marks of this text.
    *
+   * @param marks defines which marks to be used.
    * @return this instance for chaining.
    * @throws NullPointerException if marks is null.
    */
