@@ -145,8 +145,9 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
    * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
    * {@link CMAClient.Builder#setEnvironmentId(String)}.
    *
-   * @param spaceId the id of the space this is valid on.
-   * @param query   controls what to return.
+   * @param spaceId       the id of the space this is valid on.
+   * @param environmentId the id of the environment this is valid on.
+   * @param query         controls what to return.
    * @return specific ui extensions for a specific space.
    * @throws IllegalArgumentException if spaceId is null.
    * @throws IllegalArgumentException if environment id is null.
@@ -246,8 +247,9 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
    * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
    * {@link CMAClient.Builder#setEnvironmentId(String)}.
    *
-   * @param spaceId   the id of the space this ui extension should be created in.
-   * @param extension the ui extension to be added.
+   * @param spaceId       the id of the space this ui extension should be created in.
+   * @param environmentId the id of the environment this is valid on.
+   * @param extension     the ui extension to be added.
    * @return the created ui extension.
    * @throws IllegalArgumentException if spaceId is null.
    * @throws IllegalArgumentException if extension is null.
@@ -314,9 +316,10 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
      * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
      * {@link CMAClient.Builder#setEnvironmentId(String)}.
      *
-     * @param spaceId     the id of the space this is valid on.
-     * @param extensionId the id of the extension to be fetched.
-     * @param callback    the callback to be informed about success or failure.
+     * @param spaceId       the id of the space this is valid on.
+     * @param environmentId the id of the environment this is valid on.
+     * @param extensionId   the id of the extension to be fetched.
+     * @param callback      the callback to be informed about success or failure.
      * @return the callback passed in.
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if extensionId is null.
@@ -404,9 +407,10 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
      * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
      * {@link CMAClient.Builder#setEnvironmentId(String)}.
      *
-     * @param spaceId  the id of the space to search in.
-     * @param query    the query identifying specific ui extensions.
-     * @param callback the callback to be informed about success or failure.
+     * @param spaceId       the id of the space to search in.
+     * @param environmentId the id of the environment this is valid on.
+     * @param query         the query identifying specific ui extensions.
+     * @param callback      the callback to be informed about success or failure.
      * @return the callback passed in.
      * @throws IllegalArgumentException if spaceId is null.
      */
@@ -450,9 +454,10 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
      * {@link CMAClient.Builder#setSpaceId(String)} and will ignore
      * {@link CMAClient.Builder#setEnvironmentId(String)}.
      *
-     * @param spaceId   the id of the space this ui extension should be created in.
-     * @param extension the ui extension to be added.
-     * @param callback  the callback to be informed about success or failure.
+     * @param spaceId       the id of the space this ui extension should be created in.
+     * @param environmentId the id of the environment this is valid on.
+     * @param extension     the ui extension to be added.
+     * @param callback      the callback to be informed about success or failure.
      * @return the callback passed in.
      * @throws IllegalArgumentException if spaceId is null.
      * @throws IllegalArgumentException if extension is null.
