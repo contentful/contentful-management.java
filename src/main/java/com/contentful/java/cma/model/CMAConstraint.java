@@ -177,9 +177,9 @@ public class CMAConstraint {
         if (path instanceof FieldKeyPath) {
           return (FieldKeyPath) path;
         } else if (path instanceof Map) {
-          Map mappedPath = (Map) path;
+          Map<String, String> mappedPath = (Map<String, String>) path;
           final FieldKeyPath objectifiedPath = new FieldKeyPath()
-              .setDoc((String) mappedPath.get("doc"));
+              .setDoc(mappedPath.get("doc"));
           setPath(objectifiedPath);
           return objectifiedPath;
         }

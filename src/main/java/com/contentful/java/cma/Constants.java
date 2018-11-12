@@ -33,7 +33,7 @@ public final class Constants {
     throw new UnsupportedOperationException();
   }
   /**
-   * @see <a href="https://www.contentful.com/developers/docs/references/content-management-api/#/reference/content-types">management api docs</a>
+   * @see <a href="https://www.contentful.com/developers/docs/concepts/data-model/#fields">guide</a>
    */
   //END TO LONG CODE LINES
   @SuppressWarnings("UnusedDeclaration")
@@ -47,6 +47,7 @@ public final class Constants {
     Number,
     Object,
     Symbol,
-    Text
+    Text,
+    RichText
   }
 }

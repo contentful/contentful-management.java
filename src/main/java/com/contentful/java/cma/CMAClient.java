@@ -186,8 +186,7 @@ public class CMAClient {
   /**
    * Configures CMA core endpoint.
    */
-  private Retrofit.Builder setEndpoint(Retrofit.Builder retrofitBuilder
-      , String endpoint) {
+  private Retrofit.Builder setEndpoint(Retrofit.Builder retrofitBuilder, String endpoint) {
     if (endpoint != null) {
       return retrofitBuilder.baseUrl(endpoint);
     }

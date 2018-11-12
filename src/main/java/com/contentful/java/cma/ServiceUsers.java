@@ -22,7 +22,7 @@ import io.reactivex.Flowable;
 import retrofit2.http.GET;
 
 /**
- * Spaces Service.
+ * Users Service.
  */
 interface ServiceUsers {
   @GET("/users/me")

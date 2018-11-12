@@ -70,7 +70,7 @@ public class CMAEnvironment extends CMAResource {
   }
 
   /**
-   * Overwright retrieval of the environment id here, since the id of this environment is it's id.
+   * Override retrieval of the environment id here, since the id of this environment is it's id.
    *
    * @return the ID of the Environment associated with this resource,
    * {@link com.contentful.java.cma.Constants#DEFAULT_ENVIRONMENT} if it does not exist.
@@ -89,7 +89,7 @@ public class CMAEnvironment extends CMAResource {
    */
   @Override @SuppressWarnings("unchecked")
   public <T extends CMAResource> T setEnvironmentId(String environmentId) {
-    return ((T) setId(environmentId));
+    return (T) setId(environmentId);
   }
 
   /**
