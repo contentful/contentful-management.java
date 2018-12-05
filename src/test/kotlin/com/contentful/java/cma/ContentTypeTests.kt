@@ -538,7 +538,8 @@ class ContentTypeTests{
         // Assert first item
         val first = items[0]
         assertEquals(CMAType.Snapshot, first.system.type)
-        assertEquals(CMAType.ContentType, first.snapshot.system.type)
+        assertTrue(first.snapshot is CMAContentType)
+        assertEquals(CMAType.ContentType, (first.snapshot as CMAContentType).system.type)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -560,7 +561,8 @@ class ContentTypeTests{
                 contentType, "snapShotId", TestCallback()) as TestCallback)!!
 
         assertEquals(CMAType.Snapshot, result.system.type)
-        assertEquals(CMAType.ContentType, result.snapshot.system.type)
+        assertTrue(result.snapshot is CMAContentType)
+        assertEquals(CMAType.ContentType, (result.snapshot as CMAContentType).system.type)
 
         // Request
         val recordedRequest = server!!.takeRequest()
