@@ -44,6 +44,8 @@ open class EntryE2E : Base() {
 
     @Test
     fun testEntries() {
+        val initialEntryCount = client.entries().fetchAll().total
+
         var entry = CMAEntry()
         entry.setField("title", "en-US", "My Title")
 
@@ -58,6 +60,7 @@ open class EntryE2E : Base() {
         assertEquals(1, snapshots.items.size)
 
         val snapshot = client.entries().fetchOneSnapshot(entry, snapshots.items.first().id)
+        assertTrue(snapshot.snapshot is CMAEntry)
         assertEquals(snapshots.items.first().toString().trim(), snapshot.toString().trim())
 
         entry = client.entries().unPublish(entry)
@@ -79,6 +82,6 @@ open class EntryE2E : Base() {
 
         assertEquals(204, client.entries().delete(entry))
 
-        assertEquals(3, client.entries().fetchAll().total)
+        assertEquals(initialEntryCount, client.entries().fetchAll().total)
     }
 }

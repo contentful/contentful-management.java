@@ -483,7 +483,8 @@ class EntryTests {
         // Assert first item
         val first = items[0]
         assertEquals(CMAType.Snapshot, first.system.type)
-        assertEquals(CMAType.Entry, first.snapshot.system.type)
+        assertTrue(first.snapshot is CMAEntry)
+        assertEquals(CMAType.Entry, (first.snapshot as CMAEntry).system.type)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -505,7 +506,8 @@ class EntryTests {
                 entry, "snapShotId", TestCallback()) as TestCallback)!!
 
         assertEquals(CMAType.Snapshot, result.system.type)
-        assertEquals(CMAType.Entry, result.snapshot.system.type)
+        assertTrue(result.snapshot is CMAEntry)
+        assertEquals(CMAType.Entry, (result.snapshot as CMAEntry).system.type)
 
         // Request
         val recordedRequest = server!!.takeRequest()
