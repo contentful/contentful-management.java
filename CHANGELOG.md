@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Version [3.2.1] - (TBD)
+## Version [3.2.1] - (2018-12-10)
 - Fix Snapshots to contain entries and content types
 
 ## Version [3.2.0] - (2018-11-12)
@@ -151,8 +151,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Version 0.9.0 - 2014-11-18
 Initial release.
 
-[unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-3.1.0...HEAD
-[3.0.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-3.0.0...cma-sdk-3.1.0
+[unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-3.2.1...HEAD
+[3.2.1]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-3.2.0...cma-sdk-3.2.1
+[3.2.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-3.1.0...cma-sdk-3.2.0
+[3.1.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-3.0.0...cma-sdk-3.1.0
 [3.0.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.2.2...cma-sdk-3.0.0
 [2.2.3]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.2.2...cma-sdk-2.2.3
 [2.2.2]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.2.1...cma-sdk-2.2.2
