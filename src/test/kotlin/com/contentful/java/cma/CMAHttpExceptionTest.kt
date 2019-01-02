@@ -66,7 +66,7 @@ class CMAHttpExceptionTest {
         assertEquals(500, e.responseCode())
 
         assertEquals("FAILED ErrorBody { sys = Sys { id = manualid, } }\n" +
-                "\tRequest{method=GET, url=https://example.com/foo, tag=null}\n" +
+                "\tRequest{method=GET, url=https://example.com/foo, tags={}}\n" +
                 "\t↳ Header{}\n" +
                 "\tResponse{" +
                 "protocol=http/1.1, code=500, message=message, url=https://example.com/foo}\n" +
@@ -239,7 +239,7 @@ class CMAHttpExceptionTest {
                 "value = bar }], }, message = Validation error, " +
                 "requestId = 8cd7ef1751dd283ee230e6a58efef8ec, sys = Sys { id = InvalidEntry, " +
                 "type = Error } }\n" +
-                "\tRequest{method=GET, url=https://example.com/foo, tag=null}\n" +
+                "\tRequest{method=GET, url=https://example.com/foo, tags={}}\n" +
                 "\t↳ Header{}\n" +
                 "\tResponse{protocol=http/1.1, code=500, message=message, " +
                 "url=https://example.com/foo}\n" +

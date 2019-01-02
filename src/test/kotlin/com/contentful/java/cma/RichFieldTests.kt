@@ -797,7 +797,7 @@ class RichFieldTests {
         assertEquals("some", textInList(i++))
         assertEquals("simple", textInList(i++))
         assertEquals("unordered", textInList(i++))
-        assertEquals("list", textInList(i++))
+        assertEquals("list", textInList(i))
     }
 
     @test
@@ -834,7 +834,7 @@ class RichFieldTests {
         assertEquals("is", textInList(i++))
         assertEquals("some", textInList(i++))
         assertEquals("simple", textInList(i++))
-        assertEquals("text", textInList(i++))
+        assertEquals("text", textInList(i))
     }
 
     @test

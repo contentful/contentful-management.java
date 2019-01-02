@@ -4,6 +4,7 @@ package com.contentful.java.cma.model;
  * Exception defining the behavioural limits of using configured spaces and environments.
  */
 public class CMANotWithEnvironmentsException extends RuntimeException {
+  private static final long serialVersionUID = 8730567118486688363L;
 
   /**
    * Please do not use configured environments with specific endpoints.
