@@ -134,7 +134,8 @@ public class CMAHttpException extends RuntimeException {
               + (getName() != null ? "name = " + getName() + ", " : "")
               + (getPath() != null ? "path = " + getPath() + ", " : "")
               + (getType() != null ? "type = " + getType() + ", " : "")
-              + (getValue() != null ? "value = " + getValue() + " " : "")
+              + (getValue() != null ? "value = " + getValue() + ", " : "")
+              + (getExpected() != null ? "expected = " + getExpected() + " " : "")
               + "}";
         }
       }

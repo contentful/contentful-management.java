@@ -7,8 +7,6 @@ import com.contentful.java.cma.model.CMAType;
  * This block represents a link to a website.
  */
 public class CMARichHyperLink extends CMARichBlock {
-  Object data;
-
   /**
    * Create a new hyper link
    */
