@@ -5,6 +5,9 @@ import com.contentful.java.cma.model.CMAEntry;
 import com.contentful.java.cma.model.CMAResource;
 import com.contentful.java.cma.model.CMASystem;
 import com.contentful.java.cma.model.CMAType;
+import com.contentful.java.cma.model.rich.CMARichBlock;
+import com.contentful.java.cma.model.rich.CMARichHyperLink;
+import com.contentful.java.cma.model.rich.CMARichNode;
 import com.contentful.java.cma.model.rich.RichTextFactory;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -27,6 +30,9 @@ import static com.contentful.java.cma.model.CMAType.Link;
  * Serialize an entry from Contentful
  */
 public class EntrySerializer implements JsonSerializer<CMAEntry>, JsonDeserializer<CMAEntry> {
+
+  private final Gson freshGson = new Gson();
+
   /**
    * Make sure all fields are mapped in the locale - value way.
    *
@@ -77,6 +83,8 @@ public class EntrySerializer implements JsonSerializer<CMAEntry>, JsonDeserializ
         field.add(locale, toLink(context, (CMAResource) localized));
       } else if (localized instanceof List) {
         field.add(locale, serializeList(context, (List<Object>) localized));
+      } else if (localized instanceof CMARichNode) {
+        field.add(locale, serializeRichNode(context, (CMARichNode) localized));
       } else if (localized != null) {
         field.add(locale, context.serialize(localized));
       }
@@ -97,6 +105,41 @@ public class EntrySerializer implements JsonSerializer<CMAEntry>, JsonDeserializ
       }
     }
     return array;
+  }
+
+  private JsonElement serializeRichNode(JsonSerializationContext context, CMARichNode node) {
+    if (node instanceof CMARichHyperLink) {
+      final CMARichHyperLink link = (CMARichHyperLink) node;
+      final JsonObject jsonLink = freshGson.toJsonTree(link).getAsJsonObject();
+
+      jsonLink.addProperty("nodeType", link.getNodeType());
+
+      final Map<String, Object> data = new LinkedHashMap<>(1);
+      if (link.getData() instanceof CMAResource) {
+        data.put("target", toLink(context, (CMAResource) link.getData()));
+      } else {
+        data.put("uri", link.getData());
+        data.remove("target");
+      }
+
+      jsonLink.add("data", context.serialize(data));
+      return jsonLink;
+
+    } else if (node instanceof CMARichBlock) {
+      final CMARichBlock block = (CMARichBlock) node;
+      final JsonObject jsonBlock = freshGson.toJsonTree(block).getAsJsonObject();
+
+      final JsonArray jsonContent = new JsonArray(block.getContent().size());
+      for (final CMARichNode contentNode : block.getContent()) {
+        jsonContent.add(serializeRichNode(context, contentNode));
+      }
+
+      jsonBlock.add("content", jsonContent);
+
+      return jsonBlock;
+    } else {
+      return context.serialize(node);
+    }
   }
 
   private JsonObject toLink(JsonSerializationContext context, CMAResource resource) {

@@ -17,15 +17,15 @@
 package com.contentful.java.cma.e2e
 
 import com.contentful.java.cma.model.CMAEntry
+import com.contentful.java.cma.model.CMALink
+import com.contentful.java.cma.model.CMAType
 import com.contentful.java.cma.model.rich.CMARichDocument
 import com.contentful.java.cma.model.rich.CMARichHyperLink
 import com.contentful.java.cma.model.rich.CMARichParagraph
 import com.contentful.java.cma.model.rich.CMARichText
 import org.junit.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertNotEquals
 import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
 
 open class RichTextE2E : Base() {
     @Test
@@ -63,7 +63,9 @@ open class RichTextE2E : Base() {
         val richText = CMARichDocument().addContent(
                 CMARichParagraph().addContent(
                         CMARichHyperLink(
-                                client.entries().fetchAll().items.first()
+                                CMALink(
+                                        client.entries().fetchAll().items.first()
+                                )
                         )
                 )
         )
@@ -82,8 +84,9 @@ open class RichTextE2E : Base() {
         assertNotNull(link as CMARichHyperLink)
 
         val data = link.data
-        assertNotNull(data as CMAEntry)
-        assertNotEquals("rich text links title", data.getField("title", "en-US"))
+        assertNotNull(data as CMALink)
+        assertEquals(data.system.type, CMAType.Link)
+        assertEquals(data.system.linkType, CMAType.Entry)
 
         assertEquals(204, client.entries().delete(entry))
         assertEquals(previousItemCount, client.entries().fetchAll().total)
@@ -94,9 +97,13 @@ open class RichTextE2E : Base() {
         val previousItemCount = client.entries().fetchAll().total
 
         val richText = CMARichDocument().addContent(
-                CMARichText("Hello World"),
-                CMARichHyperLink(
-                        client.entries().fetchAll().items.first()
+                CMARichParagraph().addContent(
+                        CMARichText("Hello World"),
+                        CMARichHyperLink(
+                                CMALink(
+                                        client.entries().fetchAll().items.first()
+                                )
+                        )
                 )
         )
 
@@ -105,17 +112,23 @@ open class RichTextE2E : Base() {
         entry.setField("rich_text", "en-US", richText)
 
         entry = client.entries().create("theOnlyContentModel", entry)
-        assertEquals(2, entry.getField<CMARichDocument>("rich_text", "en-US").content.size)
 
-        val text = entry.getField<CMARichDocument>("rich_text", "en-US").content.first()
-        assertTrue(text is CMARichText)
-        assertEquals("Hello World", (text as CMARichText).value)
+        val document = entry.getField<CMARichDocument>("rich_text", "en-US")
+        assertEquals(1, document.content.size)
 
-        val link = entry.getField<CMARichDocument>("rich_text", "en-US").content.second()
-        assertTrue(link is CMARichHyperLink)
-        val data = (link as CMARichHyperLink).data
-        assertTrue(data is CMAEntry)
-        assertNotEquals("rich text title", (data as CMAEntry).getField("title", "en-US"))
+        val paragraph = document.content.first() as CMARichParagraph
+        assertEquals(2, paragraph.content.size)
+
+        val text = paragraph.content.first()
+        assertNotNull(text as CMARichText)
+        assertEquals("Hello World", text.value)
+
+        val link = paragraph.content.second()
+        assertNotNull(link as CMARichHyperLink)
+        val data = link.data
+
+        assertNotNull(data as CMALink)
+        assertNotNull(data.id)
 
         assertEquals(204, client.entries().delete(entry))
         assertEquals(previousItemCount, client.entries().fetchAll().total)
