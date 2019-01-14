@@ -1,1 +1,10 @@
-{"fields":{"fid1":{"en-US":"value1"},"fid2":{"en-US":"value2"}}}
+{
+  "fields": {
+    "fid1": {
+      "en-US": "value1"
+    },
+    "fid2": {
+      "en-US": "value2"
+    }
+  }
+}

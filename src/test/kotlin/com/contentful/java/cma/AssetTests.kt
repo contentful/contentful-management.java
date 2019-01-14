@@ -33,6 +33,7 @@ import java.io.IOException
 import java.util.logging.LogManager
 import kotlin.test.*
 import org.junit.Test as test
+import org.skyscreamer.jsonassert.JSONAssert.assertEquals as assertEqualJsons
 
 class AssetTests {
     var server: MockWebServer? = null
@@ -108,7 +109,7 @@ class AssetTests {
         val recordedRequest = server!!.takeRequest()
         assertEquals("POST", recordedRequest.method)
         assertEquals("/spaces/spaceid/environments/master/assets", recordedRequest.path)
-        assertEquals(requestBody, recordedRequest.body.readUtf8())
+        assertEqualJsons(requestBody, recordedRequest.body.readUtf8(), false)
     }
 
     @test
@@ -131,7 +132,7 @@ class AssetTests {
         assertEquals("POST", recordedRequest.method)
         assertEquals("/spaces/configuredSpaceId/environments/configuredEnvironmentId/assets",
                 recordedRequest.path)
-        assertEquals(requestBody, recordedRequest.body.readUtf8())
+        assertEqualJsons(requestBody, recordedRequest.body.readUtf8(), false)
     }
 
     @test
@@ -154,7 +155,7 @@ class AssetTests {
         assertEquals("PUT", recordedRequest.method)
         assertEquals("/spaces/spaceid/environments/master/assets/assetid",
                 recordedRequest.path)
-        assertEquals(requestBody, recordedRequest.body.readUtf8())
+        assertEqualJsons(requestBody, recordedRequest.body.readUtf8(), false)
     }
 
     @test
@@ -395,7 +396,7 @@ class AssetTests {
         assertEquals("/spaces/spaceid/environments/master/assets/assetid",
                 recordedRequest.path)
         assertNotNull(recordedRequest.getHeader("X-Contentful-Version"))
-        assertEquals(requestBody, recordedRequest.body.readUtf8())
+        assertEqualJsons(requestBody, recordedRequest.body.readUtf8(), false)
     }
 
     @test
@@ -427,7 +428,7 @@ class AssetTests {
         assertEquals("/spaces/spaceid/environments/master/assets/assetid",
                 recordedRequest.path)
         assertNotNull(recordedRequest.getHeader("X-Contentful-Version"))
-        assertEquals(requestBody, recordedRequest.body.readUtf8())
+        assertEqualJsons(requestBody, recordedRequest.body.readUtf8(), false)
     }
 
     @test(expected = RuntimeException::class)

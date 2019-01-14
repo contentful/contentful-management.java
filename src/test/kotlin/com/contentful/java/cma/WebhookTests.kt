@@ -28,6 +28,7 @@ import java.io.IOException
 import java.util.logging.LogManager
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import org.skyscreamer.jsonassert.JSONAssert.assertEquals as assertEqualJsons
 import org.junit.Test as test
 
 class WebhookTests {
@@ -78,7 +79,7 @@ class WebhookTests {
         val recordedRequest = server!!.takeRequest()
         assertEquals("POST", recordedRequest.method)
         assertEquals("/spaces/spaceid/webhook_definitions", recordedRequest.path)
-        assertEquals(requestBody, recordedRequest.body.readUtf8())
+        assertEqualJsons(requestBody, recordedRequest.body.readUtf8(), false)
     }
 
     @test
@@ -123,7 +124,7 @@ class WebhookTests {
         val recordedRequest = server!!.takeRequest()
         assertEquals("PUT", recordedRequest.method)
         assertEquals("/spaces/spaceid/webhook_definitions/webhookid", recordedRequest.path)
-        assertEquals(requestBody, recordedRequest.body.readUtf8())
+        assertEqualJsons(requestBody, recordedRequest.body.readUtf8(), true)
     }
 
     @test

@@ -33,6 +33,7 @@ import java.util.*
 import java.util.logging.LogManager
 import kotlin.test.*
 import org.junit.Test as test
+import org.skyscreamer.jsonassert.JSONAssert.assertEquals as assertEqualJsons
 
 class EntryTests {
     var server: MockWebServer? = null
@@ -106,7 +107,7 @@ class EntryTests {
         val recordedRequest = server!!.takeRequest()
         assertEquals("POST", recordedRequest.method)
         assertEquals("/spaces/spaceid/environments/master/entries", recordedRequest.path)
-        assertEquals(requestBody, recordedRequest.body.readUtf8())
+        assertEqualJsons(requestBody, recordedRequest.body.readUtf8(), false)
         assertEquals("ctid", recordedRequest.getHeader("X-Contentful-Content-Type"))
     }
 
@@ -148,7 +149,7 @@ class EntryTests {
         val recordedRequest = server!!.takeRequest()
         assertEquals("PUT", recordedRequest.method)
         assertEquals("/spaces/spaceid/environments/master/entries/entryid", recordedRequest.path)
-        assertEquals(requestBody, recordedRequest.body.readUtf8())
+        assertEqualJsons(requestBody, recordedRequest.body.readUtf8(), false)
         assertEquals("ctid", recordedRequest.getHeader("X-Contentful-Content-Type"))
     }
 
@@ -172,7 +173,7 @@ class EntryTests {
 
         val requestBody = TestUtils.fileToString("entry_create_links_request.json")
         val request = server!!.takeRequest()
-        assertEquals(requestBody, request.body.readUtf8())
+        assertEqualJsons(requestBody, request.body.readUtf8(), false)
     }
 
     @test(expected = RuntimeException::class)
@@ -355,7 +356,7 @@ class EntryTests {
         assertEquals("PUT", recordedRequest.method)
         assertEquals("/spaces/spaceid/environments/master/entries/entryid", recordedRequest.path)
         assertNotNull(recordedRequest.getHeader("X-Contentful-Version"))
-        assertEquals(requestBody, recordedRequest.body.readUtf8())
+        assertEqualJsons(requestBody, recordedRequest.body.readUtf8(), false)
     }
 
     @test

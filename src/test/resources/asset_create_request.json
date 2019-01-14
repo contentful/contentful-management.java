@@ -1,1 +1,10 @@
-{"fields":{"title":{"en-US":"title"},"description":{"en-US":"description"}}}
+{
+  "fields": {
+    "title": {
+      "en-US": "title"
+    },
+    "description": {
+      "en-US": "description"
+    }
+  }
+}

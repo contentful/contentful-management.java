@@ -1,1 +1,34 @@
-{"fields":{"name":{"en-US":"foo"},"link":{"en-US":{"sys":{"type":"Link","linkType":"Entry","id":"bar"}},"he-IL":{"sys":{"type":"Link","linkType":"Entry","id":"bar"}}},"array":{"en-US":[{"sys":{"type":"Link","linkType":"Entry","id":"bar"}}]}}}
+{
+  "fields": {
+    "name": {
+      "en-US": "foo"
+    },
+    "link": {
+      "en-US": {
+        "sys": {
+          "type": "Link",
+          "linkType": "Entry",
+          "id": "bar"
+        }
+      },
+      "he-IL": {
+        "sys": {
+          "type": "Link",
+          "linkType": "Entry",
+          "id": "bar"
+        }
+      }
+    },
+    "array": {
+      "en-US": [
+        {
+          "sys": {
+            "type": "Link",
+            "linkType": "Entry",
+            "id": "bar"
+          }
+        }
+      ]
+    }
+  }
+}
