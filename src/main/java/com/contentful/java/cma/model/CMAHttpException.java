@@ -21,6 +21,8 @@ import static java.lang.String.format;
  * This class will represent known Contentful exceptions
  */
 public class CMAHttpException extends RuntimeException {
+  private static final long serialVersionUID = 6844124565767723268L;
+
   /**
    * Error body potentially delivered with an error request.
    */
@@ -132,7 +134,8 @@ public class CMAHttpException extends RuntimeException {
               + (getName() != null ? "name = " + getName() + ", " : "")
               + (getPath() != null ? "path = " + getPath() + ", " : "")
               + (getType() != null ? "type = " + getType() + ", " : "")
-              + (getValue() != null ? "value = " + getValue() + " " : "")
+              + (getValue() != null ? "value = " + getValue() + ", " : "")
+              + (getExpected() != null ? "expected = " + getExpected() + " " : "")
               + "}";
         }
       }

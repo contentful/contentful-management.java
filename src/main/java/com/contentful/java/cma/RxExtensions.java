@@ -66,7 +66,6 @@ final class RxExtensions {
    * Error Action.
    */
   static class ActionError extends AbsAction<Throwable> {
-    @SuppressWarnings("unchecked")
     public ActionError(Executor executor, CMACallback callback) {
       super(executor, callback);
     }

@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Version [3.2.2] - (TBD)
+- Fix updating rich text fields
+
 ## Version [3.2.1] - (2018-12-10)
 - Fix Snapshots to contain entries and content types
 
