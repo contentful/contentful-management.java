@@ -2,11 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Version [3.2.2] - (TBD)
-- Fix updating rich text fields
+## Version [3.2.2] - (2019-01-14)
+- Fix updating rich text fields.
 
 ## Version [3.2.1] - (2018-12-10)
-- Fix Snapshots to contain entries and content types
+- Fix Snapshots to contain entries and content types.
 
 ## Version [3.2.0] - (2018-11-12)
 - Add [rich text](https://www.contentful.com/developers/docs/concepts/rich-text/) management classes.
@@ -154,7 +154,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Version 0.9.0 - 2014-11-18
 Initial release.
 
-[unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-3.2.1...HEAD
+[unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-3.2.2...HEAD
+[3.2.2]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-3.2.1...cma-sdk-3.2.2
 [3.2.1]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-3.2.0...cma-sdk-3.2.1
 [3.2.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-3.1.0...cma-sdk-3.2.0
 [3.1.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-3.0.0...cma-sdk-3.1.0
