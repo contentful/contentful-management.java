@@ -1,1 +1,15 @@
-{"name":"cma-created","url":"http://lorempixel.com/200/200/cats","topics":["*.*"],"headers":[{"key":"key","value":"value"}],"httpBasicUsername":"user","httpBasicPassword":"password"}
+{
+  "name": "cma-created",
+  "url": "http://lorempixel.com/200/200/cats",
+  "topics": [
+    "*.*"
+  ],
+  "headers": [
+    {
+      "key": "key",
+      "value": "value"
+    }
+  ],
+  "httpBasicUsername": "user",
+  "httpBasicPassword": "password"
+}

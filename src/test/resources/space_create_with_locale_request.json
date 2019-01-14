@@ -1,1 +1,4 @@
-{"name":"foo","defaultLocale":"de-DE"}
+{
+  "name": "foo",
+  "defaultLocale": "de-DE"
+}

@@ -92,7 +92,7 @@ open class ContentTypesE2E : Base() {
         val contentType = snapshotClient.contentTypes().fetchAll(mapOf("limit" to "1")).items.first()
 
         val snapshots = snapshotClient.contentTypes().fetchAllSnapshots(contentType)
-        assertEquals(1, snapshots.items.size)
+        assertTrue(snapshots.items.size >= 1)
 
         val snapshot = snapshotClient.contentTypes().fetchOneSnapshot(contentType, snapshots.items.first().id)
         assertEquals(snapshots.items.first().toString().trim(), snapshot.toString().trim())

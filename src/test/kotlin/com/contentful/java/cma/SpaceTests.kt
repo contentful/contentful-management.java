@@ -31,6 +31,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import org.junit.Test as test
+import org.skyscreamer.jsonassert.JSONAssert.assertEquals as assertEqualJsons
 
 class SpaceTests {
     var server: MockWebServer? = null
@@ -77,7 +78,7 @@ class SpaceTests {
         val recordedRequest = server!!.takeRequest()
         assertEquals("POST", recordedRequest.method)
         assertEquals("/spaces", recordedRequest.path)
-        assertEquals(requestBody, recordedRequest.body.readUtf8())
+        assertEqualJsons(requestBody, recordedRequest.body.readUtf8(), false)
     }
 
     @test
@@ -99,7 +100,7 @@ class SpaceTests {
         val recordedRequest = server!!.takeRequest()
         assertEquals("POST", recordedRequest.method)
         assertEquals("/spaces", recordedRequest.path)
-        assertEquals(requestBody, recordedRequest.body.readUtf8())
+        assertEqualJsons(requestBody, recordedRequest.body.readUtf8(), false)
     }
 
     @test
@@ -290,7 +291,7 @@ class SpaceTests {
         assertEquals("PUT", recordedRequest.method)
         assertEquals("/spaces/spaceid", recordedRequest.path)
         assertNotNull(recordedRequest.getHeader("X-Contentful-Version"))
-        assertEquals(requestBody, recordedRequest.body.readUtf8())
+        assertEqualJsons(requestBody, recordedRequest.body.readUtf8(), false)
     }
 
     @test(expected = Exception::class)

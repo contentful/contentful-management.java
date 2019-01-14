@@ -27,6 +27,7 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
 import org.junit.Before
+import org.skyscreamer.jsonassert.JSONAssert.assertEquals as assertEqualJsons
 import java.util.logging.LogManager
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -89,7 +90,7 @@ class RichFieldTests {
 
         // Request
         val recordedRequest = server!!.takeRequest()
-        assertEquals(requestBody, recordedRequest.body.readUtf8())
+        assertEqualJsons(requestBody, recordedRequest.body.readUtf8(), false)
     }
 
     @test
@@ -126,7 +127,7 @@ class RichFieldTests {
         assertEquals(1, text.marks.size)
         assertTrue(text.marks.first() is CMARichMark.CMARichMarkCode)
 
-        assertEquals("This is some simple text", text.value)
+        assertEquals("This is some updated simple rich text", text.value)
     }
 
     @test
@@ -172,7 +173,7 @@ class RichFieldTests {
         assertEquals("/spaces/spaceid/environments/master/entries/6VkkamQ5zO4qWIugKkWowK",
                 recordedRequest.path)
         assertNotNull(recordedRequest.getHeader("X-Contentful-Version"))
-        assertEquals(requestBody, recordedRequest.body.readUtf8())
+        assertEqualJsons(requestBody, recordedRequest.body.readUtf8(), false)
     }
 
     @test
