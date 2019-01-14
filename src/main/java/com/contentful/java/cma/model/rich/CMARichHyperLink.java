@@ -18,10 +18,18 @@ public class CMARichHyperLink extends CMARichBlock {
    * Create a new hyper link.
    *
    * @param target point to the target.
+   * @throws IllegalStateException if target is not a {@link String}
+   * @throws IllegalStateException if target is not a {@link com.contentful.java.cma.model.CMALink}
    */
   public CMARichHyperLink(Object target) {
     this();
-    this.data = target;
+    if (target instanceof String || target instanceof CMALink) {
+      this.data = target;
+    } else {
+      throw new IllegalStateException("Target " + target + " of type '"
+          + target.getClass().getCanonicalName() + "'is neither a String, nor "
+          + "a CMAAsset, nor a  CMAEntry.");
+    }
   }
 
   /**

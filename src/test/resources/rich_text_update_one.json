@@ -10,7 +10,7 @@
     "id": "6VkkamQ5zO4qWIugKkWowK",
     "type": "Entry",
     "createdAt": "2018-10-17T13:32:24.855Z",
-    "updatedAt": "2018-11-06T12:54:13.327Z",
+    "updatedAt": "2019-01-14T11:21:09.433Z",
     "environment": {
       "sys": {
         "id": "master",
@@ -32,8 +32,8 @@
         "id": "<user_id>"
       }
     },
-    "publishedCounter": 1,
-    "version": 4,
+    "publishedCounter": 2,
+    "version": 10,
     "publishedBy": {
       "sys": {
         "type": "Link",
@@ -41,9 +41,9 @@
         "id": "<user_id>"
       }
     },
-    "publishedVersion": 1,
+    "publishedVersion": 8,
     "firstPublishedAt": "2018-10-17T13:32:33.090Z",
-    "publishedAt": "2018-10-17T13:32:33.090Z",
+    "publishedAt": "2019-01-03T16:24:58.781Z",
     "contentType": {
       "sys": {
         "type": "Link",
@@ -58,19 +58,15 @@
     },
     "rich": {
       "en-US": {
+        "data": {},
         "content": [
           {
             "data": {},
             "content": [
               {
-                "marks": [
-                  {
-                    "data": {},
-                    "type": "code",
-                    "object": "mark"
-                  }
-                ],
-                "value": "This is some updated simple rich text",
+                "data": {},
+                "marks": [],
+                "value": "delete me soon™",
                 "nodeType": "text"
               }
             ],

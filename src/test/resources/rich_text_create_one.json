@@ -9,8 +9,8 @@
     },
     "id": "richtexttestentry",
     "type": "Entry",
-    "createdAt": "2018-10-31T14:02:38.966Z",
-    "updatedAt": "2018-10-31T14:02:38.966Z",
+    "createdAt": "2019-01-14T11:18:00.238Z",
+    "updatedAt": "2019-01-14T11:18:00.238Z",
     "environment": {
       "sys": {
         "id": "master",
@@ -47,16 +47,16 @@
     },
     "rich": {
       "en-US": {
+        "data": {},
         "content": [
           {
             "data": {},
             "content": [
               {
+                "data": {},
                 "marks": [
                   {
-                    "data": {},
-                    "type": "bold",
-                    "object": "mark"
+                    "type": "bold"
                   }
                 ],
                 "value": "delete me soon™",

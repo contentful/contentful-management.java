@@ -27,6 +27,16 @@ public class CMALink extends CMAResource {
   }
 
   /**
+   * Sets the target type and id from a given resource.
+   *
+   * @param resource to be linked to.
+   */
+  public CMALink(CMAResource resource) {
+    this(resource.getSystem().getType());
+    setId(resource.getId());
+  }
+
+  /**
    * Change ths system property to a new one.
    *
    * @param system the system property to be set.

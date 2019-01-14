@@ -236,7 +236,7 @@ class CMAHttpExceptionTest {
         assertEquals("FAILED ErrorBody { details = Details { errors = [Error " +
                 "{ details = The type of \"value\" is incorrect, expected type: Object," +
                 " name = type, path = [fields, xqZFfK7YdzEfhhJg, en-US], type = Object, " +
-                "value = bar }], }, message = Validation error, " +
+                "value = bar, }], }, message = Validation error, " +
                 "requestId = 8cd7ef1751dd283ee230e6a58efef8ec, sys = Sys { id = InvalidEntry, " +
                 "type = Error } }\n" +
                 "\tRequest{method=GET, url=https://example.com/foo, tags={}}\n" +
