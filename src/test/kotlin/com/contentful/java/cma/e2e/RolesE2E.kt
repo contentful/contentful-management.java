@@ -17,7 +17,6 @@
 package com.contentful.java.cma.e2e
 
 import com.contentful.java.cma.CMAClient
-import com.contentful.java.cma.model.CMARole
 import org.junit.BeforeClass
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -44,17 +43,5 @@ open class RolesE2E : Base() {
     fun testRoles() {
         val roles = client.roles().fetchAll().items
         assertEquals(0, roles.size)
-
-//        var role = client.roles().fetchOne(roles.first().id)
-//        assertEquals("test role", role.name)
-//        assertEquals("test description", role.description)
-//
-//        role.name = "test role 2"
-//        role = client.roles().update(role)
-//        assertEquals("test role 2", role.name)
-//
-//        val result = client.roles().delete(role)
-//        assertEquals(204, result)
-
     }
 }
