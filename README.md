@@ -93,7 +93,7 @@ Install the Contentful dependency:
 compile 'com.contentful.java:cma-sdk:3.2.2'
 ```
 
-This SDK requires Java 7 (or higher version) or Android 5.
+This SDK requires Java 8 (or higher version).
 
 Client Creation
 ---------------
@@ -235,23 +235,7 @@ The SDK uses [Retrofit][2] as a REST client, which detects [OkHttp][3] in the cl
 
 The recommended approach would be to add [OkHttp][3] as a dependency to your project, but that is completely optional.
 
-YIt is possible to specify a custom client to be used, refer to the [official documentation][4] for instructions.
-
-ProGuard
---------
-
-The following lines are the start of a `proguard` file used for minifying Android distributions.
-https://github.com/contentful/contentful-management.java/pull/110#issuecomment-411362987)Ou
-```
--keepattributes Signature
--dontwarn rx.**
--dontwarn retrofit.**
--keep class retrofit.** { *; }
--keep class com.contentful.java.cma.** { *; }
--keep class com.google.gson.** { *; }
--keep class sun.misc.Unsafe { *; }
-```
-
+It is possible to specify a custom client to be used, refer to the [official documentation][4] for instructions.
 
 Pre-releases
 ------------
