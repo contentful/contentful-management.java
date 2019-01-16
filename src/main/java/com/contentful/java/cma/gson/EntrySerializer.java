@@ -109,37 +109,43 @@ public class EntrySerializer implements JsonSerializer<CMAEntry>, JsonDeserializ
 
   private JsonElement serializeRichNode(JsonSerializationContext context, CMARichNode node) {
     if (node instanceof CMARichHyperLink) {
-      final CMARichHyperLink link = (CMARichHyperLink) node;
-      final JsonObject jsonLink = freshGson.toJsonTree(link).getAsJsonObject();
-
-      jsonLink.addProperty("nodeType", link.getNodeType());
-
-      final Map<String, Object> data = new LinkedHashMap<>(1);
-      if (link.getData() instanceof CMAResource) {
-        data.put("target", toLink(context, (CMAResource) link.getData()));
-      } else {
-        data.put("uri", link.getData());
-        data.remove("target");
-      }
-
-      jsonLink.add("data", context.serialize(data));
-      return jsonLink;
-
+      return serializeRichHyperlink(context, (CMARichHyperLink) node);
     } else if (node instanceof CMARichBlock) {
-      final CMARichBlock block = (CMARichBlock) node;
-      final JsonObject jsonBlock = freshGson.toJsonTree(block).getAsJsonObject();
-
-      final JsonArray jsonContent = new JsonArray(block.getContent().size());
-      for (final CMARichNode contentNode : block.getContent()) {
-        jsonContent.add(serializeRichNode(context, contentNode));
-      }
-
-      jsonBlock.add("content", jsonContent);
-
-      return jsonBlock;
+      return serializeRichBlock(context, (CMARichBlock) node);
     } else {
       return context.serialize(node);
     }
+  }
+
+  private JsonElement serializeRichBlock(JsonSerializationContext context, CMARichBlock block) {
+    final JsonObject jsonBlock = freshGson.toJsonTree(block).getAsJsonObject();
+
+    final JsonArray jsonContent = new JsonArray(block.getContent().size());
+    for (final CMARichNode contentNode : block.getContent()) {
+      jsonContent.add(serializeRichNode(context, contentNode));
+    }
+
+    jsonBlock.add("content", jsonContent);
+
+    return jsonBlock;
+  }
+
+  private JsonElement serializeRichHyperlink(JsonSerializationContext context,
+                                             CMARichHyperLink link) {
+    final JsonObject jsonLink = freshGson.toJsonTree(link).getAsJsonObject();
+
+    jsonLink.addProperty("nodeType", link.getNodeType());
+
+    final Map<String, Object> data = new LinkedHashMap<>(1);
+    if (link.getData() instanceof CMAResource) {
+      data.put("target", toLink(context, (CMAResource) link.getData()));
+    } else {
+      data.put("uri", link.getData());
+      data.remove("target");
+    }
+
+    jsonLink.add("data", context.serialize(data));
+    return jsonLink;
   }
 
   private JsonObject toLink(JsonSerializationContext context, CMAResource resource) {
