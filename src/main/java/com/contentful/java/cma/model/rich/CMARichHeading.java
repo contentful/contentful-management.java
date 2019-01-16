@@ -6,7 +6,7 @@ package com.contentful.java.cma.model.rich;
  * Can have an arbitrary level assigned, but useful probably between 1 and 6.
  */
 public class CMARichHeading extends CMARichBlock {
-  private final int level;
+  private final transient int level;
 
   /**
    * Create a heading block, describing a level elements deep nested heading.
