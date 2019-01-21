@@ -84,13 +84,13 @@ Install the Contentful dependency:
 <dependency>
   <groupId>com.contentful.java</groupId>
   <artifactId>cma-sdk</artifactId>
-  <version>3.2.2</version>
+  <version>3.2.3</version>
 </dependency>
 ```
 
 * _Gradle_
 ```groovy
-compile 'com.contentful.java:cma-sdk:3.2.2'
+compile 'com.contentful.java:cma-sdk:3.2.3'
 ```
 
 This SDK requires Java 8 (or higher version).
@@ -237,6 +237,21 @@ The recommended approach would be to add [OkHttp][3] as a dependency to your pro
 
 It is possible to specify a custom client to be used, refer to the [official documentation][4] for instructions.
 
+
+RichText Hierarchy
+------------------
+
+In order to create and update rich text fields, the following rule set is enforced from Contentful:
+
+1. A Document cannot be nested inside a Document.
+1. A Document can only contain Paragraphs, Lists, or Texts.
+1. Paragraphs can contain Paragraphs or Text and Link nodes.
+1. Links have to be inside of Paragraphs.
+1. A List has to be inside of a Document.
+1. A ListItem has to contain at least one Paragraph.
+
+For supported and tested combinations of Nodes, please take a look at the [Rich Text End to End tests](src/test/kotlin/com/contentful/java/cma/e2e/RichTextE2E.kt), those will be kept updated over time and should give an overview on what is possible.
+
 Pre-releases
 ------------
 
@@ -246,14 +261,14 @@ Snapshots of the development version are available through
 
 ```groovy
 maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-compile 'com.contentful.java:cma-sdk:3.2.2-SNAPSHOT'
+compile 'com.contentful.java:cma-sdk:3.2.3-SNAPSHOT'
 ```
 
 * [jitpack.io](https://jitpack.io/#contentful/contentful-management.java/master-SNAPSHOT):
 
 ```groovy
 maven { url 'https://jitpack.io' }
-compile 'com.github.contentful:contentful.java:cma-sdk-3.2.2-SNAPSHOT'
+compile 'com.github.contentful:contentful.java:cma-sdk-3.2.3-SNAPSHOT'
 ```
 
 Documentation
