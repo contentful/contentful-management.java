@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Version [3.2.4] - (2019-01-28)
+- add marks to rich text nodes parsing
+
 ## Version [3.2.3] - (2019-01-21)
 - Add e2e tests for rich text element creation.
 - Added rules for creation of rich text elements to [README.md](README.md).
@@ -158,13 +161,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Version 0.9.0 - 2014-11-18
 Initial release.
 
-[unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-3.2.3...HEAD
-[3.2.3]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-3.2.2...cma-sdk-3.2.3
-[3.2.2]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-3.2.1...cma-sdk-3.2.2
-[3.2.1]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-3.2.0...cma-sdk-3.2.1
-[3.2.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-3.1.0...cma-sdk-3.2.0
-[3.1.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-3.0.0...cma-sdk-3.1.0
-[3.0.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.2.2...cma-sdk-3.0.0
+[unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-3.2.4...HEAD
+[3.2.4]: https://github.com/contentful/contentful-management.java/compare/v3.2.3...v3.2.4
+[3.2.3]: https://github.com/contentful/contentful-management.java/compare/v3.2.2...v3.2.3
+[3.2.2]: https://github.com/contentful/contentful-management.java/compare/v3.2.1...v3.2.2
+[3.2.1]: https://github.com/contentful/contentful-management.java/compare/v3.2.0...v3.2.1
+[3.2.0]: https://github.com/contentful/contentful-management.java/compare/v3.1.0...v3.2.0
+[3.1.0]: https://github.com/contentful/contentful-management.java/compare/v3.0.0...v3.1.0
+[3.0.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.2.2...v3.0.0
 [2.2.3]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.2.2...cma-sdk-2.2.3
 [2.2.2]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.2.1...cma-sdk-2.2.2
 [2.2.1]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.2.0...cma-sdk-2.2.1

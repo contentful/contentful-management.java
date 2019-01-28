@@ -20,6 +20,7 @@ import com.contentful.java.cma.model.CMAEntry
 import com.contentful.java.cma.model.CMALink
 import com.contentful.java.cma.model.CMAType
 import com.contentful.java.cma.model.rich.*
+import com.contentful.java.cma.model.rich.CMARichMark.CMARichMarkBold
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -485,6 +486,44 @@ open class RichTextE2E : Base() {
         val resultText = resultParagraph.content.first()
         assertNotNull(resultText as CMARichText)
         assertEquals("test text", resultText.value)
+
+        assertNotNull(result)
+        assertEquals(entry::class, result::class)
+
+        result = client.entries().publish(result)
+
+        assertNotNull(result)
+        assertEquals(entry::class, result::class)
+    }
+
+    @Test
+    fun testRichTextWithMarks() {
+        val richText = document(
+                CMARichParagraph().addContent(
+                        CMARichText("bold test text",
+                                mutableListOf<CMARichMark>(CMARichMarkBold())
+                        )
+                )
+        )
+        val entry = CMAEntry()
+        entry.setField("title", "en-US", "bold test text")
+        entry.setField("rich_text", "en-US", richText)
+
+        var result = client.entries().create("theOnlyContentModel", entry)
+
+        val richResult = result.getField<CMARichDocument>("rich_text", "en-US")
+        assertNotNull(richResult as CMARichDocument)
+        assertEquals(1, richResult.content.size)
+
+        val resultParagraph = richResult.content.first()
+        assertNotNull(resultParagraph as CMARichParagraph)
+        assertEquals(1, resultParagraph.content.size)
+
+        val resultText = resultParagraph.content.first()
+        assertNotNull(resultText as CMARichText)
+        assertEquals("bold test text", resultText.value)
+        assertEquals(1, resultText.marks.size)
+        assertNotNull(resultText.marks.first() as CMARichMarkBold)
 
         assertNotNull(result)
         assertEquals(entry::class, result::class)
