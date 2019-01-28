@@ -7,7 +7,6 @@ package com.contentful.java.cma.model.rich;
  */
 public class CMARichMark {
   private final String type;
-  private final String object = "mark";
 
   protected CMARichMark(String type) {
     this.type = type;
