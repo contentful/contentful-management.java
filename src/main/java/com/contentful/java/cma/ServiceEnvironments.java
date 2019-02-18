@@ -18,7 +18,6 @@ package com.contentful.java.cma;
 
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAEnvironment;
-
 import io.reactivex.Flowable;
 import retrofit2.Response;
 import retrofit2.http.Body;
@@ -38,9 +37,22 @@ interface ServiceEnvironments {
       @Path("spaceId") String spaceId,
       @Body CMAEnvironment environment);
 
+  @POST("/spaces/{spaceId}/environments")
+  Flowable<CMAEnvironment> branch(
+      @Path("spaceId") String spaceId,
+      @Header("X-Contentful-Source-Environment") String sourceEnvironmentId,
+      @Body CMAEnvironment environment);
+
   @PUT("/spaces/{spaceId}/environments/{environmentId}")
   Flowable<CMAEnvironment> create(
       @Path("spaceId") String spaceId,
+      @Path("environmentId") String environmentId,
+      @Body CMAEnvironment environment);
+
+  @PUT("/spaces/{spaceId}/environments/{environmentId}")
+  Flowable<CMAEnvironment> branch(
+      @Path("spaceId") String spaceId,
+      @Header("X-Contentful-Source-Environment") String sourceEnvironmentId,
       @Path("environmentId") String environmentId,
       @Body CMAEnvironment environment);
 
