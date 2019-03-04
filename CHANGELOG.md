@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Version [3.3.0] - (2019-03-04)
+- add environment branching
+
 ## Version [3.2.4] - (2019-01-28)
 - add marks to rich text nodes parsing
 
@@ -161,7 +164,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Version 0.9.0 - 2014-11-18
 Initial release.
 
-[unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-3.2.4...HEAD
+[unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-3.3.0...HEAD
+[3.3.0]: https://github.com/contentful/contentful-management.java/compare/v3.2.4...v3.3.0
 [3.2.4]: https://github.com/contentful/contentful-management.java/compare/v3.2.3...v3.2.4
 [3.2.3]: https://github.com/contentful/contentful-management.java/compare/v3.2.2...v3.2.3
 [3.2.2]: https://github.com/contentful/contentful-management.java/compare/v3.2.1...v3.2.2

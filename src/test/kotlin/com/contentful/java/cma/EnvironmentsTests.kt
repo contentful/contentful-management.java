@@ -30,6 +30,7 @@ import org.junit.Before
 import java.util.logging.LogManager
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
 import org.junit.Test as test
 
 class EnvironmentsTests {
@@ -135,6 +136,82 @@ class EnvironmentsTests {
         val recordedRequest = server!!.takeRequest()
         assertEquals("PUT", recordedRequest.method)
         assertEquals("/spaces/%3Cspace_id%3E/environments/new_id", recordedRequest.path)
+    }
+
+    @test
+    fun testCreateFromOther() {
+        val responseBody = TestUtils.fileToString("environments_create_from_id.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        // should be fetched from Contentful.
+        val sourceEnvironment = CMAEnvironment().apply {
+            id = "source"
+            name = "source"
+            setSpaceId<CMAEnvironment>("my_space")
+        }
+
+        val newEnvironment = CMAEnvironment().apply {
+            name = "environment_from_id"
+            id = "branched_from_io"
+        }
+
+        val result = assertTestCallback(
+                client!!
+                        .environments()
+                        .async()
+                        .branch(
+                                sourceEnvironment,
+                                newEnvironment,
+                                TestCallback()
+                        ) as TestCallback)!!
+
+        assertEquals("branched_from_io", result.id)
+        assertEquals("<space_id>", result.spaceId)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("PUT", recordedRequest.method)
+        assertTrue(recordedRequest.headers.names().contains("X-Contentful-Source-Environment"))
+        assertEquals("source", recordedRequest.headers["X-Contentful-Source-Environment"])
+        assertEquals("/spaces/configuredSpaceId/environments/branched_from_io", recordedRequest.path)
+    }
+
+    @test
+    fun testCreateFromOtherWithoutTargetId() {
+        val responseBody = TestUtils.fileToString("environments_create_from_id.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+
+        // should be fetched from Contentful.
+        val sourceEnvironment = CMAEnvironment().apply {
+            id = "source"
+            name = "source"
+            setSpaceId<CMAEnvironment>("my_space")
+        }
+
+        val newEnvironment = CMAEnvironment().apply {
+            name = "environment_from_id"
+        }
+
+        val result = assertTestCallback(
+                client!!
+                        .environments()
+                        .async()
+                        .branch(
+                                sourceEnvironment,
+                                newEnvironment,
+                                TestCallback()
+                        ) as TestCallback)!!
+
+        assertEquals("branched_from_io", result.id)
+        assertEquals("<space_id>", result.spaceId)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("POST", recordedRequest.method)
+        assertTrue(recordedRequest.headers.names().contains("X-Contentful-Source-Environment"))
+        assertEquals("source", recordedRequest.headers["X-Contentful-Source-Environment"])
+        assertEquals("/spaces/configuredSpaceId/environments", recordedRequest.path)
     }
 
     @test

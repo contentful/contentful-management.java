@@ -20,10 +20,9 @@ import com.contentful.java.cma.RxExtensions.DefFunc;
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAEnvironment;
 import com.contentful.java.cma.model.CMASystem;
+import retrofit2.Retrofit;
 
 import java.util.concurrent.Executor;
-
-import retrofit2.Retrofit;
 
 /**
  * Environments Module.
@@ -50,7 +49,8 @@ public final class ModuleEnvironments extends AbsModule<ServiceEnvironments> {
     this.async = new Async();
   }
 
-  @Override protected ServiceEnvironments createService(Retrofit retrofit) {
+  @Override
+  protected ServiceEnvironments createService(Retrofit retrofit) {
     return retrofit.create(ServiceEnvironments.class);
   }
 
@@ -95,6 +95,41 @@ public final class ModuleEnvironments extends AbsModule<ServiceEnvironments> {
       }
     } finally {
       environment.setSystem(system);
+    }
+  }
+
+  /**
+   * Create an environment based on the content of another environment.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)}.
+   *
+   * @param sourceEnvironment the environment to be taken as a source of branching
+   * @param newEnvironment    the environment to be created, based on the source.
+   * @return {@link CMAEnvironment} result instance
+   * @throws IllegalArgumentException if sourceEnvironment is null.
+   * @throws IllegalArgumentException if newEnvironment is null.
+   * @throws IllegalArgumentException if the space of the source environment is not set.
+   */
+  public CMAEnvironment branch(CMAEnvironment sourceEnvironment, CMAEnvironment newEnvironment) {
+    assertNotNull(sourceEnvironment, "sourceEnvironment");
+    assertNotNull(newEnvironment, "newEnvironment");
+    assertNotNull(sourceEnvironment.getSpaceId(), "sourceEnvironment.spaceId");
+
+    final String environmentId = newEnvironment.getId();
+
+    final CMASystem system = newEnvironment.getSystem();
+    newEnvironment.setSystem(null);
+
+    try {
+      if (environmentId == null) {
+        return service.branch(spaceId, sourceEnvironment.getId(), newEnvironment).blockingFirst();
+      } else {
+        return service.branch(spaceId, sourceEnvironment.getId(), environmentId, newEnvironment)
+            .blockingFirst();
+      }
+    } finally {
+      newEnvironment.setSystem(system);
     }
   }
 
@@ -234,7 +269,8 @@ public final class ModuleEnvironments extends AbsModule<ServiceEnvironments> {
         final CMAEnvironment environment,
         CMACallback<CMAEnvironment> callback) {
       return defer(new DefFunc<CMAEnvironment>() {
-        @Override CMAEnvironment method() {
+        @Override
+        CMAEnvironment method() {
           return ModuleEnvironments.this.create(environment);
         }
       }, callback);
@@ -258,8 +294,34 @@ public final class ModuleEnvironments extends AbsModule<ServiceEnvironments> {
         final CMAEnvironment environment,
         CMACallback<CMAEnvironment> callback) {
       return defer(new DefFunc<CMAEnvironment>() {
-        @Override CMAEnvironment method() {
+        @Override
+        CMAEnvironment method() {
           return ModuleEnvironments.this.create(spaceId, environment);
+        }
+      }, callback);
+    }
+
+    /**
+     * Create an environment using a source environment.
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)}.
+     *
+     * @param sourceEnvironment base of the created environment.
+     * @param newEnvironment    to be created environment.
+     * @param callback          Callback
+     * @return the given CMACallback instance
+     * @throws IllegalArgumentException if space id is null.
+     * @throws IllegalArgumentException if environment is null.
+     */
+    public CMACallback<CMAEnvironment> branch(
+        final CMAEnvironment sourceEnvironment,
+        final CMAEnvironment newEnvironment,
+        CMACallback<CMAEnvironment> callback) {
+      return defer(new DefFunc<CMAEnvironment>() {
+        @Override
+        CMAEnvironment method() {
+          return ModuleEnvironments.this.branch(sourceEnvironment, newEnvironment);
         }
       }, callback);
     }
@@ -276,7 +338,8 @@ public final class ModuleEnvironments extends AbsModule<ServiceEnvironments> {
     public CMACallback<Integer> delete(final CMAEnvironment environment,
                                        CMACallback<Integer> callback) {
       return defer(new DefFunc<Integer>() {
-        @Override Integer method() {
+        @Override
+        Integer method() {
           return ModuleEnvironments.this.delete(environment);
         }
       }, callback);
@@ -295,7 +358,8 @@ public final class ModuleEnvironments extends AbsModule<ServiceEnvironments> {
     public CMACallback<CMAArray<CMAEnvironment>> fetchAll(
         CMACallback<CMAArray<CMAEnvironment>> callback) {
       return defer(new DefFunc<CMAArray<CMAEnvironment>>() {
-        @Override CMAArray<CMAEnvironment> method() {
+        @Override
+        CMAArray<CMAEnvironment> method() {
           return ModuleEnvironments.this.fetchAll();
         }
       }, callback);
@@ -318,7 +382,8 @@ public final class ModuleEnvironments extends AbsModule<ServiceEnvironments> {
         final String spaceId,
         CMACallback<CMAArray<CMAEnvironment>> callback) {
       return defer(new DefFunc<CMAArray<CMAEnvironment>>() {
-        @Override CMAArray<CMAEnvironment> method() {
+        @Override
+        CMAArray<CMAEnvironment> method() {
           return ModuleEnvironments.this.fetchAll(spaceId);
         }
       }, callback);
@@ -339,7 +404,8 @@ public final class ModuleEnvironments extends AbsModule<ServiceEnvironments> {
         final String environmentId,
         CMACallback<CMAEnvironment> callback) {
       return defer(new DefFunc<CMAEnvironment>() {
-        @Override CMAEnvironment method() {
+        @Override
+        CMAEnvironment method() {
           return ModuleEnvironments.this.fetchOne(environmentId);
         }
       }, callback);
@@ -363,7 +429,8 @@ public final class ModuleEnvironments extends AbsModule<ServiceEnvironments> {
         final String environmentId,
         CMACallback<CMAEnvironment> callback) {
       return defer(new DefFunc<CMAEnvironment>() {
-        @Override CMAEnvironment method() {
+        @Override
+        CMAEnvironment method() {
           return ModuleEnvironments.this.fetchOne(spaceId, environmentId);
         }
       }, callback);
@@ -385,7 +452,8 @@ public final class ModuleEnvironments extends AbsModule<ServiceEnvironments> {
         final CMAEnvironment environment,
         CMACallback<CMAEnvironment> callback) {
       return defer(new DefFunc<CMAEnvironment>() {
-        @Override CMAEnvironment method() {
+        @Override
+        CMAEnvironment method() {
           return ModuleEnvironments.this.update(environment);
         }
       }, callback);

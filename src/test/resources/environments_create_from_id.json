@@ -1,0 +1,39 @@
+{
+  "name":"environment branched from io",
+  "sys":{
+    "type":"Environment",
+    "id":"branched_from_io",
+    "version":1,
+    "space":{
+      "sys":{
+        "type":"Link",
+        "linkType":"Space",
+        "id":"<space_id>"
+      }
+    },
+    "status":{
+      "sys":{
+        "type":"Link",
+        "linkType":"Status",
+        "id":"queued"
+      }
+    },
+    "createdBy":{
+      "sys":{
+        "type":"Link",
+        "linkType":"User",
+        "id":"<user_id>"
+      }
+    },
+    "createdAt":"2019-02-18T14:45:22Z",
+    "updatedBy":{
+      "sys":{
+        "type":"Link",
+        "linkType":"User",
+        "id":"<user_id>"
+      }
+    },
+    "updatedAt":"2019-02-18T14:45:22Z"
+  }
+}
+
