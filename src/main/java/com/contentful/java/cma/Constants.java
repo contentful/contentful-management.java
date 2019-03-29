@@ -49,6 +49,7 @@ public final class Constants {
     Number,
     Object,
     Symbol,
-    Text
+    Text,
+    RichText
   }
 }
