@@ -111,7 +111,7 @@ public final class ModuleEnvironments extends AbsModule<ServiceEnvironments> {
    * @throws IllegalArgumentException if newEnvironment is null.
    * @throws IllegalArgumentException if the space of the source environment is not set.
    */
-  public CMAEnvironment branch(CMAEnvironment sourceEnvironment, CMAEnvironment newEnvironment) {
+  public CMAEnvironment clone(CMAEnvironment sourceEnvironment, CMAEnvironment newEnvironment) {
     assertNotNull(sourceEnvironment, "sourceEnvironment");
     assertNotNull(newEnvironment, "newEnvironment");
     assertNotNull(sourceEnvironment.getSpaceId(), "sourceEnvironment.spaceId");
@@ -123,14 +123,34 @@ public final class ModuleEnvironments extends AbsModule<ServiceEnvironments> {
 
     try {
       if (environmentId == null) {
-        return service.branch(spaceId, sourceEnvironment.getId(), newEnvironment).blockingFirst();
+        return service.clone(spaceId, sourceEnvironment.getId(), newEnvironment).blockingFirst();
       } else {
-        return service.branch(spaceId, sourceEnvironment.getId(), environmentId, newEnvironment)
+        return service.clone(spaceId, sourceEnvironment.getId(), environmentId, newEnvironment)
             .blockingFirst();
       }
     } finally {
       newEnvironment.setSystem(system);
     }
+  }
+
+  /**
+   * Create an environment based on the content of another environment.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)}.
+   *
+   * @param sourceEnvironment the environment to be taken as a source of branching
+   * @param newEnvironment    the environment to be created, based on the source.
+   * @return {@link CMAEnvironment} result instance
+   * @throws IllegalArgumentException if sourceEnvironment is null.
+   * @throws IllegalArgumentException if newEnvironment is null.
+   * @throws IllegalArgumentException if the space of the source environment is not set.
+   * @deprecated This method has been renamed to {@link #clone(CMAEnvironment, CMAEnvironment)}.
+   * It will be removed in the next major release.
+   */
+  @Deprecated
+  public CMAEnvironment branch(CMAEnvironment sourceEnvironment, CMAEnvironment newEnvironment) {
+    return this.clone(sourceEnvironment, newEnvironment);
   }
 
   /**
@@ -313,6 +333,33 @@ public final class ModuleEnvironments extends AbsModule<ServiceEnvironments> {
      * @return the given CMACallback instance
      * @throws IllegalArgumentException if space id is null.
      * @throws IllegalArgumentException if environment is null.
+     */
+    public CMACallback<CMAEnvironment> clone(
+        final CMAEnvironment sourceEnvironment,
+        final CMAEnvironment newEnvironment,
+        CMACallback<CMAEnvironment> callback) {
+      return defer(new DefFunc<CMAEnvironment>() {
+        @Override
+        CMAEnvironment method() {
+          return ModuleEnvironments.this.clone(sourceEnvironment, newEnvironment);
+        }
+      }, callback);
+    }
+
+    /**
+     * Create an environment using a source environment.
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)}.
+     *
+     * @param sourceEnvironment base of the created environment.
+     * @param newEnvironment    to be created environment.
+     * @param callback          Callback
+     * @return the given CMACallback instance
+     * @throws IllegalArgumentException if space id is null.
+     * @throws IllegalArgumentException if environment is null.
+     * @deprecated This method has been renamed to {@link #clone(CMAEnvironment, CMAEnvironment)}.
+     * It will be removed in the next major release.
      */
     public CMACallback<CMAEnvironment> branch(
         final CMAEnvironment sourceEnvironment,

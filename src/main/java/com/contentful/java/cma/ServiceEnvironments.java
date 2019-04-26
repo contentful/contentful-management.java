@@ -38,7 +38,7 @@ interface ServiceEnvironments {
       @Body CMAEnvironment environment);
 
   @POST("/spaces/{spaceId}/environments")
-  Flowable<CMAEnvironment> branch(
+  Flowable<CMAEnvironment> clone(
       @Path("spaceId") String spaceId,
       @Header("X-Contentful-Source-Environment") String sourceEnvironmentId,
       @Body CMAEnvironment environment);
@@ -50,7 +50,7 @@ interface ServiceEnvironments {
       @Body CMAEnvironment environment);
 
   @PUT("/spaces/{spaceId}/environments/{environmentId}")
-  Flowable<CMAEnvironment> branch(
+  Flowable<CMAEnvironment> clone(
       @Path("spaceId") String spaceId,
       @Header("X-Contentful-Source-Environment") String sourceEnvironmentId,
       @Path("environmentId") String environmentId,

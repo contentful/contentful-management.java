@@ -43,6 +43,27 @@ class EnvironmentsE2E {
     }
 
     @Test
+    fun testCloningOfEnvironments() {
+        var created: CMAEnvironment? = null
+        try {
+            val sourceEnvironment = client.environments().fetchOne(SPACE_ID, "empty")
+            val newEnvironment = CMAEnvironment().setName("cloned_from_empty")
+
+            created = client.environments().clone(sourceEnvironment, newEnvironment)
+            while (created!!.status != CMAEnvironmentStatus.Ready) {
+                created = client.environments().fetchOne(created.id)
+            }
+
+            assertEquals("cloned_from_empty", created.name)
+            assertEquals(numberOfEntriesOnEnvironment("empty"), numberOfEntriesOnEnvironment(created.id))
+        } finally {
+            if (created != null) {
+                assertEquals(204, client.environments().delete(created))
+            }
+        }
+    }
+
+    @Test
     fun testBranchingOfEnvironments() {
         var created: CMAEnvironment? = null
         try {

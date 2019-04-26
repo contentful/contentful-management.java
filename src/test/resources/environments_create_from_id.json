@@ -1,8 +1,8 @@
 {
-  "name":"environment branched from io",
+  "name":"environment cloned from io",
   "sys":{
     "type":"Environment",
-    "id":"branched_from_io",
+    "id":"cloned_from_io",
     "version":1,
     "space":{
       "sys":{
