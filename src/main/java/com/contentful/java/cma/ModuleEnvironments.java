@@ -342,6 +342,7 @@ public final class ModuleEnvironments extends AbsModule<ServiceEnvironments> {
         @Override
         CMAEnvironment method() {
           return ModuleEnvironments.this.clone(sourceEnvironment, newEnvironment);
+<<<<<<< HEAD
         }
       }, callback);
     }
