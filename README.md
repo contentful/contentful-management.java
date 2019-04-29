@@ -84,13 +84,13 @@ Install the Contentful dependency:
 <dependency>
   <groupId>com.contentful.java</groupId>
   <artifactId>cma-sdk</artifactId>
-  <version>3.3.0</version>
+  <version>3.3.1</version>
 </dependency>
 ```
 
 * _Gradle_
 ```groovy
-compile 'com.contentful.java:cma-sdk:3.3.0'
+compile 'com.contentful.java:cma-sdk:3.3.1'
 ```
 
 This SDK requires Java 8 (or higher version).
