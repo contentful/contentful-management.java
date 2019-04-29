@@ -2,7 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Version [3.3.1] - (TBD)
+## Version [3.3.2] - [unreleased]
+- TBD
+
+## Version [3.3.1] - (2019-04-29)
 - Created `.clone()` method of environments, to be used instead of `.branch()`.
 - Deprecated `.branch()` of environments.
 
