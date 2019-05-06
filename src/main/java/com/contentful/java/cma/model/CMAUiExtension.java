@@ -1,13 +1,15 @@
 package com.contentful.java.cma.model;
 
-import com.contentful.java.cma.Constants.CMAFieldType;
-import com.google.gson.annotations.SerializedName;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import com.contentful.java.cma.Constants.CMAFieldType;
+import com.google.gson.annotations.SerializedName;
+
 /**
- * Model class to describe an ui extension.
+ * CMAUiExtension
+ * <p>
+ * This class will be used to represent a UI extension.
  */
 public class CMAUiExtension extends CMAResource {
   private static final int MAXIMUM_BYTE_COUNT = 200 * 1024;
@@ -15,14 +17,14 @@ public class CMAUiExtension extends CMAResource {
   Extension extension;
 
   /**
-   * Creates a new ui extension.
+   * Creates a new UI extension, specifying the type in the system property.
    */
   public CMAUiExtension() {
     super(CMAType.UiExtension);
   }
 
   /**
-   * Update the id of this ui extension.
+   * Update the id of this UI extension.
    *
    * @param id to be set.
    * @return this instance for chaining.
@@ -34,7 +36,7 @@ public class CMAUiExtension extends CMAResource {
   }
 
   /**
-   * @return the extension description part of the ui extension.
+   * @return the extension description part of the UI extension.
    */
   public Extension getExtension() {
     if (extension == null) {
@@ -63,16 +65,17 @@ public class CMAUiExtension extends CMAResource {
     @SerializedName("srcdoc") String sourceContent;
     @SerializedName("src") String sourceUrl;
     @SerializedName("sidebar") boolean onSidebar;
+    CMAUiExtensionParameters parameters;
 
     /**
-     * @return the name of this ui extension.
+     * @return the name of this UI extension.
      */
     public String getName() {
       return name;
     }
 
     /**
-     * Update the name of this ui extension.
+     * Update the name of this UI extension.
      *
      * @param name the new name.
      * @return this instance for chaining.
@@ -83,14 +86,14 @@ public class CMAUiExtension extends CMAResource {
     }
 
     /**
-     * @return a list of field types to be able to use this ui extension.
+     * @return a list of field types to be able to use this UI extension.
      */
     public List<FieldType> getFieldTypes() {
       return fieldTypes;
     }
 
     /**
-     * Add a new content type field type to this ui extension.
+     * Add a new content type field type to this UI extension.
      *
      * @param type the new type to be added.
      * @return this instance for chaining.
@@ -105,7 +108,7 @@ public class CMAUiExtension extends CMAResource {
     }
 
     /**
-     * @return html source code representing the ui extension.
+     * @return html source code representing the UI extension.
      */
     public String getSourceContent() {
       return sourceContent;
@@ -119,7 +122,7 @@ public class CMAUiExtension extends CMAResource {
      * <p>
      * May not be larger then 200kB.
      *
-     * @param sourceContent the actual html source code of this ui extension.
+     * @param sourceContent the actual html source code of this UI extension.
      * @return this instance for chaining.
      * @throws IllegalArgumentException if source content is larger then 200kB.
      * @see #setSourceUrl(String)
@@ -142,12 +145,12 @@ public class CMAUiExtension extends CMAResource {
     }
 
     /**
-     * Link to the source code to be executed with this ui extension.
+     * Link to the source code to be executed with this UI extension.
      * <p>
      * Either this one or the direct source code needs to be present once sending to
      * contentful.
      *
-     * @param sourceUrl a link to an html page containing the source of the ui extension.
+     * @param sourceUrl a link to an html page containing the source of the UI extension.
      * @return this instance for chaining.
      * @see #setSourceContent(String)
      */
@@ -175,6 +178,25 @@ public class CMAUiExtension extends CMAResource {
     }
 
     /**
+     * @return the definitions of configuration parameters.
+     */
+    public CMAUiExtensionParameters getParameters() {
+      return parameters;
+    }
+
+    /**
+     * Set the UI extension parameters. You can define up to 8 installation and instance
+     * parameters for each UI Extension.
+     *
+     * @param installation or instance parameters.
+     * @return this instance for chaining.
+     */
+    public Extension setParameters(CMAUiExtensionParameters parameters) {
+      this.parameters = parameters;
+      return this;
+    }
+
+    /**
      * @return a human readable string, representing the object.
      */
     @Override public String toString() {
@@ -183,7 +205,8 @@ public class CMAUiExtension extends CMAResource {
           + "name = " + getName() + ", "
           + "onSidebar = " + isOnSidebar() + ", "
           + "sourceContent = " + getSourceContent() + ", "
-          + "sourceUrl = " + getSourceUrl() + " "
+          + "sourceUrl = " + getSourceUrl() + ", "
+          + "parameters = " + getParameters() + " "
           + "}";
     }
 

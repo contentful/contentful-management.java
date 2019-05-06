@@ -21,6 +21,9 @@ import com.contentful.java.cma.Constants.CMAFieldType.Text
 import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAUiExtension
+import com.contentful.java.cma.model.CMAUiExtensionParameter
+import com.contentful.java.cma.model.CMAUiExtensionParameterType
+import com.contentful.java.cma.model.CMAUiExtensionParameters
 import com.google.gson.Gson
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -30,6 +33,7 @@ import java.util.logging.LogManager
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
 import org.junit.Test as test
 
 class UiExtensionsTests {
@@ -317,6 +321,140 @@ class UiExtensionsTests {
     }
 
     @test
+    fun testCreateWithInstallationParameters() {
+        val responseBody = TestUtils.fileToString("ui_extensions_create_with_parameters.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val parameters = CMAUiExtensionParameters()
+
+        val installationParameter0 = CMAUiExtensionParameter()
+                .setId("devMode")
+                .setType(CMAUiExtensionParameterType.Boolean)
+                .setName("Run in development mode")
+                .setDescription("Help description")
+        parameters.addInstallationParameters(installationParameter0)
+
+        assertEquals("devMode", installationParameter0.id)
+        assertEquals(CMAUiExtensionParameterType.Boolean, installationParameter0.type)
+        assertEquals("Run in development mode", installationParameter0.name)
+        assertEquals("Help description", installationParameter0.description)
+
+        val installationParameter1 = CMAUiExtensionParameter()
+                .setId("retries")
+                .setType(CMAUiExtensionParameterType.Number)
+                .setName("Number of retries for API calls")
+                .setRequired(true).setDefaultValue("3")
+                .addOption("one")
+                .addOption("one")
+        parameters.addInstallationParameters(installationParameter1)
+
+        assertEquals("retries", installationParameter1.id)
+        assertEquals(CMAUiExtensionParameterType.Number, installationParameter1.type)
+        assertEquals("Number of retries for API calls", installationParameter1.name)
+        assertEquals("one", installationParameter1.getOptions().get(0));
+        assertEquals("one", installationParameter1.getOptions().get(1));
+
+        val uiExtension = CMAUiExtension()
+        uiExtension
+                .extension
+                .setSourceUrl("https://example.com/my")
+                .setName("My awesome extensions")
+                .addFieldType(Symbol)
+                .addFieldType(Text)
+                .setIsOnSidebar(false)
+                .setParameters(parameters)
+
+        val intermediate = assertTestCallback(client!!.uiExtensions().async()
+                .create("spaceId", "environmentId", uiExtension, TestCallback()) as TestCallback)!!
+
+        val result = intermediate.extension.parameters.getInstallation()
+
+        assertEquals(2, result.size)
+        assertEquals("devMode", result[0].id);
+        assertEquals(CMAUiExtensionParameterType.Boolean, result[0].type);
+        assertEquals("Run in development mode", result[0].name);
+        assertEquals("Help description", result[0].description);
+        assertEquals("retries", result[1].id);
+        assertEquals(CMAUiExtensionParameterType.Enum, result[1].type);
+        assertEquals("Number of retries for API calls", result[1].name);
+        assertEquals("one", result[1].getOptions()[0]);
+        assertEquals("one", result[1].getOptions()[1]);
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("POST", recordedRequest.method)
+        assertEquals("/spaces/spaceId/environments/environmentId/extensions",
+                recordedRequest.path)
+    }
+
+    @test
+    fun testCreateWithInstanceParameters() {
+        val responseBody = TestUtils.fileToString("ui_extensions_create_with_parameters.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val parameters = CMAUiExtensionParameters()
+
+        val instanceParameter0 = CMAUiExtensionParameter()
+                .setId("helpText")
+                .setType(CMAUiExtensionParameterType.Symbol)
+                .setName("Help text")
+                .setDescription("Help text for a user to help them understand the editor")
+        parameters.addInstanceParameters(instanceParameter0)
+
+        assertEquals("helpText", instanceParameter0.id)
+        assertEquals(CMAUiExtensionParameterType.Symbol, instanceParameter0.type)
+        assertEquals("Help text", instanceParameter0.name)
+        assertEquals("Help text for a user to help them understand the editor", instanceParameter0.description)
+
+        val instanceParameter1 = CMAUiExtensionParameter()
+                .setName("Theme")
+                .setType(CMAUiExtensionParameterType.Enum)
+                .setDefaultValue("light")
+                .setRequired(true)
+                .addLabel("empty", "Choose a value")
+                .addLabel("value", "Other")
+                .addOption("one")
+                .addOption("one")
+        parameters.addInstanceParameters(instanceParameter1)
+
+        assertEquals("Theme", instanceParameter1.name)
+        assertEquals(CMAUiExtensionParameterType.Enum, instanceParameter1.type)
+        assertEquals("Choose a value", instanceParameter1.getLabels().get(0).get("empty"))
+        assertEquals("one", instanceParameter1.getOptions().get(0));
+        assertEquals("one", instanceParameter1.getOptions().get(1));
+
+        val uiExtension = CMAUiExtension()
+        uiExtension
+                .extension
+                .setSourceUrl("https://example.com/my")
+                .setName("My awesome extensions")
+                .addFieldType(Symbol)
+                .addFieldType(Text)
+                .setIsOnSidebar(false)
+                .setParameters(parameters)
+
+        val intermediate = assertTestCallback(client!!.uiExtensions().async()
+                .create("spaceId", "environmentId", uiExtension, TestCallback()) as TestCallback)!!
+
+        val result = intermediate.extension.parameters.getInstance()
+
+
+        assertEquals(2, result.size)
+        assertEquals("Theme", result[1].name);
+        assertEquals(true, result[1].isRequired());
+        assertEquals("light", result[1].getDefaultValue());
+        assertEquals("Choose a value", result[1].getLabels()[0]["empty"])
+        assertEquals(hashMapOf("one" to "one"), result[1].getOptions()[0]);
+        assertEquals(hashMapOf("two" to "two"), result[1].getOptions()[1]);
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("POST", recordedRequest.method)
+        assertEquals("/spaces/spaceId/environments/environmentId/extensions",
+                recordedRequest.path)
+    }
+
+    @test
     fun testUpdate() {
         val responseBody = TestUtils.fileToString("ui_extensions_update.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
@@ -383,5 +521,19 @@ class UiExtensionsTests {
         assertEquals("DELETE", recordedRequest.method)
         assertEquals("/spaces/spaceId/environments/environmentId/extensions/extensionId",
                 recordedRequest.path)
+    }
+
+    @test
+    fun testToStringWithParameters() {
+        val parameters = CMAUiExtensionParameters()
+
+        val instanceParameter0 = CMAUiExtensionParameter()
+                .setId("helpText")
+                .setType(CMAUiExtensionParameterType.Symbol)
+                .setName("Help text")
+        parameters.addInstanceParameters(instanceParameter0)
+
+        assertTrue(parameters.toString().contains("id = helpText"))
+        assertTrue(instanceParameter0.toString().contains("id = helpText"))
     }
 }
