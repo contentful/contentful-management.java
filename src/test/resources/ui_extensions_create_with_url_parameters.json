@@ -1,0 +1,89 @@
+{
+  "extension": {
+    "src": "https://example.com/my",
+    "name": "My awesome extension",
+    "fieldTypes": [
+      {
+        "type": "Symbol"
+      },
+      {
+        "type": "Text"
+      }
+    ],
+    "sidebar": false,
+    "parameters": {
+      "installation": [
+        {
+          "id": "devMode",
+          "type": "Boolean",
+          "name": "Run in development mode"
+        },
+        {
+          "id": "retries",
+          "type": "Number",
+          "name": "Number of retries for API calls",
+          "required": true,
+          "default": 3
+        }
+      ],
+      "instance": [
+        {
+          "id": "helpText",
+          "type": "Symbol",
+          "name": "Help text",
+          "description": "Help text for a user to help them understand the editor"
+        },
+        {
+          "id": "theme",
+          "type": "Enum",
+          "name": "Theme",
+          "options": [
+            {
+              "light": "Solarized light"
+            },
+            {
+              "dark": "Solarized dark"
+            }
+          ],
+          "default": "light",
+          "required": true
+        }
+      ]
+    }
+  },
+  "sys": {
+    "id": "24bjk67VQLGZffeOUxCgnr",
+    "type": "Extension",
+    "version": 1,
+    "createdAt": "2019-04-30T16:39:20.212Z",
+    "createdBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "<user_id>"
+      }
+    },
+    "updatedAt": "2019-04-30T16:39:20.212Z",
+    "updatedBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "<user_id>"
+      }
+    },
+    "space": {
+      "sys": {
+        "type": "Link",
+        "linkType": "Space",
+        "id": "<space_id>"
+      }
+    },
+    "environment": {
+      "sys": {
+        "id": "master",
+        "type": "Link",
+        "linkType": "Environment"
+      }
+    }
+  }
+}

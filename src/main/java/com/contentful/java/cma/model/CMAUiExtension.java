@@ -63,6 +63,7 @@ public class CMAUiExtension extends CMAResource {
     @SerializedName("srcdoc") String sourceContent;
     @SerializedName("src") String sourceUrl;
     @SerializedName("sidebar") boolean onSidebar;
+    CMAUiExtensionParameters parameters;
 
     /**
      * @return the name of this ui extension.
@@ -175,6 +176,23 @@ public class CMAUiExtension extends CMAResource {
     }
 
     /**
+     * @return the cma ui extension parameters
+     */
+    public CMAUiExtensionParameters getParameters() {
+      return parameters;
+    }
+
+    /**
+     * Set the cma ui extension parameters
+     * @param parameters
+     * @return this instance for chaining.
+     */
+    public Extension setParameters(CMAUiExtensionParameters parameters) {
+      this.parameters = parameters;
+      return this;
+    }
+
+    /**
      * @return a human readable string, representing the object.
      */
     @Override public String toString() {
@@ -183,7 +201,8 @@ public class CMAUiExtension extends CMAResource {
           + "name = " + getName() + ", "
           + "onSidebar = " + isOnSidebar() + ", "
           + "sourceContent = " + getSourceContent() + ", "
-          + "sourceUrl = " + getSourceUrl() + " "
+          + "sourceUrl = " + getSourceUrl() + ", "
+          + "parameters = " + getParameters() + " "
           + "}";
     }
 
