@@ -1,4 +1,7 @@
 {
+  "transformation":{
+    "body":"{ /payload/sys/id }: { /payload/fields/new }"
+  },
   "headers": [
     {
       "key": "my_new_header_name",
@@ -7,7 +10,7 @@
   ],
   "sys": {
     "id": "webhookid",
-    "version": 5.0,
+    "version": 3,
     "space": {
       "sys": {
         "id": "spaceid"
