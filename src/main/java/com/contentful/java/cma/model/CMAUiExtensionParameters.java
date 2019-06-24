@@ -30,7 +30,7 @@ public class CMAUiExtensionParameters {
    * in a space.
    *
    * @param parameter
-   * return this {@code CMAUiExtensionParameters} instance.
+   * @return this {@code CMAUiExtensionParameters} instance.
    */
   public CMAUiExtensionParameters addInstallationParameters(CMAUiExtensionParameter parameter) {
     installationParameters.add(parameter);

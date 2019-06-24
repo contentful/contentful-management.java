@@ -188,7 +188,7 @@ public class CMAUiExtension extends CMAResource {
      * Set the UI extension parameters. You can define up to 8 installation and instance
      * parameters for each UI Extension.
      *
-     * @param installation or instance parameters.
+     * @param parameters the installation or instance parameters.
      * @return this instance for chaining.
      */
     public Extension setParameters(CMAUiExtensionParameters parameters) {
