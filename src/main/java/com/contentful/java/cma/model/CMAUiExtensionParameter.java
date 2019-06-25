@@ -94,7 +94,7 @@ public class CMAUiExtensionParameter {
   /**
    * Sets the type for this parameter.
    *
-   * @param the type to be set.
+   * @param type the type to be set.
    * @return this {@code CMAUiExtensionParameter} instance.
    */
   public CMAUiExtensionParameter setType(CMAUiExtensionParameterType type) {
