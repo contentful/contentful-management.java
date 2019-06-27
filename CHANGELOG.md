@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Version [3.3.2] - [unreleased]
+## Version [3.3.2] - [2019-27-06]
 - Add: [Configuration](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/ui-extensions/configuration-parameters) to UI extensions.
 
 ## Version [3.3.1] - (2019-04-29)
