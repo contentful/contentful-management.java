@@ -12,7 +12,7 @@
 contentful-management.java - Contentful Java Management SDK
 ===========================================================
 
-[![Build Status](https://travis-ci.org/contentful/contentful-management.java.svg)](https://travis-ci.org/contentful/contentful-management.java/builds#) 
+[![Build Status](https://travis-ci.org/contentful/contentful-management.java.svg)](https://travis-ci.org/contentful/contentful-management.java/builds#)
 [![codecov](https://codecov.io/gh/contentful/contentful-management.java/branch/master/graph/badge.svg)](https://codecov.io/gh/contentful/contentful-management.java)
 
 > Java SDK for [Content Management API](https://www.contentful.com/developers/docs/references/content-management-api/). It helps in editing and creating content stored in Contentful with Java applications.
@@ -26,25 +26,28 @@ What is Contentful?
   <summary>Table of contents</summary>
   <!-- TOC -->
 
-- [Core Features](#core-fProGuardeatures)
-- [Getting Started](#getting-started)
-  - [Setup](#setup)
-  - [Client Creation](#client-creation)
-  - [First Request](#first-request)
-- [Usage](#usage)
-  - [Modules](#modules)
-  - [Calls in Parralel](#calls-in-parallel)
-  - [Environment Configuration](#environment-configuration)
-  - [Default HTTP Client](#default-http-client)
-  - [ProGuard](#proguard)
-  - [Pre-Releases](#pre-releases)
-- [Documentation](#documentation)
-- [License](#license)
-- [Reaching Contentful](#reaching-contentful)
-  - [Bugs and Feature Requests](#bugs-and-feature-requests)
-  - [Sharing Confidential Information](#sharing-confidential-information)
-  - [Getting involved](#getting-involved)
-- [Code of Conduct](#code-of-conduct)
+- [contentful-management.java - Contentful Java Management SDK](#contentful-managementjava---Contentful-Java-Management-SDK)
+  - [What is Contentful?](#What-is-Contentful)
+- [Core Features](#Core-Features)
+- [Getting Started](#Getting-Started)
+  - [Setup](#Setup)
+  - [Client Creation](#Client-Creation)
+  - [First Request](#First-Request)
+- [Usage](#Usage)
+  - [Modules](#Modules)
+  - [Calls in Parallel](#Calls-in-Parallel)
+  - [Environment Configuration](#Environment-Configuration)
+  - [Default HTTP Client](#Default-HTTP-Client)
+  - [RichText Hierarchy](#RichText-Hierarchy)
+  - [Pre-releases](#Pre-releases)
+- [Documentation](#Documentation)
+- [License](#License)
+- [Reaching Contentful](#Reaching-Contentful)
+  - [Questions](#Questions)
+  - [Bugs and Feature Requests](#Bugs-and-Feature-Requests)
+  - [Sharing Confidential Information](#Sharing-Confidential-Information)
+  - [Getting involved](#Getting-involved)
+- [Code of Conduct](#Code-of-Conduct)
   <!-- /TOC -->
 </details>
 
@@ -84,13 +87,13 @@ Install the Contentful dependency:
 <dependency>
   <groupId>com.contentful.java</groupId>
   <artifactId>cma-sdk</artifactId>
-  <version>3.3.2</version>
+  <version>3.3.3</version>
 </dependency>
 ```
 
 * _Gradle_
 ```groovy
-compile 'com.contentful.java:cma-sdk:3.3.2'
+compile 'com.contentful.java:cma-sdk:3.3.3'
 ```
 
 This SDK requires Java 8 (or higher version).
@@ -206,7 +209,7 @@ final CMAClient client =
         .build();
 ```
 
-This changes the parameters Modules are using: 
+This changes the parameters Modules are using:
 
 ```java
 final CMAArray<CMAEntry> array =
@@ -220,7 +223,7 @@ final CMAArray<CMAEntry> array =
 The Modules `apiKeys`, `environments`, `roles`, `spaceMemberships`, `uiExtensions`, `uploads`, and `webhooks`, do not support Environments different to `master`. If the above configuration is used with these Modules, they throw an `exception`. Creation of a new client without specifying an Environment id is needed:
 
 ```
-final CMAArray<CMAApiKey> array = 
+final CMAArray<CMAApiKey> array =
     client
         .apiKeys()
         .fetchAll(
@@ -261,21 +264,21 @@ Snapshots of the development version are available through
 
 ```groovy
 maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-compile 'com.contentful.java:cma-sdk:3.3.1-SNAPSHOT'
+compile 'com.contentful.java:cma-sdk:3.3.3-SNAPSHOT'
 ```
 
 * [jitpack.io](https://jitpack.io/#contentful/contentful-management.java/master-SNAPSHOT):
 
 ```groovy
 maven { url 'https://jitpack.io' }
-compile 'com.github.contentful:contentful.java:cma-sdk-3.3.1-SNAPSHOT'
+compile 'com.github.contentful:contentful.java:cma-sdk-3.3.3-SNAPSHOT'
 ```
 
 Documentation
 =============
 
 See
-* [JavaDoc](https://contentful.github.io/contentful-management.java/) 
+* [JavaDoc](https://contentful.github.io/contentful-management.java/)
 * [API documentation](https://www.contentful.com/developers/documentation/content-management-api/)
 
 License

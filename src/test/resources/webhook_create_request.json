@@ -1,9 +1,7 @@
 {
   "name": "cma-created",
-  "url": "http://lorempixel.com/200/200/cats",
-  "topics": [
-    "*.*"
-  ],
+  "url": "https://contentful.com",
+  "topics":[ "Entry.*" ],
   "headers": [
     {
       "key": "key",
@@ -11,5 +9,11 @@
     }
   ],
   "httpBasicUsername": "user",
-  "httpBasicPassword": "password"
+  "httpBasicPassword": "password",
+  "transformation":{
+    "method":"PUT",
+    "contentType":"application/json; charset=utf-8",
+    "includeContentLength":true,
+    "body":"{ /payload/sys/id }: { /payload/fields/title }"
+  }
 }

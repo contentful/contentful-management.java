@@ -1,23 +1,18 @@
 {
-  "url":"http://foo.bar/",
-  "httpBasicUsername":"user",
   "name":"cma-created",
-  "headers":[
-    {
-      "key":"X-Custom-one",
-      "value":"MyValue"
-    }
-  ],
+  "url":"https://contentful.com",
+  "httpBasicUsername":"user",
   "topics":[
-    "Asset.*",
-    "ContentType.create",
-    "ContentType.save",
     "Entry.*"
   ],
+  "filters":null,
+  "transformation":{
+    "body":"{ /payload/sys/id }: { /payload/fields/new }"
+  },
   "sys":{
     "type":"WebhookDefinition",
-    "id":"cma-created",
-    "version":8,
+    "id":"5epBQND7dLGecdktBMpgPB",
+    "version":2,
     "space":{
       "sys":{
         "type":"Link",
@@ -32,7 +27,7 @@
         "id":"<user_id>"
       }
     },
-    "createdAt":"2016-07-26T11:18:54Z",
+    "createdAt":"2019-06-17T04:45:36Z",
     "updatedBy":{
       "sys":{
         "type":"Link",
@@ -40,7 +35,13 @@
         "id":"<user_id>"
       }
     },
-    "updatedAt":"2016-07-26T11:40:32Z"
-  }
+    "updatedAt":"2019-06-17T04:59:53Z"
+  },
+  "headers":[
+    {
+      "key":"my_new_header_name",
+      "value":"header_value"
+    }
+  ]
 }
 
