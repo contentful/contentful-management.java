@@ -873,4 +873,31 @@ class RichFieldTests {
 
         assertEquals(listOf("This ", "is", "some", "simple", "nested", "list"), traverse(list))
     }
+
+    @test
+    fun testNestedParaghraphWithInlineLink() {
+        val responseBody = TestUtils.fileToString("rich_text_get_all.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+        val array = assertTestCallback(client!!.entries().async().fetchAll(
+                TestCallback()) as TestCallback)!!
+
+        val result = array.items.first {
+            it.getField<String>("name", "en-US") == "nested_paragraph_with_inline_link"
+        }
+
+        val document = result.getField<CMARichDocument>("rich", "en-US")
+        assertNotNull(document)
+
+        val topParagraph = document.content.first() as CMARichParagraph
+        assertNotNull(topParagraph)
+        assertEquals(1, topParagraph.content.size)
+
+        val nestedParagraph = topParagraph.content.first() as CMARichParagraph
+        assertNotNull(nestedParagraph)
+        assertEquals(3, nestedParagraph.content.size)
+
+        val inlineEmbeddedEntryLink = nestedParagraph.content[1] as CMARichHyperLink
+        assertTrue(inlineEmbeddedEntryLink is CMARichEmbeddedLink)
+        assertEquals("embedded-entry-inline", inlineEmbeddedEntryLink.nodeType)
+    }
 }
