@@ -197,9 +197,9 @@ public class RichTextFactory {
     RESOLVER_MAP.put(new CMARichEmbeddedLink(new CMALink(CMAType.Asset)).getNodeType(),
         new BlockAndDataResolver<>(CMARichEmbeddedLink::new, "data"));
     RESOLVER_MAP.put(new CMARichEmbeddedLink(new CMALink(CMAType.Entry), true).getNodeType(),
-        new BlockAndDataResolver<>(CMARichEmbeddedLink::new, "data"));
+        new BlockAndDataResolver<>(target -> new CMARichEmbeddedLink(target, true), "data"));
     RESOLVER_MAP.put(new CMARichEmbeddedLink(new CMALink(CMAType.Asset), true).getNodeType(),
-        new BlockAndDataResolver<>(CMARichEmbeddedLink::new, "data"));
+        new BlockAndDataResolver<>(target -> new CMARichEmbeddedLink(target, true), "data"));
     RESOLVER_MAP.put(new CMARichHeading(LEVEL_1).getNodeType(), new HeadingResolver(LEVEL_1));
     RESOLVER_MAP.put(new CMARichHeading(LEVEL_2).getNodeType(), new HeadingResolver(LEVEL_2));
     RESOLVER_MAP.put(new CMARichHeading(LEVEL_3).getNodeType(), new HeadingResolver(LEVEL_3));
