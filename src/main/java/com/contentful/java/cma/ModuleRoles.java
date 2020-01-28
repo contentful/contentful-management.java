@@ -264,7 +264,7 @@ public class ModuleRoles extends AbsModule<ServiceRoles> {
   /**
    * Handler for asynchronous requests.
    */
-  public final class Async {
+  public class Async {
     /**
      * Fetch all roles of this space, asynchronously.
      *

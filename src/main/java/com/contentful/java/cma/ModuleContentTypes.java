@@ -31,7 +31,7 @@ import retrofit2.Retrofit;
 /**
  * Content Types Module.
  */
-public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
+public class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
   final Async async;
 
   /**
@@ -380,7 +380,7 @@ public final class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
   /**
    * Async module.
    */
-  public final class Async {
+  public class Async {
     /**
      * Create a new Content Type using the configured space and environment.
      * <p>

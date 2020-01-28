@@ -29,7 +29,7 @@ import retrofit2.Retrofit;
 /**
  * Personal Access Token Module.
  */
-public final class ModulePersonalAccessTokens extends AbsModule<ServicePersonalAccessTokens> {
+public class ModulePersonalAccessTokens extends AbsModule<ServicePersonalAccessTokens> {
   final Async async;
 
   /**
@@ -119,7 +119,7 @@ public final class ModulePersonalAccessTokens extends AbsModule<ServicePersonalA
   /**
    * Async module.
    */
-  public final class Async {
+  public class Async {
     /**
      * Fetch all personal access tokens.
      *

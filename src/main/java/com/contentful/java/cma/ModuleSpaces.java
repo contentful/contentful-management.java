@@ -30,7 +30,7 @@ import retrofit2.Retrofit;
 /**
  * Spaces Module.
  */
-public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
+public class ModuleSpaces extends AbsModule<ServiceSpaces> {
   final Async async;
 
   /**
@@ -218,7 +218,7 @@ public final class ModuleSpaces extends AbsModule<ServiceSpaces> {
   /**
    * Async module.
    */
-  public final class Async {
+  public class Async {
     /**
      * Create a Space.
      *

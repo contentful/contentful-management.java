@@ -27,7 +27,7 @@ import retrofit2.Retrofit;
 /**
  * Editor Interfaces Module.
  */
-public final class ModuleEditorInterfaces extends AbsModule<ServiceEditorInterfaces> {
+public class ModuleEditorInterfaces extends AbsModule<ServiceEditorInterfaces> {
   final Async async;
 
   /**
@@ -133,7 +133,7 @@ public final class ModuleEditorInterfaces extends AbsModule<ServiceEditorInterfa
   /**
    * Async module.
    */
-  public final class Async {
+  public class Async {
     /**
      * Fetch editor interface to given content type in the configured space and environment.
      *

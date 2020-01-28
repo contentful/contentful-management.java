@@ -28,7 +28,7 @@ import retrofit2.Retrofit;
 /**
  * Organizations Module.
  */
-public final class ModuleOrganizations extends AbsModule<ServiceOrganizations> {
+public class ModuleOrganizations extends AbsModule<ServiceOrganizations> {
   final Async async;
 
   /**
@@ -83,7 +83,7 @@ public final class ModuleOrganizations extends AbsModule<ServiceOrganizations> {
   /**
    * Async module.
    */
-  public final class Async {
+  public class Async {
     /**
      * Fetch all organizations accessible.
      *

@@ -31,7 +31,7 @@ import retrofit2.Retrofit;
 /**
  * Api Keys Module.
  */
-public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
+public class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
   final Async async;
 
   /**
@@ -253,7 +253,7 @@ public final class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
   /**
    * Async module.
    */
-  public final class Async {
+  public class Async {
     /**
      * Fetch all delivery api keys.
      *

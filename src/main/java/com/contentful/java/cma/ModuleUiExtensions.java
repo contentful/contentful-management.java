@@ -30,7 +30,7 @@ import retrofit2.Retrofit;
 /**
  * Ui Extensions Module.
  */
-public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
+public class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
   final Async async;
 
   /**
@@ -288,7 +288,7 @@ public final class ModuleUiExtensions extends AbsModule<ServiceUiExtensions> {
   /**
    * Async module.
    */
-  public final class Async {
+  public class Async {
     /**
      * Fetch ui extension to given content type from the configured space.
      *

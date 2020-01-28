@@ -326,7 +326,7 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
    * Use {@link ModuleWebhooks#async()} to retrieve this class, to be able to do asynchronous
    * requests to Contentful.
    */
-  public final class Async {
+  public class Async {
     /**
      * Asynchronous variant of {@link ModuleWebhooks#create(String, CMAWebhook)}
      *

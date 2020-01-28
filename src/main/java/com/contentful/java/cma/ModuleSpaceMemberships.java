@@ -259,7 +259,7 @@ public class ModuleSpaceMemberships extends AbsModule<ServiceSpaceMemberships> {
   /**
    * Handler for asynchronous requests.
    */
-  public final class Async {
+  public class Async {
     /**
      * Fetch all memberships of this space, asynchronously.
      *

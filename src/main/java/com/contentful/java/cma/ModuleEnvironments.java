@@ -27,7 +27,7 @@ import java.util.concurrent.Executor;
 /**
  * Environments Module.
  */
-public final class ModuleEnvironments extends AbsModule<ServiceEnvironments> {
+public class ModuleEnvironments extends AbsModule<ServiceEnvironments> {
   final Async async;
 
   /**
@@ -274,7 +274,7 @@ public final class ModuleEnvironments extends AbsModule<ServiceEnvironments> {
   /**
    * Async module.
    */
-  public final class Async {
+  public class Async {
     /**
      * Create an environment in the configured space.
      *

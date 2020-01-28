@@ -26,7 +26,7 @@ import retrofit2.Retrofit;
 /**
  * Users Module.
  */
-public final class ModuleUsers extends AbsModule<ServiceUsers> {
+public class ModuleUsers extends AbsModule<ServiceUsers> {
   final Async async;
 
   /**
@@ -67,7 +67,7 @@ public final class ModuleUsers extends AbsModule<ServiceUsers> {
   /**
    * Async module.
    */
-  public final class Async {
+  public class Async {
     /**
      * Fetch your user information.
      *

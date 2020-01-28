@@ -30,7 +30,7 @@ import java.util.Map;
 /**
  * FieldTypeAdapter.
  */
-public final class FieldTypeAdapter implements JsonSerializer<CMAField> {
+public class FieldTypeAdapter implements JsonSerializer<CMAField> {
   private static final String ATTR_ID = "id";
   private static final String ATTR_NAME = "name";
   private static final String ATTR_TYPE = "type";
