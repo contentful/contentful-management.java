@@ -28,7 +28,7 @@ import retrofit2.Retrofit;
 /**
  * Preview Api Keys Module.
  */
-public final class ModulePreviewApiKeys extends AbsModule<ServicePreviewApiKeys> {
+public class ModulePreviewApiKeys extends AbsModule<ServicePreviewApiKeys> {
   final Async async;
 
   /**
@@ -133,7 +133,7 @@ public final class ModulePreviewApiKeys extends AbsModule<ServicePreviewApiKeys>
   /**
    * Async module.
    */
-  public final class Async {
+  public class Async {
     /**
      * Fetch all preview api keys.
      *

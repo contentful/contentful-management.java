@@ -229,7 +229,7 @@ public class ModuleLocales extends AbsModule<ServiceLocales> {
   /**
    * Handler for asynchronous requests.
    */
-  public final class Async {
+  public class Async {
     /**
      * Fetch all locales from the configured space and environment, asynchronously.
      *

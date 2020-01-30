@@ -41,7 +41,7 @@ import static okhttp3.MediaType.parse;
  * This module will take care of all `upload.contentful.com` related issues, as in directly
  * uploading a file to Contentful, receiving it's id.
  */
-public final class ModuleUploads extends AbsModule<ServiceUploads> {
+public class ModuleUploads extends AbsModule<ServiceUploads> {
   final Async async;
 
   /**
@@ -212,7 +212,7 @@ public final class ModuleUploads extends AbsModule<ServiceUploads> {
   /**
    * Async module.
    */
-  public final class Async {
+  public class Async {
     /**
      * Create a new upload, asynchronously.
      * <p>

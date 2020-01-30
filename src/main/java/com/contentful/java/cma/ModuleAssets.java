@@ -30,7 +30,7 @@ import retrofit2.Retrofit;
 /**
  * Assets Module.
  */
-public final class ModuleAssets extends AbsModule<ServiceAssets> {
+public class ModuleAssets extends AbsModule<ServiceAssets> {
   final Async async;
 
   /**
@@ -365,7 +365,7 @@ public final class ModuleAssets extends AbsModule<ServiceAssets> {
   /**
    * Async module.
    */
-  public final class Async {
+  public class Async {
     /**
      * Archive an Asset.
      *

@@ -30,7 +30,7 @@ import retrofit2.Retrofit;
 /**
  * Entries Module.
  */
-public final class ModuleEntries extends AbsModule<ServiceEntries> {
+public class ModuleEntries extends AbsModule<ServiceEntries> {
   final Async async;
 
   /**
@@ -405,7 +405,7 @@ public final class ModuleEntries extends AbsModule<ServiceEntries> {
   /**
    * Async module.
    */
-  public final class Async {
+  public class Async {
     /**
      * Archive an Entry.
      *

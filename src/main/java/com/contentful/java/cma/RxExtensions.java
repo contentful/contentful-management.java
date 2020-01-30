@@ -25,7 +25,7 @@ import io.reactivex.functions.Consumer;
 /**
  * RxJava Extensions.
  */
-final class RxExtensions {
+class RxExtensions {
   private RxExtensions() {
     throw new UnsupportedOperationException();
   }
