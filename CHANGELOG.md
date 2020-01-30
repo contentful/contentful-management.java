@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Version [3.3.4] - [2020-01-30]
+- Removed final keyword from the model classes
+
 ## Version [3.3.3] - [unreleased]
 - Add: new optional [transformation](https://www.contentful.com/developers/docs/references/content-management-api/#transforming-webhook-calls) property to webhook.
 
