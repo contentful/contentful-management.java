@@ -27,11 +27,10 @@ class UsageTest {
 
         // Client
         client = CMAClient.Builder()
-                .setAccessToken("CFPAT-i04yK5Tl-nvgGEg3p8HUlrbJk0uK-RI5QOhZ1P8vczU")
+                .setAccessToken("token")
                 .setCoreEndpoint(server!!.url("/").toString())
                 .setUploadEndpoint(server!!.url("/").toString())
-                .setSpaceId("i1ppeoxgdpvt")
-                .setEnvironmentId("master")
+                .setSpaceId("configuredSpaceId")
                 .build()
 
         gson = CMAClient.createGson()
