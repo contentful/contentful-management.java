@@ -7,7 +7,7 @@ import retrofit2.Retrofit;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
-public class ModuleOrganizationUsage extends AbsModule<ServiceOrganizationUsage> {
+public class ModuleSpaceUsage extends AbsModule<ServiceSpaceUsage> {
     final Async async;
 
     /**
@@ -17,7 +17,7 @@ public class ModuleOrganizationUsage extends AbsModule<ServiceOrganizationUsage>
      * @param callbackExecutor        to tell on which thread it should run.
      * @param environmentIdConfigured internal helper to see if environment was set.
      */
-    ModuleOrganizationUsage(
+    ModuleSpaceUsage(
             Retrofit retrofit,
             Executor callbackExecutor,
             String spaceId,
@@ -28,12 +28,12 @@ public class ModuleOrganizationUsage extends AbsModule<ServiceOrganizationUsage>
     }
 
     @Override
-    protected ServiceOrganizationUsage createService(Retrofit retrofit) {
-        return retrofit.create(ServiceOrganizationUsage.class);
+    protected ServiceSpaceUsage createService(Retrofit retrofit) {
+        return retrofit.create(ServiceSpaceUsage.class);
     }
 
     /**
-     * Fetch all organization usage the token has access to.
+     * Fetch all space usage the token has access to.
      *
      * @param query the criteria to narrow down the search result.
      * @return {@link CMAUsage} result instance
@@ -60,7 +60,7 @@ public class ModuleOrganizationUsage extends AbsModule<ServiceOrganizationUsage>
      */
     public class Async {
         /**
-         * Fetch all organizations accessible.
+         * Fetch all space usage accessible.
          *
          * @param callback the callback to be informed about success or failure.
          * @return {@link CMAUsage} result callback.
@@ -72,7 +72,7 @@ public class ModuleOrganizationUsage extends AbsModule<ServiceOrganizationUsage>
             return defer(new RxExtensions.DefFunc<CMAArray<CMAUsage>>() {
                 @Override
                 CMAArray<CMAUsage> method() {
-                    return ModuleOrganizationUsage.this.fetchAll(organizationId, query);
+                    return ModuleSpaceUsage.this.fetchAll(organizationId, query);
                 }
             }, callback);
         }

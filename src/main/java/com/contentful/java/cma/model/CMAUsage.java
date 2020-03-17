@@ -2,9 +2,9 @@ package com.contentful.java.cma.model;
 
 import java.util.LinkedHashMap;
 
-public class CMAOrganizationUsage extends CMAResource {
+public class CMAUsage extends CMAResource {
     private String unitOfMeasure;
-    private String metric;
+    private UsageMetric metric;
     private int usage;
 
     public String getUnitOfMeasure() {
@@ -15,11 +15,11 @@ public class CMAOrganizationUsage extends CMAResource {
         this.unitOfMeasure = unitOfMeasure;
     }
 
-    public String getMetric() {
+    public UsageMetric getMetric() {
         return metric;
     }
 
-    public void setMetric(String metric) {
+    public void setMetric(UsageMetric metric) {
         this.metric = metric;
     }
 
@@ -50,7 +50,7 @@ public class CMAOrganizationUsage extends CMAResource {
     private LinkedHashMap<String, Integer> usagePerDay;
     private DateRange dateRange;
 
-    public CMAOrganizationUsage(CMAType type) {
+    public CMAUsage(CMAType type) {
         super(CMAType.OrganizationPeriodicUsage);
     }
 
@@ -74,5 +74,12 @@ public class CMAOrganizationUsage extends CMAResource {
         public void setEndAt(String endAt) {
             this.endAt = endAt;
         }
+    }
+
+    public enum UsageMetric {
+        cda,
+        cma,
+        cpa,
+        gql1
     }
 }
