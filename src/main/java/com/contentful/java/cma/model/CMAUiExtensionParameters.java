@@ -29,6 +29,16 @@ public class CMAUiExtensionParameters {
    * Add an installation parameter that are set when extensions are created/updated
    * in a space.
    *
+   * @return this {@code CMAUiExtensionParameters} instance.
+   */
+  public CMAUiExtensionParameters addInstallationParameters() {
+    return addInstallationParameters();
+  }
+
+  /**
+   * Add an installation parameter that are set when extensions are created/updated
+   * in a space.
+   *
    * @param parameter
    * @return this {@code CMAUiExtensionParameters} instance.
    */

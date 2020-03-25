@@ -15,6 +15,7 @@ public class CMARichEmbeddedLink extends CMARichHyperLink {
    * Create a link pointing to a CMAEntry.
    *
    * @param target an entry to be pointed to.
+   * @param inline should be inline or block
    */
   public CMARichEmbeddedLink(Object target, boolean inline) {
     super(target);

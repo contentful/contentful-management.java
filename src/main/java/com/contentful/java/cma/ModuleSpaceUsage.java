@@ -34,7 +34,7 @@ public class ModuleSpaceUsage extends AbsModule<ServiceSpaceUsage> {
 
     /**
      * Fetch all space usage the token has access to.
-     *
+     * @param organizationId organization id for the request.
      * @param query the criteria to narrow down the search result.
      * @return {@link CMAUsage} result instance
      */
@@ -63,6 +63,8 @@ public class ModuleSpaceUsage extends AbsModule<ServiceSpaceUsage> {
          * Fetch all space usage accessible.
          *
          * @param callback the callback to be informed about success or failure.
+         * @param organizationId organization id for the request.
+         * @param query possible parameters of the request.
          * @return {@link CMAUsage} result callback.
          */
         public CMACallback<CMAArray<CMAUsage>> fetchAll(

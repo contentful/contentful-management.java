@@ -197,7 +197,7 @@ public class CMAWebhook extends CMAResource {
   /**
    *  Set the transformation of this webhook
    *
-   * @param the transformation property.
+   * @param transformation transformation property.
    * @return this webhook for chaining.
    */
   public CMAWebhook setTransformation(CMAWebhookTransformation transformation) {
