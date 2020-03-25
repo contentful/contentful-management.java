@@ -27,6 +27,7 @@ public class CMASnapshot extends CMAResource {
    * Update the current snapshot.
    *
    * @param snapshot the value to be used.
+   * @return the actual CMASnapshot
    */
   public CMASnapshot setSnapshot(CMAResource snapshot) {
     this.snapshot = snapshot;

@@ -17,6 +17,8 @@ public enum CMAType {
   Link,
   Locale,
   Organization,
+  OrganizationPeriodicUsage,
+  SpacePeriodicUsage,
   PersonalAccessToken,
   PreviewApiKey,
   Role,
