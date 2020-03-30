@@ -2936,6 +2936,123 @@
           }
         }
       }
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "<space_id>"
+          }
+        },
+        "id": "NestedParagraphWithInlineLink",
+        "type": "Entry",
+        "createdAt": "2018-10-17T13:32:26.729Z",
+        "updatedAt": "2019-01-09T13:29:01.276Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "<user_id>"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "<user_id>"
+          }
+        },
+        "publishedCounter": 5,
+        "version": 15,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "<user_id>"
+          }
+        },
+        "publishedVersion": 14,
+        "firstPublishedAt": "2018-10-17T13:32:27.340Z",
+        "publishedAt": "2019-01-09T13:29:01.276Z",
+        "contentType": {
+          "sys": {
+            "type": "Link",
+            "linkType": "ContentType",
+            "id": "rich"
+          }
+        }
+      },
+      "fields": {
+        "name": {
+          "en-US": "nested_paragraph_with_inline_link"
+        },
+        "rich": {
+          "en-US": {
+            "data": {},
+            "content": [
+              {
+                "data": {},
+                "content": [
+                  {
+                    "data": {},
+                    "marks": [],
+                    "value": ".",
+                    "nodeType": "Text before nested paragraph"
+                  },
+                  {
+                    "data": {},
+                    "content": [
+                      {
+                        "data": {},
+                        "marks": [],
+                        "value": "Text in the beginning of nested paragraph",
+                        "nodeType": "text"
+                      },
+                      {
+                        "data": {
+                          "target": {
+                            "sys": {
+                              "id": "RRarwhlUXtnXO1H4gla58",
+                              "type": "Link",
+                              "linkType": "Entry"
+                            }
+                          }
+                        },
+                        "content": [],
+                        "nodeType": "embedded-entry-inline"
+                      },
+                      {
+                        "data": {},
+                        "marks": [],
+                        "value": "Text in the end of nested paragraph",
+                        "nodeType": "text"
+                      }
+                    ],
+                    "nodeType": "paragraph"
+                  },
+                  {
+                    "data": {},
+                    "marks": [],
+                    "value": ".",
+                    "nodeType": "Text after nested paragraph"
+                  }
+                ],
+                "nodeType": "paragraph"
+              }
+            ],
+            "nodeType": "document"
+          }
+        }
+      }
     }
   ]
 }
