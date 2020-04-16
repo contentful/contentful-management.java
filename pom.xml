@@ -48,7 +48,7 @@
     <java.version>1.8</java.version>
 
     <!-- Dependencies -->
-    <retrofit.version>2.5.0</retrofit.version>
+    <retrofit.version>2.6.1</retrofit.version>
 
     <!-- Test Dependencies -->
     <commonsio.version>2.6</commonsio.version>
