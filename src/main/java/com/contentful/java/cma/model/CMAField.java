@@ -16,12 +16,12 @@
 
 package com.contentful.java.cma.model;
 
-import com.contentful.java.cma.Constants.CMAFieldType;
-import com.google.gson.annotations.SerializedName;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.contentful.java.cma.Constants.CMAFieldType;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * CMAField.
@@ -176,7 +176,7 @@ public class CMAField {
   /**
    * @return the {@code items} attribute value as a {@code Map}.
    */
-  public HashMap<String, Object> getArrayItems() {
+  public Map<String, Object> getArrayItems() {
     return arrayItems;
   }
 
@@ -186,8 +186,8 @@ public class CMAField {
    * @param arrayItems Map instance
    * @return this {@code CMAField} instance
    */
-  public CMAField setArrayItems(HashMap<String, Object> arrayItems) {
-    this.arrayItems = arrayItems;
+  public CMAField setArrayItems(Map<String, Object> arrayItems) {
+    this.arrayItems = new HashMap<>(arrayItems);
     return this;
   }
 
