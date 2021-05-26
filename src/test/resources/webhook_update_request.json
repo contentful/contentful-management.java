@@ -1,1 +1,20 @@
-{"headers":[{"key":"my_new_header_name","value":"header_value"}],"sys":{"id":"webhookid","version":5.0,"space":{"sys":{"id":"spaceid"}}}}
+{
+  "transformation":{
+    "body":"{ /payload/sys/id }: { /payload/fields/new }"
+  },
+  "headers": [
+    {
+      "key": "my_new_header_name",
+      "value": "header_value"
+    }
+  ],
+  "sys": {
+    "id": "webhookid",
+    "version": 3,
+    "space": {
+      "sys": {
+        "id": "spaceid"
+      }
+    }
+  }
+}

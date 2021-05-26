@@ -43,14 +43,14 @@
       "sys":{
         "type":"Link",
         "linkType":"Space",
-        "id":"arqlnkt58eul"
+        "id":"<space_id>"
       }
     },
     "createdBy":{
       "sys":{
         "type":"Link",
         "linkType":"User",
-        "id":"7uJNojWP0gbuP7Pplz7Syo"
+        "id":"<user_id>"
       }
     },
     "createdAt":"2017-06-01T10:10:10Z",
@@ -58,7 +58,7 @@
       "sys":{
         "type":"Link",
         "linkType":"User",
-        "id":"7uJNojWP0gbuP7Pplz7Syo"
+        "id":"<user_id>"
       }
     },
     "updatedAt":"2017-06-01T11:22:12Z"

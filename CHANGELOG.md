@@ -2,6 +2,60 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Version [3.4.0] - [2020-04-16]
+- Changed: Removed final keyword from the model classes
+- Add: Support for Space and Organizations usage API
+
+## Version [3.3.3] - [unreleased]
+- Add: new optional [transformation](https://www.contentful.com/developers/docs/references/content-management-api/#transforming-webhook-calls) property to webhook.
+
+## Version [3.3.2] - [2019-27-06]
+- Add: [Configuration](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/ui-extensions/configuration-parameters) to UI extensions.
+
+## Version [3.3.1] - (2019-04-29)
+- Created `.clone()` method of environments, to be used instead of `.branch()`.
+- Deprecated `.branch()` of environments.
+
+## Version [3.3.0] - (2019-03-04)
+- add environment branching
+
+## Version [3.2.4] - (2019-01-28)
+- add marks to rich text nodes parsing
+
+## Version [3.2.3] - (2019-01-21)
+- Add e2e tests for rich text element creation.
+- Added rules for creation of rich text elements to [README.md](README.md).
+
+## Version [3.2.2] - (2019-01-14)
+- Fix updating rich text fields.
+
+## Version [3.2.1] - (2018-12-10)
+- Fix Snapshots to contain entries and content types.
+
+## Version [3.2.0] - (2018-11-12)
+- Add [rich text](https://www.contentful.com/developers/docs/concepts/rich-text/) management classes.
+
+## Version [3.1.0] - (2018-05-22)
+- Add preview api keys endpoint.
+- Add environments to delivery api key.
+- Add E2E tests
+  * Entries
+  * Webhooks
+
+## Version [3.0.0] - (2018-04-18)
+- Add: [`/environments` module](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/environments) endpoint.
+- Add: make environment aware:
+  * assets
+  * content types
+  * editor interfaces
+  * entries
+  * locales and
+  * ui extensions.
+- Add: space id and environment id parameter on client creation, to remove need of repeating the same value in almost all calls.
+- Break: use JDK 1.8 for building the SDK.
+- Break: move queries for locales from spaces to locales. (i.e. use `client.locales().fetchAll()`).
+- Break: remove non resource variants of delete, update and webhook calls. (use a resource you fetched first instead)
+
 ## Version [2.2.3] - 2018-03-08
 - Fix: Parsing error in error response
 
@@ -124,7 +178,18 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Version 0.9.0 - 2014-11-18
 Initial release.
 
-[unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.2.3...HEAD
+[unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-3.3.3...HEAD
+[3.3.3]: https://github.com/contentful/contentful-management.java/compare/v3.3.1...v3.3.3
+[3.3.2]: https://github.com/contentful/contentful-management.java/compare/v3.3.1...v3.3.2
+[3.3.1]: https://github.com/contentful/contentful-management.java/compare/v3.3.0...v3.3.1
+[3.3.0]: https://github.com/contentful/contentful-management.java/compare/v3.2.4...v3.3.0
+[3.2.4]: https://github.com/contentful/contentful-management.java/compare/v3.2.3...v3.2.4
+[3.2.3]: https://github.com/contentful/contentful-management.java/compare/v3.2.2...v3.2.3
+[3.2.2]: https://github.com/contentful/contentful-management.java/compare/v3.2.1...v3.2.2
+[3.2.1]: https://github.com/contentful/contentful-management.java/compare/v3.2.0...v3.2.1
+[3.2.0]: https://github.com/contentful/contentful-management.java/compare/v3.1.0...v3.2.0
+[3.1.0]: https://github.com/contentful/contentful-management.java/compare/v3.0.0...v3.1.0
+[3.0.0]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.2.2...v3.0.0
 [2.2.3]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.2.2...cma-sdk-2.2.3
 [2.2.2]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.2.1...cma-sdk-2.2.2
 [2.2.1]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-2.2.0...cma-sdk-2.2.1

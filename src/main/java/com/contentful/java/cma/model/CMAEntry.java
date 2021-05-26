@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Contentful GmbH
+ * Copyright (C) 2019 Contentful GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -74,6 +74,17 @@ public class CMAEntry extends CMAResource {
   @SuppressWarnings("unchecked")
   @Override public CMAEntry setSpaceId(String spaceId) {
     return super.setSpaceId(spaceId);
+  }
+
+  /**
+   * Convenience: Update the environment id, without going through {@link #getSystem()}.
+   *
+   * @param environmentId to be set.
+   * @return the calling instance for chaining.
+   */
+  @SuppressWarnings("unchecked")
+  @Override public CMAEntry setEnvironmentId(String environmentId) {
+    return super.setEnvironmentId(environmentId);
   }
 
   /**

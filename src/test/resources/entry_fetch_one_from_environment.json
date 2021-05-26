@@ -1,0 +1,61 @@
+{
+  "sys": {
+    "space": {
+      "sys": {
+        "type": "Link",
+        "linkType": "Space",
+        "id": "<space_id>"
+      }
+    },
+    "id": "6MUKUSDqPCEcQUeeewAgAW",
+    "type": "Entry",
+    "createdAt": "2018-01-15T11:47:43.421Z",
+    "updatedAt": "2018-02-07T14:04:27.483Z",
+    "environment": {
+      "sys": {
+        "id": "staging",
+        "type": "Link",
+        "linkType": "Environment"
+      }
+    },
+    "createdBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "<user_id>"
+      }
+    },
+    "updatedBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "<user_id>"
+      }
+    },
+    "publishedCounter": 7,
+    "version": 33,
+    "publishedBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "<user_id>"
+      }
+    },
+    "publishedVersion": 32,
+    "firstPublishedAt": "2018-01-15T11:48:44.130Z",
+    "publishedAt": "2018-02-07T14:04:27.483Z",
+    "contentType": {
+      "sys": {
+        "type": "Link",
+        "linkType": "ContentType",
+        "id": "51Q7ngbcakOm6MUi2aKEIM"
+      }
+    }
+  },
+  "fields": {
+    "title": {
+      "en-US": "🍌🍌🍌🍏",
+      "en-UK": "🍌🍌🍌🍏🍏🍏"
+    }
+  }
+}

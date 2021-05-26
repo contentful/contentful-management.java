@@ -1,0 +1,104 @@
+{
+  "sys": {
+    "id": "default",
+    "type": "EditorInterface",
+    "space": {
+      "sys": {
+        "id": "<space_id>",
+        "type": "Link",
+        "linkType": "Space"
+      }
+    },
+    "version": 192,
+    "createdAt": "2016-08-30T12:52:59.554Z",
+    "createdBy": {
+      "sys": {
+        "id": "<user_id>",
+        "type": "Link",
+        "linkType": "User"
+      }
+    },
+    "updatedAt": "2018-02-27T10:40:43.746Z",
+    "updatedBy": {
+      "sys": {
+        "id": "<user_id>",
+        "type": "Link",
+        "linkType": "User"
+      }
+    },
+    "contentType": {
+      "sys": {
+        "id": "deleteme",
+        "type": "Link",
+        "linkType": "ContentType"
+      }
+    },
+    "environment": {
+      "sys": {
+        "id": "staging",
+        "type": "Link",
+        "linkType": "Environment"
+      }
+    }
+  },
+  "controls": [
+    {
+      "fieldId": "name",
+      "widgetId": "singleLine"
+    },
+    {
+      "fieldId": "media",
+      "widgetId": "assetLinkEditor"
+    },
+    {
+      "fieldId": "link",
+      "widgetId": "entryLinkEditor"
+    },
+    {
+      "fieldId": "fields",
+      "widgetId": "listInput"
+    },
+    {
+      "fieldId": "sys",
+      "widgetId": "listInput"
+    },
+    {
+      "fieldId": "date",
+      "settings": {
+        "ampm": "24",
+        "format": "timeZ"
+      },
+      "widgetId": "datePicker"
+    },
+    {
+      "fieldId": "location",
+      "widgetId": "locationEditor"
+    },
+    {
+      "fieldId": "slug",
+      "widgetId": "hello-world"
+    },
+    {
+      "fieldId": "links",
+      "settings": {
+        "bulkEditing": "false"
+      },
+      "widgetId": "entryLinksEditor"
+    },
+    {
+      "fieldId": "otherlinks",
+      "settings": {
+        "bulkEditing": "false"
+      },
+      "widgetId": "entryLinksEditor"
+    },
+    {
+      "fieldId": "json",
+      "widgetId": "objectEditor"
+    },
+    {
+      "fieldId": "localized",
+      "widgetId": "singleLine"
+    }
+  ]
+}

@@ -1,1 +1,11 @@
-{"fields":{"file":{"en-US":{"contentType":"image/jpeg","upload":"https://www.nowhere.com/image.jpg","fileName":"example.jpg"}}}}
+{
+  "fields": {
+    "file": {
+      "en-US": {
+        "contentType": "image/jpeg",
+        "upload": "https://www.nowhere.com/image.jpg",
+        "fileName": "example.jpg"
+      }
+    }
+  }
+}

@@ -3,7 +3,7 @@
 
   <groupId>com.contentful.java</groupId>
   <artifactId>cma-sdk</artifactId>
-  <version>2.2.4-SNAPSHOT</version>
+  <version>3.4.2-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>cma-sdk</name>
@@ -45,17 +45,17 @@
     <project.reporting.sourceEncoding>UTF-8</project.reporting.sourceEncoding>
 
     <!-- Compilation -->
-    <java.version>1.6</java.version>
+    <java.version>1.8</java.version>
 
     <!-- Dependencies -->
-    <retrofit.version>2.3.0</retrofit.version>
+    <retrofit.version>2.6.1</retrofit.version>
 
     <!-- Test Dependencies -->
-    <commonsio.version>2.5</commonsio.version>
+    <commonsio.version>2.6</commonsio.version>
     <junit.version>4.12</junit.version>
-    <kotlin.version>1.0.1</kotlin.version>
-    <okhttp.version>3.8.1</okhttp.version>
-    <rxjava.version>2.1.1</rxjava.version>
+    <kotlin.version>1.3.11</kotlin.version>
+    <okhttp.version>3.12.1</okhttp.version>
+    <rxjava.version>2.2.5</rxjava.version>
     <android.version>4.1.1.4</android.version>
     <android.platform>16</android.platform>
     <robolectric.version>2.4</robolectric.version>
@@ -98,7 +98,7 @@
 
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
-      <artifactId>kotlin-stdlib</artifactId>
+      <artifactId>kotlin-stdlib-jdk8</artifactId>
       <version>${kotlin.version}</version>
       <scope>test</scope>
     </dependency>
@@ -150,6 +150,19 @@
       <version>${robolectric.version}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-test</artifactId>
+      <version>${kotlin.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+        <groupId>org.skyscreamer</groupId>
+        <artifactId>jsonassert</artifactId>
+        <version>1.5.0</version>
+        <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -162,7 +175,7 @@
         </targetPath>
       </resource>
     </resources>
-    <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
+    <testSourceDirectory>src/test/kotlin</testSourceDirectory>
     <plugins>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -203,21 +216,30 @@
 
       <plugin>
         <artifactId>kotlin-maven-plugin</artifactId>
+        <configuration>
+          <jvmTarget>1.8</jvmTarget>
+        </configuration>
         <groupId>org.jetbrains.kotlin</groupId>
         <version>${kotlin.version}</version>
 
         <executions>
           <execution>
             <id>compile</id>
-            <phase>process-sources</phase>
+            <phase>compile</phase>
             <goals>
               <goal>compile</goal>
             </goals>
+            <configuration>
+              <sourceDirs>
+                <source>src/main/java</source>
+                <source>target/generated-sources</source>
+              </sourceDirs>
+            </configuration>
           </execution>
 
           <execution>
             <id>test-compile</id>
-            <phase>process-test-sources</phase>
+            <phase>test-compile</phase>
             <goals>
               <goal>test-compile</goal>
             </goals>
@@ -239,19 +261,26 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>2.9.1</version>
+        <version>3.1.1</version>
+        <dependencies>
+            <dependency>
+                <groupId>com.puppycrawl.tools</groupId>
+                <artifactId>checkstyle</artifactId>
+                <version>8.29</version>
+            </dependency>
+        </dependencies>
         <configuration>
-          <failsOnError>true</failsOnError>
-          <configLocation>checkstyle.xml</configLocation>
-          <consoleOutput>true</consoleOutput>
+            <failsOnError>true</failsOnError>
+            <configLocation>checkstyle.xml</configLocation>
+            <consoleOutput>true</consoleOutput>
         </configuration>
         <executions>
-          <execution>
-            <phase>verify</phase>
-            <goals>
-              <goal>checkstyle</goal>
-            </goals>
-          </execution>
+            <execution>
+                <phase>verify</phase>
+                <goals>
+                    <goal>checkstyle</goal>
+                </goals>
+            </execution>
         </executions>
       </plugin>
 
@@ -259,6 +288,22 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.6.1</version>
+        <executions>
+          <execution>
+            <id>compile</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>testCompile</id>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+        </executions>
         <configuration>
           <source>${java.version}</source>
           <target>${java.version}</target>
@@ -277,7 +322,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.7.9</version>
+        <version>0.8.2</version>
       </plugin>
     </plugins>
   </build>

@@ -5,7 +5,7 @@ package com.contentful.java.cma.model;
  */
 public class CMASnapshot extends CMAResource {
 
-  CMAResource snapshot;
+  private CMAResource snapshot;
 
   /**
    * Create a new snapshot.
@@ -21,5 +21,16 @@ public class CMASnapshot extends CMAResource {
    */
   public CMAResource getSnapshot() {
     return snapshot;
+  }
+
+  /**
+   * Update the current snapshot.
+   *
+   * @param snapshot the value to be used.
+   * @return the actual CMASnapshot
+   */
+  public CMASnapshot setSnapshot(CMAResource snapshot) {
+    this.snapshot = snapshot;
+    return this;
   }
 }

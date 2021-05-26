@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Contentful GmbH
+ * Copyright (C) 2019 Contentful GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import retrofit2.Retrofit;
 /**
  * Editor Interfaces Module.
  */
-public final class ModuleEditorInterfaces extends AbsModule<ServiceEditorInterfaces> {
+public class ModuleEditorInterfaces extends AbsModule<ServiceEditorInterfaces> {
   final Async async;
 
   /**
@@ -35,9 +35,17 @@ public final class ModuleEditorInterfaces extends AbsModule<ServiceEditorInterfa
    *
    * @param retrofit         the retrofit instance to be used to create the service.
    * @param callbackExecutor to tell on which thread it should run.
+   * @param spaceId          the space to be used when not given.
+   * @param environmentId    the environment to be used when not given.
+   * @param environmentIdConfigured internal helper to see if environment was set.
    */
-  public ModuleEditorInterfaces(Retrofit retrofit, Executor callbackExecutor) {
-    super(retrofit, callbackExecutor);
+  public ModuleEditorInterfaces(
+      Retrofit retrofit,
+      Executor callbackExecutor,
+      String spaceId,
+      String environmentId,
+      boolean environmentIdConfigured) {
+    super(retrofit, callbackExecutor, spaceId, environmentId, environmentIdConfigured);
     this.async = new Async();
   }
 
@@ -46,12 +54,41 @@ public final class ModuleEditorInterfaces extends AbsModule<ServiceEditorInterfa
   }
 
   /**
-   * @param spaceId       the id of the space this editor interface is valid on.
+   * Return an editor interface by id using the configured space and environment.
+   *
    * @param contentTypeId the contentTypeId this editor interface is valid on.
    * @return the editor interface for a specific content type on a specific space.
+   * @throws IllegalArgumentException if configured space id is null.
+   * @throws IllegalArgumentException if configured environment id is null.
+   * @throws IllegalArgumentException if content type id is null.
+   * @see CMAClient.Builder#setSpaceId(String)
+   * @see CMAClient.Builder#setEnvironmentId(String)
    */
-  public CMAEditorInterface fetchOne(String spaceId, String contentTypeId) {
-    return service.fetchOne(spaceId, contentTypeId).blockingFirst();
+  public CMAEditorInterface fetchOne(String contentTypeId) {
+    return fetchOne(spaceId, environmentId, contentTypeId);
+  }
+
+  /**
+   * Get the editor interface by id, using the given space and environment.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
+   *
+   * @param spaceId       the id of the space this environment is part of.
+   * @param environmentId the id of the environment this editor interface is valid on.
+   * @param contentTypeId the contentTypeId this editor interface is valid on.
+   * @return the editor interface for a specific content type on a specific space.
+   * @throws IllegalArgumentException if space id is null.
+   * @throws IllegalArgumentException if environment id is null.
+   * @throws IllegalArgumentException if content type id is null.
+   */
+  public CMAEditorInterface fetchOne(String spaceId, String environmentId, String contentTypeId) {
+    assertNotNull(spaceId, "spaceId");
+    assertNotNull(environmentId, "environmentId");
+    assertNotNull(contentTypeId, "contentTypeId");
+
+    return service.fetchOne(spaceId, environmentId, contentTypeId).blockingFirst();
   }
 
   /**
@@ -73,13 +110,14 @@ public final class ModuleEditorInterfaces extends AbsModule<ServiceEditorInterfa
       throw new IllegalArgumentException("Id of ContentType of editor interface may not be null!");
     }
     final String contentTypeId = editor.getSystem().getContentType().getId();
+    final String environmentId = editor.getEnvironmentId();
     final Integer version = getVersionOrThrow(editor, "update");
 
     CMASystem old = editor.getSystem();
     editor.setSystem(null);
 
     try {
-      return service.update(spaceId, contentTypeId, editor, version).blockingFirst();
+      return service.update(spaceId, environmentId, contentTypeId, editor, version).blockingFirst();
     } finally {
       editor.setSystem(old);
     }
@@ -95,22 +133,51 @@ public final class ModuleEditorInterfaces extends AbsModule<ServiceEditorInterfa
   /**
    * Async module.
    */
-  public final class Async {
+  public class Async {
     /**
-     * Fetch editor interface to given content type in a given space.
+     * Fetch editor interface to given content type in the configured space and environment.
      *
-     * @param spaceId       the space this editor interface is defined on.
      * @param contentTypeId the id of the content type controlled by this editor interface.
      * @param callback      the callback to be informed about success or failure.
      * @return the callback.
+     * @throws IllegalArgumentException if configured space id is null.
+     * @throws IllegalArgumentException if configured environment id is null.
+     * @throws IllegalArgumentException if content type id is null.
+     * @see CMAClient.Builder#setSpaceId(String)
+     * @see CMAClient.Builder#setEnvironmentId(String)
      */
     public CMACallback<CMAEditorInterface> fetchOne(
-        final String spaceId,
         final String contentTypeId,
         CMACallback<CMAEditorInterface> callback) {
       return defer(new DefFunc<CMAEditorInterface>() {
         @Override CMAEditorInterface method() {
-          return ModuleEditorInterfaces.this.fetchOne(spaceId, contentTypeId);
+          return ModuleEditorInterfaces.this.fetchOne(contentTypeId);
+        }
+      }, callback);
+    }
+
+    /**
+     * Fetch editor interface to given content type in a given space and environment.
+     *
+     * @param spaceId       the space this environment is defined on.
+     * @param environmentId the environment this editor interface is defined on.
+     * @param contentTypeId the id of the content type controlled by this editor interface.
+     * @param callback      the callback to be informed about success or failure.
+     * @return the callback.
+     * @throws IllegalArgumentException if space id is null.
+     * @throws IllegalArgumentException if environment id is null.
+     * @throws IllegalArgumentException if content type id is null.
+     * @see CMAClient.Builder#setSpaceId(String)
+     * @see CMAClient.Builder#setEnvironmentId(String)
+     */
+    public CMACallback<CMAEditorInterface> fetchOne(
+        final String spaceId,
+        final String environmentId,
+        final String contentTypeId,
+        CMACallback<CMAEditorInterface> callback) {
+      return defer(new DefFunc<CMAEditorInterface>() {
+        @Override CMAEditorInterface method() {
+          return ModuleEditorInterfaces.this.fetchOne(spaceId, environmentId, contentTypeId);
         }
       }, callback);
     }

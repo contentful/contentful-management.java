@@ -1,0 +1,63 @@
+{
+  "name":"First API Key Name",
+  "description":"Updated API Key Description",
+  "accessToken":"<access_token>",
+  "policies":[
+    {
+      "effect":"allow",
+      "actions":"all"
+    }
+  ],
+  "sys":{
+    "type":"ApiKey",
+    "id":"5syMy6BsUtcVXlD6PpE6LA",
+    "version":5,
+    "space":{
+      "sys":{
+        "type":"Link",
+        "linkType":"Space",
+        "id":"<space_id>"
+      }
+    },
+    "createdBy":{
+      "sys":{
+        "type":"Link",
+        "linkType":"User",
+        "id":"<user_id>"
+      }
+    },
+    "createdAt":"2018-04-17T12:56:42Z",
+    "updatedBy":{
+      "sys":{
+        "type":"Link",
+        "linkType":"User",
+        "id":"<user_id>"
+      }
+    },
+    "updatedAt":"2018-08-09T10:53:00Z"
+  },
+  "environments":[
+    {
+      "sys":{
+        "id":"master",
+        "type":"Link",
+        "linkType":"Environment"
+      }
+    },
+    {
+      "sys":{
+        "id":"java_e2e",
+        "type":"Link",
+        "linkType":"Environment"
+      }
+    }
+  ],
+  "preview_api_key":{
+    "sys":{
+      "type":"Link",
+      "linkType":"PreviewApiKey",
+      "id":"5szEuycyXqACwhWgwNwX2m"
+    }
+  }
+}
+

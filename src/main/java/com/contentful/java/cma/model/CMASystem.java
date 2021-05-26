@@ -1,5 +1,7 @@
 package com.contentful.java.cma.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.HashMap;
 
 /**
@@ -20,11 +22,15 @@ public class CMASystem {
   Integer publishedCounter;
   Integer publishedVersion;
   CMALink space;
+  CMALink environment;
   CMAType type;
   String updatedAt;
   CMALink updatedBy;
   Integer version;
   Integer archivedVersion;
+
+  @SerializedName("status")
+  CMALink environmentStatus;
 
   /**
    * @return the content type if this resource can have one.
@@ -148,6 +154,13 @@ public class CMASystem {
   }
 
   /**
+   * @return the environment this resource is in.
+   */
+  public CMALink getEnvironment() {
+    return environment;
+  }
+
+  /**
    * @return the type of this ressource.
    * @see CMAType
    */
@@ -208,6 +221,18 @@ public class CMASystem {
   }
 
   /**
+   * Return a link to the state of this environment
+   * <p>
+   * This field is only active on an environment.
+   *
+   * @return a link to the status.
+   * @see CMAEnvironment#getStatus()
+   */
+  public CMALink getEnvironmentalStatus() {
+    return environmentStatus;
+  }
+
+  /**
    * @return a human readable string, representing the object.
    */
   @Override public String toString() {
@@ -225,10 +250,12 @@ public class CMASystem {
     map.put("publishedCounter", getPublishedCounter());
     map.put("publishedVersion", getPublishedVersion());
     map.put("space", getSpace());
+    map.put("environment", getEnvironment());
     map.put("type", getType());
     map.put("updatedAt", getUpdatedAt());
     map.put("updatedBy", getUpdatedBy());
     map.put("version", getVersion());
+    map.put("status", getEnvironmentalStatus());
 
     final StringBuilder builder = new StringBuilder("CMASystem { ");
     String separator = "";

@@ -4,7 +4,7 @@
       "sys": {
         "type": "Link",
         "linkType": "Space",
-        "id": "arqlnkt58eul"
+        "id": "<space_id>"
       }
     },
     "id": "51Q7ngbcakOm6MUi2aKEIM",
@@ -15,14 +15,14 @@
       "sys": {
         "type": "Link",
         "linkType": "User",
-        "id": "7uJNojWP0gbuP7Pplz7Syo"
+        "id": "<user_id>"
       }
     },
     "updatedBy": {
       "sys": {
         "type": "Link",
         "linkType": "User",
-        "id": "7uJNojWP0gbuP7Pplz7Syo"
+        "id": "<user_id>"
       }
     },
     "version": 1

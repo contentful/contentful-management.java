@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Contentful GmbH
+ * Copyright (C) 2019 Contentful GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
 package com.contentful.java.cma;
 
 import com.contentful.java.cma.model.CMAArray;
-import com.contentful.java.cma.model.CMALocale;
 import com.contentful.java.cma.model.CMASpace;
 
 import java.util.Map;
@@ -58,12 +57,6 @@ interface ServiceSpaces {
   @GET("/spaces/{space}")
   Flowable<CMASpace> fetchOne(
       @Path("space") String spaceId);
-
-  @GET("/spaces/{space}/locales")
-  Flowable<CMAArray<CMALocale>> fetchLocales(
-      @Path("space") String spaceId,
-      @QueryMap Map<String, String> query
-  );
 
   @PUT("/spaces/{space}")
   Flowable<CMASpace> update(

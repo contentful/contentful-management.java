@@ -6,7 +6,7 @@
       "sys": {
         "type": "Link",
         "linkType": "Space",
-        "id": "arqlnkt58eul"
+        "id": "<space_id>"
       }
     },
     "createdBy": {
@@ -28,7 +28,7 @@
       "Content-Type": "application/vnd.contentful.management.v1+json",
       "Authorization": "Basic dXNlcjpwYXNzd29yZA=="
     },
-    "body": "{\"fields\":{\"title\":{\"en-US\":\"Mike Springer\"},\"file\":{\"en-US\":{\"fileName\":\"kenchoong.jpeg\",\"contentType\":\"image/jpeg\",\"details\":{\"image\":{\"width\":200,\"height\":200},\"size\":19786},\"url\":\"//images.contentful.com/arqlnkt58eul/2xA3oKlZTuQ0Wgs2Wm2Mkk/6e84f0de553b3de4560fdd4ea99ce866/kenchoong.jpeg\"}}},\"sys\":{\"id\":\"2xA3oKlZTuQ0Wgs2Wm2Mkk\",\"type\":\"Asset\",\"createdAt\":\"2016-07-26T09:40:53.674Z\",\"createdBy\":{\"sys\":{\"type\":\"Link\",\"linkType\":\"User\",\"id\":\"7uJNojWP0gbuP7Pplz7Syo\"}},\"space\":{\"sys\":{\"type\":\"Link\",\"linkType\":\"Space\",\"id\":\"arqlnkt58eul\"}},\"firstPublishedAt\":\"2016-07-26T09:40:55.753Z\",\"publishedCounter\":2,\"publishedAt\":\"2016-07-26T12:05:01.030Z\",\"publishedBy\":{\"sys\":{\"type\":\"Link\",\"linkType\":\"User\",\"id\":\"7uJNojWP0gbuP7Pplz7Syo\"}},\"publishedVersion\":5,\"version\":6,\"updatedAt\":\"2016-07-26T12:05:01.038Z\",\"updatedBy\":{\"sys\":{\"type\":\"Link\",\"linkType\":\"User\",\"id\":\"7uJNojWP0gbuP7Pplz7Syo\"}}}}",
+    "body": "{\"fields\":{\"title\":{\"en-US\":\"Mike Springer\"},\"file\":{\"en-US\":{\"fileName\":\"kenchoong.jpeg\",\"contentType\":\"image/jpeg\",\"details\":{\"image\":{\"width\":200,\"height\":200},\"size\":19786},\"url\":\"//images.contentful.com/<space_id>/2xA3oKlZTuQ0Wgs2Wm2Mkk/6e84f0de553b3de4560fdd4ea99ce866/kenchoong.jpeg\"}}},\"sys\":{\"id\":\"2xA3oKlZTuQ0Wgs2Wm2Mkk\",\"type\":\"Asset\",\"createdAt\":\"2016-07-26T09:40:53.674Z\",\"createdBy\":{\"sys\":{\"type\":\"Link\",\"linkType\":\"User\",\"id\":\"<user_id>\"}},\"space\":{\"sys\":{\"type\":\"Link\",\"linkType\":\"Space\",\"id\":\"<space_id>\"}},\"firstPublishedAt\":\"2016-07-26T09:40:55.753Z\",\"publishedCounter\":2,\"publishedAt\":\"2016-07-26T12:05:01.030Z\",\"publishedBy\":{\"sys\":{\"type\":\"Link\",\"linkType\":\"User\",\"id\":\"<user_id>\"}},\"publishedVersion\":5,\"version\":6,\"updatedAt\":\"2016-07-26T12:05:01.038Z\",\"updatedBy\":{\"sys\":{\"type\":\"Link\",\"linkType\":\"User\",\"id\":\"<user_id>\"}}}}",
     "timeout": 30000
   },
   "response": null,

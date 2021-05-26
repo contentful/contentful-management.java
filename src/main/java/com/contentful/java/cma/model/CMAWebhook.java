@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Contentful GmbH
+ * Copyright (C) 2019 Contentful GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,6 +33,8 @@ public class CMAWebhook extends CMAResource {
 
   List<CMAWebhookTopic> topics;
   List<CMAWebhookHeader> headers;
+
+  private CMAWebhookTransformation transformation;
 
   @SerializedName("httpBasicUsername")
   String user;
@@ -186,6 +188,24 @@ public class CMAWebhook extends CMAResource {
   }
 
   /**
+   * @return the transformation.
+   */
+  public CMAWebhookTransformation getTransformation() {
+    return transformation;
+  }
+
+  /**
+   *  Set the transformation of this webhook
+   *
+   * @param transformation transformation property.
+   * @return this webhook for chaining.
+   */
+  public CMAWebhook setTransformation(CMAWebhookTransformation transformation) {
+    this.transformation = transformation;
+    return this;
+  }
+
+  /**
    * @return the http basic auth user set.
    * @see #setBasicAuthorization(String, String)
    */
@@ -212,6 +232,7 @@ public class CMAWebhook extends CMAResource {
         + "user = " + getUser() + ", "
         + (topics == null ? "" : "topics = " + getTopics() + ", ")
         + (headers == null ? "" : "headers = " + getHeaders() + " ")
+        + (transformation == null ? "" : "transformation = " + getTransformation() + ", ")
         + "}";
   }
 }

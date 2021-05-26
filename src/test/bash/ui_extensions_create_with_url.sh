@@ -8,4 +8,7 @@ curl --verbose \
     -H 'Authorization: Bearer '$CMA_TOKEN  \
     -d @../resources/ui_extensions_create_with_url_payload.json \
     'https://api.contentful.com/spaces/'$SPACE_ID'/extensions' \
+    | sed 's/'${SPACE_ID}'/<space_id>/g' \
+    | sed 's/'${CMA_TOKEN}'/<access_token>/g' \
+    | sed 's/'${USER_ID}'/<user_id>/g' \
     | tee ${output}

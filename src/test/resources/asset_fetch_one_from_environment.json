@@ -1,0 +1,70 @@
+{
+  "sys": {
+    "space": {
+      "sys": {
+        "type": "Link",
+        "linkType": "Space",
+        "id": "<space_id>"
+      }
+    },
+    "id": "2ReMHJhXoAcy4AyamgsgwQ",
+    "type": "Asset",
+    "createdAt": "2016-07-26T09:40:54.316Z",
+    "updatedAt": "2018-02-22T09:05:23.677Z",
+    "environment": {
+      "sys": {
+        "id": "staging",
+        "type": "Link",
+        "linkType": "Environment"
+      }
+    },
+    "createdBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "<user_id>"
+      }
+    },
+    "updatedBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "<user_id>"
+      }
+    },
+    "publishedCounter": 1,
+    "version": 4,
+    "publishedBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "<user_id>"
+      }
+    },
+    "publishedVersion": 2,
+    "firstPublishedAt": "2016-07-26T09:40:55.877Z",
+    "publishedAt": "2016-07-26T09:40:55.877Z"
+  },
+  "fields": {
+    "title": {
+      "en-US": "Lewis Carroll"
+    },
+    "description": {
+      "en-US": "new description"
+    },
+    "file": {
+      "en-US": {
+        "url": "//images.ctfassets.net/<space_id>/2ReMHJhXoAcy4AyamgsgwQ/788a7c2210c923644b4bc20deb9a1f78/lewis-carroll-1.jpg",
+        "details": {
+          "size": 21113,
+          "image": {
+            "width": 300,
+            "height": 250
+          }
+        },
+        "fileName": "lewis-carroll-1.jpg",
+        "contentType": "image/jpeg"
+      }
+    }
+  }
+}

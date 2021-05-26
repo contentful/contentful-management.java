@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Contentful GmbH
+ * Copyright (C) 2019 Contentful GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,11 +28,21 @@ import retrofit2.Retrofit;
 /**
  * Organizations Module.
  */
-public final class ModuleOrganizations extends AbsModule<ServiceOrganizations> {
+public class ModuleOrganizations extends AbsModule<ServiceOrganizations> {
   final Async async;
 
-  public ModuleOrganizations(Retrofit retrofit, Executor callbackExecutor) {
-    super(retrofit, callbackExecutor);
+  /**
+   * Create  the organizations module.
+   *
+   * @param retrofit                the retrofit instance to be used to create the service.
+   * @param callbackExecutor        to tell on which thread it should run.
+   * @param environmentIdConfigured internal helper to see if environment was set.
+   */
+  public ModuleOrganizations(
+      Retrofit retrofit,
+      Executor callbackExecutor,
+      boolean environmentIdConfigured) {
+    super(retrofit, callbackExecutor, null, null, environmentIdConfigured);
     this.async = new Async();
   }
 
@@ -73,7 +83,7 @@ public final class ModuleOrganizations extends AbsModule<ServiceOrganizations> {
   /**
    * Async module.
    */
-  public final class Async {
+  public class Async {
     /**
      * Fetch all organizations accessible.
      *

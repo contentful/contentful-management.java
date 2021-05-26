@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Contentful GmbH
+ * Copyright (C) 2019 Contentful GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,13 +18,14 @@ package com.contentful.java.cma
 
 import java.util.*
 import kotlin.test.assertEquals
-import org.junit.Test as tests
+import org.junit.Test as test
 
 class DefaultQueryParameterTests {
     val MAP_KEY = "some_awesome_key"
     val MAP_VALUE = "value"
 
-    @org.junit.Test fun testEmptyMapWithDefaults() {
+    @test
+    fun testEmptyMapWithDefaults() {
         val defaultMap = hashMapOf(Pair(MAP_KEY, MAP_VALUE))
         val targetMap = HashMap<String, String>()
 
@@ -33,7 +34,8 @@ class DefaultQueryParameterTests {
         assertEquals(targetMap[MAP_KEY], MAP_VALUE)
     }
 
-    @org.junit.Test fun testDoNotOverwriteValueWithDefaultValue() {
+    @test
+    fun testDoNotOverwriteValueWithDefaultValue() {
         val defaultMap = hashMapOf(Pair(MAP_KEY, MAP_VALUE))
         val targetMap = hashMapOf(Pair(MAP_KEY, "NON_DEFAULT_VALUE"))
 
@@ -42,7 +44,8 @@ class DefaultQueryParameterTests {
         assertEquals(targetMap[MAP_KEY], "NON_DEFAULT_VALUE")
     }
 
-    @org.junit.Test fun testDoNotChangeDifferentValues() {
+    @test
+    fun testDoNotChangeDifferentValues() {
         val defaultMap = hashMapOf(Pair(MAP_KEY + "_123", "SOMETHING"))
         val targetMap = hashMapOf(Pair(MAP_KEY, MAP_VALUE))
 

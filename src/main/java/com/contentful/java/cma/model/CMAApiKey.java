@@ -2,6 +2,9 @@ package com.contentful.java.cma.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Class representing api keys created.
  */
@@ -12,6 +15,8 @@ public class CMAApiKey extends CMAResource {
   private String accessToken;
   @SerializedName("preview_api_key")
   private CMALink previewApiKey;
+
+  private List<CMALink> environments = new ArrayList<>();
 
   /**
    * Create a new api key.
@@ -63,6 +68,11 @@ public class CMAApiKey extends CMAResource {
     return accessToken;
   }
 
+  public CMAApiKey setAccessToken(String accessToken) {
+    this.accessToken = accessToken;
+    return this;
+  }
+
   /**
    * @return readonly preview api key part.
    */
@@ -70,6 +80,33 @@ public class CMAApiKey extends CMAResource {
     return previewApiKey;
   }
 
+  //HIDE
+  public CMAApiKey setPreviewApiKey(CMALink previewApiKey) {
+    this.previewApiKey = previewApiKey;
+    return this;
+  }
+
+  /**
+   * @return list of links to environments this key is active on.
+   */
+  public List<CMALink> getEnvironments() {
+    return environments;
+  }
+
+  /**
+   * Add environment ids to the api key.
+   * <p>
+   *
+   * @param environment a new environment to be affected by this key.
+   *                    A link for the payload will be created automatically.
+   * @return the api key for easy chaining.
+   */
+  public CMAApiKey addEnvironment(String environment) {
+    environments.add(
+        new CMALink(CMAType.Environment).setId(environment)
+    );
+    return this;
+  }
 
   /**
    * @return a human readable string, representing the object.
@@ -79,6 +116,7 @@ public class CMAApiKey extends CMAResource {
         + "accessToken = " + getAccessToken() + ", "
         + "description = " + getDescription() + ", "
         + "name = " + getName() + ", "
+        + "environments = " + getEnvironments() + ", "
         + "previewApiKey = " + getPreviewApiKey() + " "
         + "}";
   }

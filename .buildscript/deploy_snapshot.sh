@@ -26,5 +26,5 @@ else
 fi
 
 echo "Deploying snapshot to jitpack ..."
-curl --verbose "https://jitpack.io/com/github/contentful/contentful-management.java/${TRAVIS_BRANCH}-SNAPSHOT"
+curl --verbose --location "https://jitpack.io/com/github/contentful/contentful-management.java/${TRAVIS_BRANCH}-SNAPSHOT/"
 echo "Snapshot deployed to jitpack!"

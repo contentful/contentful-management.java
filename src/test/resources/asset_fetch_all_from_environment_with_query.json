@@ -1,0 +1,73 @@
+{
+  "sys": {
+    "type": "Array"
+  },
+  "total": 47,
+  "skip": 0,
+  "limit": 1,
+  "items": [
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "<space_id>"
+          }
+        },
+        "id": "6OpsQmtnl6uYyeUmkOiYYq",
+        "type": "Asset",
+        "createdAt": "2016-07-29T14:03:23.664Z",
+        "updatedAt": "2016-07-29T14:04:28.349Z",
+        "environment": {
+          "sys": {
+            "id": "staging",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "<user_id>"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "<user_id>"
+          }
+        },
+        "publishedCounter": 1,
+        "version": 5,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "<user_id>"
+          }
+        },
+        "publishedVersion": 4,
+        "firstPublishedAt": "2016-07-29T14:04:28.343Z",
+        "publishedAt": "2016-07-29T14:04:28.343Z"
+      },
+      "fields": {
+        "title": {
+          "en-US": "budah-small"
+        },
+        "file": {
+          "en-US": {
+            "url": "//assets.ctfassets.net/<space_id>/6OpsQmtnl6uYyeUmkOiYYq/e4156f9d089bd539fd482554945517e4/budah-small.obj",
+            "details": {
+              "size": 932240
+            },
+            "fileName": "budah-small.obj",
+            "contentType": "application/x-tgif"
+          }
+        }
+      }
+    }
+  ]
+}

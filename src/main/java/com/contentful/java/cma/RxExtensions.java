@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Contentful GmbH
+ * Copyright (C) 2019 Contentful GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import io.reactivex.functions.Consumer;
 /**
  * RxJava Extensions.
  */
-final class RxExtensions {
+class RxExtensions {
   private RxExtensions() {
     throw new UnsupportedOperationException();
   }
@@ -66,7 +66,6 @@ final class RxExtensions {
    * Error Action.
    */
   static class ActionError extends AbsAction<Throwable> {
-    @SuppressWarnings("unchecked")
     public ActionError(Executor executor, CMACallback callback) {
       super(executor, callback);
     }

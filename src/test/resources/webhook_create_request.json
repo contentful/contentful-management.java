@@ -1,1 +1,19 @@
-{"name":"cma-created","url":"http://lorempixel.com/200/200/cats","topics":["*.*"],"headers":[{"key":"key","value":"value"}],"httpBasicUsername":"user","httpBasicPassword":"password"}
+{
+  "name": "cma-created",
+  "url": "https://contentful.com",
+  "topics":[ "Entry.*" ],
+  "headers": [
+    {
+      "key": "key",
+      "value": "value"
+    }
+  ],
+  "httpBasicUsername": "user",
+  "httpBasicPassword": "password",
+  "transformation":{
+    "method":"PUT",
+    "contentType":"application/json; charset=utf-8",
+    "includeContentLength":true,
+    "body":"{ /payload/sys/id }: { /payload/fields/title }"
+  }
+}

@@ -5,7 +5,6 @@ import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMALocale;
 import com.contentful.java.cma.model.CMASystem;
 
-import java.util.Map;
 import java.util.concurrent.Executor;
 
 import retrofit2.Response;
@@ -22,9 +21,17 @@ public class ModuleLocales extends AbsModule<ServiceLocales> {
    *
    * @param retrofit         the retrofit instance to be used to create the service.
    * @param callbackExecutor to tell on which thread it should run.
+   * @param spaceId          the space to be used when not given.
+   * @param environmentId    the environment to be used when not given.
+   * @param environmentIdConfigured internal helper to see if environment was set.
    */
-  public ModuleLocales(Retrofit retrofit, Executor callbackExecutor) {
-    super(retrofit, callbackExecutor);
+  public ModuleLocales(
+      Retrofit retrofit,
+      Executor callbackExecutor,
+      String spaceId,
+      String environmentId,
+      boolean environmentIdConfigured) {
+    super(retrofit, callbackExecutor, spaceId, environmentId, environmentIdConfigured);
     async = new Async();
   }
 
@@ -48,68 +55,114 @@ public class ModuleLocales extends AbsModule<ServiceLocales> {
   }
 
   /**
-   * Fetch all locales of this space.
+   * Fetch all locales of the configured space.
    *
-   * @param spaceId the space identifier identifying the space.
    * @return the array of locales.
-   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if configured space id is null.
+   * @throws IllegalArgumentException if configured environment id is null.
+   * @see CMAClient.Builder#setSpaceId(String)
+   * @see CMAClient.Builder#setEnvironmentId(String)
    */
-  public CMAArray<CMALocale> fetchAll(String spaceId) {
-    assertNotNull(spaceId, "spaceId");
-    return service.fetchAll(spaceId).blockingFirst();
+  public CMAArray<CMALocale> fetchAll() {
+    return fetchAll(spaceId, environmentId);
   }
 
   /**
-   * Fetch specific locales of this space.
+   * Fetch all locales of the given space and environment.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
    *
-   * @param spaceId the space identifier identifying the space.
-   * @param query   the search criteria to search for.
+   * @param spaceId       the space identifier, identifying the space.
+   * @param environmentId the environment identifier, identifying the environment.
    * @return the array of locales.
    * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if environmentId is null.
    */
-  public CMAArray<CMALocale> fetchAll(String spaceId, Map<String, String> query) {
+  public CMAArray<CMALocale> fetchAll(String spaceId, String environmentId) {
     assertNotNull(spaceId, "spaceId");
-    if (query == null) {
-      return service.fetchAll(spaceId).blockingFirst();
-    } else {
-      return service.fetchAll(spaceId, query).blockingFirst();
-    }
+    assertNotNull(environmentId, "environmentId");
+
+    return service.fetchAll(spaceId, environmentId).blockingFirst();
   }
 
   /**
-   * Fetches one locale by its id from Contentful.
+   * Fetches one locale by its id using the configured space and environment.
    *
-   * @param spaceId  the space this locale is hosted by.
    * @param localeId the id of the locale to be found.
    * @return null if no locale was found, otherwise the found locale.
    * @throws IllegalArgumentException if space id is null.
    * @throws IllegalArgumentException if locale id is null.
+   * @see CMAClient.Builder#setSpaceId(String)
+   * @see CMAClient.Builder#setEnvironmentId(String)
    */
-  public CMALocale fetchOne(String spaceId, String localeId) {
-    assertNotNull(spaceId, "spaceId");
-    assertNotNull(localeId, "localeId");
-
-    return service.fetchOne(spaceId, localeId).blockingFirst();
+  public CMALocale fetchOne(String localeId) {
+    return fetchOne(spaceId, environmentId, localeId);
   }
 
   /**
-   * Create a new locale.
+   * Fetches one locale by its id from the given space and environment.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
    *
-   * @param spaceId the space id to host the locale.
-   * @param locale  the new locale to be created.
+   * @param spaceId       the space this environment is hosted in.
+   * @param environmentId the environment this locale is hosted in.
+   * @param localeId      the id of the locale to be found.
+   * @return null if no locale was found, otherwise the found locale.
+   * @throws IllegalArgumentException if space id is null.
+   * @throws IllegalArgumentException if environment id is null.
+   * @throws IllegalArgumentException if locale id is null.
+   */
+  public CMALocale fetchOne(String spaceId, String environmentId, String localeId) {
+    assertNotNull(spaceId, "spaceId");
+    assertNotNull(environmentId, "environmentId");
+    assertNotNull(localeId, "localeId");
+
+    return service.fetchOne(spaceId, environmentId, localeId).blockingFirst();
+  }
+
+  /**
+   * Create a new locale in the configured space and environment.
+   *
+   * @param locale the new locale to be created.
+   * @return the newly created locale.
+   * @throws IllegalArgumentException if the configured space id is null.
+   * @throws IllegalArgumentException if the configured locale is null.
+   * @see CMAClient.Builder#setSpaceId(String)
+   * @see CMAClient.Builder#setEnvironmentId(String)
+   */
+  public CMALocale create(CMALocale locale) {
+    return create(spaceId, environmentId, locale);
+  }
+
+  /**
+   * Create a new locale in the given space and environment.
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
+   *
+   * @param spaceId       the space id hosting the environment.
+   * @param environmentId the environment id to host the locale.
+   * @param locale        the new locale to be created.
    * @return the newly created locale.
    * @throws IllegalArgumentException if space id is null.
+   * @throws IllegalArgumentException if environment is null.
    * @throws IllegalArgumentException if locale is null.
    */
-  public CMALocale create(String spaceId, CMALocale locale) {
+  public CMALocale create(String spaceId, String environmentId, CMALocale locale) {
     assertNotNull(spaceId, "spaceId");
+    assertNotNull(environmentId, "environmentId");
     assertNotNull(locale, "locale");
 
     final CMASystem sys = locale.getSystem();
     locale.setSystem(null);
 
     try {
-      return service.create(spaceId, locale).blockingFirst();
+      return service.create(spaceId, environmentId, locale).blockingFirst();
     } finally {
       locale.setSystem(sys);
     }
@@ -133,13 +186,14 @@ public class ModuleLocales extends AbsModule<ServiceLocales> {
 
     final String id = getResourceIdOrThrow(locale, "locale");
     final String spaceId = getSpaceIdOrThrow(locale, "locale");
+    final String environmentId = locale.getEnvironmentId();
     final Integer version = getVersionOrThrow(locale, "update");
 
     final CMASystem sys = locale.getSystem();
     locale.setSystem(null);
 
     try {
-      return service.update(spaceId, id, locale, version).blockingFirst();
+      return service.update(spaceId, environmentId, id, locale, version).blockingFirst();
     } finally {
       locale.setSystem(sys);
     }
@@ -151,23 +205,21 @@ public class ModuleLocales extends AbsModule<ServiceLocales> {
    * Please make sure that the instance provided is fetched from Contentful. Otherwise you will
    * get an exception thrown.
    *
-   * @param spaceId the id of the space to be used.
-   * @param locale  the locale fetched from Contentful, updated by caller, to be deleted.
-   * @return the code of the response (200 means success).
+   * @param locale the locale fetched from Contentful, updated by caller, to be deleted.
+   * @return the code of the response (204 means success).
    * @throws IllegalArgumentException if space id is null.
    * @throws IllegalArgumentException if locale id is null.
    */
-  public int delete(String spaceId, CMALocale locale) {
-    assertNotNull(spaceId, "spaceId");
-    assertNotNull(locale, "locale");
-
+  public int delete(CMALocale locale) {
     final String id = getResourceIdOrThrow(locale, "locale");
+    final String spaceId = getSpaceIdOrThrow(locale, "locale");
+    final String environmentId = locale.getEnvironmentId();
 
     final CMASystem sys = locale.getSystem();
     locale.setSystem(null);
 
     try {
-      final Response<Void> response = service.delete(spaceId, id).blockingFirst();
+      final Response<Void> response = service.delete(spaceId, environmentId, id).blockingFirst();
       return response.code();
     } finally {
       locale.setSystem(sys);
@@ -177,90 +229,158 @@ public class ModuleLocales extends AbsModule<ServiceLocales> {
   /**
    * Handler for asynchronous requests.
    */
-  public final class Async {
+  public class Async {
     /**
-     * Fetch all locales of this space, asynchronously.
+     * Fetch all locales from the configured space and environment, asynchronously.
      *
-     * @param spaceId  the space identifier identifying the space.
      * @param callback a callback to be called, once the results are present.
      * @return a callback for the array fetched.
-     * @throws IllegalArgumentException if spaceId is null.
-     * @see ModuleLocales#fetchAll(String)
+     * @throws IllegalArgumentException if configured space id is null.
+     * @throws IllegalArgumentException if configured environment id is null.
+     * @see CMAClient.Builder#setSpaceId(String)
+     * @see CMAClient.Builder#setEnvironmentId(String)
+     * @see ModuleLocales#fetchAll()
      */
     public CMACallback<CMAArray<CMALocale>> fetchAll(
-        final String spaceId,
         final CMACallback<CMAArray<CMALocale>> callback) {
       return defer(new DefFunc<CMAArray<CMALocale>>() {
         @Override CMAArray<CMALocale> method() {
-          return ModuleLocales.this.fetchAll(spaceId);
+          return ModuleLocales.this.fetchAll();
         }
       }, callback);
     }
 
     /**
-     * Fetch specific locales of this space.
+     * Fetch all locales of the given space and environment, asynchronously.
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)} and
+     * {@link CMAClient.Builder#setEnvironmentId(String)}.
      *
-     * @param spaceId  the space identifier identifying the space.
-     * @param query    the search criteria to search for.
-     * @param callback the callback to be informed about success or failure.
-     * @return the callback passed in.
-     * @throws IllegalArgumentException if spaceId is null.
-     * @see ModuleLocales#fetchAll(String)
+     * @param spaceId       the space identifier identifying the space.
+     * @param environmentId the environment identifier identifying the space.
+     * @param callback      a callback to be called, once the results are present.
+     * @return a callback for the array fetched.
+     * @throws IllegalArgumentException if space id is null.
+     * @throws IllegalArgumentException if environment id is null.
+     * @see ModuleLocales#fetchAll(String, String)
      */
     public CMACallback<CMAArray<CMALocale>> fetchAll(
         final String spaceId,
-        final Map<String, String> query,
+        final String environmentId,
         final CMACallback<CMAArray<CMALocale>> callback) {
       return defer(new DefFunc<CMAArray<CMALocale>>() {
         @Override CMAArray<CMALocale> method() {
-          return ModuleLocales.this.fetchAll(spaceId, query);
+          return ModuleLocales.this.fetchAll(spaceId, environmentId);
         }
       }, callback);
     }
 
     /**
-     * Fetches one locale by its id from Contentful asynchronously.
+     * Fetches one locale by the configured space and environment, asynchronously.
      *
-     * @param spaceId  the space this locale is hosted by.
      * @param localeId the id of the locale to be found.
      * @param callback a callback to be called, once the results are present.
      * @return a callback handling the response.
+     * @throws IllegalArgumentException if configured space id is null.
+     * @throws IllegalArgumentException if configured environment id is null.
+     * @throws IllegalArgumentException if locale id is null.
+     * @see ModuleLocales#fetchOne(String)
+     * @see CMAClient.Builder#setSpaceId(String)
+     * @see CMAClient.Builder#setEnvironmentId(String)
+     */
+    public CMACallback<CMALocale> fetchOne(
+        final String localeId,
+        final CMACallback<CMALocale> callback) {
+      return defer(new DefFunc<CMALocale>() {
+        @Override CMALocale method() {
+          return ModuleLocales.this.fetchOne(localeId);
+        }
+      }, callback);
+    }
+
+    /**
+     * Fetches one locale by its id and the given space and environment, asynchronously.
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)} and
+     * {@link CMAClient.Builder#setEnvironmentId(String)}.
+     *
+     * @param spaceId       the space the given environment is hosted in.
+     * @param environmentId the environment this locale is hosted in.
+     * @param localeId      the id of the locale to be found.
+     * @param callback      a callback to be called, once the results are present.
+     * @return a callback handling the response.
      * @throws IllegalArgumentException if space id is null.
      * @throws IllegalArgumentException if locale id is null.
-     * @see ModuleLocales#fetchOne(String, String)
+     * @see ModuleLocales#fetchOne(String, String, String)
      */
     public CMACallback<CMALocale> fetchOne(
         final String spaceId,
+        final String environmentId,
         final String localeId,
         final CMACallback<CMALocale> callback) {
       return defer(new DefFunc<CMALocale>() {
         @Override CMALocale method() {
           return ModuleLocales.this.fetchOne(
-              spaceId, localeId
+              spaceId,
+              environmentId,
+              localeId
           );
         }
       }, callback);
     }
 
     /**
-     * Asynchronously create a new locale.
+     * Asynchronously create a new locale in the configured space and environment.
      *
-     * @param spaceId  the space id to host the locale.
      * @param locale   the new locale to be created.
      * @param callback a callback to be called, once the results are present.
      * @return a callback for the responses.
+     * @throws IllegalArgumentException if configured space id is null.
+     * @throws IllegalArgumentException if configured environment id is null.
+     * @throws IllegalArgumentException if locale is null.
+     * @see ModuleLocales#create(CMALocale)
+     * @see CMAClient.Builder#setSpaceId(String)
+     * @see CMAClient.Builder#setEnvironmentId(String)
+     */
+    public CMACallback<CMALocale> create(
+        final CMALocale locale,
+        final CMACallback<CMALocale> callback) {
+      return defer(new DefFunc<CMALocale>() {
+        @Override CMALocale method() {
+          return ModuleLocales.this.create(locale);
+        }
+      }, callback);
+    }
+
+    /**
+     * Asynchronously create a new locale. Using the given space and environment.
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)} and
+     * {@link CMAClient.Builder#setEnvironmentId(String)}.
+     *
+     * @param spaceId       the space id hosting the environment.
+     * @param environmentId the environment id to host the locale.
+     * @param locale        the new locale to be created.
+     * @param callback      a callback to be called, once the results are present.
+     * @return a callback for the responses.
      * @throws IllegalArgumentException if space id is null.
      * @throws IllegalArgumentException if locale is null.
-     * @see ModuleLocales#create(String, CMALocale)
+     * @see ModuleLocales#create(String, String, CMALocale)
      */
     public CMACallback<CMALocale> create(
         final String spaceId,
+        final String environmentId,
         final CMALocale locale,
         final CMACallback<CMALocale> callback) {
       return defer(new DefFunc<CMALocale>() {
         @Override CMALocale method() {
           return ModuleLocales.this.create(
-              spaceId, locale
+              spaceId,
+              environmentId,
+              locale
           );
         }
       }, callback);
@@ -299,22 +419,20 @@ public class ModuleLocales extends AbsModule<ServiceLocales> {
      * Please make sure that the instance provided is fetched from Contentful. Otherwise you will
      * get an exception thrown.
      *
-     * @param spaceId  the id of the space to be used.
      * @param locale   the locale fetched from Contentful, updated by caller, to be deleted.
      * @param callback a callback to be called, once the results are present.
      * @return a callback for asynchronous interaction.
      * @throws IllegalArgumentException if space id is null.
      * @throws IllegalArgumentException if locale id is null.
-     * @see ModuleLocales#delete(String, CMALocale)
+     * @see ModuleLocales#delete(CMALocale)
      */
     public CMACallback<Integer> delete(
-        final String spaceId,
         final CMALocale locale,
         final CMACallback<Integer> callback) {
       return defer(new DefFunc<Integer>() {
         @Override Integer method() {
           return ModuleLocales.this.delete(
-              spaceId, locale
+              locale
           );
         }
       }, callback);

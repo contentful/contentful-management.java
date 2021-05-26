@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Contentful GmbH
+ * Copyright (C) 2019 Contentful GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -181,6 +181,17 @@ public class CMAContentType extends CMAResource {
   @SuppressWarnings("unchecked")
   @Override public CMAContentType setSpaceId(String spaceId) {
     return super.setSpaceId(spaceId);
+  }
+
+  /**
+   * Convenience method for setting an environment id.
+   *
+   * @param environmentId the id to be set.
+   * @return the calling {@link CMAResource} for chaining.
+   */
+  @SuppressWarnings("unchecked")
+  public CMAContentType setEnvironmentId(String environmentId) {
+    return super.setEnvironmentId(environmentId);
   }
 
   /**

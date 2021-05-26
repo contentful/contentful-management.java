@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Contentful GmbH
+ * Copyright (C) 2019 Contentful GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import java.util.Map;
 /**
  * FieldTypeAdapter.
  */
-public final class FieldTypeAdapter implements JsonSerializer<CMAField> {
+public class FieldTypeAdapter implements JsonSerializer<CMAField> {
   private static final String ATTR_ID = "id";
   private static final String ATTR_NAME = "name";
   private static final String ATTR_TYPE = "type";
@@ -77,15 +77,15 @@ public final class FieldTypeAdapter implements JsonSerializer<CMAField> {
     add(json, ATTR_OMITTED, field.isOmitted());
     add(json, ATTR_LOCALIZED, field.isLocalized());
 
-    List<Map> validations = field.getValidations();
+    List<Map<String, Object>> validations = field.getValidations();
     if (validations != null) {
       json.add(ATTR_VALIDATIONS, context.serialize(validations,
-          new TypeToken<List<Map>>() {
+          new TypeToken<List<Map<String, Object>>>() {
           }
           .getType()));
     }
 
-    Map arrayItems = field.getArrayItems();
+    Map<String, Object> arrayItems = field.getArrayItems();
     if (arrayItems != null) {
       json.add(ATTR_ARRAY_ITEMS, context.serialize(arrayItems, Map.class));
     }

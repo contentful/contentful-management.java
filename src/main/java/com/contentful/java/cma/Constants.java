@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Contentful GmbH
+ * Copyright (C) 2019 Contentful GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,15 +27,13 @@ public final class Constants {
 
   //BEGIN TO LONG CODE LINES
   public static final String OCTET_STREAM_CONTENT_TYPE = "application/octet-stream";
-  // Properties
-  static final String SDK_PROPERTIES = "contentful_cma.properties";
-  static final String PROP_VERSION_NAME = "version.name";
+  public static final String DEFAULT_ENVIRONMENT = "master";
 
   private Constants() {
     throw new UnsupportedOperationException();
   }
   /**
-   * @see <a href="https://www.contentful.com/developers/docs/references/content-management-api/#/reference/content-types">management api docs</a>
+   * @see <a href="https://www.contentful.com/developers/docs/concepts/data-model/#fields">guide</a>
    */
   //END TO LONG CODE LINES
   @SuppressWarnings("UnusedDeclaration")
@@ -49,6 +47,7 @@ public final class Constants {
     Number,
     Object,
     Symbol,
-    Text
+    Text,
+    RichText
   }
 }

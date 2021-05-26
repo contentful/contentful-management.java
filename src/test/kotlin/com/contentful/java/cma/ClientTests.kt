@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Contentful GmbH
+ * Copyright (C) 2019 Contentful GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,16 +23,50 @@ import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAArray
 import com.contentful.java.cma.model.CMASpace
 import com.contentful.java.cma.model.CMAUpload
+import com.google.gson.Gson
 import io.reactivex.Observable
 import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockWebServer
+import org.junit.After
+import org.junit.Before
 import java.io.IOException
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
+import java.util.logging.LogManager
 import kotlin.test.*
 import org.junit.Test as test
 
-class ClientTests : BaseTest() {
-    @test fun testCancelledCallback() {
+class ClientTests{
+    var server: MockWebServer? = null
+    var client: CMAClient? = null
+    var gson: Gson? = null
+
+    @Before
+    fun setUp() {
+        LogManager.getLogManager().reset()
+        // MockWebServer
+        server = MockWebServer()
+        server!!.start()
+
+        // Client
+        client = CMAClient.Builder()
+                .setAccessToken("token")
+                .setCoreEndpoint(server!!.url("/").toString())
+                .setUploadEndpoint(server!!.url("/").toString())
+                .setSpaceId("configuredSpaceId")
+                .setEnvironmentId("configuredEnvironmentId")
+                .build()
+
+        gson = CMAClient.createGson()
+    }
+
+    @After
+    fun tearDown() {
+        server!!.shutdown()
+    }
+
+    @test
+    fun testCancelledCallback() {
         val responseBody = TestUtils.fileToString("space_fetch_one_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -58,7 +92,8 @@ class ClientTests : BaseTest() {
         assertFalse(called)
     }
 
-    @test fun testCoreCallbackRetrofitError() {
+    @test
+    fun testCoreCallbackRetrofitError() {
         val badClient = CMAClient.Builder()
                 .setAccessToken("accesstoken")
                 .setCoreCallFactory { throw RuntimeException(it.url().toString(), IOException()) }
@@ -93,7 +128,8 @@ class ClientTests : BaseTest() {
                 .build()
     }
 
-    @test fun testCallbackGeneralError() {
+    @test
+    fun testCallbackGeneralError() {
         var error: Throwable? = null
 
         val cb = object : CMACallback<CMASpace>() {
@@ -117,7 +153,8 @@ class ClientTests : BaseTest() {
         assertTrue(error is RuntimeException)
     }
 
-    @test fun testAccessToken() {
+    @test
+    fun testAccessToken() {
         val responseBody = TestUtils.fileToString("space_fetch_all_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
         client!!.spaces().fetchAll()
@@ -128,7 +165,8 @@ class ClientTests : BaseTest() {
                 recordedRequest.getHeader(AuthorizationHeaderInterceptor.HEADER_NAME))
     }
 
-    @test fun testUserAgent() {
+    @test
+    fun testUserAgent() {
         val responseBody = TestUtils.fileToString("space_fetch_all_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
         client!!.spaces().fetchAll()
@@ -141,7 +179,8 @@ class ClientTests : BaseTest() {
         assertTrue(recordedRequest.getHeader("User-Agent").contains(versionName))
     }
 
-    @test fun testCustomUserAgentHeader() {
+    @test
+    fun testCustomUserAgentHeader() {
         val responseBody = TestUtils.fileToString("space_fetch_all_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
         client!!.spaces().fetchAll()
@@ -215,7 +254,8 @@ class ClientTests : BaseTest() {
         }
     }
 
-    @test fun testSetBasicLogger() {
+    @test
+    fun testSetBasicLogger() {
         val responseBody = TestUtils.fileToString("space_fetch_one_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -241,7 +281,8 @@ class ClientTests : BaseTest() {
         assertTrue(builder.startsWith("Sending request http://localhost:"))
     }
 
-    @test fun testSetNoneLogger() {
+    @test
+    fun testSetNoneLogger() {
         val responseBody = TestUtils.fileToString("space_fetch_one_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -267,7 +308,8 @@ class ClientTests : BaseTest() {
         assertTrue(builder.isEmpty())
     }
 
-    @test fun testSetNetworkLogger() {
+    @test
+    fun testSetNetworkLogger() {
         val responseBody = TestUtils.fileToString("space_fetch_one_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -293,7 +335,8 @@ class ClientTests : BaseTest() {
         assertTrue(builder.contains("Accept-Encoding: gzip"))
     }
 
-    @test fun testAddContentfulApplicationHeader() {
+    @test
+    fun testAddContentfulApplicationHeader() {
         val responseBody = TestUtils.fileToString("space_fetch_one_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -315,7 +358,8 @@ class ClientTests : BaseTest() {
         assertTrue(customUserHeader.contains("app unit_test/0.0.1-PATCH"))
     }
 
-    @test fun testAddContentfulIntegrationHeader() {
+    @test
+    fun testAddContentfulIntegrationHeader() {
         val responseBody = TestUtils.fileToString("space_fetch_one_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -337,7 +381,8 @@ class ClientTests : BaseTest() {
         assertTrue(customUserHeader.contains("integration UNIT_TEST/0.0.1-PATCH"))
     }
 
-    @test fun testAddRateLimitListener() {
+    @test
+    fun testAddRateLimitListener() {
         val responseBody = TestUtils.fileToString("space_fetch_one_response.json")
         server!!
                 .enqueue(
@@ -352,8 +397,7 @@ class ClientTests : BaseTest() {
                 .setCoreEndpoint(server!!.url("/").toString())
                 .setUploadEndpoint(server!!.url("/").toString())
                 .setAccessToken("token")
-                .setRateLimitListener {
-                    limits ->
+                .setRateLimitListener { limits ->
                     assertEquals(123, limits.hourLimit)
                 }
                 .build()

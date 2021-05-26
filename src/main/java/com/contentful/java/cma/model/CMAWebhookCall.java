@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Contentful GmbH
+ * Copyright (C) 2019 Contentful GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -76,6 +76,15 @@ public class CMAWebhookCall extends CMAResource {
    */
   public String getRequestAt() {
     return requestAt;
+  }
+
+  /**
+   * @param spaceId the id to be set.
+   * @return this object for chaining.
+   */
+  @SuppressWarnings("unchecked")
+  @Override public CMAWebhookCall setSpaceId(String spaceId) {
+    return super.setSpaceId(spaceId);
   }
 
   /**

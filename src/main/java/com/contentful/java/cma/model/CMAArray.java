@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Contentful GmbH
+ * Copyright (C) 2019 Contentful GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ public class CMAArray<T extends CMAResource> extends CMAResource {
   List<T> items;
 
   // Map of included resources
-  Map includes;
+  Map<String, Object> includes;
 
   // Total number of items
   int total;
@@ -76,7 +76,7 @@ public class CMAArray<T extends CMAResource> extends CMAResource {
   /**
    * @return a map of included resources.
    */
-  public Map getIncludes() {
+  public Map<String, Object> getIncludes() {
     return includes;
   }
 

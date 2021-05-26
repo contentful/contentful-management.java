@@ -1,0 +1,47 @@
+{
+  "name":"cma-created",
+  "url":"https://contentful.com",
+  "httpBasicUsername":"user",
+  "topics":[
+    "Entry.*"
+  ],
+  "filters":null,
+  "transformation":{
+    "body":"{ /payload/sys/id }: { /payload/fields/new }"
+  },
+  "sys":{
+    "type":"WebhookDefinition",
+    "id":"5epBQND7dLGecdktBMpgPB",
+    "version":2,
+    "space":{
+      "sys":{
+        "type":"Link",
+        "linkType":"Space",
+        "id":"<space_id>"
+      }
+    },
+    "createdBy":{
+      "sys":{
+        "type":"Link",
+        "linkType":"User",
+        "id":"<user_id>"
+      }
+    },
+    "createdAt":"2019-06-17T04:45:36Z",
+    "updatedBy":{
+      "sys":{
+        "type":"Link",
+        "linkType":"User",
+        "id":"<user_id>"
+      }
+    },
+    "updatedAt":"2019-06-17T04:59:53Z"
+  },
+  "headers":[
+    {
+      "key":"my_new_header_name",
+      "value":"header_value"
+    }
+  ]
+}
+

@@ -53,14 +53,14 @@
       "sys": {
         "type": "Link",
         "linkType": "User",
-        "id": "7uJNojWP0gbuP7Pplz7Syo"
+        "id": "<user_id>"
       }
     },
     "space": {
       "sys": {
         "type": "Link",
         "linkType": "Space",
-        "id": "arqlnkt58eul"
+        "id": "<space_id>"
       }
     },
     "contentType": {
@@ -75,7 +75,7 @@
       "sys": {
         "type": "Link",
         "linkType": "User",
-        "id": "7uJNojWP0gbuP7Pplz7Syo"
+        "id": "<user_id>"
       }
     }
   }

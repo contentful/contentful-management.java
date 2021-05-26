@@ -1,0 +1,94 @@
+{
+  "sys": {
+    "type": "Array"
+  },
+  "total": 1,
+  "skip": 0,
+  "limit": 100,
+  "items": [
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "<space_id>"
+          }
+        },
+        "id": "6VkkamQ5zO4qWIugKkWowK",
+        "type": "Entry",
+        "createdAt": "2018-10-17T13:32:24.855Z",
+        "updatedAt": "2019-01-03T16:24:58.781Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "<user_id>"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "<user_id>"
+          }
+        },
+        "publishedCounter": 2,
+        "version": 9,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "<user_id>"
+          }
+        },
+        "publishedVersion": 8,
+        "firstPublishedAt": "2018-10-17T13:32:33.090Z",
+        "publishedAt": "2019-01-03T16:24:58.781Z",
+        "contentType": {
+          "sys": {
+            "type": "Link",
+            "linkType": "ContentType",
+            "id": "rich"
+          }
+        }
+      },
+      "fields": {
+        "name": {
+          "en-US": "simple_text_code"
+        },
+        "rich": {
+          "en-US": {
+            "data": {},
+            "content": [
+              {
+                "data": {},
+                "content": [
+                  {
+                    "data": {},
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ],
+                    "value": "This is some updated simple rich text",
+                    "nodeType": "text"
+                  }
+                ],
+                "nodeType": "paragraph"
+              }
+            ],
+            "nodeType": "document"
+          }
+        }
+      }
+    }
+  ]
+}

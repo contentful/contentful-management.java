@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Contentful GmbH
+ * Copyright (C) 2019 Contentful GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,16 +29,18 @@ import retrofit2.http.Path;
  * Editor Interfaces Service.
  */
 interface ServiceEditorInterfaces {
-  @GET("/spaces/{spaceId}/content_types/{contentTypeId}/editor_interface")
+  @GET("/spaces/{space}/environments/{environment}/content_types/{contentType}/editor_interface")
   Flowable<CMAEditorInterface> fetchOne(
-      @Path("spaceId") String spaceId,
-      @Path("contentTypeId") String contentTypeId
+      @Path("space") String spaceId,
+      @Path("environment") String environmentId,
+      @Path("contentType") String contentTypeId
   );
 
-  @PUT("/spaces/{spaceId}/content_types/{contentTypeId}/editor_interface")
+  @PUT("/spaces/{space}/environments/{environment}/content_types/{contentType}/editor_interface")
   Flowable<CMAEditorInterface> update(
-      @Path("spaceId") String spaceId,
-      @Path("contentTypeId") String contentTypeId,
+      @Path("space") String spaceId,
+      @Path("environment") String environmentId,
+      @Path("contentType") String contentTypeId,
       @Body CMAEditorInterface editor,
       @Header("X-Contentful-Version") Integer version
   );

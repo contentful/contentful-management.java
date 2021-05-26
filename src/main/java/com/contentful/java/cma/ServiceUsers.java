@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Contentful GmbH
+ * Copyright (C) 2019 Contentful GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import io.reactivex.Flowable;
 import retrofit2.http.GET;
 
 /**
- * Spaces Service.
+ * Users Service.
  */
 interface ServiceUsers {
   @GET("/users/me")

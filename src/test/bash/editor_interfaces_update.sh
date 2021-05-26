@@ -9,4 +9,7 @@ curl --verbose \
     -H 'Authorization: Bearer '$CMA_TOKEN  \
     -d @../resources/editor_interfaces_update_payload.json \
     'https://api.contentful.com/spaces/'$SPACE_ID'/content_types/'$CONTENT_TYPE_ID'/editor_interface' \
+    | sed 's/'${SPACE_ID}'/<space_id>/g' \
+    | sed 's/'${CMA_TOKEN}'/<access_token>/g' \
+    | sed 's/'${USER_ID}'/<user_id>/g' \
     | tee ${output}

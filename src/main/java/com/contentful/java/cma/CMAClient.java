@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Contentful GmbH
+ * Copyright (C) 2019 Contentful GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ package com.contentful.java.cma;
 import com.contentful.java.cma.gson.EntrySerializer;
 import com.contentful.java.cma.gson.FieldTypeAdapter;
 import com.contentful.java.cma.gson.LocaleSerializer;
+import com.contentful.java.cma.gson.SnapshotDeserializer;
 import com.contentful.java.cma.interceptor.AuthorizationHeaderInterceptor;
 import com.contentful.java.cma.interceptor.ContentTypeInterceptor;
 import com.contentful.java.cma.interceptor.ContentfulUserAgentHeaderInterceptor;
@@ -35,6 +36,7 @@ import com.contentful.java.cma.interceptor.UserAgentHeaderInterceptor;
 import com.contentful.java.cma.model.CMAEntry;
 import com.contentful.java.cma.model.CMAField;
 import com.contentful.java.cma.model.CMALocale;
+import com.contentful.java.cma.model.CMASnapshot;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -71,16 +73,20 @@ public class CMAClient {
   private final ModuleContentTypes moduleContentTypes;
   private final ModuleEditorInterfaces moduleEditorInterfaces;
   private final ModuleEntries moduleEntries;
+  private final ModuleEnvironments moduleEnvironments;
   private final ModuleLocales moduleLocales;
   private final ModuleOrganizations moduleOrganizations;
+  private final ModuleOrganizationUsage moduleOrganizationUsage;
+  private final ModuleSpaceUsage moduleSpaceUsage;
   private final ModulePersonalAccessTokens modulePersonalAccessTokens;
+  private final ModulePreviewApiKeys modulePreviewApiKeys;
   private final ModuleRoles moduleRoles;
   private final ModuleSpaceMemberships moduleSpaceMemberships;
   private final ModuleSpaces moduleSpaces;
-  private final ModuleUsers moduleUsers;
-  private final ModuleWebhooks moduleWebhooks;
   private final ModuleUiExtensions moduleUiExtensions;
   private final ModuleUploads moduleUploads;
+  private final ModuleUsers moduleUsers;
+  private final ModuleWebhooks moduleWebhooks;
 
   // Executors
   Executor callbackExecutor;
@@ -118,22 +124,45 @@ public class CMAClient {
     Retrofit uploadRetrofit = retrofitBuilder.build();
 
     // Modules
-    this.moduleApiKeys = new ModuleApiKeys(retrofit, callbackExecutor);
-    this.moduleAssets = new ModuleAssets(retrofit, callbackExecutor);
-    this.moduleContentTypes = new ModuleContentTypes(retrofit, callbackExecutor);
-    this.moduleEditorInterfaces = new ModuleEditorInterfaces(retrofit, callbackExecutor);
-    this.moduleEntries = new ModuleEntries(retrofit, callbackExecutor);
-    this.moduleLocales = new ModuleLocales(retrofit, callbackExecutor);
-    this.moduleOrganizations = new ModuleOrganizations(retrofit, callbackExecutor);
-    this.modulePersonalAccessTokens = new ModulePersonalAccessTokens(retrofit, callbackExecutor);
-    this.moduleRoles = new ModuleRoles(retrofit, callbackExecutor);
-    this.moduleSpaceMemberships = new ModuleSpaceMemberships(retrofit, callbackExecutor);
-    this.moduleSpaces = new ModuleSpaces(retrofit, callbackExecutor);
-    this.moduleUiExtensions = new ModuleUiExtensions(retrofit, callbackExecutor);
-    this.moduleUsers = new ModuleUsers(retrofit, callbackExecutor);
-    this.moduleWebhooks = new ModuleWebhooks(retrofit, callbackExecutor);
+    final String spaceId = cmaBuilder.spaceId;
+    final String environmentId = cmaBuilder.environmentId;
+    final boolean configured = cmaBuilder.environmentIdConfigured;
 
-    this.moduleUploads = new ModuleUploads(uploadRetrofit, callbackExecutor);
+    this.moduleApiKeys = new ModuleApiKeys(retrofit, callbackExecutor, spaceId, environmentId,
+        configured);
+    this.moduleAssets = new ModuleAssets(retrofit, callbackExecutor, spaceId, environmentId,
+        configured);
+    this.moduleContentTypes = new ModuleContentTypes(retrofit, callbackExecutor, spaceId,
+        environmentId, configured);
+    this.moduleEditorInterfaces = new ModuleEditorInterfaces(retrofit, callbackExecutor, spaceId,
+        environmentId, configured);
+    this.moduleEntries = new ModuleEntries(retrofit, callbackExecutor, spaceId, environmentId,
+        configured);
+    this.moduleEnvironments = new ModuleEnvironments(retrofit, callbackExecutor, spaceId,
+        environmentId, configured);
+    this.moduleLocales = new ModuleLocales(retrofit, callbackExecutor, spaceId, environmentId,
+        configured);
+    this.moduleOrganizations = new ModuleOrganizations(retrofit, callbackExecutor, configured);
+    this.moduleOrganizationUsage = new ModuleOrganizationUsage(retrofit, callbackExecutor,
+            spaceId, environmentId, configured);
+    this.moduleSpaceUsage = new ModuleSpaceUsage(retrofit, callbackExecutor,
+            spaceId, environmentId, configured);
+    this.modulePersonalAccessTokens = new ModulePersonalAccessTokens(retrofit, callbackExecutor,
+        configured);
+    this.modulePreviewApiKeys = new ModulePreviewApiKeys(retrofit, callbackExecutor, spaceId,
+        environmentId, configured);
+    this.moduleRoles = new ModuleRoles(retrofit, callbackExecutor, spaceId, environmentId,
+        configured);
+    this.moduleSpaceMemberships = new ModuleSpaceMemberships(retrofit, callbackExecutor, spaceId,
+        environmentId, configured);
+    this.moduleSpaces = new ModuleSpaces(retrofit, callbackExecutor, configured);
+    this.moduleUiExtensions = new ModuleUiExtensions(retrofit, callbackExecutor, spaceId,
+        environmentId, configured);
+    this.moduleUploads = new ModuleUploads(uploadRetrofit, callbackExecutor, spaceId,
+        environmentId, configured);
+    this.moduleUsers = new ModuleUsers(retrofit, callbackExecutor, configured);
+    this.moduleWebhooks = new ModuleWebhooks(retrofit, callbackExecutor, spaceId, environmentId,
+        configured);
   }
 
   /**
@@ -144,6 +173,7 @@ public class CMAClient {
       gson = new GsonBuilder()
           .registerTypeAdapter(CMAField.class, new FieldTypeAdapter())
           .registerTypeAdapter(CMAEntry.class, new EntrySerializer())
+          .registerTypeAdapter(CMASnapshot.class, new SnapshotDeserializer())
           .registerTypeAdapter(CMALocale.class, new LocaleSerializer())
           .create();
     }
@@ -165,8 +195,7 @@ public class CMAClient {
   /**
    * Configures CMA core endpoint.
    */
-  private Retrofit.Builder setEndpoint(Retrofit.Builder retrofitBuilder
-      , String endpoint) {
+  private Retrofit.Builder setEndpoint(Retrofit.Builder retrofitBuilder, String endpoint) {
     if (endpoint != null) {
       return retrofitBuilder.baseUrl(endpoint);
     }
@@ -178,6 +207,13 @@ public class CMAClient {
    */
   public ModuleApiKeys apiKeys() {
     return moduleApiKeys;
+  }
+
+  /**
+   * @return the preview api keys module.
+   */
+  public ModulePreviewApiKeys previewApiKeys() {
+    return modulePreviewApiKeys;
   }
 
   /**
@@ -206,6 +242,13 @@ public class CMAClient {
    */
   public ModuleEntries entries() {
     return moduleEntries;
+  }
+
+  /**
+   * @return the Environments module.
+   */
+  public ModuleEnvironments environments() {
+    return moduleEnvironments;
   }
 
   /**
@@ -251,6 +294,20 @@ public class CMAClient {
   }
 
   /**
+   * @return the organization usage module.
+   */
+  public ModuleOrganizationUsage organizationUsage() {
+    return moduleOrganizationUsage;
+  }
+
+  /**
+   * @return the space usage module.
+   */
+  public ModuleSpaceUsage spaceUsage() {
+    return moduleSpaceUsage;
+  }
+
+  /**
    * @return the Users module.
    */
   public ModuleUiExtensions uiExtensions() {
@@ -283,17 +340,20 @@ public class CMAClient {
    * Builder.
    */
   public static class Builder {
-    String accessToken;
-    Call.Factory coreCallFactory;
-    Call.Factory uploadCallFactory;
-    Logger logger;
-    Logger.Level logLevel = NONE;
-    String coreEndpoint;
-    String uploadEndpoint;
-    Section application;
-    Section integration;
-    Executor callbackExecutor;
-    RateLimitsListener rateLimitListener;
+    private String accessToken;
+    private Call.Factory coreCallFactory;
+    private Call.Factory uploadCallFactory;
+    private Logger logger;
+    private Logger.Level logLevel = NONE;
+    private String coreEndpoint;
+    private String uploadEndpoint;
+    private Section application;
+    private Section integration;
+    private String environmentId = Constants.DEFAULT_ENVIRONMENT;
+    private boolean environmentIdConfigured = false;
+    private String spaceId;
+    private Executor callbackExecutor;
+    private RateLimitsListener rateLimitListener;
 
     /**
      * Overrides the default remote URL for core modules.
@@ -336,6 +396,31 @@ public class CMAClient {
         throw new IllegalArgumentException("Cannot call setAccessToken() with null.");
       }
       this.accessToken = accessToken;
+      return this;
+    }
+
+    /**
+     * Configure which space to use if none is specified.
+     *
+     * @param spaceId the id of the space to be used.
+     * @return this {@link Builder} instance.
+     * @see ModuleEntries#fetchAll()
+     */
+    public Builder setSpaceId(String spaceId) {
+      this.spaceId = spaceId;
+      return this;
+    }
+
+    /**
+     * Configure  which environment to use if none is specified.
+     *
+     * @param environmentId the id of the environment to be used.
+     * @return this {@link Builder} instance.
+     * @see ModuleEntries#fetchAll()
+     */
+    public Builder setEnvironmentId(String environmentId) {
+      this.environmentIdConfigured = true;
+      this.environmentId = environmentId;
       return this;
     }
 

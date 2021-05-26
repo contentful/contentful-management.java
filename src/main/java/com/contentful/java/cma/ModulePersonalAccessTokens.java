@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Contentful GmbH
+ * Copyright (C) 2019 Contentful GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,17 +29,21 @@ import retrofit2.Retrofit;
 /**
  * Personal Access Token Module.
  */
-public final class ModulePersonalAccessTokens extends AbsModule<ServicePersonalAccessTokens> {
+public class ModulePersonalAccessTokens extends AbsModule<ServicePersonalAccessTokens> {
   final Async async;
 
   /**
    * Create this module.
    *
-   * @param retrofit         the retrofit instance to be used to create the service.
-   * @param callbackExecutor to tell on which thread it should run.
+   * @param retrofit                the retrofit instance to be used to create the service.
+   * @param callbackExecutor        to tell on which thread it should run.
+   * @param environmentIdConfigured internal helper to see if environment was set.
    */
-  public ModulePersonalAccessTokens(Retrofit retrofit, Executor callbackExecutor) {
-    super(retrofit, callbackExecutor);
+  public ModulePersonalAccessTokens(
+      Retrofit retrofit,
+      Executor callbackExecutor,
+      boolean environmentIdConfigured) {
+    super(retrofit, callbackExecutor, null, null, environmentIdConfigured);
     this.async = new Async();
   }
 
@@ -115,7 +119,7 @@ public final class ModulePersonalAccessTokens extends AbsModule<ServicePersonalA
   /**
    * Async module.
    */
-  public final class Async {
+  public class Async {
     /**
      * Fetch all personal access tokens.
      *

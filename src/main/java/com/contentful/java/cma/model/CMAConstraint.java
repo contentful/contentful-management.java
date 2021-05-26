@@ -168,6 +168,8 @@ public class CMAConstraint {
    * Create an equals deciding whether the path to a field constraints a given value.
    */
   public static class Equals extends ArrayList<Object> {
+    private static final long serialVersionUID = 4011458721151983325L;
+
     /**
      * @return which path this equals is targeting.
      */
@@ -177,9 +179,9 @@ public class CMAConstraint {
         if (path instanceof FieldKeyPath) {
           return (FieldKeyPath) path;
         } else if (path instanceof Map) {
-          Map mappedPath = (Map) path;
+          Map<String, String> mappedPath = (Map<String, String>) path;
           final FieldKeyPath objectifiedPath = new FieldKeyPath()
-              .setDoc((String) mappedPath.get("doc"));
+              .setDoc(mappedPath.get("doc"));
           setPath(objectifiedPath);
           return objectifiedPath;
         }
@@ -225,11 +227,13 @@ public class CMAConstraint {
       switch (size()) {
         case 0:
           add(null);
+          break;
         case 1:
           add(value);
           break;
         case 2:
           set(1, value);
+          break;
         default:
           break;
       }

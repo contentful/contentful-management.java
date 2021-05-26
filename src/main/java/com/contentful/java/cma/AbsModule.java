@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Contentful GmbH
+ * Copyright (C) 2019 Contentful GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ package com.contentful.java.cma;
 import com.contentful.java.cma.RxExtensions.ActionError;
 import com.contentful.java.cma.RxExtensions.ActionSuccess;
 import com.contentful.java.cma.RxExtensions.DefFunc;
+import com.contentful.java.cma.model.CMANotWithEnvironmentsException;
 import com.contentful.java.cma.model.CMAResource;
 
 import java.util.concurrent.Executor;
@@ -33,10 +34,21 @@ import retrofit2.Retrofit;
 abstract class AbsModule<T> {
   final T service;
   final Executor callbackExecutor;
+  final String spaceId;
+  final String environmentId;
+  final Boolean environmentIdConfigured;
 
-  AbsModule(Retrofit retrofit, Executor callbackExecutor) {
+  AbsModule(
+      Retrofit retrofit,
+      Executor callbackExecutor,
+      String spaceId,
+      String environmentId,
+      boolean environmentIdConfigured) {
     this.service = createService(retrofit);
     this.callbackExecutor = callbackExecutor;
+    this.spaceId = spaceId;
+    this.environmentId = environmentId;
+    this.environmentIdConfigured = environmentIdConfigured;
   }
 
   protected abstract T createService(Retrofit retrofit);
@@ -105,5 +117,17 @@ abstract class AbsModule<T> {
             new ActionSuccess<R>(callbackExecutor, callback),
             new ActionError(callbackExecutor, callback));
     return callback;
+  }
+
+  /**
+   * Throw a {@link CMANotWithEnvironmentsException} if an environment id was
+   * configured in
+   *
+   * @see CMAClient.Builder#setEnvironmentId(String)
+   */
+  void throwIfEnvironmentIdIsSet() {
+    if (environmentIdConfigured) {
+      throw new CMANotWithEnvironmentsException();
+    }
   }
 }

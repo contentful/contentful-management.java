@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Contentful GmbH
+ * Copyright (C) 2019 Contentful GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,11 +40,11 @@ public class CMAField {
   String linkType;
 
   // Validations
-  List<Map> validations;
+  List<Map<String, Object>> validations;
 
   // Array Items
   @SerializedName("items")
-  HashMap arrayItems;
+  HashMap<String, Object> arrayItems;
 
   // Required
   boolean required;
@@ -157,7 +157,7 @@ public class CMAField {
   /**
    * @return a {@code List} of validation rules for this field.
    */
-  public List<Map> getValidations() {
+  public List<Map<String, Object>> getValidations() {
     return validations;
   }
 
@@ -168,7 +168,7 @@ public class CMAField {
    *                    Returns this {@code CMAField} instance
    * @return this {@code CMAField} instance
    */
-  public CMAField setValidations(List<Map> validations) {
+  public CMAField setValidations(List<Map<String, Object>> validations) {
     this.validations = validations;
     return this;
   }
@@ -176,7 +176,7 @@ public class CMAField {
   /**
    * @return the {@code items} attribute value as a {@code Map}.
    */
-  public HashMap getArrayItems() {
+  public HashMap<String, Object> getArrayItems() {
     return arrayItems;
   }
 
@@ -186,7 +186,7 @@ public class CMAField {
    * @param arrayItems Map instance
    * @return this {@code CMAField} instance
    */
-  public CMAField setArrayItems(HashMap arrayItems) {
+  public CMAField setArrayItems(HashMap<String, Object> arrayItems) {
     this.arrayItems = arrayItems;
     return this;
   }

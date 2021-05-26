@@ -1,0 +1,45 @@
+{
+  "sys": {
+    "space": {
+      "sys": {
+        "type": "Link",
+        "linkType": "Space",
+        "id": "<space_id>"
+      }
+    },
+    "id": "1fgii3GZo4euykA6u6mKmi",
+    "type": "Asset",
+    "createdAt": "2018-03-29T09:16:39.062Z",
+    "updatedAt": "2018-03-29T09:16:39.062Z",
+    "environment": {
+      "sys": {
+        "id": "staging",
+        "type": "Link",
+        "linkType": "Environment"
+      }
+    },
+    "createdBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "<user_id>"
+      }
+    },
+    "updatedBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "<user_id>"
+      }
+    },
+    "version": 1
+  },
+  "fields": {
+    "title": {
+      "en-US": "title"
+    },
+    "description": {
+      "en-US": "description"
+    }
+  }
+}

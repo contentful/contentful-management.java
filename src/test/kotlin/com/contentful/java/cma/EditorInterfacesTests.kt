@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Contentful GmbH
+ * Copyright (C) 2019 Contentful GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,32 +23,99 @@ import com.contentful.java.cma.model.CMAEditorInterface.Control
 import com.contentful.java.cma.model.CMALink
 import com.contentful.java.cma.model.CMASystem
 import com.contentful.java.cma.model.CMAType
+import com.google.gson.Gson
 import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockWebServer
+import org.junit.After
+import org.junit.Before
+import java.util.logging.LogManager
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import org.junit.Test as test
 
-class EditorInterfacesTests : BaseTest() {
+class EditorInterfacesTests{
+    var server: MockWebServer? = null
+    var client: CMAClient? = null
+    var gson: Gson? = null
 
-    @test fun testFetchOne() {
+    @Before
+    fun setUp() {
+        LogManager.getLogManager().reset()
+        // MockWebServer
+        server = MockWebServer()
+        server!!.start()
+
+        // Client
+        client = CMAClient.Builder()
+                .setAccessToken("token")
+                .setCoreEndpoint(server!!.url("/").toString())
+                .setUploadEndpoint(server!!.url("/").toString())
+                .setSpaceId("configuredSpaceId")
+                .setEnvironmentId("configuredEnvironmentId")
+                .build()
+
+        gson = CMAClient.createGson()
+    }
+
+    @After
+    fun tearDown() {
+        server!!.shutdown()
+    }
+
+    @test
+    fun testFetchOne() {
         val responseBody = TestUtils.fileToString("editor_interfaces_get.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val result = assertTestCallback(client!!.editorInterfaces().async()
-                .fetchOne("spaceId", "contentTypeId", TestCallback()) as TestCallback)!!
+                .fetchOne("spaceId", "master", "contentTypeId", TestCallback()) as TestCallback)!!
 
         assertEditorInterface(result)
 
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("GET", recordedRequest.method)
-        assertEquals("/spaces/spaceId/content_types/contentTypeId/editor_interface",
+        assertEquals("/spaces/spaceId/environments/master/content_types/contentTypeId/editor_interface",
                 recordedRequest.path)
     }
 
-    @test fun testUpdate() {
+    @test
+    fun testFetchOneWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("editor_interfaces_get.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        assertTestCallback(client!!.editorInterfaces().async()
+                .fetchOne("contentTypeId", TestCallback()) as TestCallback)!!
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/configuredSpaceId/environments/configuredEnvironmentId/content_types"
+                + "/contentTypeId/editor_interface",
+                recordedRequest.path)
+    }
+
+    @test
+    fun testFetchOneFromEnvironment() {
+        val responseBody = TestUtils.fileToString("editor_interfaces_get_from_environment.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val result = assertTestCallback(client!!.editorInterfaces().async()
+                .fetchOne("spaceId", "staging", "contentTypeId", TestCallback()) as TestCallback)!!
+
+        assertEquals("staging", result.environmentId)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("GET", recordedRequest.method)
+        assertEquals("/spaces/spaceId/environments/staging/content_types/contentTypeId/editor_interface",
+                recordedRequest.path)
+    }
+
+    @test
+    fun testUpdate() {
         val responseBody = TestUtils.fileToString("editor_interfaces_update.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
@@ -130,12 +197,36 @@ class EditorInterfacesTests : BaseTest() {
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("PUT", recordedRequest.method)
-        assertEquals("/spaces/spaceId/content_types/contentTypeId/editor_interface",
+        assertEquals("/spaces/spaceId/environments/master/content_types/contentTypeId/editor_interface",
+                recordedRequest.path)
+    }
+
+    @test
+    fun testUpdateFromEnvironments() {
+        val responseBody = TestUtils.fileToString("editor_interfaces_update_in_environment.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val payload = CMAEditorInterface()
+        payload
+                .setEnvironmentId<CMAEditorInterface>("staging")
+                .setSpaceId<CMAEditorInterface>("spaceId")
+                .setVersion<CMAEditorInterface>(123)
+                .system.contentType = CMALink(CMAType.ContentType).setId("contentTypeId")
+
+        val result = assertTestCallback(client!!.editorInterfaces().async()
+                .update(payload, TestCallback()) as TestCallback)!!
+
+        assertEquals("staging", result.environmentId)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("PUT", recordedRequest.method)
+        assertEquals(
+                "/spaces/spaceId/environments/staging/content_types/contentTypeId/editor_interface",
                 recordedRequest.path)
     }
 
     private fun assertEditorInterface(result: CMAEditorInterface) {
-
         assertEquals(9, result.controls.size)
 
         var i = 0

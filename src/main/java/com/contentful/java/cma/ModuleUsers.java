@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Contentful GmbH
+ * Copyright (C) 2019 Contentful GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import retrofit2.Retrofit;
 /**
  * Users Module.
  */
-public final class ModuleUsers extends AbsModule<ServiceUsers> {
+public class ModuleUsers extends AbsModule<ServiceUsers> {
   final Async async;
 
   /**
@@ -34,9 +34,13 @@ public final class ModuleUsers extends AbsModule<ServiceUsers> {
    *
    * @param retrofit         the retrofit instance to be used to create the service.
    * @param callbackExecutor to tell on which thread it should run.
+   * @param environmentIdConfigured internal helper to see if environment was set.
    */
-  public ModuleUsers(Retrofit retrofit, Executor callbackExecutor) {
-    super(retrofit, callbackExecutor);
+  public ModuleUsers(
+      Retrofit retrofit,
+      Executor callbackExecutor,
+      boolean environmentIdConfigured) {
+    super(retrofit, callbackExecutor, null, null, environmentIdConfigured);
     this.async = new Async();
   }
 
@@ -63,7 +67,7 @@ public final class ModuleUsers extends AbsModule<ServiceUsers> {
   /**
    * Async module.
    */
-  public final class Async {
+  public class Async {
     /**
      * Fetch your user information.
      *

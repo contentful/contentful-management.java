@@ -1,165 +1,257 @@
 {
-  "total":4,
-  "limit":25,
-  "skip":0,
-  "sys":{
-    "type":"Array"
+  "total": 4,
+  "limit": 25,
+  "skip": 0,
+  "sys": {
+    "type": "Array"
   },
-  "items":[
+  "items": [
     {
-      "name":"Website Key",
-      "description":"Use this key for your website. Create separate keys for your other apps.",
-      "accessToken":"<token>",
-      "policies":[
+      "name": "Master Key - Do not share",
+      "description": "",
+      "accessToken": "<token>",
+      "policies": [
         {
-          "effect":"allow",
-          "actions":"all"
+          "effect": "allow",
+          "actions": "all"
         }
       ],
-      "sys":{
-        "type":"ApiKey",
-        "id":"7sA7kLR0B4Y05ZfJy0sFuN",
-        "version":0,
-        "space":{
-          "sys":{
-            "type":"Link",
-            "linkType":"Space",
-            "id":"arqlnkt58eul"
+      "sys": {
+        "type": "ApiKey",
+        "id": "5syMy6BsUtcVXlD6PpE6LA",
+        "version": 1,
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "<space_id>"
           }
         },
-        "createdBy":{
-          "sys":{
-            "type":"Link",
-            "linkType":"User",
-            "id":"7uJNojWP0gbuP7Pplz7Syo"
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "<user_id>"
           }
         },
-        "createdAt":"2016-07-26T09:40:48Z",
-        "updatedBy":{
-          "sys":{
-            "type":"Link",
-            "linkType":"User",
-            "id":"7uJNojWP0gbuP7Pplz7Syo"
+        "createdAt": "2018-04-17T12:56:42Z",
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "<user_id>"
           }
         },
-        "updatedAt":"2016-07-26T09:40:48Z"
+        "updatedAt": "2018-04-17T12:57:18Z"
+      },
+      "environments": [
+        {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        {
+          "sys": {
+            "id": "staging",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        }
+      ],
+      "preview_api_key": {
+        "sys": {
+          "type": "Link",
+          "linkType": "PreviewApiKey",
+          "id": "5szEuycyXqACwhWgwNwX2m"
+        }
       }
     },
     {
-      "name":"Playground 1",
-      "description":null,
-      "accessToken":"<token>",
-      "policies":[
+      "name": "Playground 1",
+      "description": "",
+      "accessToken": "<token>",
+      "policies": [
         {
-          "effect":"allow",
-          "actions":"all"
+          "effect": "allow",
+          "actions": "all"
         }
       ],
-      "sys":{
-        "type":"ApiKey",
-        "id":"7Aj7bVv2cuJdDV3UlakbKC",
-        "version":0,
-        "space":{
-          "sys":{
-            "type":"Link",
-            "linkType":"Space",
-            "id":"arqlnkt58eul"
+      "sys": {
+        "type": "ApiKey",
+        "id": "5syMy6BsUtcVXlD6PpE6LA",
+        "version": 1,
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "<space_id>"
           }
         },
-        "createdBy":{
-          "sys":{
-            "type":"Link",
-            "linkType":"User",
-            "id":"7uJNojWP0gbuP7Pplz7Syo"
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "<user_id>"
           }
         },
-        "createdAt":"2017-06-07T14:10:24Z",
-        "updatedBy":{
-          "sys":{
-            "type":"Link",
-            "linkType":"User",
-            "id":"7uJNojWP0gbuP7Pplz7Syo"
+        "createdAt": "2018-04-17T12:56:42Z",
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "<user_id>"
           }
         },
-        "updatedAt":"2017-06-07T14:10:24Z"
+        "updatedAt": "2018-04-17T12:57:18Z"
+      },
+      "environments": [
+        {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        {
+          "sys": {
+            "id": "staging",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        }
+      ],
+      "preview_api_key": {
+        "sys": {
+          "type": "Link",
+          "linkType": "PreviewApiKey",
+          "id": "5szEuycyXqACwhWgwNwX2m"
+        }
       }
     },
     {
-      "name":"Playground 2",
-      "description":null,
-      "accessToken":"<token>",
-      "policies":[
+      "name": "Playground 2",
+      "description": "",
+      "accessToken": "<token>",
+      "policies": [
         {
-          "effect":"allow",
-          "actions":"all"
+          "effect": "allow",
+          "actions": "all"
         }
       ],
-      "sys":{
-        "type":"ApiKey",
-        "id":"0lgUwCBb1NzDOSVM9SLrJc",
-        "version":0,
-        "space":{
-          "sys":{
-            "type":"Link",
-            "linkType":"Space",
-            "id":"arqlnkt58eul"
+      "sys": {
+        "type": "ApiKey",
+        "id": "5syMy6BsUtcVXlD6PpE6LA",
+        "version": 1,
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "<space_id>"
           }
         },
-        "createdBy":{
-          "sys":{
-            "type":"Link",
-            "linkType":"User",
-            "id":"7uJNojWP0gbuP7Pplz7Syo"
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "<user_id>"
           }
         },
-        "createdAt":"2017-06-07T14:10:54Z",
-        "updatedBy":{
-          "sys":{
-            "type":"Link",
-            "linkType":"User",
-            "id":"7uJNojWP0gbuP7Pplz7Syo"
+        "createdAt": "2018-04-17T12:56:42Z",
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "<user_id>"
           }
         },
-        "updatedAt":"2017-06-07T14:10:54Z"
+        "updatedAt": "2018-04-17T12:57:18Z"
+      },
+      "environments": [
+        {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        {
+          "sys": {
+            "id": "staging",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        }
+      ],
+      "preview_api_key": {
+        "sys": {
+          "type": "Link",
+          "linkType": "PreviewApiKey",
+          "id": "5szEuycyXqACwhWgwNwX2m"
+        }
       }
     },
     {
-      "name":"Playground 3",
-      "description":null,
-      "accessToken":"<token>",
-      "policies":[
+      "name": "Playground 3",
+      "description": "",
+      "accessToken": "<token>",
+      "policies": [
         {
-          "effect":"allow",
-          "actions":"all"
+          "effect": "allow",
+          "actions": "all"
         }
       ],
-      "sys":{
-        "type":"ApiKey",
-        "id":"1pxBRYDNywrksHpXOW5nQW",
-        "version":0,
-        "space":{
-          "sys":{
-            "type":"Link",
-            "linkType":"Space",
-            "id":"arqlnkt58eul"
+      "sys": {
+        "type": "ApiKey",
+        "id": "5syMy6BsUtcVXlD6PpE6LA",
+        "version": 1,
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "<space_id>"
           }
         },
-        "createdBy":{
-          "sys":{
-            "type":"Link",
-            "linkType":"User",
-            "id":"7uJNojWP0gbuP7Pplz7Syo"
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "<user_id>"
           }
         },
-        "createdAt":"2017-06-07T14:11:53Z",
-        "updatedBy":{
-          "sys":{
-            "type":"Link",
-            "linkType":"User",
-            "id":"7uJNojWP0gbuP7Pplz7Syo"
+        "createdAt": "2018-04-17T12:56:42Z",
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "<user_id>"
           }
         },
-        "updatedAt":"2017-06-07T14:11:53Z"
+        "updatedAt": "2018-04-17T12:57:18Z"
+      },
+      "environments": [
+        {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        {
+          "sys": {
+            "id": "staging",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        }
+      ],
+      "preview_api_key": {
+        "sys": {
+          "type": "Link",
+          "linkType": "PreviewApiKey",
+          "id": "5szEuycyXqACwhWgwNwX2m"
+        }
       }
     }
   ]

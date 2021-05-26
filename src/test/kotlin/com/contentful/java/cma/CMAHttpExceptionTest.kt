@@ -2,11 +2,44 @@ package com.contentful.java.cma
 
 import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAHttpException
+import com.google.gson.Gson
 import okhttp3.*
+import okhttp3.mockwebserver.MockWebServer
+import org.junit.After
+import org.junit.Before
+import java.util.logging.LogManager
 import kotlin.test.assertEquals
 import org.junit.Test as test
 
-class CMAHttpExceptionTest : BaseTest() {
+class CMAHttpExceptionTest {
+    var server: MockWebServer? = null
+    var client: CMAClient? = null
+    var gson: Gson? = null
+
+    @Before
+    fun setUp() {
+        LogManager.getLogManager().reset()
+        // MockWebServer
+        server = MockWebServer()
+        server!!.start()
+
+        // Client
+        client = CMAClient.Builder()
+                .setAccessToken("token")
+                .setCoreEndpoint(server!!.url("/").toString())
+                .setUploadEndpoint(server!!.url("/").toString())
+                .setSpaceId("configuredSpaceId")
+                .setEnvironmentId("configuredEnvironmentId")
+                .build()
+
+        gson = CMAClient.createGson()
+    }
+
+    @After
+    fun tearDown() {
+        server!!.shutdown()
+    }
+
     val HEADER_RATE_LIMIT_HOUR_LIMIT = "X-Contentful-RateLimit-Hour-Limit"
     val HEADER_RATE_LIMIT_HOUR_REMAINING = "X-Contentful-RateLimit-Hour-Remaining"
     val HEADER_RATE_LIMIT_SECOND_LIMIT = "X-Contentful-RateLimit-Second-Limit"
@@ -33,7 +66,7 @@ class CMAHttpExceptionTest : BaseTest() {
         assertEquals(500, e.responseCode())
 
         assertEquals("FAILED ErrorBody { sys = Sys { id = manualid, } }\n" +
-                "\tRequest{method=GET, url=https://example.com/foo, tag=null}\n" +
+                "\tRequest{method=GET, url=https://example.com/foo, tags={}}\n" +
                 "\t↳ Header{}\n" +
                 "\tResponse{" +
                 "protocol=http/1.1, code=500, message=message, url=https://example.com/foo}\n" +
@@ -203,10 +236,10 @@ class CMAHttpExceptionTest : BaseTest() {
         assertEquals("FAILED ErrorBody { details = Details { errors = [Error " +
                 "{ details = The type of \"value\" is incorrect, expected type: Object," +
                 " name = type, path = [fields, xqZFfK7YdzEfhhJg, en-US], type = Object, " +
-                "value = bar }], }, message = Validation error, " +
+                "value = bar, }], }, message = Validation error, " +
                 "requestId = 8cd7ef1751dd283ee230e6a58efef8ec, sys = Sys { id = InvalidEntry, " +
                 "type = Error } }\n" +
-                "\tRequest{method=GET, url=https://example.com/foo, tag=null}\n" +
+                "\tRequest{method=GET, url=https://example.com/foo, tags={}}\n" +
                 "\t↳ Header{}\n" +
                 "\tResponse{protocol=http/1.1, code=500, message=message, " +
                 "url=https://example.com/foo}\n" +
