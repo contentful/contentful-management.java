@@ -32,6 +32,8 @@ public class CMASystem {
   @SerializedName("status")
   CMALink environmentStatus;
 
+  CMAVisibility visibility;
+
   /**
    * @return the content type if this resource can have one.
    */
@@ -233,6 +235,13 @@ public class CMASystem {
   }
 
   /**
+   * @return the visibility of the resource.
+   */
+  public CMAVisibility getVisibility() {
+    return visibility;
+  }
+
+  /**
    * @return a human readable string, representing the object.
    */
   @Override public String toString() {
@@ -256,6 +265,7 @@ public class CMASystem {
     map.put("updatedBy", getUpdatedBy());
     map.put("version", getVersion());
     map.put("status", getEnvironmentalStatus());
+    map.put("visibility", getVisibility());
 
     final StringBuilder builder = new StringBuilder("CMASystem { ");
     String separator = "";
