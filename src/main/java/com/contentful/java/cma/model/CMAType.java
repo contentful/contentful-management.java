@@ -25,6 +25,7 @@ public enum CMAType {
   Snapshot,
   Space,
   SpaceMembership,
+  Tag,
   Upload,
   User,
   @SerializedName("Extension") UiExtension,
