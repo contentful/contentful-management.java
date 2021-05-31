@@ -91,7 +91,7 @@ public class CMATag extends CMAResource {
    * @return a human readable string, representing the object.
    */
   @Override public String toString() {
-    return "CMALocale { " + super.toString() + " "
+    return "CMATag { " + super.toString() + " "
         + "name = " + getName() + " "
         + "}";
   }

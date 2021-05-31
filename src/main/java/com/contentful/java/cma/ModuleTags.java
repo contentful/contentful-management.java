@@ -5,6 +5,8 @@ import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMATag;
 import retrofit2.Retrofit;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Executor;
 
 /**
@@ -52,7 +54,7 @@ public class ModuleTags extends AbsModule<ServiceTags> {
   }
 
   /**
-   * Fetch all tags of the configured space.
+   * Fetch all tags of the configured space and environment.
    *
    * @return the array of tags.
    * @throws IllegalArgumentException if configured space id is null.
@@ -63,6 +65,23 @@ public class ModuleTags extends AbsModule<ServiceTags> {
   public CMAArray<CMATag> fetchAll() {
     return fetchAll(spaceId, environmentId);
   }
+
+  /**
+   * Fetch all tags matching a query using configured space and environment.
+   * <p>
+   * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH}
+   *
+   * @param map the query to narrow down the results.
+   * @return matching tags.
+   * @throws IllegalArgumentException if configured space id is null.
+   * @throws IllegalArgumentException if configured environment id is null.
+   * @see CMAClient.Builder#setSpaceId(String)
+   * @see CMAClient.Builder#setEnvironmentId(String)
+   */
+  public CMAArray<CMATag> fetchAll(Map<String, String> map) {
+    return fetchAll(spaceId, environmentId, map);
+  }
+
 
   /**
    * Fetch all tags of the given space and environment.
@@ -81,7 +100,28 @@ public class ModuleTags extends AbsModule<ServiceTags> {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(environmentId, "environmentId");
 
-    return service.fetchAll(spaceId, environmentId).blockingFirst();
+    return service.fetchAll(spaceId, environmentId, new HashMap<>()).blockingFirst();
+  }
+
+  /**
+   * Fetch all tags matching the given query from the given space and environment.
+   *
+   * @param spaceId       the space identifier, identifying the space.
+   * @param environmentId the environment identifier, identifying the environment.
+   * @param query         specifying details about which tags to fetch.
+   * @return {@link CMAArray} result instance
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if environmentId is null.
+   */
+  public CMAArray<CMATag> fetchAll(
+          String spaceId,
+          String environmentId,
+          Map<String, String> query) {
+    assertNotNull(spaceId, "spaceId");
+    assertNotNull(environmentId, "environmentId");
+    DefaultQueryParameter.putIfNotSet(query, DefaultQueryParameter.FETCH);
+
+    return service.fetchAll(spaceId, environmentId, query).blockingFirst();
   }
 
   /**
@@ -134,17 +174,5 @@ public class ModuleTags extends AbsModule<ServiceTags> {
         }
       }, callback);
     }
-  }
-
-  public CMATag create(String spaceId, String environmentId, CMATag tag) {
-    assertNotNull(spaceId, "spaceId");
-    assertNotNull(environmentId, "environmentId");
-    assertNotNull(tag, "tag");
-
-    String tagId = tag.getId();
-    assertNotNull(tagId, "tagId");
-
-    return service.create("application/vnd.contentful.management.v1+json",
-            spaceId, environmentId, tagId, tag).blockingFirst();
   }
 }

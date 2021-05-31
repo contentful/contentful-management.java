@@ -5,6 +5,7 @@ import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAVisibility
 import com.google.gson.Gson
 import java.util.logging.LogManager
+import okhttp3.HttpUrl
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
@@ -84,5 +85,43 @@ class TagsTests{
         assertEquals("GET", recordedRequest.method)
         assertEquals("/spaces/configuredSpaceId/environments/configuredEnvironmentId/tags",
                 recordedRequest.path)
+    }
+
+    @Test
+    fun testFetchAllWithQuery() {
+        val responseBody = TestUtils.fileToString("tag_fetch_all_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val query = hashMapOf("skip" to "1", "limit" to "2", "content_type" to "foo")
+
+        assertTestCallback(client!!.assets().async().fetchAll(
+            "spaceId", "master", query, TestCallback()) as TestCallback)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        val url = HttpUrl.parse(server!!.url(recordedRequest.path).toString())!!
+        assertEquals("1", url.queryParameter("skip"))
+        assertEquals("2", url.queryParameter("limit"))
+    }
+
+    @Test
+    fun testFetchAllWithQueryWithConfiguredSpaceAndEnvironment() {
+        val responseBody = TestUtils.fileToString("tag_fetch_all_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val query = hashMapOf("skip" to "1", "limit" to "2")
+
+        assertTestCallback(client!!.assets().async().fetchAll(query, TestCallback())
+                as TestCallback)
+
+        // Request
+        val request = server!!.takeRequest()
+        val url = HttpUrl.parse(server!!.url(request.path).toString())!!
+        assertEquals("1", url.queryParameter("skip"))
+        assertEquals("2", url.queryParameter("limit"))
+        assertEquals(
+            "/spaces/configuredSpaceId/environments/configuredEnvironmentId/"
+                    + "assets?limit=2&content_type=foo&skip=1",
+            request.path)
     }
 }
