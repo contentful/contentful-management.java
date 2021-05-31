@@ -135,4 +135,16 @@ public class ModuleTags extends AbsModule<ServiceTags> {
       }, callback);
     }
   }
+
+  public CMATag create(String spaceId, String environmentId, CMATag tag) {
+    assertNotNull(spaceId, "spaceId");
+    assertNotNull(environmentId, "environmentId");
+    assertNotNull(tag, "tag");
+
+    String tagId = tag.getId();
+    assertNotNull(tagId, "tagId");
+
+    return service.create("application/vnd.contentful.management.v1+json",
+            spaceId, environmentId, tagId, tag).blockingFirst();
+  }
 }
