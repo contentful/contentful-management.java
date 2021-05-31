@@ -150,6 +150,27 @@ public class ModuleTags extends AbsModule<ServiceTags> {
     }
 
     /**
+     * Fetch all tags from the configured space and environment, asynchronously with query.
+     *
+     * @param query    the query to narrow down the results.
+     * @param callback a callback for the array fetched.
+     * @return the given CMACallback instance
+     * @throws IllegalArgumentException if configured space id is null.
+     * @throws IllegalArgumentException if configured environment id is null.
+     * @see CMAClient.Builder#setSpaceId(String)
+     * @see CMAClient.Builder#setEnvironmentId(String)
+     */
+    public CMACallback<CMAArray<CMATag>> fetchAll(
+            final Map<String, String> query,
+            final CMACallback<CMAArray<CMATag>> callback) {
+      return defer(new DefFunc<CMAArray<CMATag>>() {
+        @Override CMAArray<CMATag> method() {
+          return ModuleTags.this.fetchAll(query);
+        }
+      }, callback);
+    }
+
+    /**
      * Fetch all tags of the given space and environment, asynchronously.
      * <p>
      * This method will override the configuration specified through
@@ -171,6 +192,34 @@ public class ModuleTags extends AbsModule<ServiceTags> {
       return defer(new DefFunc<CMAArray<CMATag>>() {
         @Override CMAArray<CMATag> method() {
           return ModuleTags.this.fetchAll(spaceId, environmentId);
+        }
+      }, callback);
+    }
+
+    /**
+     * Fetch all tags of the given space and environment, asynchronously with a query.
+     * <p>
+     * This method will override the configuration specified through
+     * {@link CMAClient.Builder#setSpaceId(String)} and
+     * {@link CMAClient.Builder#setEnvironmentId(String)}.
+     *
+     * @param spaceId       the space identifier identifying the space.
+     * @param environmentId the environment identifier identifying the space.
+     * @param query         the query to narrow down the results.
+     * @param callback      a callback to be called, once the results are present.
+     * @return the given CMACallback instance
+     * @return a callback for the array fetched.
+     * @throws IllegalArgumentException if space id is null.
+     * @throws IllegalArgumentException if environment id is null.
+     */
+    public CMACallback<CMAArray<CMATag>> fetchAll(
+            final String spaceId,
+            final String environmentId,
+            final Map<String, String> query,
+            final CMACallback<CMAArray<CMATag>> callback) {
+      return defer(new DefFunc<CMAArray<CMATag>>() {
+        @Override CMAArray<CMATag> method() {
+          return ModuleTags.this.fetchAll(spaceId, environmentId, query);
         }
       }, callback);
     }

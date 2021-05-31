@@ -78,7 +78,7 @@ class TagsTests{
         val responseBody = TestUtils.fileToString("tag_fetch_all_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
-        assertTestCallback(client!!.tags().async().fetchAll(TestCallback()) as TestCallback)!!
+        assertTestCallback(client!!.tags().async().fetchAll(TestCallback()) as TestCallback)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -92,10 +92,10 @@ class TagsTests{
         val responseBody = TestUtils.fileToString("tag_fetch_all_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
-        val query = hashMapOf("skip" to "1", "limit" to "2", "content_type" to "foo")
+        val query = mutableMapOf("skip" to "1", "limit" to "2")
 
-        assertTestCallback(client!!.assets().async().fetchAll(
-            "spaceId", "master", query, TestCallback()) as TestCallback)
+        assertTestCallback(client!!.tags().async()
+            .fetchAll("spaceId", "master", query, TestCallback()) as TestCallback)!!
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -109,10 +109,10 @@ class TagsTests{
         val responseBody = TestUtils.fileToString("tag_fetch_all_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
-        val query = hashMapOf("skip" to "1", "limit" to "2")
+        val query = mutableMapOf("skip" to "1", "limit" to "2")
 
-        assertTestCallback(client!!.assets().async().fetchAll(query, TestCallback())
-                as TestCallback)
+        assertTestCallback(client!!.tags().async()
+            .fetchAll(query, TestCallback()) as TestCallback)!!
 
         // Request
         val request = server!!.takeRequest()
@@ -121,7 +121,7 @@ class TagsTests{
         assertEquals("2", url.queryParameter("limit"))
         assertEquals(
             "/spaces/configuredSpaceId/environments/configuredEnvironmentId/"
-                    + "assets?limit=2&content_type=foo&skip=1",
+                    + "tags?skip=1&limit=2",
             request.path)
     }
 }
