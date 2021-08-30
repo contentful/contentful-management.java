@@ -83,6 +83,7 @@ public class CMAClient {
   private final ModuleRoles moduleRoles;
   private final ModuleSpaceMemberships moduleSpaceMemberships;
   private final ModuleSpaces moduleSpaces;
+  private final ModuleTags moduleTags;
   private final ModuleUiExtensions moduleUiExtensions;
   private final ModuleUploads moduleUploads;
   private final ModuleUsers moduleUsers;
@@ -156,6 +157,8 @@ public class CMAClient {
     this.moduleSpaceMemberships = new ModuleSpaceMemberships(retrofit, callbackExecutor, spaceId,
         environmentId, configured);
     this.moduleSpaces = new ModuleSpaces(retrofit, callbackExecutor, configured);
+    this.moduleTags = new ModuleTags(retrofit, callbackExecutor,
+            spaceId, environmentId, configured);
     this.moduleUiExtensions = new ModuleUiExtensions(retrofit, callbackExecutor, spaceId,
         environmentId, configured);
     this.moduleUploads = new ModuleUploads(uploadRetrofit, callbackExecutor, spaceId,
@@ -333,6 +336,13 @@ public class CMAClient {
    */
   public ModuleLocales locales() {
     return moduleLocales;
+  }
+
+  /**
+   * @return the Tags module.
+   */
+  public ModuleTags tags() {
+    return moduleTags;
   }
 
 
