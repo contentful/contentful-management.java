@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Contentful GmbH
+ * Copyright (C) 2021 Contentful GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ package com.contentful.java.cma;
 
 import com.contentful.java.cma.RxExtensions.DefFunc;
 import com.contentful.java.cma.model.CMAArray;
-import com.contentful.java.cma.model.CMAEnvironment;
 import com.contentful.java.cma.model.CMATag;
 import retrofit2.Retrofit;
 
@@ -60,9 +59,8 @@ public class ModuleTags extends AbsModule<ServiceContentTags> {
    * This method will override the configuration specified through
    * {@link CMAClient.Builder#setSpaceId(String)}.
    *
-   * @return {@link CMAEnvironment} result instance
+   * @return {@link CMATag} result instance
    * @throws IllegalArgumentException if space id is null.
-   * @throws IllegalArgumentException if environment is null.
    */
   public CMATag create(String environmentId,
                        String spaceId,
@@ -85,21 +83,22 @@ public class ModuleTags extends AbsModule<ServiceContentTags> {
    * @throws IllegalArgumentException if environment's space id is null.
    * @throws IllegalArgumentException if tag's id is null.
    */
-  public Integer delete(CMAEnvironment environment,
-                        String spaceId,
+  public Integer delete(String spaceId,
+                        String environmentId,
                         String tagId) {
-    assertNotNull(environment.getSpaceId(), "spaceId");
+    assertNotNull(spaceId, "spaceId");
+    assertNotNull(environmentId, "environmentId");
     assertNotNull(tagId, "tagId");
 
     return service.delete(
             spaceId,
-            environment.getId(),
+            environmentId,
             tagId
     ).blockingFirst().code();
   }
 
   /**
-   * Fetch all environments of the configured space.
+   * Fetch all tags of the configured space.
    *
    * @return {@link CMAArray} result instance
    * @throws IllegalArgumentException if configured space id is null.
@@ -126,10 +125,10 @@ public class ModuleTags extends AbsModule<ServiceContentTags> {
   }
 
   /**
-   * Fetch an environment with a given {@code environmentId} from the configured space.
+   * Fetch a tag with a given {@code environmentId} from the configured space.
    *
    * @param tagId tag ID
-   * @return {@link CMAEnvironment} result instance
+   * @return {@link CMATag} result instance
    * @throws IllegalArgumentException if the configured space id is null.
    * @throws IllegalArgumentException if environment's id is null.
    * @see CMAClient.Builder#setSpaceId(String)
@@ -139,14 +138,14 @@ public class ModuleTags extends AbsModule<ServiceContentTags> {
   }
 
   /**
-   * Fetch an environment with a given {@code environmentId} and space.
+   * Fetch a tag with a given {@code environmentId} and space.
    * <p>
    * This method will override the configuration specified through
    * {@link CMAClient.Builder#setSpaceId(String)}.
    *
    * @param spaceId       space ID
    * @param environmentId environment ID
-   * @return {@link CMAEnvironment} result instance
+   * @return {@link CMATag} result instance
    * @throws IllegalArgumentException if space id is null.
    * @throws IllegalArgumentException if environment's id is null.
    */
@@ -197,8 +196,8 @@ public class ModuleTags extends AbsModule<ServiceContentTags> {
      * @see CMAClient.Builder#setSpaceId(String)
      */
     public CMACallback<CMATag> create(
-            String environmentId,
             String spaceId,
+            String environmentId,
             String tagId,
             String name,
             String visibility,
@@ -218,18 +217,18 @@ public class ModuleTags extends AbsModule<ServiceContentTags> {
     /**
      * Delete a tag with given id.
      *
-     * @param environment environment to be deleted
+     * @param tagId tagId to be deleted
      * @param callback    Callback
      * @return the given CMACallback instance
      */
-    public CMACallback<Integer> delete(CMAEnvironment environment,
-                                       String spaceId,
+    public CMACallback<Integer> delete(String spaceId,
+                                       String environmentId,
                                        String tagId,
                                        CMACallback<Integer> callback) {
       return defer(new DefFunc<Integer>() {
         @Override
         Integer method() {
-          return ModuleTags.this.delete(environment, spaceId, tagId);
+          return ModuleTags.this.delete(spaceId, environmentId, tagId);
         }
       }, callback);
     }
@@ -254,14 +253,14 @@ public class ModuleTags extends AbsModule<ServiceContentTags> {
     }
 
     /**
-     * Fetch all environments of the given space.
+     * Fetch all tags of the given space.
      * <p>
      * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH}.
      * <p>
      * This method will override the configuration specified through
      * {@link CMAClient.Builder#setSpaceId(String)}.
      *
-     * @param spaceId  Id of the space to host environment in
+     * @param spaceId  Id of the space to host tag in
      * @param callback Inform about results on the callback.
      * @return the given {@link CMACallback} instance.
      * @throws IllegalArgumentException if space id is null.
@@ -305,7 +304,7 @@ public class ModuleTags extends AbsModule<ServiceContentTags> {
      * This method will override the configuration specified through
      * {@link CMAClient.Builder#setSpaceId(String)}.
      *
-     * @param spaceId       Id of the space to host environment in
+     * @param spaceId       Id of the space to host tag in
      * @param environmentId environment ID
      * @param callback      Callback
      * @return the given CMACallback instance
@@ -326,15 +325,10 @@ public class ModuleTags extends AbsModule<ServiceContentTags> {
     }
 
     /**
-     * Update an environment.
+     * Update a tag.
      *
      * @param callback    Callback
      * @return the given CMACallback instance
-     * @throws IllegalArgumentException if environment is null.
-     * @throws IllegalArgumentException if environment's space id is null.
-     * @throws IllegalArgumentException if environment's name is null.
-     * @throws IllegalArgumentException if environment's environment id is null.
-     * @throws IllegalArgumentException if environment's version is null.
      */
     public CMACallback<CMATag> update(
         final String name,

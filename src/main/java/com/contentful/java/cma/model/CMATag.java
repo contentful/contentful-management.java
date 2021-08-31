@@ -30,6 +30,16 @@ public class CMATag extends CMAResource {
     super(CMAType.Tag);
   }
 
+  @Override
+  public String getVisibility() {
+    return super.getVisibility();
+  }
+
+  @Override
+  public <T extends CMAResource> T setVisibility(String visibility) {
+    return super.setVisibility(visibility);
+  }
+
   /**
    * Sets the system field.
    *
