@@ -19,8 +19,11 @@ package com.contentful.java.cma;
 import com.contentful.java.cma.RxExtensions.DefFunc;
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMATag;
+import com.contentful.java.cma.model.CMAVisibility;
 import retrofit2.Retrofit;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Executor;
 
 /**
@@ -66,7 +69,7 @@ public class ModuleTags extends AbsModule<ServiceContentTags> {
                        String spaceId,
                        String tagId,
                        String name,
-                       String visibility) {
+                       CMAVisibility visibility) {
     assertNotNull(spaceId, "spaceId");
 
     final CMATag tag = new CMATag();
@@ -105,11 +108,11 @@ public class ModuleTags extends AbsModule<ServiceContentTags> {
    * @see CMAClient.Builder#setSpaceId(String)
    */
   public CMAArray<CMATag> fetchAll() {
-    return fetchAll(spaceId, environmentId);
+    return fetchAll(spaceId, environmentId, new HashMap<>());
   }
 
   /**
-   * Fetch all tag of the given space.
+   * Fetch all tag of the given space with query
    * <p>
    * This method will override the configuration specified through
    * {@link CMAClient.Builder#setSpaceId(String)}.
@@ -118,10 +121,13 @@ public class ModuleTags extends AbsModule<ServiceContentTags> {
    * @return {@link CMAArray} result instance
    * @throws IllegalArgumentException if environment's space id is null.
    */
-  public CMAArray<CMATag> fetchAll(String spaceId, String environmentId) {
+  public CMAArray<CMATag> fetchAll(String spaceId,
+                                   String environmentId,
+                                   Map<String, String> query) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(environmentId, "environmentId");
-    return service.fetchAll(spaceId, environmentId).blockingFirst();
+    DefaultQueryParameter.putIfNotSet(query, DefaultQueryParameter.FETCH);
+    return service.fetchAll(spaceId, environmentId, query).blockingFirst();
   }
 
   /**
@@ -200,7 +206,7 @@ public class ModuleTags extends AbsModule<ServiceContentTags> {
             String environmentId,
             String tagId,
             String name,
-            String visibility,
+            CMAVisibility visibility,
             CMACallback<CMATag> callback) {
       return defer(new DefFunc<CMATag>() {
         @Override
@@ -268,11 +274,12 @@ public class ModuleTags extends AbsModule<ServiceContentTags> {
     public CMACallback<CMAArray<CMATag>> fetchAll(
         final String spaceId,
         final String environmentId,
+        final Map<String, String> query,
         CMACallback<CMAArray<CMATag>> callback) {
       return defer(new DefFunc<CMAArray<CMATag>>() {
         @Override
         CMAArray<CMATag> method() {
-          return ModuleTags.this.fetchAll(spaceId, environmentId);
+          return ModuleTags.this.fetchAll(spaceId, environmentId, query);
         }
       }, callback);
     }

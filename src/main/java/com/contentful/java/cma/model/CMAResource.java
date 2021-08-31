@@ -82,7 +82,7 @@ public class CMAResource {
   /**
    * @return the {@code sys.visibility} value, null if it does not exist.
    */
-  public String getVisibility() {
+  public CMAVisibility getVisibility() {
     return getSystem().getVisibility();
   }
 
@@ -106,7 +106,7 @@ public class CMAResource {
    * @return the calling {@link CMAResource} for chaining.
    */
   @SuppressWarnings("unchecked")
-  public <T extends CMAResource> T setVisibility(String visibility) {
+  public <T extends CMAResource> T setVisibility(CMAVisibility visibility) {
     getSystem().setVisibility(visibility);
     return (T) this;
   }

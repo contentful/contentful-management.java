@@ -27,13 +27,13 @@ public class CMASystem {
   String updatedAt;
   CMALink updatedBy;
   Integer version;
-  String visibility;
+  CMAVisibility visibility;
 
-  public String getVisibility() {
+  public CMAVisibility getVisibility() {
     return visibility;
   }
 
-  public void setVisibility(String visibility) {
+  public void setVisibility(CMAVisibility visibility) {
     this.visibility = visibility;
   }
 
@@ -266,6 +266,7 @@ public class CMASystem {
     map.put("updatedBy", getUpdatedBy());
     map.put("version", getVersion());
     map.put("status", getEnvironmentalStatus());
+    map.put("visibility", getVisibility());
 
     final StringBuilder builder = new StringBuilder("CMASystem { ");
     String separator = "";

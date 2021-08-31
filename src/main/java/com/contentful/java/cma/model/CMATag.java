@@ -31,12 +31,12 @@ public class CMATag extends CMAResource {
   }
 
   @Override
-  public String getVisibility() {
+  public CMAVisibility getVisibility() {
     return super.getVisibility();
   }
 
   @Override
-  public <T extends CMAResource> T setVisibility(String visibility) {
+  public <T extends CMAResource> T setVisibility(CMAVisibility visibility) {
     return super.setVisibility(visibility);
   }
 

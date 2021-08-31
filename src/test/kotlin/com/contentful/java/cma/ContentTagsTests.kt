@@ -19,9 +19,6 @@ package com.contentful.java.cma
 import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.*
-import com.contentful.java.cma.model.CMAConstraint.Equals
-import com.contentful.java.cma.model.CMAConstraint.FieldKeyPath
-import com.contentful.java.cma.model.CMAPolicy.ALLOW
 import com.google.gson.Gson
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -30,8 +27,6 @@ import org.junit.Before
 import java.util.logging.LogManager
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
-import kotlin.test.assertNull
-import kotlin.test.assertTrue
 import org.junit.Test as test
 
 class ContentTagsTests{
@@ -85,7 +80,6 @@ class ContentTagsTests{
     fun testFetchOneWithConfiguredSpaceAndEnvironment() {
         val responseBody = TestUtils.fileToString("content_tags_one_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
-
         assertTestCallback(client!!.tags().async()
                 .fetchOne("customSpaceId","customEnvironmentId", "nyCampaign", TestCallback()) as TestCallback)!!
 
@@ -120,9 +114,9 @@ class ContentTagsTests{
     fun testFetchAllWithConfiguredSpaceAndEnvironment() {
         val responseBody = TestUtils.fileToString("content_tags_response.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
-
+        val query = mutableMapOf("skip" to "0", "limit" to "100")
         val result = assertTestCallback(client!!.tags().async()
-                .fetchAll("customSpaceId","customEnvironmentId",TestCallback()) as TestCallback)!!
+                .fetchAll("customSpaceId","customEnvironmentId", query, TestCallback()) as TestCallback)!!
 
         assertEquals(1, result.total)
         assertEquals(100, result.limit)
@@ -134,7 +128,7 @@ class ContentTagsTests{
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("GET", recordedRequest.method)
-        assertEquals("/spaces/customSpaceId/environments/customEnvironmentId/tags", recordedRequest.path)
+        assertEquals("/spaces/customSpaceId/environments/customEnvironmentId/tags?skip=0&limit=100", recordedRequest.path)
     }
 
     @test
@@ -147,10 +141,10 @@ class ContentTagsTests{
                         "configuredEnvironmentId",
                         "nyCampaign",
                         "NY Campaign",
-                        "public", TestCallback()) as TestCallback)!!
+                        CMAVisibility.publicVisibility, TestCallback()) as TestCallback)!!
 
         assertEquals("NY Campaign", result.name)
-        assertEquals("public", result.system.visibility)
+        assertEquals(CMAVisibility.publicVisibility, result.system.visibility)
     }
 
 

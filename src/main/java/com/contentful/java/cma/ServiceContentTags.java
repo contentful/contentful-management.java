@@ -20,11 +20,14 @@ import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMATag;
 import io.reactivex.Flowable;
 import retrofit2.Response;
-import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.QueryMap;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
+
+import java.util.Map;
 
 /**
  * Spaces Service.
@@ -34,7 +37,8 @@ interface ServiceContentTags {
   @GET("/spaces/{space_id}/environments/{environment_id}/tags")
   Flowable<CMAArray<CMATag>> fetchAll(
       @Path("space_id") String spaceId,
-      @Path("environment_id") String environmentID
+      @Path("environment_id") String environmentID,
+      @QueryMap Map<String, String> query
   );
   @PUT("/spaces/{space_id}/environments/{environment_id}/tags/{tag_id}")
   Flowable<CMATag> create(
@@ -47,7 +51,8 @@ interface ServiceContentTags {
   Flowable<CMATag> fetchOne(
       @Path("space_id") String spaceId,
       @Path("environment_id") String environmentID,
-      @Path("tag_id") String tagId);
+      @Path("tag_id") String tagId
+  );
 
   @PUT("/spaces/{space_id}/environments/{environment_id}/tags/{tag_id}")
   Flowable<CMATag> update(
