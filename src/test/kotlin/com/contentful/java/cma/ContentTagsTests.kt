@@ -29,7 +29,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import org.junit.Test as test
 
-class ContentTagsTests{
+class ContentTagsTests {
     var server: MockWebServer? = null
     var client: CMAClient? = null
     var gson: Gson? = null
