@@ -202,8 +202,9 @@ public class ModuleContentTypes extends AbsModule<ServiceContentTypes> {
       String environmentId,
       Map<String, String> query) {
     assertNotNull(spaceId, "spaceId");
-    DefaultQueryParameter.putIfNotSet(query, DefaultQueryParameter.FETCH);
-    return service.fetchAll(spaceId, environmentId, query).blockingFirst();
+    Map<String, String> enhancedQuery =
+      DefaultQueryParameter.putIfNotSet(query, DefaultQueryParameter.FETCH);
+    return service.fetchAll(spaceId, environmentId, enhancedQuery).blockingFirst();
   }
 
   /**

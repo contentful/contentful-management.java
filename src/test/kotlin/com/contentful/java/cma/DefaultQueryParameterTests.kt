@@ -27,31 +27,31 @@ class DefaultQueryParameterTests {
     @test
     fun testEmptyMapWithDefaults() {
         val defaultMap = hashMapOf(Pair(MAP_KEY, MAP_VALUE))
-        val targetMap = HashMap<String, String>()
+        val targetMap = mapOf<String, String>()
 
-        DefaultQueryParameter.putIfNotSet(targetMap, defaultMap)
+        val resultingMap = DefaultQueryParameter.putIfNotSet(targetMap, defaultMap)
 
-        assertEquals(targetMap[MAP_KEY], MAP_VALUE)
+        assertEquals(resultingMap[MAP_KEY], MAP_VALUE)
     }
 
     @test
     fun testDoNotOverwriteValueWithDefaultValue() {
         val defaultMap = hashMapOf(Pair(MAP_KEY, MAP_VALUE))
-        val targetMap = hashMapOf(Pair(MAP_KEY, "NON_DEFAULT_VALUE"))
+        val targetMap = mapOf(Pair(MAP_KEY, "NON_DEFAULT_VALUE"))
 
-        DefaultQueryParameter.putIfNotSet(targetMap, defaultMap)
+        val resultingMap = DefaultQueryParameter.putIfNotSet(targetMap, defaultMap)
 
-        assertEquals(targetMap[MAP_KEY], "NON_DEFAULT_VALUE")
+        assertEquals(resultingMap[MAP_KEY], "NON_DEFAULT_VALUE")
     }
 
     @test
     fun testDoNotChangeDifferentValues() {
         val defaultMap = hashMapOf(Pair(MAP_KEY + "_123", "SOMETHING"))
-        val targetMap = hashMapOf(Pair(MAP_KEY, MAP_VALUE))
+        val targetMap = mapOf(Pair(MAP_KEY, MAP_VALUE))
 
-        DefaultQueryParameter.putIfNotSet(targetMap, defaultMap)
+        val resultingMap = DefaultQueryParameter.putIfNotSet(targetMap, defaultMap)
 
-        assertEquals(targetMap[MAP_KEY], MAP_VALUE)
-        assertEquals(targetMap[MAP_KEY + "_123"], "SOMETHING")
+        assertEquals(resultingMap[MAP_KEY], MAP_VALUE)
+        assertEquals(resultingMap[MAP_KEY + "_123"], "SOMETHING")
     }
 }

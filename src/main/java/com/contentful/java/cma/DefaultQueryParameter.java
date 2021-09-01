@@ -33,12 +33,19 @@ class DefaultQueryParameter {
    *
    * @param target   the map to be filled with values, if a key for them is not set already.
    * @param defaults the list of defaults, to be set.
+   * @return the same map if no change had to be made, a new map otherwise.
    */
-  static void putIfNotSet(Map<String, String> target, Map<String, String> defaults) {
-    for (final String key : defaults.keySet()) {
-      if (!target.containsKey(key)) {
-        target.put(key, defaults.get(key));
+  static Map<String, String> putIfNotSet(Map<String, String> target, Map<String, String> defaults) {
+    boolean needsChange = defaults.keySet().stream().anyMatch(key -> !target.containsKey(key));
+    if (needsChange) {
+      Map<String, String> copy = new HashMap<>(target);
+      for (final String key : defaults.keySet()) {
+        if (!copy.containsKey(key)) {
+          copy.put(key, defaults.get(key));
+        }
       }
+      return copy;
     }
+    return target;
   }
 }
