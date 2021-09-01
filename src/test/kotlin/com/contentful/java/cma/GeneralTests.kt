@@ -79,7 +79,7 @@ class GeneralTests{
     @test
     fun testFieldArraySerialization() {
         val field = CMAField().setType(CMAFieldType.Array)
-                .setArrayItems(hashMapOf(Pair("type", CMAFieldType.Symbol.toString())))
+                .setArrayItems(mapOf(Pair("type", CMAFieldType.Symbol.toString())))
 
         val json = gson!!.toJsonTree(field, CMAField::class.java).asJsonObject
         assertEquals("Array", json.get("type").asString)
