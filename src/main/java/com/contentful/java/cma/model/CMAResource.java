@@ -80,6 +80,13 @@ public class CMAResource {
   }
 
   /**
+   * @return the {@code sys.visibility} value, null if it does not exist.
+   */
+  public CMAVisibility getVisibility() {
+    return getSystem().getVisibility();
+  }
+
+  /**
    * Convenience method for setting a version.
    *
    * @param version the version number to be set.
@@ -89,6 +96,18 @@ public class CMAResource {
   @SuppressWarnings("unchecked")
   public <T extends CMAResource> T setVersion(Integer version) {
     getSystem().setVersion(version);
+    return (T) this;
+  }
+
+  /**
+   * Convenience method for setting a version.
+   *
+   * @param visibility the visibility to be set.
+   * @return the calling {@link CMAResource} for chaining.
+   */
+  @SuppressWarnings("unchecked")
+  public <T extends CMAResource> T setVisibility(CMAVisibility visibility) {
+    getSystem().setVisibility(visibility);
     return (T) this;
   }
 
