@@ -1,0 +1,39 @@
+{
+  "name":"Test",
+  "description":"Some Description",
+  "accessToken":"<token>",
+  "policies":[
+    {
+      "effect":"allow",
+      "actions":"all"
+    }
+  ],
+  "sys":{
+    "type":"ApiKey",
+    "id":"27WyuLoCPFluOhxCxB62Oi",
+    "version":0,
+    "space":{
+      "sys":{
+        "type":"Link",
+        "linkType":"Space",
+        "id":"ukkyz5yztdvx"
+      }
+    },
+    "createdBy":{
+      "sys":{
+        "type":"Link",
+        "linkType":"User",
+        "id":"1SRXEmkAreLqUPCmTlt1KK"
+      }
+    },
+    "createdAt":"2017-12-19T09:38:20Z",
+    "updatedBy":{
+      "sys":{
+        "type":"Link",
+        "linkType":"User",
+        "id":"1SRXEmkAreLqUPCmTlt1KK"
+      }
+    },
+    "updatedAt":"2017-12-19T09:38:20Z"
+  }
+}

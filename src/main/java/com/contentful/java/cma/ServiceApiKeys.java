@@ -50,6 +50,10 @@ interface ServiceApiKeys {
       @Path("spaceId") String spaceId,
       @Path("keyId") String keyId);
 
+  @GET("/spaces/{spaceId}/preview_api_keys/{keyId}")
+  Flowable<CMAApiKey> fetchOnePreview(@Path("spaceId") String spaceId,
+                                      @Path("keyId") String keyId);
+
   @POST("/spaces/{spaceId}/api_keys")
   Flowable<CMAApiKey> create(
       @Path("spaceId") String spaceId,

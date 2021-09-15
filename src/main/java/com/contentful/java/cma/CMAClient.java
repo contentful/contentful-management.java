@@ -345,7 +345,6 @@ public class CMAClient {
     return moduleTags;
   }
 
-
   /**
    * Builder.
    */

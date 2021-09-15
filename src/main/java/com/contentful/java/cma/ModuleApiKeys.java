@@ -153,10 +153,27 @@ public class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
    * @throws IllegalArgumentException if keyId is null.
    */
   public CMAApiKey fetchOne(String spaceId, String keyId) {
-    assertNotNull(spaceId, "entry");
+    assertNotNull(spaceId, "spaceId");
     assertNotNull(keyId, "keyId");
 
     return service.fetchOne(spaceId, keyId).blockingFirst();
+  }
+
+
+  /**
+   * Fetch only one preview api key.
+   *
+   * @param spaceId the id of the space this is valid on.
+   * @param keyId   the id of the key itself.
+   * @return one preview api key.
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if keyId is null.
+   */
+  public CMAApiKey fetchOnePreview(String spaceId, String keyId) {
+    assertNotNull(spaceId, "spaceId");
+    assertNotNull(keyId, "keyId");
+
+    return service.fetchOnePreview(spaceId, keyId).blockingFirst();
   }
 
   /**
@@ -365,6 +382,26 @@ public class ModuleApiKeys extends AbsModule<ServiceApiKeys> {
       return defer(new DefFunc<CMAApiKey>() {
         @Override CMAApiKey method() {
           return ModuleApiKeys.this.fetchOne(spaceId, keyId);
+        }
+      }, callback);
+    }
+
+    /**
+     * Fetch only one preview api key.
+     *
+     * @param spaceId  the id of the space this is valid on.
+     * @param keyId    the id of the key itself.
+     * @param callback the callback to be called once the key is available.
+     * @return the callback to be informed about success or failure.
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if keyId is null.
+     */
+    public CMACallback<CMAApiKey> fetchOnePreview(final String spaceId,
+                                                  final String keyId,
+                                                  CMACallback<CMAApiKey> callback) {
+      return defer(new DefFunc<CMAApiKey>() {
+        @Override CMAApiKey method() {
+          return ModuleApiKeys.this.fetchOnePreview(spaceId, keyId);
         }
       }, callback);
     }

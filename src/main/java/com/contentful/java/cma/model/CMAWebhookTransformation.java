@@ -25,7 +25,7 @@ public class CMAWebhookTransformation {
   private String method;
   private String contentType;
   private Boolean includeContentLength;
-  private String body;
+  private Object body;
 
   /**
    * @return the custom HTTP method of this transformation
@@ -86,7 +86,7 @@ public class CMAWebhookTransformation {
   /**
    * @return the webhook transformation body
    */
-  public String getBody() {
+  public Object getBody() {
     return body;
   }
 
@@ -96,7 +96,7 @@ public class CMAWebhookTransformation {
    * @param body the body of the transformation can be any arbitrary JSON data structure
    * @return this webhook for chaining
    */
-  public CMAWebhookTransformation setBody(String body) {
+  public CMAWebhookTransformation setBody(Object body) {
     this.body = body;
     return this;
   }
