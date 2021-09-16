@@ -42,8 +42,6 @@ public class CMASystem {
   @SerializedName("status")
   CMALink environmentStatus;
 
-  CMAVisibility visibility;
-
   /**
    * @return the content type if this resource can have one.
    */
@@ -242,13 +240,6 @@ public class CMASystem {
    */
   public CMALink getEnvironmentalStatus() {
     return environmentStatus;
-  }
-
-  /**
-   * @return the visibility of the resource.
-   */
-  public CMAVisibility getVisibility() {
-    return visibility;
   }
 
   /**
