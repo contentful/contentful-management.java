@@ -31,5 +31,6 @@ public enum CMAType {
   @SerializedName("Extension") UiExtension,
   Webhook,
   WebhookCallOverview,
-  WebhookDefinition
+  WebhookDefinition,
+  PreviewEnvironment
 }
