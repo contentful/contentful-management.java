@@ -88,6 +88,7 @@ public class CMAClient {
   private final ModuleUploads moduleUploads;
   private final ModuleUsers moduleUsers;
   private final ModuleWebhooks moduleWebhooks;
+  private final ModulePreviewEnvironments modulePreviewEnvironments;
 
   // Executors
   Executor callbackExecutor;
@@ -166,6 +167,8 @@ public class CMAClient {
     this.moduleUsers = new ModuleUsers(retrofit, callbackExecutor, configured);
     this.moduleWebhooks = new ModuleWebhooks(retrofit, callbackExecutor, spaceId, environmentId,
         configured);
+    this.modulePreviewEnvironments = new ModulePreviewEnvironments(retrofit, callbackExecutor,
+        spaceId, configured);
   }
 
   /**
@@ -343,6 +346,13 @@ public class CMAClient {
    */
   public ModuleTags tags() {
     return moduleTags;
+  }
+
+  /**
+   * @return the Preview Environments module.
+   */
+  public ModulePreviewEnvironments previewEnvironments() {
+    return modulePreviewEnvironments;
   }
 
   /**

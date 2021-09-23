@@ -1,0 +1,63 @@
+{
+  "total": 2,
+  "limit": 100,
+  "skip": 0,
+  "sys": {
+    "type": "Array"
+  },
+  "items": [
+    {
+      "name": "web preview",
+      "description": "web preview description",
+      "sys": {
+        "type": "PreviewEnvironment",
+        "id": "<web_preview_id>",
+        "version": 0,
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "<space_id>"
+          }
+        },
+        "createdAt": "2021-09-15T07:07:52Z",
+        "updatedAt": "2021-09-15T07:07:52Z"
+      },
+      "configurations": [
+        {
+          "url": "https://endeza22it7y5.x.pipedream.net/web_preview",
+          "contentType": "testEntry",
+          "enabled": true,
+          "example": false
+        }
+      ]
+    },
+    {
+      "name": "preview config",
+      "description": "preview config description",
+      "sys": {
+        "type": "PreviewEnvironment",
+        "id": "<preview_config_id>",
+        "description": "<preview_config_description>",
+        "version": 0,
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "<space_id>"
+          }
+        },
+        "createdAt": "2021-09-15T12:29:21Z",
+        "updatedAt": "2021-09-15T12:29:21Z"
+      },
+      "configurations": [
+        {
+          "url": "https://endeza22it7y5.x.pipedream.net/test",
+          "contentType": "testEntry1",
+          "enabled": true,
+          "example": false
+        }
+      ]
+    }
+  ]
+}

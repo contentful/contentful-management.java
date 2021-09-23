@@ -1,7 +1,7 @@
 package com.contentful.java.cma;
 
 import com.contentful.java.cma.model.CMAArray;
-import com.contentful.java.cma.model.CMATag;
+import com.contentful.java.cma.model.CMAPreviewEnvironment;
 import io.reactivex.Flowable;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -10,13 +10,12 @@ import retrofit2.http.QueryMap;
 import java.util.Map;
 
 /**
- * Tags service.
+ * Preview Environments service.
  */
-public interface ServiceTags {
-  @GET("/spaces/{spaceId}/environments/{environmentId}/tags")
-  Flowable<CMAArray<CMATag>> fetchAll(
+public interface ServicePreviewEnvironments {
+  @GET("/spaces/{spaceId}/preview_environments")
+  Flowable<CMAArray<CMAPreviewEnvironment>> fetchAll(
       @Path("spaceId") String spaceId,
-      @Path("environmentId") String environmentId,
       @QueryMap Map<String, String> query
   );
 }
