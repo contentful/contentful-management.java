@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 
 /**
  * This factory will be used in order to create the {@link CMARichNode}-graph representation of
@@ -37,15 +36,18 @@ public class RichTextFactory {
    * @param <T> a block to be resolved.
    */
   private static class BlockResolver<T extends CMARichBlock> implements Resolver {
-    final Supplier<T> supplier;
+    final SupplierWithData<T> supplier;
+    final String dataFieldKey;
 
     /**
-     * Create a block resolver based on its given supplier.
+     * Create a block resolver based on its given supplier and data.
      *
      * @param supplier an object to create more objects of type T.
+     * @param dataFieldKey field name with additional data
      */
-    BlockResolver(Supplier<T> supplier) {
+    BlockResolver(SupplierWithData<T> supplier, String dataFieldKey) {
       this.supplier = supplier;
+      this.dataFieldKey = dataFieldKey;
     }
 
     /**
@@ -75,7 +77,7 @@ public class RichTextFactory {
      * @return a new node based on the type of T.
      */
     T getType(Map<String, Object> raw) {
-      return supplier.get();
+      return supplier.get(raw.get(dataFieldKey));
     }
   }
 
@@ -90,8 +92,8 @@ public class RichTextFactory {
      *
      * @param level the level of the headings nesting. Should be positive and less then 7.
      */
-    HeadingResolver(int level) {
-      super(() -> new CMARichHeading(level));
+    HeadingResolver(int level, String dataFieldKey) {
+      super((data) -> new CMARichHeading(level, data), dataFieldKey);
       this.level = level;
     }
   }
@@ -118,8 +120,6 @@ public class RichTextFactory {
    */
   private static class BlockAndDataResolver<T extends CMARichBlock>
       extends BlockResolver<T> {
-    final SupplierWithData<T> supplier;
-    final String dataFieldKey;
 
     /**
      * Create the resolver.
@@ -128,9 +128,7 @@ public class RichTextFactory {
      * @param dataFieldKey what other keys to be filtered?
      */
     BlockAndDataResolver(SupplierWithData<T> supplier, String dataFieldKey) {
-      super(null);
-      this.supplier = supplier;
-      this.dataFieldKey = dataFieldKey;
+      super(supplier, dataFieldKey);
     }
 
     /**
@@ -169,23 +167,24 @@ public class RichTextFactory {
     // add leafs
     RESOLVER_MAP.put("text", raw -> new CMARichText(
         (CharSequence) raw.get("value"),
-        resolveMarks((List<Map<String, Object>>) raw.get("marks"))
+        resolveMarks((List<Map<String, Object>>) raw.get("marks")),
+        (Map<String, Object>) raw.get("data")
     ));
-    RESOLVER_MAP.put("hr", raw -> new CMARichHorizontalRule());
+    RESOLVER_MAP.put("hr", raw -> new CMARichHorizontalRule(raw.get("data")));
 
     // add blocks
     RESOLVER_MAP.put(new CMARichQuote().getNodeType(),
-        new BlockResolver<>(CMARichQuote::new));
+        new BlockResolver<>(CMARichQuote::new, "data"));
     RESOLVER_MAP.put(new CMARichParagraph().getNodeType(),
-        new BlockResolver<>(CMARichParagraph::new));
+        new BlockResolver<>(CMARichParagraph::new, "data"));
     RESOLVER_MAP.put(new CMARichDocument().getNodeType(),
-        new BlockResolver<>(CMARichDocument::new));
+        new BlockResolver<>(CMARichDocument::new, "data"));
     RESOLVER_MAP.put(new CMARichListItem().getNodeType(),
-        new BlockResolver<>(CMARichListItem::new));
+        new BlockResolver<>(CMARichListItem::new, "data"));
     RESOLVER_MAP.put(new CMARichOrderedList().getNodeType(),
-        new BlockResolver<>(CMARichOrderedList::new));
+        new BlockResolver<>(CMARichOrderedList::new, "data"));
     RESOLVER_MAP.put(new CMARichUnorderedList().getNodeType(),
-        new BlockResolver<>(CMARichUnorderedList::new));
+        new BlockResolver<>(CMARichUnorderedList::new, "data"));
     RESOLVER_MAP.put(new CMARichHyperLink().getNodeType(),
         new BlockAndDataResolver<>(CMARichHyperLink::new, "data"));
     RESOLVER_MAP.put(new CMARichHyperLink(new CMALink(CMAType.Entry)).getNodeType(),
@@ -200,12 +199,18 @@ public class RichTextFactory {
         new BlockAndDataResolver<>(target -> new CMARichEmbeddedLink(target, true), "data"));
     RESOLVER_MAP.put(new CMARichEmbeddedLink(new CMALink(CMAType.Asset), true).getNodeType(),
         new BlockAndDataResolver<>(target -> new CMARichEmbeddedLink(target, true), "data"));
-    RESOLVER_MAP.put(new CMARichHeading(LEVEL_1).getNodeType(), new HeadingResolver(LEVEL_1));
-    RESOLVER_MAP.put(new CMARichHeading(LEVEL_2).getNodeType(), new HeadingResolver(LEVEL_2));
-    RESOLVER_MAP.put(new CMARichHeading(LEVEL_3).getNodeType(), new HeadingResolver(LEVEL_3));
-    RESOLVER_MAP.put(new CMARichHeading(LEVEL_4).getNodeType(), new HeadingResolver(LEVEL_4));
-    RESOLVER_MAP.put(new CMARichHeading(LEVEL_5).getNodeType(), new HeadingResolver(LEVEL_5));
-    RESOLVER_MAP.put(new CMARichHeading(LEVEL_6).getNodeType(), new HeadingResolver(LEVEL_6));
+    RESOLVER_MAP.put(new CMARichHeading(LEVEL_1).getNodeType(),
+            new HeadingResolver(LEVEL_1, "data"));
+    RESOLVER_MAP.put(new CMARichHeading(LEVEL_2).getNodeType(),
+            new HeadingResolver(LEVEL_2, "data"));
+    RESOLVER_MAP.put(new CMARichHeading(LEVEL_3).getNodeType(),
+            new HeadingResolver(LEVEL_3, "data"));
+    RESOLVER_MAP.put(new CMARichHeading(LEVEL_4).getNodeType(),
+            new HeadingResolver(LEVEL_4, "data"));
+    RESOLVER_MAP.put(new CMARichHeading(LEVEL_5).getNodeType(),
+            new HeadingResolver(LEVEL_5, "data"));
+    RESOLVER_MAP.put(new CMARichHeading(LEVEL_6).getNodeType(),
+            new HeadingResolver(LEVEL_6, "data"));
   }
 
   public static void resolveRichTextField(CMAEntry entry) {

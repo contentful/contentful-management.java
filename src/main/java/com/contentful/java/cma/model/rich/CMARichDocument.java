@@ -10,4 +10,8 @@ public class CMARichDocument extends CMARichBlock {
   public CMARichDocument() {
     super("document");
   }
+
+  public CMARichDocument(Object data) {
+    super("document", data);
+  }
 }

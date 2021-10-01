@@ -1,10 +1,10 @@
 package com.contentful.java.cma.model.rich;
 
+import io.reactivex.annotations.NonNull;
+
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-
-import io.reactivex.annotations.NonNull;
 
 /**
  * A collection of several nodes.
@@ -20,6 +20,16 @@ public class CMARichBlock extends CMARichNode {
    */
   protected CMARichBlock(String type) {
     super(type);
+  }
+
+  /**
+   * Create a new block with given type and data
+   *
+   * @param type the type to be used for creating this block. Used by implementors.
+   * @param data the additional data of this block
+   */
+  protected CMARichBlock(String type, Object data) {
+    super(type, data);
   }
 
   /**

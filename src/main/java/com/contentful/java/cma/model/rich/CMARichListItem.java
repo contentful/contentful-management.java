@@ -10,4 +10,8 @@ public class CMARichListItem extends CMARichBlock {
   public CMARichListItem() {
     super("list-item");
   }
+
+  public CMARichListItem(Object data) {
+    super("list-item", data);
+  }
 }
