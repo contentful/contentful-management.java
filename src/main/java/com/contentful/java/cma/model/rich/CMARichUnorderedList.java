@@ -10,4 +10,8 @@ public class CMARichUnorderedList extends CMARichBlock {
   public CMARichUnorderedList() {
     super("unordered-list");
   }
+
+  public CMARichUnorderedList(Object data) {
+    super("unordered-list", data);
+  }
 }

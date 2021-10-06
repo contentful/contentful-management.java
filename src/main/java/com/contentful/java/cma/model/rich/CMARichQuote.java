@@ -10,4 +10,8 @@ public class CMARichQuote extends CMARichBlock {
   public CMARichQuote() {
     super("blockquote");
   }
+
+  public CMARichQuote(Object data) {
+    super("blockquote", data);
+  }
 }

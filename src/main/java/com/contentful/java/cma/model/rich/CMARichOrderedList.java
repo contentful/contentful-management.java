@@ -10,4 +10,8 @@ public class CMARichOrderedList extends CMARichBlock {
   public CMARichOrderedList() {
     super("ordered-list");
   }
+
+  public CMARichOrderedList(Object data) {
+    super("ordered-list", data);
+  }
 }

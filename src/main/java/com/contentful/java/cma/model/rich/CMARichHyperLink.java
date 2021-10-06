@@ -33,13 +33,6 @@ public class CMARichHyperLink extends CMARichBlock {
   }
 
   /**
-   * @return the target this link points to.
-   */
-  public Object getData() {
-    return data;
-  }
-
-  /**
    * @return the internal depending on data node type.
    */
   @Override public String getNodeType() {

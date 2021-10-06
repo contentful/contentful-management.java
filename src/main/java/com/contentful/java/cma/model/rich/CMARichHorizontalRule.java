@@ -15,4 +15,11 @@ public class CMARichHorizontalRule extends CMARichNode {
   public CMARichHorizontalRule() {
     super("hr");
   }
+
+  /**
+   * Construct a horizontal rule node with data.
+   */
+  public CMARichHorizontalRule(Object data) {
+    super("hr", data);
+  }
 }

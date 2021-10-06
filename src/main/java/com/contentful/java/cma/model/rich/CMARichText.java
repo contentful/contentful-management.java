@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.annotations.NonNull;
 
@@ -35,6 +36,24 @@ public class CMARichText extends CMARichNode {
 
     this.marks.addAll(marks);
     this.value = value;
+  }
+
+  /**
+   * Create a value with the given marks and data.
+   *
+   * @param value the value to be displayed.
+   * @param marks the marks to be used if any.
+   * @param data the additional data of text node
+   * @throws NullPointerException if one of the arguments is null.
+   */
+  public CMARichText(@NonNull CharSequence value,
+                     @NonNull List<CMARichMark> marks,
+                     Map<String, Object> data) {
+    this(value, marks);
+
+    if (data != null) {
+      this.data = data;
+    }
   }
 
   /**

@@ -10,4 +10,8 @@ public class CMARichParagraph extends CMARichBlock {
   public CMARichParagraph() {
     super("paragraph");
   }
+
+  public CMARichParagraph(Object data) {
+    super("paragraph", data);
+  }
 }

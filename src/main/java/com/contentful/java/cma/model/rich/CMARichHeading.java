@@ -19,6 +19,17 @@ public class CMARichHeading extends CMARichBlock {
   }
 
   /**
+   * Create a heading block, describing a level elements deep nested heading.
+   *
+   * @param level a number indicating the level of this heading.
+   * @param data the additional data of the heading
+   */
+  public CMARichHeading(int level, Object data) {
+    super("heading-" + level, data);
+    this.level = level;
+  }
+
+  /**
    * @return the current nesting level of this heading.
    */
   public int getLevel() {
