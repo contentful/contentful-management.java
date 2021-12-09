@@ -85,7 +85,7 @@ public class CMATag extends CMAResource {
    * @return the ID of the tag
    */
   @Override public String getId() {
-    return getId();
+    return super.getId();
   }
 
   /**
