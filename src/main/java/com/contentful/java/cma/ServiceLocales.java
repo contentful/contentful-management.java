@@ -12,6 +12,9 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.QueryMap;
+
+import java.util.Map;
 
 /**
  * Service class to define the REST interface to Contentful.
@@ -20,7 +23,8 @@ public interface ServiceLocales {
   @GET("/spaces/{spaceId}/environments/{environmentId}/locales")
   Flowable<CMAArray<CMALocale>> fetchAll(
       @Path("spaceId") String spaceId,
-      @Path("environmentId") String environmentId
+      @Path("environmentId") String environmentId,
+      @QueryMap Map<String, String> query
   );
 
   @GET("/spaces/{spaceId}/environments/{environmentId}/locales/{localeId}")

@@ -4,11 +4,12 @@ import com.contentful.java.cma.RxExtensions.DefFunc;
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMALocale;
 import com.contentful.java.cma.model.CMASystem;
-
-import java.util.concurrent.Executor;
-
 import retrofit2.Response;
 import retrofit2.Retrofit;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.Executor;
 
 /**
  * This module contains all the locale options available to this SDK.
@@ -68,6 +69,22 @@ public class ModuleLocales extends AbsModule<ServiceLocales> {
   }
 
   /**
+   * Fetch all locales matching the query from the configured space and environment.
+   * <p>
+   * This fetch uses the default parameter defined in {@link DefaultQueryParameter#FETCH}
+   *
+   * @param query the criteria to filter on.
+   * @return {@link CMAArray} the array of locales matching the query.
+   * @throws IllegalArgumentException if configured space id is null.
+   * @throws IllegalArgumentException if configured environment id is null.
+   * @see CMAClient.Builder#setSpaceId(String)
+   * @see CMAClient.Builder#setEnvironmentId(String)
+   */
+  public CMAArray<CMALocale> fetchAll(Map<String, String> query) {
+    return fetchAll(spaceId, environmentId, query);
+  }
+
+  /**
    * Fetch all locales of the given space and environment.
    * <p>
    * This method will override the configuration specified through
@@ -84,7 +101,29 @@ public class ModuleLocales extends AbsModule<ServiceLocales> {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(environmentId, "environmentId");
 
-    return service.fetchAll(spaceId, environmentId).blockingFirst();
+    return service.fetchAll(spaceId, environmentId, new HashMap<>()).blockingFirst();
+  }
+
+  /**
+   * Fetch all locales from the given space and environment matching the query.
+   *
+   * @param spaceId       the space identifier, identifying the space.
+   * @param environmentId the environment identifier, identifying the environment.
+   * @param query the criteria to filter on.
+   * @return {@link CMAArray} the array of locales matching the query.
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if environmentId is null.
+   */
+  public CMAArray<CMALocale> fetchAll(
+          String spaceId,
+          String environmentId,
+          Map<String, String> query) {
+    assertNotNull(spaceId, "spaceId");
+    assertNotNull(environmentId, "environmentId");
+
+    Map<String, String> enhancedQuery =
+            DefaultQueryParameter.putIfNotSet(query, DefaultQueryParameter.FETCH);
+    return service.fetchAll(spaceId, environmentId, enhancedQuery).blockingFirst();
   }
 
   /**
