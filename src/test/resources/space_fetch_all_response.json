@@ -23,7 +23,14 @@
             "id": "user1"
           }
         },
-        "updatedAt": "2014-04-27T18:16:10Z"
+        "updatedAt": "2014-04-27T18:16:10Z",
+        "organization": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Organization",
+            "id": "org1"
+          }
+        }
       },
       "name": "space1"
     },
@@ -47,7 +54,14 @@
             "id": "user2"
           }
         },
-        "updatedAt": "2014-07-09T07:48:24Z"
+        "updatedAt": "2014-07-09T07:48:24Z",
+        "organization": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Organization",
+            "id": "org1"
+          }
+        }
       },
       "name": "space2"
     }
