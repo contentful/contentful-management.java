@@ -594,6 +594,62 @@ class EntryTests {
     }
 
     @test
+    fun testFetchEntryReferencesFromConfiguredEnvironment() {
+        val responseBody = TestUtils.fileToString("entry_fetch_references_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val result = assertTestCallback(
+            client!!
+                .entries()
+                .async()
+                .fetchReferences(
+                    "6MUKUSDqPCEcQUeeewAgAW",
+                    10,
+                    TestCallback()
+                ) as TestCallback)!!
+
+        assertEquals(CMAType.Array, result.system.type)
+        val includes = result.includes["Entry"]!!
+        assertEquals(includes.size, 2)
+        assertEquals("reference1", includes[0].getField("title", "en-US"))
+        assertEquals("reference2", includes[1].getField("title", "en-US"))
+
+        // Request
+        val request = server!!.takeRequest()
+        assertEquals("GET", request.method)
+        assertEquals("/spaces/configuredSpaceId/environments/configuredEnvironmentId/entries/6MUKUSDqPCEcQUeeewAgAW/references?include=10", request.path)
+    }
+
+    @test
+    fun testFetchEntryReferencesFromEnvironment() {
+        val responseBody = TestUtils.fileToString("entry_fetch_references_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val result = assertTestCallback(
+            client!!
+                .entries()
+                .async()
+                .fetchReferences(
+                    "spaceid",
+                    "staging",
+                    "6MUKUSDqPCEcQUeeewAgAW",
+                    10,
+                    TestCallback()
+                ) as TestCallback)!!
+
+        assertEquals(CMAType.Array, result.system.type)
+        val includes = result.includes["Entry"]!!
+        assertEquals(includes.size, 2)
+        assertEquals("reference1", includes[0].getField("title", "en-US"))
+        assertEquals("reference2", includes[1].getField("title", "en-US"))
+
+        // Request
+        val request = server!!.takeRequest()
+        assertEquals("GET", request.method)
+        assertEquals("/spaces/spaceid/environments/staging/entries/6MUKUSDqPCEcQUeeewAgAW/references?include=10", request.path)
+    }
+
+    @test
     fun testCreateEntryWithinEnvironment() {
         val responseBody = TestUtils.fileToString("entry_create_in_environment.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))

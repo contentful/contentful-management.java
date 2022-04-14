@@ -18,6 +18,7 @@ package com.contentful.java.cma;
 
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAEntry;
+import com.contentful.java.cma.model.CMAEntryReferences;
 import com.contentful.java.cma.model.CMASnapshot;
 
 import java.util.Map;
@@ -31,6 +32,7 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
 /**
@@ -75,6 +77,13 @@ interface ServiceEntries {
       @Path("space") String spaceId,
       @Path("environment") String environmentId,
       @Path("entry") String entryId);
+
+  @GET("/spaces/{space}/environments/{environment}/entries/{entry}/references")
+  Flowable<CMAEntryReferences> fetchReferences(
+          @Path("space") String spaceId,
+          @Path("environment") String environmentId,
+          @Path("entry") String entryId,
+          @Query("include") Integer maxDepth);
 
   @GET("/spaces/{space}/environments/{environment}/entries/{entry}/snapshots/{snapshot}")
   Flowable<CMASnapshot> fetchOneSnapshot(

@@ -18,6 +18,7 @@ package com.contentful.java.cma;
 
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAEntry;
+import com.contentful.java.cma.model.CMAEntryReferences;
 import com.contentful.java.cma.model.CMASnapshot;
 import com.contentful.java.cma.model.CMASystem;
 
@@ -269,6 +270,51 @@ public class ModuleEntries extends AbsModule<ServiceEntries> {
     assertNotNull(environmentId, "environmentId");
     assertNotNull(entryId, "entryId");
     return service.fetchOne(spaceId, environmentId, entryId).blockingFirst();
+  }
+
+  /**
+   * Recursively collects references of an entry and their descendants
+   * from the configured space and environment.
+   *
+   * @param entryId       Entry ID
+   * @param maxDepth      Level of the entry descendants from 1 up to 10 maximum
+   * @throws IllegalArgumentException if configured space id is null.
+   * @throws IllegalArgumentException if configured environment id is null.
+   * @throws IllegalArgumentException if entry id is null.
+   * @throws IllegalArgumentException if max depth is null or is not from 1 up to 10 maximum.
+   */
+  public CMAEntryReferences fetchReferences(String entryId, Integer maxDepth) {
+   return fetchReferences(spaceId, environmentId, entryId, maxDepth);
+  }
+
+  /**
+   * Recursively collects references of an entry and their descendants
+   * from the given environment and space.
+   *
+   * @param spaceId       Space ID
+   * @param environmentId Environment ID
+   * @param entryId       Entry ID
+   * @param maxDepth      Level of the entry descendants from 1 up to 10 maximum
+   * @throws IllegalArgumentException if space id is null.
+   * @throws IllegalArgumentException if environment id is null.
+   * @throws IllegalArgumentException if entry id is null.
+   * @throws IllegalArgumentException if max depth is null or is not from 1 up to 10 maximum.
+   */
+  public CMAEntryReferences fetchReferences(
+          String spaceId,
+          String environmentId,
+          String entryId,
+          Integer maxDepth) {
+    assertNotNull(spaceId, "spaceId");
+    assertNotNull(environmentId, "environmentId");
+    assertNotNull(entryId, "entryId");
+    assertNotNull(maxDepth, "maxDepth");
+    if (maxDepth < 1 || maxDepth > 10) {
+      throw new IllegalArgumentException(String.format(
+              "%s may not be less than 1 or bigger than 10.", "maxDepth"));
+    }
+
+    return service.fetchReferences(spaceId, environmentId, entryId, maxDepth).blockingFirst();
   }
 
   /**
@@ -629,6 +675,50 @@ public class ModuleEntries extends AbsModule<ServiceEntries> {
       return defer(new RxExtensions.DefFunc<CMAEntry>() {
         @Override CMAEntry method() {
           return ModuleEntries.this.fetchOne(spaceId, environmentId, entryId);
+        }
+      }, callback);
+    }
+
+    /**
+     * Recursively collects references of an entry and their descendants
+     * from the configured space and environment.
+     *
+     * @param entryId       Entry ID
+     * @param maxDepth      Level of the entry descendants from 1 up to 10 maximum
+     * @param callback      Callback
+     * @return the given CMACallback instance
+     */
+    public CMACallback<CMAEntryReferences> fetchReferences(
+            final String entryId,
+            final Integer maxDepth,
+            CMACallback<CMAEntryReferences> callback) {
+      return defer(new RxExtensions.DefFunc<CMAEntryReferences>() {
+        @Override CMAEntryReferences method() {
+          return ModuleEntries.this.fetchReferences(entryId, maxDepth);
+        }
+      }, callback);
+    }
+
+    /**
+     * Recursively collects references of an entry and their descendants
+     * from the given environment and space.
+     *
+     * @param spaceId       Space ID
+     * @param environmentId Environment ID
+     * @param entryId       Entry ID
+     * @param maxDepth      Level of the entry descendants from 1 up to 10 maximum
+     * @param callback      Callback
+     * @return the given CMACallback instance
+     */
+    public CMACallback<CMAEntryReferences> fetchReferences(
+            final String spaceId,
+            final String environmentId,
+            final String entryId,
+            final Integer maxDepth,
+            CMACallback<CMAEntryReferences> callback) {
+      return defer(new RxExtensions.DefFunc<CMAEntryReferences>() {
+        @Override CMAEntryReferences method() {
+          return ModuleEntries.this.fetchReferences(spaceId, environmentId, entryId, maxDepth);
         }
       }, callback);
     }

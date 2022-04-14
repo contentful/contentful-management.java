@@ -1,0 +1,239 @@
+{
+  "sys": {
+    "type": "Array"
+  },
+  "items": [
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "<space_id>"
+          }
+        },
+        "id": "6MUKUSDqPCEcQUeeewAgAW",
+        "type": "Entry",
+        "createdAt": "2018-01-15T11:47:13.962Z",
+        "updatedAt": "2018-01-15T11:47:32.240Z",
+        "environment": {
+          "sys": {
+            "id": "staging",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "<user_id>"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "<user_id>"
+          }
+        },
+        "publishedCounter": 1,
+        "version": 13,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "<user_id>"
+          }
+        },
+        "publishedVersion": 12,
+        "firstPublishedAt": "2018-01-15T11:47:32.240Z",
+        "publishedAt": "2018-01-15T11:47:32.240Z",
+        "contentType": {
+          "sys": {
+            "type": "Link",
+            "linkType": "ContentType",
+            "id": "51Q7ngbcakOm6MUi2aKEIM"
+          }
+        }
+      },
+      "fields": {
+        "title": {
+          "en-US": "🍌🍌🍌",
+          "en-UK": "🍌🍌🍌"
+        },
+        "tags": {
+          "en-US": [
+            "Banana"
+          ]
+        }
+      }
+    }
+  ],
+  "includes": {
+    "Entry" : [
+      {
+        "sys": {
+          "space": {
+            "sys": {
+              "type": "Link",
+              "linkType": "Space",
+              "id": "<space_id>"
+            }
+          },
+          "id": "7AG20lXrTaccGGwOSCQe2I",
+          "type": "Entry",
+          "createdAt": "2017-12-19T10:31:04.824Z",
+          "updatedAt": "2017-12-19T10:32:34.892Z",
+          "environment": {
+            "sys": {
+              "id": "staging",
+              "type": "Link",
+              "linkType": "Environment"
+            }
+          },
+          "createdBy": {
+            "sys": {
+              "type": "Link",
+              "linkType": "User",
+              "id": "<user_id>"
+            }
+          },
+          "updatedBy": {
+            "sys": {
+              "type": "Link",
+              "linkType": "User",
+              "id": "<user_id>"
+            }
+          },
+          "publishedCounter": 1,
+          "version": 27,
+          "publishedBy": {
+            "sys": {
+              "type": "Link",
+              "linkType": "User",
+              "id": "<user_id>"
+            }
+          },
+          "publishedVersion": 26,
+          "firstPublishedAt": "2017-12-19T10:32:34.892Z",
+          "publishedAt": "2017-12-19T10:32:34.892Z",
+          "contentType": {
+            "sys": {
+              "type": "Link",
+              "linkType": "ContentType",
+              "id": "deleteme"
+            }
+          }
+        },
+        "fields": {
+          "title": {
+            "en-US": "reference1",
+            "en-UK": "🍌🍌🍌"
+          },
+          "name": {
+            "en-US": "json",
+            "en-UK": "jasounge"
+          },
+          "json": {
+            "en-US": {
+              "key": [
+                1,
+                2,
+                3,
+                "value"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "sys": {
+          "space": {
+            "sys": {
+              "type": "Link",
+              "linkType": "Space",
+              "id": "<space_id>"
+            }
+          },
+          "id": "del_000000000000000000000000000000000000000000000000000000000000",
+          "type": "Entry",
+          "createdAt": "2016-10-13T23:19:05.044Z",
+          "updatedAt": "2017-03-29T15:37:38.385Z",
+          "environment": {
+            "sys": {
+              "id": "staging",
+              "type": "Link",
+              "linkType": "Environment"
+            }
+          },
+          "createdBy": {
+            "sys": {
+              "type": "Link",
+              "linkType": "User",
+              "id": "<user_id>"
+            }
+          },
+          "updatedBy": {
+            "sys": {
+              "type": "Link",
+              "linkType": "User",
+              "id": "<user_id>"
+            }
+          },
+          "publishedCounter": 6,
+          "version": 59,
+          "publishedBy": {
+            "sys": {
+              "type": "Link",
+              "linkType": "User",
+              "id": "<user_id>"
+            }
+          },
+          "publishedVersion": 58,
+          "firstPublishedAt": "2017-02-02T10:56:10.341Z",
+          "publishedAt": "2017-03-29T15:37:38.348Z",
+          "contentType": {
+            "sys": {
+              "type": "Link",
+              "linkType": "ContentType",
+              "id": "deleteme"
+            }
+          }
+        },
+        "fields": {
+          "title": {
+            "en-US": "reference2",
+            "en-UK": "🍌🍌🍌"
+          },
+          "name": {
+            "en-US": "deleteme"
+          },
+          "fields": {
+            "en-US": [
+              "field",
+              "thing",
+              "stuff"
+            ]
+          },
+          "sys": {
+            "en-US": [
+              "content_type",
+              "and",
+              "stuff    query.contentType(\"foo\");"
+            ]
+          },
+          "date": {
+            "en-US": "2017-02-02T14:34+01:00"
+          },
+          "location": {
+            "en-US": {
+              "lon": 40,
+              "lat": 20
+            }
+          }
+        }
+      }
+    ]
+  }
+}
