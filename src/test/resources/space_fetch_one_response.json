@@ -18,7 +18,14 @@
         "id": "user1"
       }
     },
-    "updatedAt": "2014-04-27T18:16:10Z"
+    "updatedAt": "2014-04-27T18:16:10Z",
+        "organization": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Organization",
+            "id": "org1"
+          }
+        }
   },
   "name": "space1"
 }
