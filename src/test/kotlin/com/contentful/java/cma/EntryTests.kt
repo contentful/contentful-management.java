@@ -609,10 +609,10 @@ class EntryTests {
                 ) as TestCallback)!!
 
         assertEquals(CMAType.Array, result.system.type)
-        val includes = result.includes["Entry"]!!
-        assertEquals(includes.size, 2)
-        assertEquals("reference1", includes[0].getField("title", "en-US"))
-        assertEquals("reference2", includes[1].getField("title", "en-US"))
+        val entries = result.entries
+        assertEquals(entries.size, 2)
+        assertEquals("reference1", entries[0].getField("title", "en-US"))
+        assertEquals("reference2", entries[1].getField("title", "en-US"))
 
         // Request
         val request = server!!.takeRequest()
@@ -638,10 +638,10 @@ class EntryTests {
                 ) as TestCallback)!!
 
         assertEquals(CMAType.Array, result.system.type)
-        val includes = result.includes["Entry"]!!
-        assertEquals(includes.size, 2)
-        assertEquals("reference1", includes[0].getField("title", "en-US"))
-        assertEquals("reference2", includes[1].getField("title", "en-US"))
+        val entries = result.entries
+        assertEquals(entries.size, 2)
+        assertEquals("reference1", entries[0].getField("title", "en-US"))
+        assertEquals("reference2", entries[1].getField("title", "en-US"))
 
         // Request
         val request = server!!.takeRequest()

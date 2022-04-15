@@ -1,7 +1,8 @@
 package com.contentful.java.cma.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
-import java.util.Map;
 
 /**
  * Represents a collection of CMA resources.
@@ -11,7 +12,7 @@ public class CMAEntryReferences extends CMAResource {
   List<CMAEntry> items;
 
   // Map of included references
-  Map<String, List<CMAEntry>> includes;
+  Includes includes;
 
   /**
    * Create a new Asset, setting type and create a system.
@@ -28,10 +29,17 @@ public class CMAEntryReferences extends CMAResource {
   }
 
   /**
-   * @return a map of included resources.
+   * @return a map of included assets.
    */
-  public Map<String, List<CMAEntry>> getIncludes() {
-    return includes;
+  public List<CMAAsset> getAssets() {
+    return includes.assets;
+  }
+
+  /**
+   * @return a map of included entries.
+   */
+  public List<CMAEntry> getEntries() {
+    return includes.entries;
   }
 
   /**
@@ -39,8 +47,15 @@ public class CMAEntryReferences extends CMAResource {
    */
   @Override public String toString() {
     return "CMAArray { " + super.toString() + " "
-        + "includes = " + getIncludes() + ", "
+        + "assets = " + getAssets() + ", "
+        + "entries = " + getEntries() + ", "
         + "items = " + getItems() + ", "
         + "}";
+  }
+
+  static class Includes {
+    @SerializedName("Asset") List<CMAAsset> assets;
+
+    @SerializedName("Entry") List<CMAEntry> entries;
   }
 }
