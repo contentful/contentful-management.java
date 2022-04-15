@@ -211,6 +211,11 @@ class SpaceTests {
         assertEquals(CMAType.User, sys.updatedBy.system.linkType)
         assertEquals("user1", sys.updatedBy.system.id)
 
+        //Organization
+        assertEquals(CMAType.Link, sys.organization.system.type)
+        assertEquals(CMAType.Organization, sys.organization.system.linkType)
+        assertEquals("org1", sys.organization.system.id)
+
         // Space #2
         sys = items[1].system
         assertEquals(CMAType.Space, sys.type)
@@ -229,6 +234,11 @@ class SpaceTests {
         assertEquals(CMAType.Link, sys.updatedBy.system.type)
         assertEquals(CMAType.User, sys.updatedBy.system.linkType)
         assertEquals("user2", sys.updatedBy.system.id)
+
+        //Organization
+        assertEquals(CMAType.Link, sys.organization.system.type)
+        assertEquals(CMAType.Organization, sys.organization.system.linkType)
+        assertEquals("org1", sys.organization.system.id)
 
         // Request
         val request = server!!.takeRequest()
@@ -261,6 +271,11 @@ class SpaceTests {
         assertEquals(CMAType.Link, sys.updatedBy.system.type)
         assertEquals(CMAType.User, sys.updatedBy.system.linkType)
         assertEquals("user1", sys.updatedBy.system.id)
+
+        //Organization
+        assertEquals(CMAType.Link, sys.organization.system.type)
+        assertEquals(CMAType.Organization, sys.organization.system.linkType);
+        assertEquals("org1", sys.organization.system.id)
 
         // Request
         val request = server!!.takeRequest()

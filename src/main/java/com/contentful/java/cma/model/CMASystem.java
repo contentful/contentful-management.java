@@ -28,6 +28,7 @@ public class CMASystem {
   CMALink updatedBy;
   Integer version;
   CMAVisibility visibility;
+  CMALink organization;
 
   public CMAVisibility getVisibility() {
     return visibility;
@@ -210,6 +211,13 @@ public class CMASystem {
    */
   public Integer getVersion() {
     return version;
+  }
+
+  /**
+   * @return a link to the organization this entity belongs to.
+   */
+  public CMALink getOrganization() {
+    return organization;
   }
 
   /**
