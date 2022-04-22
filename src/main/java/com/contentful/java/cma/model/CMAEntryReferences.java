@@ -2,6 +2,7 @@ package com.contentful.java.cma.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,14 +33,14 @@ public class CMAEntryReferences extends CMAResource {
    * @return a map of included assets.
    */
   public List<CMAAsset> getAssets() {
-    return includes.assets;
+    return (includes != null) ? includes.assets : new ArrayList<>();
   }
 
   /**
    * @return a map of included entries.
    */
   public List<CMAEntry> getEntries() {
-    return includes.entries;
+    return (includes != null) ? includes.entries : new ArrayList<>();
   }
 
   /**
