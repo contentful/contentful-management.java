@@ -51,23 +51,6 @@ class AndroidTests {
         server!!.shutdown()
     }
 
-    @test
-    fun testCallbackExecutesOnMainThread() {
-        val responseBody = TestUtils.fileToString("asset_fetch_all_response.json")
-        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
-
-        val activity = Robolectric.buildActivity(TestActivity::class.java)
-                .withIntent(Intent().putExtra("EXTRA_URL", server!!.url("/").toString()))
-                .create()
-                .get()
-
-        while (activity.callbackLooper == null) {
-            Thread.sleep(1000)
-        }
-
-        assertEquals(activity.mainThreadLooper, activity.callbackLooper)
-    }
-
     class TestActivity : Activity() {
         val mainThreadLooper = Looper.getMainLooper()!!
         var callbackLooper: Looper? = null
