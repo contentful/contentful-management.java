@@ -375,9 +375,9 @@ class WebhookTests {
                 .setIncludeContentLength(true)
                 .setBody("{ /payload/test }: { /payload/test }")
 
-        assertEquals("PUT", webhookTransformation.getMethod())
-		assertEquals("application/json; charset=utf-8", webhookTransformation.getContentType())
-		assertEquals(true, webhookTransformation.getIncludeContentLength())
-		assertEquals("{ /payload/test }: { /payload/test }", webhookTransformation.getBody())
+        assertEquals("PUT", webhookTransformation.method)
+		assertEquals("application/json; charset=utf-8", webhookTransformation.contentType)
+		assertEquals(true, webhookTransformation.includeContentLength)
+		assertEquals("{ /payload/test }: { /payload/test }", webhookTransformation.body)
     }
 }
