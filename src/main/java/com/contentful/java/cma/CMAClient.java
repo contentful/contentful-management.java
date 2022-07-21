@@ -18,7 +18,11 @@ package com.contentful.java.cma;
 
 //BEGIN TO LONG CODE LINES
 
-import com.contentful.java.cma.gson.*;
+import com.contentful.java.cma.gson.EntrySerializer;
+import com.contentful.java.cma.gson.FieldTypeAdapter;
+import com.contentful.java.cma.gson.LocaleSerializer;
+import com.contentful.java.cma.gson.SnapshotDeserializer;
+import com.contentful.java.cma.gson.WebHookBodyDeserializer;
 import com.contentful.java.cma.interceptor.AuthorizationHeaderInterceptor;
 import com.contentful.java.cma.interceptor.ContentTypeInterceptor;
 import com.contentful.java.cma.interceptor.ContentfulUserAgentHeaderInterceptor;
@@ -30,7 +34,11 @@ import com.contentful.java.cma.interceptor.LogInterceptor;
 import com.contentful.java.cma.interceptor.RateLimitInterceptor;
 import com.contentful.java.cma.interceptor.RateLimitsListener;
 import com.contentful.java.cma.interceptor.UserAgentHeaderInterceptor;
-import com.contentful.java.cma.model.*;
+import com.contentful.java.cma.model.CMAEntry;
+import com.contentful.java.cma.model.CMAField;
+import com.contentful.java.cma.model.CMALocale;
+import com.contentful.java.cma.model.CMASnapshot;
+import com.contentful.java.cma.model.CMAWebhookTransformation;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
