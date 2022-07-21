@@ -1,7 +1,13 @@
 package com.contentful.java.cma.gson;
 
-import com.contentful.java.cma.model.*;
-import com.google.gson.*;
+
+import com.contentful.java.cma.model.CMAWebhookTransformation;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
 
 import java.lang.reflect.Type;
 
@@ -15,21 +21,23 @@ public class WebHookBodyDeserializer implements JsonDeserializer<CMAWebhookTrans
       typeOfT, JsonDeserializationContext context) throws JsonParseException {
     final CMAWebhookTransformation result = new CMAWebhookTransformation();
     final JsonObject jsonObject = json.getAsJsonObject();
-    final JsonPrimitive contentType = jsonObject.getAsJsonObject().getAsJsonPrimitive("contentType");
-    if(contentType != null) {
+    final JsonPrimitive contentType = jsonObject.getAsJsonObject()
+            .getAsJsonPrimitive("contentType");
+    if (contentType != null) {
       result.setContentType(contentType.getAsString());
     }
     final JsonPrimitive method = jsonObject.getAsJsonObject().getAsJsonPrimitive("method");
-    if(method != null) {
+    if (method != null) {
       result.setMethod(method.getAsString());
     }
-    final JsonPrimitive includeContentLength = jsonObject.getAsJsonObject().getAsJsonPrimitive("includeContentLength");
-    if(includeContentLength != null) {
+    final JsonPrimitive includeContentLength = jsonObject.getAsJsonObject()
+            .getAsJsonPrimitive("includeContentLength");
+    if (includeContentLength != null) {
       result.setIncludeContentLength(includeContentLength.getAsBoolean());
     }
 
     final JsonElement body = jsonObject.getAsJsonObject().get("body");
-    if(body != null) {
+    if (body != null) {
       result.setBody(body.toString());
     }
     return result;
