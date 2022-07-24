@@ -22,6 +22,7 @@ import com.contentful.java.cma.gson.EntrySerializer;
 import com.contentful.java.cma.gson.FieldTypeAdapter;
 import com.contentful.java.cma.gson.LocaleSerializer;
 import com.contentful.java.cma.gson.SnapshotDeserializer;
+import com.contentful.java.cma.gson.WebHookBodyDeserializer;
 import com.contentful.java.cma.interceptor.AuthorizationHeaderInterceptor;
 import com.contentful.java.cma.interceptor.ContentTypeInterceptor;
 import com.contentful.java.cma.interceptor.ContentfulUserAgentHeaderInterceptor;
@@ -37,6 +38,7 @@ import com.contentful.java.cma.model.CMAEntry;
 import com.contentful.java.cma.model.CMAField;
 import com.contentful.java.cma.model.CMALocale;
 import com.contentful.java.cma.model.CMASnapshot;
+import com.contentful.java.cma.model.CMAWebhookTransformation;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -177,6 +179,7 @@ public class CMAClient {
           .registerTypeAdapter(CMAField.class, new FieldTypeAdapter())
           .registerTypeAdapter(CMAEntry.class, new EntrySerializer())
           .registerTypeAdapter(CMASnapshot.class, new SnapshotDeserializer())
+          .registerTypeAdapter(CMAWebhookTransformation.class, new WebHookBodyDeserializer())
           .registerTypeAdapter(CMALocale.class, new LocaleSerializer())
           .create();
     }
