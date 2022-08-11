@@ -185,6 +185,14 @@ public class RichTextFactory {
         new BlockResolver<>(CMARichOrderedList::new, "data"));
     RESOLVER_MAP.put(new CMARichUnorderedList().getNodeType(),
         new BlockResolver<>(CMARichUnorderedList::new, "data"));
+    RESOLVER_MAP.put(new CMARichTable().getNodeType(),
+        new BlockResolver<>(CMARichTable::new, "data"));
+    RESOLVER_MAP.put(new CMARichTableRow().getNodeType(),
+        new BlockResolver<>(CMARichTableRow::new, "data"));
+    RESOLVER_MAP.put(new CMARichTableHeaderCell().getNodeType(),
+        new BlockResolver<>(CMARichTableHeaderCell::new, "data"));
+    RESOLVER_MAP.put(new CMARichTableCell().getNodeType(),
+        new BlockResolver<>(CMARichTableCell::new, "data"));
     RESOLVER_MAP.put(new CMARichHyperLink().getNodeType(),
         new BlockAndDataResolver<>(CMARichHyperLink::new, "data"));
     RESOLVER_MAP.put(new CMARichHyperLink(new CMALink(CMAType.Entry)).getNodeType(),
@@ -200,17 +208,17 @@ public class RichTextFactory {
     RESOLVER_MAP.put(new CMARichEmbeddedLink(new CMALink(CMAType.Asset), true).getNodeType(),
         new BlockAndDataResolver<>(target -> new CMARichEmbeddedLink(target, true), "data"));
     RESOLVER_MAP.put(new CMARichHeading(LEVEL_1).getNodeType(),
-            new HeadingResolver(LEVEL_1, "data"));
+        new HeadingResolver(LEVEL_1, "data"));
     RESOLVER_MAP.put(new CMARichHeading(LEVEL_2).getNodeType(),
-            new HeadingResolver(LEVEL_2, "data"));
+        new HeadingResolver(LEVEL_2, "data"));
     RESOLVER_MAP.put(new CMARichHeading(LEVEL_3).getNodeType(),
-            new HeadingResolver(LEVEL_3, "data"));
+        new HeadingResolver(LEVEL_3, "data"));
     RESOLVER_MAP.put(new CMARichHeading(LEVEL_4).getNodeType(),
-            new HeadingResolver(LEVEL_4, "data"));
+        new HeadingResolver(LEVEL_4, "data"));
     RESOLVER_MAP.put(new CMARichHeading(LEVEL_5).getNodeType(),
-            new HeadingResolver(LEVEL_5, "data"));
+        new HeadingResolver(LEVEL_5, "data"));
     RESOLVER_MAP.put(new CMARichHeading(LEVEL_6).getNodeType(),
-            new HeadingResolver(LEVEL_6, "data"));
+        new HeadingResolver(LEVEL_6, "data"));
   }
 
   public static void resolveRichTextField(CMAEntry entry) {
