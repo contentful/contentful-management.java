@@ -42,6 +42,9 @@ public class CMAField {
   // Validations
   List<Map<String, Object>> validations;
 
+  // Allowed resources
+  List<Map<String, Object>> allowedResources;
+
   // Array Items
   @SerializedName("items")
   HashMap<String, Object> arrayItems;
@@ -172,6 +175,27 @@ public class CMAField {
     this.validations = validations;
     return this;
   }
+
+  /**
+   * @return a {@code List} of allowed resources.
+   */
+  public List<Map<String, Object>> getAllowedResources() {
+    return allowedResources;
+  }
+
+  /**
+   * Sets a {@code List} of allowed resources for this field.
+   *
+   * @param allowedResources allowed resources list
+   *                    Returns this {@code CMAField} instance
+   * @return this {@code CMAField} instance
+   */
+
+  public CMAField setAllowedResources(List<Map<String, Object>> allowedResources) {
+    this.allowedResources = allowedResources;
+    return this;
+  }
+
 
   /**
    * @return the {@code items} attribute value as a {@code Map}.

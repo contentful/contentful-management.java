@@ -29,6 +29,7 @@ public class CMASystem {
   Integer version;
   CMAVisibility visibility;
   CMALink organization;
+  String urn;
 
   public CMAVisibility getVisibility() {
     return visibility;
@@ -180,6 +181,20 @@ public class CMASystem {
   }
 
   /**
+   * @return The identifier of the resource.
+   */
+  public String getUrn() {
+    return urn;
+  }
+
+  /**
+   * Updates the identifier of the resource.
+   */
+  public void setUrn(String urn) {
+    this.urn = urn;
+  }
+
+  /**
    * Update this type.
    * <p>
    * This method is especially usefull for creating new resources before uploading them.
@@ -275,6 +290,7 @@ public class CMASystem {
     map.put("version", getVersion());
     map.put("status", getEnvironmentalStatus());
     map.put("visibility", getVisibility());
+    map.put("urn", getUrn());
 
     final StringBuilder builder = new StringBuilder("CMASystem { ");
     String separator = "";
