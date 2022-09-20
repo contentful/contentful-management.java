@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Version [3.4.5] - [2022-09-20]
+- Changed: Added support for cross-space referencing.
+- 
 ## Version [3.4.4] - [2022-07-24]
 - Changed: Custom deserialiser for webhooks endpoint
 
