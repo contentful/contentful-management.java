@@ -84,6 +84,12 @@ interface ServiceWebhooks {
       @Path("space") String spaceId,
       @Path("webhook") String webhookId);
 
+  @GET("spaces/{space}/webhooks/{webhook}/calls")
+  Flowable<CMAArray<CMAWebhookCall>> calls(
+          @Path("space") String spaceId,
+          @Path("webhook") String webhookId,
+          @QueryMap Map<String, String> query);
+
   @GET("spaces/{space}/webhooks/{webhook}/calls/{call}")
   Flowable<CMAWebhookCallDetail> callDetails(
       @Path("space") String spaceId,
