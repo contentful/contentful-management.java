@@ -270,6 +270,9 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
     return service.update(version, spaceId, webhookId, webhook).blockingFirst();
   }
 
+  public CMAArray<CMAWebhookCall> calls(CMAWebhook webhook) {
+    return calls(webhook, null);
+  }
   /**
    * Get more information about a specific webhook.
    *
@@ -279,11 +282,11 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
    * @throws IllegalArgumentException if webhook is null.
    * @see CMAWebhookCall
    */
-  public CMAArray<CMAWebhookCall> calls(CMAWebhook webhook) {
+  public CMAArray<CMAWebhookCall> calls(CMAWebhook webhook, Map<String, String> query) {
     final String spaceId = getSpaceIdOrThrow(webhook, "webhook");
     final String webhookId = getResourceIdOrThrow(webhook, "webhook");
 
-    return service.calls(spaceId, webhookId).blockingFirst();
+    return service.calls(spaceId, webhookId, query).blockingFirst();
   }
 
   /**
@@ -559,7 +562,29 @@ public class ModuleWebhooks extends AbsModule<ServiceWebhooks> {
         CMACallback<CMAArray<CMAWebhookCall>> callback) {
       return defer(new RxExtensions.DefFunc<CMAArray<CMAWebhookCall>>() {
         @Override CMAArray<CMAWebhookCall> method() {
-          return ModuleWebhooks.this.calls(webhook);
+          return ModuleWebhooks.this.calls(webhook, null);
+        }
+      }, callback);
+    }
+
+    /**
+     * Asynchronous variant of {@link ModuleWebhooks#calls(CMAWebhook)}
+     * with query parameter.
+     *
+     * @param webhook  to be used to retrieve calls from.
+     * @param query    description map of which webhooks to be returned.
+     * @param callback the callback to be called once finished.
+     * @return the callback passed in.
+     * @throws IllegalArgumentException if spaceId is null.
+     * @throws IllegalArgumentException if webhook is null.
+     */
+    public CMACallback<CMAArray<CMAWebhookCall>> calls(
+            final CMAWebhook webhook,
+            final Map<String, String> query,
+            CMACallback<CMAArray<CMAWebhookCall>> callback) {
+      return defer(new RxExtensions.DefFunc<CMAArray<CMAWebhookCall>>() {
+        @Override CMAArray<CMAWebhookCall> method() {
+          return ModuleWebhooks.this.calls(webhook, query);
         }
       }, callback);
     }

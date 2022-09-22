@@ -308,12 +308,13 @@ class WebhookTests {
 
         assertTestCallback(client!!.webhooks().async().calls(
                 CMAWebhook().setSpaceId("spaceid").setId("webhookid"),
-                TestCallback(true)) as TestCallback)
+                hashMapOf("limit" to "30"),
+                TestCallback()) as TestCallback)
 
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("GET", recordedRequest.method)
-        assertEquals("/spaces/spaceid/webhooks/webhookid/calls", recordedRequest.path)
+        assertEquals("/spaces/spaceid/webhooks/webhookid/calls?limit=30", recordedRequest.path)
     }
 
     @test
