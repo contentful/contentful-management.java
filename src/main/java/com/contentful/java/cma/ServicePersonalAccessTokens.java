@@ -33,18 +33,18 @@ import retrofit2.http.QueryMap;
  * Personal Access Token Service.
  */
 interface ServicePersonalAccessTokens {
-  @GET("/users/me/access_tokens")
+  @GET("users/me/access_tokens")
   Flowable<CMAArray<CMAPersonalAccessToken>> fetchAll();
 
-  @GET("/users/me/access_tokens")
+  @GET("users/me/access_tokens")
   Flowable<CMAArray<CMAPersonalAccessToken>> fetchAll(@QueryMap Map<String, String> query);
 
-  @GET("/users/me/access_tokens/{tokenId}")
+  @GET("users/me/access_tokens/{tokenId}")
   Flowable<CMAPersonalAccessToken> fetchOne(@Path("tokenId") String tokenId);
 
-  @POST("/users/me/access_tokens")
+  @POST("users/me/access_tokens")
   Flowable<CMAPersonalAccessToken> create(@Body CMAPersonalAccessToken token);
 
-  @PUT("/users/me/access_tokens/{tokenId}/revoked")
+  @PUT("users/me/access_tokens/{tokenId}/revoked")
   Flowable<CMAPersonalAccessToken> revoke(@Path("tokenId") String tokenId);
 }

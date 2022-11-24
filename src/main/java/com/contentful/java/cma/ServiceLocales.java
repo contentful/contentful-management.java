@@ -17,27 +17,27 @@ import retrofit2.http.Path;
  * Service class to define the REST interface to Contentful.
  */
 public interface ServiceLocales {
-  @GET("/spaces/{spaceId}/environments/{environmentId}/locales")
+  @GET("spaces/{spaceId}/environments/{environmentId}/locales")
   Flowable<CMAArray<CMALocale>> fetchAll(
       @Path("spaceId") String spaceId,
       @Path("environmentId") String environmentId
   );
 
-  @GET("/spaces/{spaceId}/environments/{environmentId}/locales/{localeId}")
+  @GET("spaces/{spaceId}/environments/{environmentId}/locales/{localeId}")
   Flowable<CMALocale> fetchOne(
       @Path("spaceId") String spaceId,
       @Path("environmentId") String environmentId,
       @Path("localeId") String localeId
   );
 
-  @POST("/spaces/{spaceId}/environments/{environmentId}/locales/")
+  @POST("spaces/{spaceId}/environments/{environmentId}/locales/")
   Flowable<CMALocale> create(
       @Path("spaceId") String spaceId,
       @Path("environmentId") String environmentId,
       @Body CMALocale locale
   );
 
-  @PUT("/spaces/{spaceId}/environments/{environmentId}/locales/{localeId}")
+  @PUT("spaces/{spaceId}/environments/{environmentId}/locales/{localeId}")
   Flowable<CMALocale> update(
       @Path("spaceId") String spaceId,
       @Path("environmentId") String environmentId,
@@ -46,7 +46,7 @@ public interface ServiceLocales {
       @Header("X-Contentful-Version") Integer version
   );
 
-  @DELETE("/spaces/{spaceId}/environments/{environmentId}/locales/{localeId}")
+  @DELETE("spaces/{spaceId}/environments/{environmentId}/locales/{localeId}")
   Flowable<Response<Void>> delete(
       @Path("spaceId") String spaceId,
       @Path("environmentId") String environmentId,
