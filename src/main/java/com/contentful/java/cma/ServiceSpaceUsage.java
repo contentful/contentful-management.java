@@ -10,12 +10,12 @@ import retrofit2.http.QueryMap;
 import java.util.Map;
 
 public interface ServiceSpaceUsage {
-    @GET("/organizations/{organization_id}/space_periodic_usages")
+    @GET("organizations/{organization_id}/space_periodic_usages")
     Flowable<CMAArray<CMAUsage>> fetchAll(
             @Path("organization_id") String organizationId
     );
 
-    @GET("/organizations/{organization_id}/space_periodic_usages")
+    @GET("organizations/{organization_id}/space_periodic_usages")
     Flowable<CMAArray<CMAUsage>> fetchAll(
             @Path("organization_id") String organizationId,
             @QueryMap Map<String, String> query

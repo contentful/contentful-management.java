@@ -11,12 +11,12 @@ import java.util.Map;
 
 public interface ServiceOrganizationUsage {
 
-    @GET("/organizations/{organization_id}/organization_periodic_usages")
+    @GET("organizations/{organization_id}/organization_periodic_usages")
     Flowable<CMAArray<CMAUsage>> fetchAll(
             @Path("organization_id") String organizationId
     );
 
-    @GET("/organizations/{organization_id}/organization_periodic_usages")
+    @GET("organizations/{organization_id}/organization_periodic_usages")
     Flowable<CMAArray<CMAUsage>> fetchAll(
             @Path("organization_id") String organizationId,
             @QueryMap Map<String, String> query

@@ -34,34 +34,34 @@ import java.util.Map;
  */
 interface ServiceContentTags {
 
-  @GET("/spaces/{space_id}/environments/{environment_id}/tags")
+  @GET("spaces/{space_id}/environments/{environment_id}/tags")
   Flowable<CMAArray<CMATag>> fetchAll(
       @Path("space_id") String spaceId,
       @Path("environment_id") String environmentID,
       @QueryMap Map<String, String> query
   );
-  @PUT("/spaces/{space_id}/environments/{environment_id}/tags/{tag_id}")
+  @PUT("spaces/{space_id}/environments/{environment_id}/tags/{tag_id}")
   Flowable<CMATag> create(
           @Path("space_id") String spaceId,
           @Path("environment_id") String environmentID,
           @Path("tag_id") String tagId,
           @Body CMATag tag);
 
-  @GET("/spaces/{space_id}/environments/{environment_id}/tags/{tag_id}")
+  @GET("spaces/{space_id}/environments/{environment_id}/tags/{tag_id}")
   Flowable<CMATag> fetchOne(
       @Path("space_id") String spaceId,
       @Path("environment_id") String environmentID,
       @Path("tag_id") String tagId
   );
 
-  @PUT("/spaces/{space_id}/environments/{environment_id}/tags/{tag_id}")
+  @PUT("spaces/{space_id}/environments/{environment_id}/tags/{tag_id}")
   Flowable<CMATag> update(
           @Path("space_id") String spaceId,
           @Path("environment_id") String environmentID,
           @Path("tag_id") String tagId,
           @Body CMATag tag);
 
-  @DELETE("/spaces/{space_id}/environments/{environment_id}/tags/{tag_id}")
+  @DELETE("spaces/{space_id}/environments/{environment_id}/tags/{tag_id}")
   Flowable<Response<Void>> delete(
           @Path("space_id") String spaceId,
           @Path("environment_id") String environmentID,
