@@ -18,15 +18,20 @@ package com.contentful.java.cma;
 
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAEntry;
+import com.contentful.java.cma.model.CMAEntryPatch;
 import com.contentful.java.cma.model.CMAEntryReferences;
 import com.contentful.java.cma.model.CMASnapshot;
 import com.contentful.java.cma.model.CMASystem;
+import com.contentful.java.cma.model.patch.JsonPatchItem;
+import retrofit2.Retrofit;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executor;
+import java.util.stream.Collectors;
 
-import retrofit2.Retrofit;
+import static com.contentful.java.cma.model.patch.JsonPatchOperator.ADD;
 
 /**
  * Entries Module.
@@ -399,6 +404,32 @@ public class ModuleEntries extends AbsModule<ServiceEntries> {
     } finally {
       entry.setSystem(system);
     }
+  }
+
+  /**
+   * Patch an Entry.
+   *
+   * @param entry Entry
+   * @param patch contains list of field updates
+   * @return {@link CMAEntry} result instance
+   * @throws IllegalArgumentException if entry is null.
+   * @throws IllegalArgumentException if patch is null.
+   * @throws IllegalArgumentException if entry's id is null.
+   * @throws IllegalArgumentException if entry's space id is null.
+   * @throws IllegalArgumentException if entry's version is null.
+   */
+  public CMAEntry patch(CMAEntry entry, CMAEntryPatch patch) {
+    assertNotNull(entry, "entry");
+    assertNotNull(patch, "fieldsPatch");
+    final String entryId = getResourceIdOrThrow(entry, "entry");
+    final String spaceId = getSpaceIdOrThrow(entry, "entry");
+    final String environmentId = entry.getEnvironmentId();
+    final Integer version = getVersionOrThrow(entry, "patch");
+
+    List<JsonPatchItem> patchItems = patch.getFieldUpdates().stream()
+            .map(fu -> new JsonPatchItem(ADD, fu.getFieldPath(), fu.getValue()))
+            .collect(Collectors.toList());
+    return service.patch(version, spaceId, environmentId, entryId, patchItems).blockingFirst();
   }
 
   /**
@@ -791,6 +822,27 @@ public class ModuleEntries extends AbsModule<ServiceEntries> {
         }
       }, callback);
     }
+
+    /**
+     * Patch an Entry.
+     *
+     * @param entry    Entry
+     * @param patch    contains list of field updates
+     * @param callback Callback
+     * @return the given CMACallback instance
+     */
+    public CMACallback<CMAEntry> patch(
+            final CMAEntry entry,
+            final CMAEntryPatch patch,
+            CMACallback<CMAEntry> callback
+    ) {
+      return defer(new RxExtensions.DefFunc<CMAEntry>() {
+        @Override CMAEntry method() {
+          return ModuleEntries.this.patch(entry, patch);
+        }
+      }, callback);
+    }
+
 
     /**
      * Fetch all snapshots of an entry.
