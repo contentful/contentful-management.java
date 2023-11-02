@@ -1,0 +1,12 @@
+[
+  {
+    "op" : "add",
+    "path" : "/fields/fid1/en-US",
+    "value" : "newvalue1"
+  },
+  {
+    "op" : "add",
+    "path" : "/fields/fid2/en-US",
+    "value" : "newvalue2"
+  }
+]
