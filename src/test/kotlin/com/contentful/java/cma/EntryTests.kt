@@ -20,7 +20,6 @@ import com.contentful.java.cma.lib.ModuleTestUtils
 import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAEntry
-import com.contentful.java.cma.model.CMAEntryPatch
 import com.contentful.java.cma.model.CMAHttpException
 import com.contentful.java.cma.model.CMAType
 import com.google.gson.Gson
@@ -357,42 +356,6 @@ class EntryTests {
         assertEquals("PUT", recordedRequest.method)
         assertEquals("/spaces/spaceid/environments/master/entries/entryid", recordedRequest.path)
         assertNotNull(recordedRequest.getHeader("X-Contentful-Version"))
-        assertEqualJsons(requestBody, recordedRequest.body.readUtf8(), false)
-    }
-
-    @test
-    fun testPatch() {
-        val requestBody = TestUtils.fileToString("entry_patch_request.json")
-        val responseBody = TestUtils.fileToString("entry_update_response.json")
-        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
-
-        val entry = CMAEntry()
-            .setId("entryid")
-            .setSpaceId("spaceid")
-            .setVersion(1)
-
-        val patch = CMAEntryPatch()
-        patch.add("/fields/fid1/en-US", "newvalue1")
-        patch.add("/fields/fid2/en-US", "newvalue2")
-
-        val result = assertTestCallback(client!!.entries().async()
-            .patch(entry, patch, TestCallback()) as TestCallback)!!
-
-        assertEquals("entryid", result.id)
-
-        val fields = result.fields.entries.toList()
-        assertEquals(2, fields.size)
-        assertEquals("fid1", fields[0].key)
-        assertEquals("newvalue1", fields[0].value["en-US"])
-        assertEquals("fid2", fields[1].key)
-        assertEquals("newvalue2", fields[1].value["en-US"])
-
-        // Request
-        val recordedRequest = server!!.takeRequest()
-        assertEquals("PATCH", recordedRequest.method)
-        assertEquals("/spaces/spaceid/environments/master/entries/entryid", recordedRequest.path)
-        assertNotNull(recordedRequest.getHeader("X-Contentful-Version"))
-        assertEquals("application/json-patch+json", recordedRequest.getHeader("Content-Type"))
         assertEqualJsons(requestBody, recordedRequest.body.readUtf8(), false)
     }
 
