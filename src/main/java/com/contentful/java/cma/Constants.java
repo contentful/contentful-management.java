@@ -24,6 +24,7 @@ public final class Constants {
   public static final String ENDPOINT_UPLOAD = "https://upload.contentful.com/";
   // Content Type Header Values
   public static final String DEFAULT_CONTENT_TYPE = "application/vnd.contentful.management.v1+json";
+  public static final String PATCH_CONTENT_TYPE = "application/json-patch+json";
 
   //BEGIN TO LONG CODE LINES
   public static final String OCTET_STREAM_CONTENT_TYPE = "application/octet-stream";

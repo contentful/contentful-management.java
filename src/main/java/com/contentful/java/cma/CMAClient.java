@@ -39,18 +39,18 @@ import com.contentful.java.cma.model.CMALocale;
 import com.contentful.java.cma.model.CMASnapshot;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import java.util.Properties;
-import java.util.concurrent.Executor;
-
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import java.util.Properties;
+import java.util.concurrent.Executor;
+
 import static com.contentful.java.cma.Constants.DEFAULT_CONTENT_TYPE;
 import static com.contentful.java.cma.Constants.OCTET_STREAM_CONTENT_TYPE;
+import static com.contentful.java.cma.Constants.PATCH_CONTENT_TYPE;
 import static com.contentful.java.cma.Logger.Level.NONE;
 import static com.contentful.java.cma.build.GeneratedBuildParameters.PROJECT_VERSION;
 import static com.contentful.java.cma.interceptor.ContentfulUserAgentHeaderInterceptor.Section.Version.parse;
@@ -578,7 +578,10 @@ public class CMAClient {
           .addInterceptor(new ContentfulUserAgentHeaderInterceptor(
               createCustomHeaderSections(application, integration))
           )
-          .addInterceptor(new ContentTypeInterceptor(DEFAULT_CONTENT_TYPE))
+          .addInterceptor(new ContentTypeInterceptor(DEFAULT_CONTENT_TYPE,
+                  request -> !"PATCH".equals(request.method())))
+          .addInterceptor(new ContentTypeInterceptor(PATCH_CONTENT_TYPE,
+                  request -> "PATCH".equals(request.method())))
           .addInterceptor(new ErrorInterceptor());
 
       if (rateLimitListener != null) {
@@ -601,7 +604,7 @@ public class CMAClient {
           .addInterceptor(new ContentfulUserAgentHeaderInterceptor(
               createCustomHeaderSections(application, integration))
           )
-          .addInterceptor(new ContentTypeInterceptor(OCTET_STREAM_CONTENT_TYPE))
+          .addInterceptor(new ContentTypeInterceptor(OCTET_STREAM_CONTENT_TYPE, request -> true))
           .addInterceptor(new ErrorInterceptor());
 
       return setLogger(okBuilder);

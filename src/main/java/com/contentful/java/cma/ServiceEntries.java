@@ -20,10 +20,6 @@ import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAEntry;
 import com.contentful.java.cma.model.CMAEntryReferences;
 import com.contentful.java.cma.model.CMASnapshot;
-
-import java.util.List;
-import java.util.Map;
-
 import com.contentful.java.cma.model.patch.JsonPatchItem;
 import io.reactivex.Flowable;
 import retrofit2.Response;
@@ -31,13 +27,15 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
-import retrofit2.http.Headers;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Entries Service.
@@ -129,7 +127,6 @@ interface ServiceEntries {
       @Path("entry") String entryId,
       @Body CMAEntry entry);
 
-  @Headers("Content-Type: application/json-patch+json")
   @PATCH("/spaces/{space}/environments/{environment}/entries/{entry}")
   Flowable<CMAEntry> patch(
           @Header("X-Contentful-Version") Integer version,
