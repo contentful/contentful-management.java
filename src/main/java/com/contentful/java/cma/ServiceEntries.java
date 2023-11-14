@@ -20,7 +20,7 @@ import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAEntry;
 import com.contentful.java.cma.model.CMAEntryReferences;
 import com.contentful.java.cma.model.CMASnapshot;
-import com.contentful.java.cma.model.patch.JsonPatchItem;
+import com.contentful.java.cma.model.patch.CMAEntryJsonPatchItem;
 import io.reactivex.Flowable;
 import retrofit2.Response;
 import retrofit2.http.Body;
@@ -133,5 +133,5 @@ interface ServiceEntries {
           @Path("space") String spaceId,
           @Path("environment") String environmentId,
           @Path("entry") String entryId,
-          @Body List<JsonPatchItem> patch);
+          @Body List<CMAEntryJsonPatchItem> patch);
 }

@@ -79,20 +79,27 @@ public class EntrySerializer implements JsonSerializer<CMAEntry>, JsonDeserializ
     JsonObject field = new JsonObject();
     for (String locale : values.keySet()) {
       Object localized = values.get(locale);
-      if (localized instanceof CMAResource) {
-        field.add(locale, toLink(context, (CMAResource) localized));
-      } else if (localized instanceof List) {
-        field.add(locale, serializeList(context, (List<Object>) localized));
-      } else if (localized instanceof CMARichNode) {
-        field.add(locale, serializeRichNode(context, (CMARichNode) localized));
-      } else if (localized != null) {
-        field.add(locale, context.serialize(localized));
-      }
+      JsonElement serializedValue = getSerializedFieldValue(context, localized);
+      field.add(locale, serializedValue);
     }
     if (field.entrySet().size() > 0) {
       return field;
     }
     return null;
+  }
+
+  public JsonElement getSerializedFieldValue(JsonSerializationContext context, Object fieldValue) {
+    JsonElement serializedValue = null;
+    if (fieldValue instanceof CMAResource) {
+      serializedValue = toLink(context, (CMAResource) fieldValue);
+    } else if (fieldValue instanceof List) {
+      serializedValue = serializeList(context, (List<Object>) fieldValue);
+    } else if (fieldValue instanceof CMARichNode) {
+      serializedValue = serializeRichNode(context, (CMARichNode) fieldValue);
+    } else if (fieldValue != null) {
+      serializedValue = context.serialize(fieldValue);
+    }
+    return serializedValue;
   }
 
   private JsonArray serializeList(JsonSerializationContext context, List<Object> list) {

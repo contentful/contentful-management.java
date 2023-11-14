@@ -22,7 +22,12 @@ import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAEntry
 import com.contentful.java.cma.model.CMAEntryPatch
 import com.contentful.java.cma.model.CMAHttpException
+import com.contentful.java.cma.model.CMALink
 import com.contentful.java.cma.model.CMAType
+import com.contentful.java.cma.model.rich.CMARichDocument
+import com.contentful.java.cma.model.rich.CMARichEmbeddedLink
+import com.contentful.java.cma.model.rich.CMARichHyperLink
+import com.contentful.java.cma.model.rich.CMARichParagraph
 import com.google.gson.Gson
 import okhttp3.HttpUrl
 import okhttp3.mockwebserver.MockResponse
@@ -386,6 +391,94 @@ class EntryTests {
         assertEquals("newvalue1", fields[0].value["en-US"])
         assertEquals("fid2", fields[1].key)
         assertEquals("newvalue2", fields[1].value["en-US"])
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("PATCH", recordedRequest.method)
+        assertEquals("/spaces/spaceid/environments/master/entries/entryid", recordedRequest.path)
+        assertNotNull(recordedRequest.getHeader("X-Contentful-Version"))
+        assertEquals("application/json-patch+json", recordedRequest.getHeader("Content-Type"))
+        assertEqualJsons(requestBody, recordedRequest.body.readUtf8(), false)
+    }
+
+    @test
+    fun testPatchWithHyperlinkInRichNode() {
+        val requestBody = TestUtils.fileToString("entry_patch_request_with_hyperlink_in_rich_node.json")
+        val responseBody = TestUtils.fileToString("entry_patch_request_with_hyperlink_in_rich_node_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val entry = CMAEntry()
+            .setId("entryid")
+            .setSpaceId("spaceid")
+            .setVersion(1)
+
+        val patch = CMAEntryPatch()
+        val richDocument = CMARichDocument()
+            .addContent(
+                CMARichParagraph()
+                    .addContent(
+                        CMARichHyperLink("https://foobarbaz")
+                    )
+            )
+        patch.add("/fields/fid1/fr", richDocument)
+
+        val result = assertTestCallback(client!!.entries().async()
+            .patch(entry, patch, TestCallback()) as TestCallback)!!
+
+        assertEquals("entryid", result.id)
+
+        val fields = result.fields.entries.toList()
+        assertEquals(1, fields.size)
+        assertEquals("fid1", fields[0].key)
+        assertEquals(
+            "https://foobarbaz",
+            (((fields[0].value["fr"] as CMARichDocument).content[0] as CMARichParagraph).content[0] as CMARichHyperLink).data
+        )
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("PATCH", recordedRequest.method)
+        assertEquals("/spaces/spaceid/environments/master/entries/entryid", recordedRequest.path)
+        assertNotNull(recordedRequest.getHeader("X-Contentful-Version"))
+        assertEquals("application/json-patch+json", recordedRequest.getHeader("Content-Type"))
+        assertEqualJsons(requestBody, recordedRequest.body.readUtf8(), false)
+    }
+
+    @test
+    fun testPatchWithLinkToEntryInRichNode() {
+        val requestBody = TestUtils.fileToString("entry_patch_request_with_link_to_entry_in_rich_node.json")
+        val responseBody = TestUtils.fileToString("entry_patch_request_with_link_to_entry_in_rich_node_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val entry = CMAEntry()
+            .setId("entryid")
+            .setSpaceId("spaceid")
+            .setVersion(1)
+
+        val patch = CMAEntryPatch()
+        val richDocument = CMARichDocument()
+            .addContent(
+                CMARichParagraph()
+                    .addContent(
+                        CMARichEmbeddedLink(
+                            CMALink(CMAType.Asset).setId("contentful_entry_id")
+                        )
+                    )
+            )
+        patch.add("/fields/fid1/fr", richDocument)
+
+        val result = assertTestCallback(client!!.entries().async()
+            .patch(entry, patch, TestCallback()) as TestCallback)!!
+
+        assertEquals("entryid", result.id)
+
+        val fields = result.fields.entries.toList()
+        assertEquals(1, fields.size)
+        assertEquals("fid1", fields[0].key)
+        assertEquals(
+            "contentful_entry_id",
+            ((((fields[0].value["fr"] as CMARichDocument).content[0] as CMARichParagraph).content[0] as CMARichEmbeddedLink).data as CMALink).id
+        )
 
         // Request
         val recordedRequest = server!!.takeRequest()
