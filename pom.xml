@@ -3,7 +3,7 @@
 
   <groupId>com.contentful.java</groupId>
   <artifactId>cma-sdk</artifactId>
-  <version>3.4.8</version>
+  <version>3.4.9-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>cma-sdk</name>
@@ -20,7 +20,7 @@
     <url>http://github.com/contentful/contentful-management.java</url>
     <connection>scm:git:git://github.com/contentful/contentful-management.java.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/contentful/contentful-management.java.git</developerConnection>
-    <tag>cma-sdk-3.4.8</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <issueManagement>
