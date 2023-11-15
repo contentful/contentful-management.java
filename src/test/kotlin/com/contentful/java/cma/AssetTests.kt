@@ -259,7 +259,7 @@ class AssetTests {
         assertEquals("foo", url.queryParameter("content_type"))
         assertEquals(
                 "/spaces/configuredSpaceId/environments/configuredEnvironmentId/"
-                        + "assets?limit=2&content_type=foo&skip=1",
+                        + "assets?limit=2&skip=1&content_type=foo",
                 request.path)
     }
 

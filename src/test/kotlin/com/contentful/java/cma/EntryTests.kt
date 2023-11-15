@@ -276,7 +276,7 @@ class EntryTests {
         val request = server!!.takeRequest()
         assertEquals("GET", request.method)
         assertEquals("/spaces/configuredSpaceId/environments/configuredEnvironmentId/entries"
-                + "?limit=2&content_type=foo&skip=1",
+                + "?limit=2&skip=1&content_type=foo",
                 request.path)
     }
 
