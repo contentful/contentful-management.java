@@ -20,6 +20,7 @@ package com.contentful.java.cma;
 
 import com.contentful.java.cma.gson.EntrySerializer;
 import com.contentful.java.cma.gson.FieldTypeAdapter;
+import com.contentful.java.cma.gson.CMAEntryJsonPatchItemSerializer;
 import com.contentful.java.cma.gson.LocaleSerializer;
 import com.contentful.java.cma.gson.SnapshotDeserializer;
 import com.contentful.java.cma.interceptor.AuthorizationHeaderInterceptor;
@@ -37,6 +38,7 @@ import com.contentful.java.cma.model.CMAEntry;
 import com.contentful.java.cma.model.CMAField;
 import com.contentful.java.cma.model.CMALocale;
 import com.contentful.java.cma.model.CMASnapshot;
+import com.contentful.java.cma.model.patch.CMAEntryJsonPatchItem;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import okhttp3.Call;
@@ -179,6 +181,7 @@ public class CMAClient {
       gson = new GsonBuilder()
           .registerTypeAdapter(CMAField.class, new FieldTypeAdapter())
           .registerTypeAdapter(CMAEntry.class, new EntrySerializer())
+          .registerTypeAdapter(CMAEntryJsonPatchItem.class, new CMAEntryJsonPatchItemSerializer())
           .registerTypeAdapter(CMASnapshot.class, new SnapshotDeserializer())
           .registerTypeAdapter(CMALocale.class, new LocaleSerializer())
           .create();

@@ -22,7 +22,7 @@ import com.contentful.java.cma.model.CMAEntryPatch;
 import com.contentful.java.cma.model.CMAEntryReferences;
 import com.contentful.java.cma.model.CMASnapshot;
 import com.contentful.java.cma.model.CMASystem;
-import com.contentful.java.cma.model.patch.JsonPatchItem;
+import com.contentful.java.cma.model.patch.CMAEntryJsonPatchItem;
 import retrofit2.Retrofit;
 
 import java.util.HashMap;
@@ -426,8 +426,8 @@ public class ModuleEntries extends AbsModule<ServiceEntries> {
     final String environmentId = entry.getEnvironmentId();
     final Integer version = getVersionOrThrow(entry, "patch");
 
-    List<JsonPatchItem> patchItems = patch.getFieldUpdates().stream()
-            .map(fu -> new JsonPatchItem(ADD, fu.getFieldPath(), fu.getValue()))
+    List<CMAEntryJsonPatchItem> patchItems = patch.getFieldUpdates().stream()
+            .map(fu -> new CMAEntryJsonPatchItem(ADD, fu.getFieldPath(), fu.getValue()))
             .collect(Collectors.toList());
     return service.patch(version, spaceId, environmentId, entryId, patchItems).blockingFirst();
   }

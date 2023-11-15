@@ -1,0 +1,25 @@
+[
+  {
+    "op" : "add",
+    "path" : "/fields/fid1/fr",
+    "value" : {
+      "content" : [
+        {
+          "content" : [
+            {
+              "content" : [],
+              "nodeType" : "hyperlink",
+              "data" : {
+                "uri" : "https://foobarbaz"
+              }
+            }
+          ],
+          "nodeType" : "paragraph",
+          "data" : {}
+        }
+      ],
+      "nodeType" : "document",
+      "data" : {}
+    }
+  }
+]

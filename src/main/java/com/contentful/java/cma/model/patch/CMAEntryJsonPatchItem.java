@@ -3,15 +3,15 @@ package com.contentful.java.cma.model.patch;
 /**
  * @see <a href="https://jsonpatch.com/">JSON Patch</a>
  */
-public class JsonPatchItem {
+public class CMAEntryJsonPatchItem {
     private JsonPatchOperator op;
     private String path;
     private Object value;
 
-    public JsonPatchItem() {
+    public CMAEntryJsonPatchItem() {
     }
 
-    public JsonPatchItem(JsonPatchOperator op, String path, Object value) {
+    public CMAEntryJsonPatchItem(JsonPatchOperator op, String path, Object value) {
         this.op = op;
         this.path = path;
         this.value = value;

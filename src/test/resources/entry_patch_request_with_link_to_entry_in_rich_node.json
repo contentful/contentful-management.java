@@ -1,0 +1,31 @@
+[
+  {
+    "op" : "add",
+    "path" : "/fields/fid1/fr",
+    "value" : {
+      "content" : [
+        {
+          "content" : [
+            {
+              "content" : [],
+              "nodeType" : "embedded-asset-block",
+              "data" : {
+                "target" : {
+                  "sys" : {
+                    "type" : "Link",
+                    "linkType" : "Asset",
+                    "id" : "contentful_entry_id"
+                  }
+                }
+              }
+            }
+          ],
+          "nodeType" : "paragraph",
+          "data" : {}
+        }
+      ],
+      "nodeType" : "document",
+      "data" : {}
+    }
+  }
+]
