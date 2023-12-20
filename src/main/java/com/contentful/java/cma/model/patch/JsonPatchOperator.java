@@ -4,5 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 public enum JsonPatchOperator {
     @SerializedName("add")
-    ADD
+    ADD,
+    @SerializedName("remove")
+    REMOVE
 }

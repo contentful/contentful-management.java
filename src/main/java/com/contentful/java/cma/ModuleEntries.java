@@ -18,11 +18,13 @@ package com.contentful.java.cma;
 
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAEntry;
+import com.contentful.java.cma.model.CMAEntryFieldPatch;
 import com.contentful.java.cma.model.CMAEntryPatch;
 import com.contentful.java.cma.model.CMAEntryReferences;
 import com.contentful.java.cma.model.CMASnapshot;
 import com.contentful.java.cma.model.CMASystem;
 import com.contentful.java.cma.model.patch.CMAEntryJsonPatchItem;
+import com.contentful.java.cma.model.patch.JsonPatchOperator;
 import retrofit2.Retrofit;
 
 import java.util.HashMap;
@@ -32,6 +34,7 @@ import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
 
 import static com.contentful.java.cma.model.patch.JsonPatchOperator.ADD;
+import static com.contentful.java.cma.model.patch.JsonPatchOperator.REMOVE;
 
 /**
  * Entries Module.
@@ -427,9 +430,14 @@ public class ModuleEntries extends AbsModule<ServiceEntries> {
     final Integer version = getVersionOrThrow(entry, "patch");
 
     List<CMAEntryJsonPatchItem> patchItems = patch.getFieldUpdates().stream()
-            .map(fu -> new CMAEntryJsonPatchItem(ADD, fu.getFieldPath(), fu.getValue()))
+            .map(this::getCmaEntryJsonPatchItem)
             .collect(Collectors.toList());
     return service.patch(version, spaceId, environmentId, entryId, patchItems).blockingFirst();
+  }
+
+  private CMAEntryJsonPatchItem getCmaEntryJsonPatchItem(CMAEntryFieldPatch fu) {
+    JsonPatchOperator operator = fu.getValue() != null ? ADD : REMOVE;
+    return new CMAEntryJsonPatchItem(operator, fu.getFieldPath(), fu.getValue());
   }
 
   /**

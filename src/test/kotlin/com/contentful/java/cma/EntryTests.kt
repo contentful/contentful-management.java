@@ -379,6 +379,7 @@ class EntryTests {
         val patch = CMAEntryPatch()
         patch.add("/fields/fid1/en-US", "newvalue1")
         patch.add("/fields/fid2/en-US", "newvalue2")
+        patch.add("/fields/fid3/en-US", null)
 
         val result = assertTestCallback(client!!.entries().async()
             .patch(entry, patch, TestCallback()) as TestCallback)!!

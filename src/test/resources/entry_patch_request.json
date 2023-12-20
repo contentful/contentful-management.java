@@ -8,5 +8,9 @@
     "op" : "add",
     "path" : "/fields/fid2/en-US",
     "value" : "newvalue2"
+  },
+  {
+    "op" : "remove",
+    "path" : "/fields/fid3/en-US"
   }
 ]
