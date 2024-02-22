@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Version [3.4.9] - [2024-02-22]
+- Changed: Fixes: https://github.com/contentful/contentful-management.java/issues/164
+- Changed: Fixes: https://github.com/contentful/contentful-management.java/issues/168
+- Changed: Fixes: https://github.com/contentful/contentful-management.java/issues/169
+
 ## Version [3.4.8] - [2023-11-15]
 - Changed: Fixes: https://github.com/contentful/contentful-management.java/issues/166
 
@@ -191,6 +196,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 Initial release.
 
 [unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-3.3.3...HEAD
+[3.4.9]: https://github.com/contentful/contentful-management.java/compare/v3.4.8...v3.4.9
 [3.4.8]: https://github.com/contentful/contentful-management.java/compare/v3.3.1...v3.4.8
 [3.3.3]: https://github.com/contentful/contentful-management.java/compare/v3.3.1...v3.3.3
 [3.3.2]: https://github.com/contentful/contentful-management.java/compare/v3.3.1...v3.3.2
