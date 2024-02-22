@@ -25,6 +25,7 @@ public class CMAEntry extends CMAResource {
   // Map of fields
   LinkedHashMap<String, LinkedHashMap<String, Object>> fields;
 
+  public CMAMetadata metadata;
   /**
    * Create an entry, filling the system property
    */
@@ -140,6 +141,24 @@ public class CMAEntry extends CMAResource {
     return fields;
   }
 
+  /* Gets the metadata for this entry.
+   *
+   * @return The {@link CMAMetadata} instance containing metadata like tag.
+   */
+  public CMAMetadata getMetadata() {
+    return metadata;
+  }
+  /**
+   * Sets the metadata for this entry.
+   *
+   * @param metadata The {@link CMAMetadata} instance to associate with this entry.
+   * @return This {@code CMAEntry} instance for method chaining.
+   */
+  public CMAEntry setMetadata(CMAMetadata metadata) {
+    this.metadata = metadata;
+    return this;
+  }
+
   /**
    * Sets a map of fields for this Entry.
    *
@@ -167,6 +186,7 @@ public class CMAEntry extends CMAResource {
   @Override public String toString() {
     return "CMAEntry { " + super.toString() + " "
         + "fields = " + getFields() + " "
+        + "metadata = " + getMetadata() + " "
         + "}";
   }
 
