@@ -132,7 +132,7 @@ class ModelTests {
         entry.id = "myid";
 
         assertEquals("CMAEntry { CMAResource { system = CMASystem { type = Entry, id = myid } } "
-                + "fields = {foo={en-US=bar}} }",
+                + "fields = {foo={en-US=bar}} metadata = null }",
                 entry.toString())
     }
 

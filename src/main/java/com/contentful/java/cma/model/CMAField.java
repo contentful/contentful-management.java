@@ -42,6 +42,9 @@ public class CMAField {
   // Validations
   List<Map<String, Object>> validations;
 
+  // Default value
+  protected Map<String, Object> defaultValue;
+
   // Allowed resources
   List<Map<String, Object>> allowedResources;
 
@@ -100,6 +103,22 @@ public class CMAField {
    */
   public CMAField setId(String id) {
     this.id = id;
+    return this;
+  }
+  /**
+   * @return the {@code defaultValue} attribute value as a {@code Map}.
+   */
+  public Map<String, Object> getDefaultValue() {
+    return defaultValue;
+  }
+  /**
+   * Sets the default value.
+   *
+   * @param defaultValue the defaultValue to be set
+   * @return this {@code CMAField} instance
+   */
+  public CMAField setDefaultValue(Map<String, Object> defaultValue) {
+    this.defaultValue = defaultValue;
     return this;
   }
 
