@@ -31,6 +31,8 @@ public class CMASystem {
   CMALink organization;
   String urn;
 
+  private CMABulkStatus bulkActionStatus;
+
   public CMAVisibility getVisibility() {
     return visibility;
   }
@@ -43,6 +45,14 @@ public class CMASystem {
 
   @SerializedName("status")
   CMALink environmentStatus;
+
+  public CMABulkStatus getBulkActionStatus() {
+    return bulkActionStatus;
+  }
+
+  public void setBulkActionStatus(CMABulkStatus bulkActionStatus) {
+    this.bulkActionStatus = bulkActionStatus;
+  }
 
   /**
    * @return the content type if this resource can have one.
@@ -265,6 +275,11 @@ public class CMASystem {
     return environmentStatus;
   }
 
+  public CMASystem setEnvironmentalStatus(CMALink status) {
+    this.environmentStatus = status;
+    return this;
+  }
+
   /**
    * @return a human readable string, representing the object.
    */
@@ -308,5 +323,17 @@ public class CMASystem {
 
     builder.append(" }");
     return builder.toString();
+  }
+
+  public void setCreatedAt(String createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  public void setUpdatedAt(String updatedAt) {
+    this.updatedAt = updatedAt;
+  }
+
+  public void setEnvironment(CMALink environmentLink) {
+    this.environmentStatus = environmentLink;
   }
 }
