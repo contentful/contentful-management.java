@@ -42,11 +42,11 @@ public class ModuleTags extends AbsModule<ServiceContentTags> {
    * @param environmentIdConfigured internal helper to see if environment was set.
    */
   public ModuleTags(
-      Retrofit retrofit,
-      Executor callbackExecutor,
-      String spaceId,
-      String environmentId,
-      boolean environmentIdConfigured) {
+          Retrofit retrofit,
+          Executor callbackExecutor,
+          String spaceId,
+          String environmentId,
+          boolean environmentIdConfigured) {
     super(retrofit, callbackExecutor, spaceId, environmentId, environmentIdConfigured);
     this.async = new Async();
   }
@@ -176,10 +176,10 @@ public class ModuleTags extends AbsModule<ServiceContentTags> {
     tag.setName(name);
     tag.setId(tagId);
     return service.update(
-        spaceId,
-        environmentId,
-        tagId,
-        tag
+            spaceId,
+            environmentId,
+            tagId,
+            tag
     ).blockingFirst();
   }
 
@@ -249,7 +249,7 @@ public class ModuleTags extends AbsModule<ServiceContentTags> {
      * @see CMAClient.Builder#setSpaceId(String)
      */
     public CMACallback<CMAArray<CMATag>> fetchAll(
-        CMACallback<CMAArray<CMATag>> callback) {
+            CMACallback<CMAArray<CMATag>> callback) {
       return defer(new DefFunc<CMAArray<CMATag>>() {
         @Override
         CMAArray<CMATag> method() {
@@ -272,10 +272,10 @@ public class ModuleTags extends AbsModule<ServiceContentTags> {
      * @throws IllegalArgumentException if space id is null.
      */
     public CMACallback<CMAArray<CMATag>> fetchAll(
-        final String spaceId,
-        final String environmentId,
-        final Map<String, String> query,
-        CMACallback<CMAArray<CMATag>> callback) {
+            final String spaceId,
+            final String environmentId,
+            final Map<String, String> query,
+            CMACallback<CMAArray<CMATag>> callback) {
       return defer(new DefFunc<CMAArray<CMATag>>() {
         @Override
         CMAArray<CMATag> method() {
@@ -295,8 +295,8 @@ public class ModuleTags extends AbsModule<ServiceContentTags> {
      * @see CMAClient.Builder#setEnvironmentId(String)
      */
     public CMACallback<CMATag> fetchOne(
-        final String tagId,
-        CMACallback<CMATag> callback) {
+            final String tagId,
+            CMACallback<CMATag> callback) {
       return defer(new DefFunc<CMATag>() {
         @Override
         CMATag method() {
@@ -319,10 +319,10 @@ public class ModuleTags extends AbsModule<ServiceContentTags> {
      * @throws IllegalArgumentException if environment id is null.
      */
     public CMACallback<CMATag> fetchOne(
-        final String spaceId,
-        final String environmentId,
-        final String tagId,
-        CMACallback<CMATag> callback) {
+            final String spaceId,
+            final String environmentId,
+            final String tagId,
+            CMACallback<CMATag> callback) {
       return defer(new DefFunc<CMATag>() {
         @Override
         CMATag method() {
@@ -338,9 +338,9 @@ public class ModuleTags extends AbsModule<ServiceContentTags> {
      * @return the given CMACallback instance
      */
     public CMACallback<CMATag> update(
-        final String name,
-        final String tagId,
-        CMACallback<CMATag> callback) {
+            final String name,
+            final String tagId,
+            CMACallback<CMATag> callback) {
       return defer(new DefFunc<CMATag>() {
         @Override
         CMATag method() {

@@ -18,6 +18,7 @@ package com.contentful.java.cma;
 
 //BEGIN TO LONG CODE LINES
 
+import com.contentful.java.cma.gson.CMASystemDeserializer;
 import com.contentful.java.cma.gson.EntrySerializer;
 import com.contentful.java.cma.gson.FieldTypeAdapter;
 import com.contentful.java.cma.gson.LocaleSerializer;
@@ -40,6 +41,7 @@ import com.contentful.java.cma.model.CMAField;
 import com.contentful.java.cma.model.CMALocale;
 import com.contentful.java.cma.model.CMAMetadata;
 import com.contentful.java.cma.model.CMASnapshot;
+import com.contentful.java.cma.model.CMASystem;
 import com.contentful.java.cma.model.CMAWebhookTransformation;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -74,6 +76,8 @@ public class CMAClient {
   // Modules
   private final ModuleApiKeys moduleApiKeys;
   private final ModuleAssets moduleAssets;
+
+  private final ModuleBulkActions moduleBulkActions;
   private final ModuleContentTypes moduleContentTypes;
   private final ModuleEditorInterfaces moduleEditorInterfaces;
   private final ModuleEntries moduleEntries;
@@ -137,6 +141,8 @@ public class CMAClient {
         configured);
     this.moduleAssets = new ModuleAssets(retrofit, callbackExecutor, spaceId, environmentId,
         configured);
+    this.moduleBulkActions = new ModuleBulkActions(retrofit, callbackExecutor,
+        spaceId, environmentId, configured);
     this.moduleContentTypes = new ModuleContentTypes(retrofit, callbackExecutor, spaceId,
         environmentId, configured);
     this.moduleEditorInterfaces = new ModuleEditorInterfaces(retrofit, callbackExecutor, spaceId,
@@ -184,6 +190,7 @@ public class CMAClient {
           .registerTypeAdapter(CMAWebhookTransformation.class, new WebHookBodyDeserializer())
           .registerTypeAdapter(CMALocale.class, new LocaleSerializer())
           .registerTypeAdapter(CMAMetadata.class, new MetadataSerializer())
+          .registerTypeAdapter(CMASystem.class, new CMASystemDeserializer())
           .create();
     }
 
@@ -349,6 +356,13 @@ public class CMAClient {
    */
   public ModuleTags tags() {
     return moduleTags;
+  }
+
+  /**
+   * @return the Bulk Actions module.
+   */
+  public ModuleBulkActions bulkActions() {
+    return moduleBulkActions;
   }
 
 

@@ -10,9 +10,11 @@ public enum CMAType {
   ApiKey,
   Array,
   Asset,
+  BulkAction,
   ContentType,
   EditorInterface,
   Entry,
+  Error,
   Environment,
   Link,
   Locale,
@@ -31,5 +33,5 @@ public enum CMAType {
   @SerializedName("Extension") UiExtension,
   Webhook,
   WebhookCallOverview,
-  WebhookDefinition
+  WebhookDefinition;
 }
