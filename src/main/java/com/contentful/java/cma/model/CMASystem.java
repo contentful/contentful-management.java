@@ -40,6 +40,8 @@ public class CMASystem {
 
   Integer archivedVersion;
 
+  String archivedAt;
+
   @SerializedName("status")
   CMALink environmentStatus;
 
@@ -239,6 +241,13 @@ public class CMASystem {
   }
 
   /**
+   * @return a time when this resource was archived
+   */
+  public String getArchivedAt() {
+    return archivedAt;
+  }
+
+  /**
    * Return a link to the state of this environment
    * <p>
    * This field is only active on an environment.
@@ -257,6 +266,7 @@ public class CMASystem {
     final HashMap<String, Object> map = new HashMap<String, Object>();
 
     map.put("archivedVersion", getArchivedVersion());
+    map.put("archivedAt", getArchivedAt());
     map.put("contentType", getContentType());
     map.put("createdAt", getCreatedAt());
     map.put("createdBy", getCreatedBy());
