@@ -1,0 +1,21 @@
+{
+  "metadata": {
+    "tags": [
+      {
+        "sys": {
+          "type": "Link",
+          "linkType": "Tag",
+          "id": "tag1"
+        }
+      }
+    ]
+  },
+  "fields": {
+    "fid1": {
+      "en-US": "value1"
+    },
+    "fid2": {
+      "en-US": "value2"
+    }
+  }
+}
