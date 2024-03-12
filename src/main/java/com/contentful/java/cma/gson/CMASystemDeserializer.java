@@ -4,7 +4,7 @@ import com.contentful.java.cma.model.CMABulkStatus;
 import com.contentful.java.cma.model.CMALink;
 import com.contentful.java.cma.model.CMASystem;
 import com.contentful.java.cma.model.CMAType;
-import com.google.gson.Gson;
+import com.contentful.java.cma.model.CMAVisibility;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
@@ -14,65 +14,88 @@ import java.lang.reflect.Type;
 
 public class CMASystemDeserializer implements JsonDeserializer<CMASystem> {
     @Override
-    public CMASystem deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
+    public CMASystem deserialize(JsonElement json,
+                                 Type typeOfT,
+                                 JsonDeserializationContext context) throws JsonParseException {
         CMASystem system = new CMASystem();
         JsonObject sysObject = json.getAsJsonObject();
 
-        // Deserialize ID
-        if (sysObject.has("id")) {
-            system.setId(sysObject.get("id").getAsString());
+        if (sysObject.has("contentType")) {
+            system.setContentType(context.deserialize(sysObject.get("contentType"),
+                    CMALink.class));
         }
-
-        // Deserialize Type
-        if (sysObject.has("type")) {
-            system.setType(CMAType.valueOf(sysObject.get("type").getAsString()));
-        }
-
-        // Deserialize CreatedAt
         if (sysObject.has("createdAt")) {
             system.setCreatedAt(sysObject.get("createdAt").getAsString());
         }
-
-        // Deserialize UpdatedAt
+        if (sysObject.has("createdBy")) {
+            system.setCreatedBy(context.deserialize(sysObject.get("createdBy"), CMALink.class));
+        }
+        if (sysObject.has("firstPublishedAt")) {
+            system.setFirstPublishedAt(sysObject.get("firstPublishedAt").getAsString());
+        }
+        if (sysObject.has("id")) {
+            system.setId(sysObject.get("id").getAsString());
+        }
+        if (sysObject.has("linkType")) {
+            system.setLinkType(context.deserialize(sysObject.get("linkType"), CMAType.class));
+        }
+        if (sysObject.has("publishedAt")) {
+            system.setPublishedAt(sysObject.get("publishedAt").getAsString());
+        }
+        if (sysObject.has("publishedBy")) {
+            system.setPublishedBy(context.deserialize(sysObject.get("publishedBy"),
+                    CMALink.class));
+        }
+        if (sysObject.has("publishedCounter")) {
+            system.setPublishedCounter(sysObject.get("publishedCounter").getAsInt());
+        }
+        if (sysObject.has("publishedVersion")) {
+            system.setPublishedVersion(sysObject.get("publishedVersion").getAsInt());
+        }
+        if (sysObject.has("space")) {
+            system.setSpace(context.deserialize(sysObject.get("space"), CMALink.class));
+        }
+        if (sysObject.has("environment")) {
+            system.setEnvironment(context.deserialize(sysObject.get("environment"),
+                    CMALink.class));
+        }
+        if (sysObject.has("type")) {
+            system.setType(context.deserialize(sysObject.get("type"), CMAType.class));
+        }
         if (sysObject.has("updatedAt")) {
             system.setUpdatedAt(sysObject.get("updatedAt").getAsString());
         }
-
-        // Deserialize Version
+        if (sysObject.has("updatedBy")) {
+            system.setUpdatedBy(context.deserialize(sysObject.get("updatedBy"), CMALink.class));
+        }
         if (sysObject.has("version")) {
             system.setVersion(sysObject.get("version").getAsInt());
         }
-
-        // Deserialize Space, if present
-        if (sysObject.has("space")) {
-            JsonObject spaceObject = sysObject.getAsJsonObject("space");
-            CMALink spaceLink = context.deserialize(spaceObject, CMALink.class);
-            system.setSpace(spaceLink);
+        if (sysObject.has("visibility")) {
+            system.setVisibility(context.deserialize(sysObject.get("visibility"),
+                    CMAVisibility.class));
         }
-
-        // Deserialize Environment, if present
-        if (sysObject.has("environment")) {
-            JsonObject environmentObject = sysObject.getAsJsonObject("environment");
-            CMALink environmentLink = context.deserialize(environmentObject, CMALink.class);
-            system.setEnvironment(environmentLink);
+        if (sysObject.has("organization")) {
+            system.setOrganization(context.deserialize(sysObject.get("organization"),
+                    CMALink.class));
         }
-
-        // Special handling for "status" to differentiate between CMALink and CMABulkStatus
+        if (sysObject.has("urn")) {
+            system.setUrn(sysObject.get("urn").getAsString());
+        }
+        if (sysObject.has("archivedVersion")) {
+            system.setArchivedVersion(sysObject.get("archivedVersion").getAsInt());
+        }
         if (sysObject.has("status")) {
             JsonElement statusElement = sysObject.get("status");
             if (statusElement.isJsonObject()) {
-                // It's likely an environment status
-                CMALink environmentStatus = context.deserialize(statusElement, CMALink.class);
-                system.setEnvironmentalStatus(environmentStatus);
+                system.setEnvironmentalStatus(context.deserialize(sysObject.get("status"),
+                        CMALink.class));
             } else if (statusElement.isJsonPrimitive()) {
-                // It's likely a bulk action status
                 String statusStr = statusElement.getAsString();
                 CMABulkStatus bulkStatus = CMABulkStatus.from(statusStr);
                 system.setBulkActionStatus(bulkStatus);
             }
         }
-
-        // Add manual deserialization for other fields as necessary
 
         return system;
     }
