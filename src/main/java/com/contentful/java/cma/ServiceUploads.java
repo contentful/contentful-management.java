@@ -33,18 +33,21 @@ import retrofit2.http.Path;
  * This service will be used to wrap the uploading rest calls to Contentfuls endpoint.
  */
 interface ServiceUploads {
-  @POST("spaces/{spaceId}/uploads")
+  @POST("spaces/{spaceId}/environments/{environmentId}/uploads")
   Flowable<CMAUpload> create(
       @Path("spaceId") String spaceId,
+      @Path("environmentId") String environmentId,
       @Body RequestBody payload);
 
-  @GET("spaces/{spaceId}/uploads/{uploadId}")
+  @GET("spaces/{spaceId}/environments/{environmentId}/uploads/{uploadId}")
   Flowable<CMAUpload> fetchOne(
       @Path("spaceId") String spaceId,
+      @Path("environmentId") String environmentId,
       @Path("uploadId") String uploadId);
 
-  @DELETE("spaces/{spaceId}/uploads/{uploadId}")
+  @DELETE("spaces/{spaceId}/environments/{environmentId}/uploads/{uploadId}")
   Flowable<Response<Void>> delete(
       @Path("spaceId") String spaceId,
+      @Path("environmentId") String environmentId,
       @Path("uploadId") String uploadId);
 }

@@ -55,6 +55,10 @@ public class CMAUpload extends CMAResource {
     return super.setSpaceId(spaceId);
   }
 
+  @Override public CMAUpload setEnvironmentId(String environmentId) {
+    return super.setEnvironmentId(environmentId);
+  }
+
   /**
    * @return a human readable string, representing the object.
    */
