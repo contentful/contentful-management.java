@@ -58,6 +58,7 @@ Core Features
 - Supported Endpoints
   * [ApiKeys](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/api-keys)
   * [Assets](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/assets)
+  * [Bulk actions](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/bulk-actions)
   * [ContentTypes](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/content-types)
   * [ContentTags](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/content-tags)
   * [EditorInterface](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/editor-interface)
