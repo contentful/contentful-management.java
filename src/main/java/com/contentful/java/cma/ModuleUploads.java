@@ -119,7 +119,7 @@ public class ModuleUploads extends AbsModule<ServiceUploads> {
   public CMAUpload create(InputStream stream) throws IOException {
     throwIfEnvironmentIdIsSet();
 
-    return create(spaceId, stream);
+    return create(spaceId, environmentId, stream);
   }
 
   /**
@@ -139,14 +139,15 @@ public class ModuleUploads extends AbsModule<ServiceUploads> {
    * @throws IllegalArgumentException if stream is null.
    * @throws java.io.IOException      if the stream could not be read.
    */
-  public CMAUpload create(String spaceId, InputStream stream) throws IOException {
+  public CMAUpload create(String spaceId, String environmentId, InputStream stream)
+          throws IOException {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(stream, "stream");
 
     final byte[] content = readAllBytes(stream);
 
     final RequestBody payload = RequestBody.create(parse(OCTET_STREAM_CONTENT_TYPE), content);
-    return service.create(spaceId, payload).blockingFirst();
+    return service.create(spaceId, environmentId, payload).blockingFirst();
   }
 
   /**
@@ -160,10 +161,10 @@ public class ModuleUploads extends AbsModule<ServiceUploads> {
    *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
    * @see CMAClient.Builder#setSpaceId(String)
    */
-  public CMAUpload fetchOne(String uploadId) {
+  public CMAUpload fetchOne(String uploadId, String environmentId) {
     throwIfEnvironmentIdIsSet();
 
-    return fetchOne(spaceId, uploadId);
+    return fetchOne(spaceId, environmentId, uploadId);
   }
 
   /**
@@ -179,11 +180,11 @@ public class ModuleUploads extends AbsModule<ServiceUploads> {
    * @throws IllegalArgumentException if spaceId is null.
    * @throws IllegalArgumentException if uploadId is null.
    */
-  public CMAUpload fetchOne(String spaceId, String uploadId) {
+  public CMAUpload fetchOne(String spaceId, String environmentId, String uploadId) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(uploadId, "uploadId");
 
-    return service.fetchOne(spaceId, uploadId).blockingFirst();
+    return service.fetchOne(spaceId, environmentId, uploadId).blockingFirst();
   }
 
   /**
@@ -194,11 +195,12 @@ public class ModuleUploads extends AbsModule<ServiceUploads> {
    * @throws IllegalArgumentException if spaceId is null.
    * @throws IllegalArgumentException if uploadId is null.
    */
-  public int delete(CMAUpload upload) {
+  public int delete(CMAUpload upload, String environmentId) {
     final String uploadId = getResourceIdOrThrow(upload, "upload");
     final String spaceId = getSpaceIdOrThrow(upload, "upload");
 
-    final Response<Void> response = service.delete(spaceId, uploadId).blockingFirst();
+    final Response<Void> response = service.delete(
+            spaceId, environmentId, uploadId).blockingFirst();
     return response.code();
   }
 
@@ -263,12 +265,13 @@ public class ModuleUploads extends AbsModule<ServiceUploads> {
      */
     public CMACallback<CMAUpload> create(
         final String spaceId,
+        final String environmentId,
         final InputStream stream,
         CMACallback<CMAUpload> callback) {
       return defer(new DefFunc<CMAUpload>() {
         @Override CMAUpload method() {
           try {
-            return ModuleUploads.this.create(spaceId, stream);
+            return ModuleUploads.this.create(spaceId, environmentId, stream);
           } catch (IOException e) {
             throw new IllegalStateException("IO exception while creating asset.", e);
           }
@@ -290,10 +293,11 @@ public class ModuleUploads extends AbsModule<ServiceUploads> {
      */
     public CMACallback<CMAUpload> fetchOne(
         final String uploadId,
+        final String environmentId,
         CMACallback<CMAUpload> callback) {
       return defer(new DefFunc<CMAUpload>() {
         @Override CMAUpload method() {
-          return ModuleUploads.this.fetchOne(uploadId);
+          return ModuleUploads.this.fetchOne(uploadId, environmentId);
         }
       }, callback);
     }
@@ -314,11 +318,12 @@ public class ModuleUploads extends AbsModule<ServiceUploads> {
      */
     public CMACallback<CMAUpload> fetchOne(
         final String spaceId,
+        final String environmentId,
         final String uploadId,
         CMACallback<CMAUpload> callback) {
       return defer(new DefFunc<CMAUpload>() {
         @Override CMAUpload method() {
-          return ModuleUploads.this.fetchOne(spaceId, uploadId);
+          return ModuleUploads.this.fetchOne(spaceId, environmentId, uploadId);
         }
       }, callback);
     }
@@ -334,10 +339,11 @@ public class ModuleUploads extends AbsModule<ServiceUploads> {
      */
     public CMACallback<Integer> delete(
         final CMAUpload upload,
+        final String environmentId,
         CMACallback<Integer> callback) {
       return defer(new DefFunc<Integer>() {
         @Override Integer method() {
-          return ModuleUploads.this.delete(upload);
+          return ModuleUploads.this.delete(upload, environmentId);
         }
       }, callback);
     }
