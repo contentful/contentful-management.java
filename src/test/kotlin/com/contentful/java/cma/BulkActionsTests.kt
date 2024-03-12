@@ -17,7 +17,6 @@
 package com.contentful.java.cma;
 import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.lib.TestUtils
-import com.contentful.java.cma.model.CMABulkAction
 import com.contentful.java.cma.model.CMAEntities
 import com.contentful.java.cma.model.CMAPayload
 import com.google.gson.Gson
@@ -59,17 +58,19 @@ class BulkActionsTests {
 
     @Test
     fun testPublishBulkAction() {
-        val responseBody = TestUtils.fileToString("bulk_actions_fetch_response.json")
+        val responseBody = TestUtils.fileToString("bulk_actions_response.json")
         server.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val payload = CMAPayload().setEntities(CMAEntities().setItems(emptyList())) // Setup payload as needed
 
-        val result = TestCallback<CMABulkAction>().also { callback ->
-            client.bulkActions().async().publish("configuredSpaceId", "configuredEnvironmentId", payload, callback)
-        }
+        val result = assertTestCallback(client.bulkActions().async()
+            .publish(
+                "configuredSpaceId",
+                "configuredEnvironmentId",
+                payload, TestCallback()) as TestCallback)!!
 
         assertNotNull(result)
-        assertEquals("BulkActionId", result.toString())
+        assertEquals("bulk_action", result.action)
 
         val recordedRequest = server.takeRequest()
         assertEquals("POST", recordedRequest.method)
@@ -78,16 +79,18 @@ class BulkActionsTests {
 
     @Test
     fun testUnpublishBulkAction() {
-        val responseBody = TestUtils.fileToString("bulk_actions_fetch_response.json")
+        val responseBody = TestUtils.fileToString("bulk_actions_response.json")
         server.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val payload = CMAPayload().setEntities(CMAEntities().setItems(emptyList())) // Setup payload as needed
-        val result = TestCallback<CMABulkAction>().also { callback ->
-            client.bulkActions().async().unpublish("configuredSpaceId", "configuredEnvironmentId", payload, callback)
-        }
+        val result = assertTestCallback(client.bulkActions().async()
+            .unpublish(
+                "configuredSpaceId",
+                "configuredEnvironmentId",
+                payload, TestCallback()) as TestCallback)!!
 
         assertNotNull(result)
-        assertEquals("BulkActionId", result.toString())
+        assertEquals("bulk_action", result.action)
 
         val recordedRequest = server.takeRequest()
         assertEquals("POST", recordedRequest.method)
@@ -96,7 +99,7 @@ class BulkActionsTests {
 
     @Test
     fun testFetchBulkAction() {
-        val responseBody = TestUtils.fileToString("bulk_actions_fetch_response.json")
+        val responseBody = TestUtils.fileToString("bulk_actions_response.json")
         server.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val result = assertTestCallback(client.bulkActions().async()
@@ -116,16 +119,18 @@ class BulkActionsTests {
 
     @Test
     fun testValidateBulkAction() {
-        val responseBody = TestUtils.fileToString("bulk_actions_fetch_response.json")
+        val responseBody = TestUtils.fileToString("bulk_actions_response.json")
         server.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
-        val payload = CMAPayload() // Setup payload as needed
-        val result = TestCallback<CMABulkAction>().also { callback ->
-            client.bulkActions().async().validate("configuredSpaceId", "configuredEnvironmentId", payload, callback)
-        }.value
+        val payload = CMAPayload().setEntities(CMAEntities().setItems(emptyList())) // Setup payload as needed
+        val result = assertTestCallback(client.bulkActions().async()
+            .validate(
+                "configuredSpaceId",
+                "configuredEnvironmentId",
+                payload, TestCallback()) as TestCallback)!!
 
         assertNotNull(result)
-        assertEquals("BulkActionId", result.id)
+        assertEquals("bulk_action", result.action)
 
         val recordedRequest = server.takeRequest()
         assertEquals("POST", recordedRequest.method)

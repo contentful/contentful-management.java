@@ -75,8 +75,8 @@ public class ModuleBulkActions extends AbsModule<ServiceBulkActions> {
    * @throws IllegalArgumentException if spaceId's space id is null.
    * @throws IllegalArgumentException if payload's id is null.
    */
-  public CMABulkAction publish(String environmentId,
-                             String spaceId,
+  public CMABulkAction publish(String spaceId,
+                                String environmentId,
                                CMAPayload payload) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(payload, "payload");
@@ -91,8 +91,8 @@ public class ModuleBulkActions extends AbsModule<ServiceBulkActions> {
    * @throws IllegalArgumentException if spaceId's space id is null.
    * @throws IllegalArgumentException if payload's id is null.
    */
-  public CMABulkAction unpublish(String environmentId,
-                               String spaceId,
+  public CMABulkAction unpublish(String spaceId,
+                                 String environmentId,
                                CMAPayload payload) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(payload, "payload");
@@ -108,8 +108,8 @@ public class ModuleBulkActions extends AbsModule<ServiceBulkActions> {
    * @throws IllegalArgumentException if spaceId's space id is null.
    * @throws IllegalArgumentException if payload's id is null.
    */
-  public CMABulkAction validate(String environmentId,
-                                 String spaceId,
+  public CMABulkAction validate(String spaceId,
+                                String environmentId,
                                  CMAPayload payload) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(payload, "payload");
