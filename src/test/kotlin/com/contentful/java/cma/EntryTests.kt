@@ -199,7 +199,6 @@ class EntryTests {
         val entry = CMAEntry()
             .setField("fid1", "en-US", "value1")
             .setField("fid2", "en-US", "value2")
-
         val metadata = CMAMetadata()
         val tag = CMATag()
         tag.system.setType(CMAType.Link).setLinkType(CMAType.Tag).setId("tag1")
@@ -209,7 +208,6 @@ class EntryTests {
         val result = assertTestCallback(client!!.entries()
             .async()
             .create("spaceid", "master", "ctid", entry, TestCallback()) as TestCallback)!!
-
         assertEquals(2, result.fields.size)
 
         val entries = result.fields.entries.toList()
