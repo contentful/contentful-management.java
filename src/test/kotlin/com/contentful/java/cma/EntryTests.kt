@@ -213,8 +213,8 @@ class EntryTests {
         assertEquals(2, result.fields.size)
 
         val entries = result.fields.entries.toList()
-        assertEquals("id1", entries[0].key)
-        assertEquals("id2", entries[1].key)
+        assertEquals("fid1", entries[0].key)
+        assertEquals("fid2", entries[1].key)
 
         assertEquals("value1", entries[0].value["en-US"])
         assertEquals("value2", entries[1].value["en-US"])

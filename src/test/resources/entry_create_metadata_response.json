@@ -11,10 +11,10 @@
     ]
   },
   "fields": {
-    "id1": {
+    "fid1": {
       "en-US": "value1"
     },
-    "id2": {
+    "fid2": {
       "en-US": "value2"
     }
   },
