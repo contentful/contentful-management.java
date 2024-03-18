@@ -19,7 +19,11 @@ package com.contentful.java.cma
 import com.contentful.java.cma.lib.ModuleTestUtils
 import com.contentful.java.cma.lib.TestCallback
 import com.contentful.java.cma.lib.TestUtils
-import com.contentful.java.cma.model.*
+import com.contentful.java.cma.model.CMAEntry
+import com.contentful.java.cma.model.CMAHttpException
+import com.contentful.java.cma.model.CMAMetadata
+import com.contentful.java.cma.model.CMATag
+import com.contentful.java.cma.model.CMAType
 import com.google.gson.Gson
 import okhttp3.HttpUrl
 import okhttp3.mockwebserver.MockResponse
