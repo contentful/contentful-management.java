@@ -2,6 +2,7 @@ package com.contentful.java.cma.gson;
 
 import com.contentful.java.cma.model.CMAAsset;
 import com.contentful.java.cma.model.CMAEntry;
+import com.contentful.java.cma.model.CMAMetadata;
 import com.contentful.java.cma.model.CMAResource;
 import com.contentful.java.cma.model.CMASystem;
 import com.contentful.java.cma.model.CMAType;
@@ -58,6 +59,11 @@ public class EntrySerializer implements JsonSerializer<CMAEntry>, JsonDeserializ
 
     JsonObject result = new JsonObject();
     result.add("fields", fields);
+
+    CMAMetadata metadata = src.getMetadata();
+    if (metadata != null) {
+      result.add("metadata", context.serialize(metadata));
+    }
 
     final CMASystem sys = src.getSystem();
     if (sys != null) {
