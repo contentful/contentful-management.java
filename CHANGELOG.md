@@ -4,7 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Version [3.4.11] - [2024-03-19]
 - Changed: feat: https://github.com/contentful/contentful-management.java/issues/173
-- 
+
 ## Version [3.4.10] - [2024-03-12]
 - Changed: feat: https://github.com/contentful/contentful-management.java/issues/155
 
