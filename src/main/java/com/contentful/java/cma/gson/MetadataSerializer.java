@@ -15,7 +15,7 @@ import java.util.List;
 
 public class MetadataSerializer implements JsonSerializer<CMAMetadata> {
     @Override
-    public JsonElement serialize(CMAMetadata src, Type typeOfSrc, JsonSerializationContext context) {
+    public JsonElement serialize(CMAMetadata src, Type typeOfSrc, JsonSerializationContext ctx) {
         final JsonObject result = new JsonObject();
         result.add("tags", serializeTags(src.getTags()));
         return result;
