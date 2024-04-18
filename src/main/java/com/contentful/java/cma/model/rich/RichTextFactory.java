@@ -186,6 +186,14 @@ public class RichTextFactory {
         new BlockResolver<>(CMARichOrderedList::new));
     RESOLVER_MAP.put(new CMARichUnorderedList().getNodeType(),
         new BlockResolver<>(CMARichUnorderedList::new));
+    RESOLVER_MAP.put(new CMARichTable().getNodeType(),
+            new BlockResolver<>(CMARichTable::new));
+    RESOLVER_MAP.put(new CMARichTableCell().getNodeType(),
+            new BlockResolver<>(CMARichTableCell::new));
+    RESOLVER_MAP.put(new CMARichTableHeaderCell().getNodeType(),
+            new BlockResolver<>(CMARichTableHeaderCell::new));
+    RESOLVER_MAP.put(new CMARichTableRow().getNodeType(),
+            new BlockResolver<>(CMARichTableRow::new));
     RESOLVER_MAP.put(new CMARichHyperLink().getNodeType(),
         new BlockAndDataResolver<>(CMARichHyperLink::new, "data"));
     RESOLVER_MAP.put(new CMARichHyperLink(new CMALink(CMAType.Entry)).getNodeType(),
