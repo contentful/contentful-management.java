@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Version [3.4.12] - [2024-04-19]
+- Changed: added support for rich text tables
+
 ## Version [3.4.11] - [2024-03-19]
 - Changed: feat: https://github.com/contentful/contentful-management.java/issues/173
 
@@ -202,6 +205,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 Initial release.
 
 [unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-3.3.3...HEAD
+[3.4.12]: https://github.com/contentful/contentful-management.java/compare/v3.5.11...v3.4.12
 [3.4.11]: https://github.com/contentful/contentful-management.java/compare/v3.4.10...v3.4.11
 [3.4.10]: https://github.com/contentful/contentful-management.java/compare/v3.4.9...v3.4.10
 [3.4.9]: https://github.com/contentful/contentful-management.java/compare/v3.4.8...v3.4.9
