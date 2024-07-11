@@ -109,7 +109,7 @@
         <module name="IllegalInstantiation"/>
         <module name="InnerAssignment"/>
         <module name="MagicNumber">
-            <property name="ignoreNumbers" value="-1,0,1,2,10,100,255,16777215"/>
+            <property name="ignoreNumbers" value="-1,0,1,2,10,100,255,1024,16777215"/>
         </module>
         <module name="MissingSwitchDefault"/>
         <module name="SimplifyBooleanExpression"/>

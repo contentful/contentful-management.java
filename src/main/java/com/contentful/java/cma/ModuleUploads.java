@@ -73,7 +73,7 @@ public class ModuleUploads extends AbsModule<ServiceUploads> {
    */
   static byte[] readAllBytes(InputStream stream) throws IOException {
     int bytesRead = 0;
-    byte[] currentChunk = new byte[255];
+    byte[] currentChunk = new byte[1024];
     final List<byte[]> chunks = new ArrayList<byte[]>();
     while ((bytesRead = stream.read(currentChunk)) != -1) {
       chunks.add(copyOf(currentChunk, bytesRead));
