@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Version [3.4.13] - [2024-07-11]
+- Changed: increased chunk size when uploading files
+- 
 ## Version [3.4.12] - [2024-04-19]
 - Changed: added support for rich text tables
 
@@ -205,6 +208,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 Initial release.
 
 [unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-3.3.3...HEAD
+[3.4.13]: https://github.com/contentful/contentful-management.java/compare/v3.5.12...v3.4.13
 [3.4.12]: https://github.com/contentful/contentful-management.java/compare/v3.5.11...v3.4.12
 [3.4.11]: https://github.com/contentful/contentful-management.java/compare/v3.4.10...v3.4.11
 [3.4.10]: https://github.com/contentful/contentful-management.java/compare/v3.4.9...v3.4.10
