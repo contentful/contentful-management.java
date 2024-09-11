@@ -54,7 +54,6 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-
 import static com.contentful.java.cma.Constants.DEFAULT_CONTENT_TYPE;
 import static com.contentful.java.cma.Constants.OCTET_STREAM_CONTENT_TYPE;
 import static com.contentful.java.cma.Logger.Level.NONE;
@@ -96,6 +95,7 @@ public class CMAClient {
   private final ModuleUploads moduleUploads;
   private final ModuleUsers moduleUsers;
   private final ModuleWebhooks moduleWebhooks;
+  private final ModuleScheduledActions moduleScheduledActions;
 
   // Executors
   Executor callbackExecutor;
@@ -176,6 +176,9 @@ public class CMAClient {
     this.moduleUsers = new ModuleUsers(retrofit, callbackExecutor, configured);
     this.moduleWebhooks = new ModuleWebhooks(retrofit, callbackExecutor, spaceId, environmentId,
         configured);
+    this.moduleScheduledActions = new ModuleScheduledActions(retrofit, callbackExecutor,
+        spaceId, environmentId, configured);
+
   }
 
   /**
@@ -363,6 +366,13 @@ public class CMAClient {
    */
   public ModuleBulkActions bulkActions() {
     return moduleBulkActions;
+  }
+
+  /**
+   * @return the Scheduled Actions module.
+   */
+  public ModuleScheduledActions scheduledActions() {
+    return moduleScheduledActions;
   }
 
 

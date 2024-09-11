@@ -24,6 +24,7 @@ public enum CMAType {
   PersonalAccessToken,
   PreviewApiKey,
   Role,
+  ScheduledAction,
   Snapshot,
   Space,
   SpaceMembership,

@@ -74,6 +74,15 @@ public class CMASystem {
   String urn;
 
   private CMABulkStatus bulkActionStatus;
+  private CMAScheduledActionStatus scheduledActionStatus;
+
+  public CMAScheduledActionStatus getScheduledActionStatus() {
+    return scheduledActionStatus;
+  }
+
+  public void setScheduledActionStatus(CMAScheduledActionStatus scheduledActionStatus) {
+    this.scheduledActionStatus = scheduledActionStatus;
+  }
 
   public CMAVisibility getVisibility() {
     return visibility;
