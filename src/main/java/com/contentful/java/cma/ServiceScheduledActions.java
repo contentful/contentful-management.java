@@ -22,7 +22,9 @@ import io.reactivex.Flowable;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -33,7 +35,6 @@ interface ServiceScheduledActions {
   @GET("spaces/{space}/scheduled_actions")
   Flowable<CMAArray<CMAScheduledAction>> fetchAll(
           @Path("space") String spaceId,
-          @Query("entity.sys.id") String entityId,
           @Query("environment.sys.id") String environmentId
   );
 
@@ -45,8 +46,9 @@ interface ServiceScheduledActions {
           @Query("environment.sys.id") String environmentId
   );
 
-  @POST("spaces/{space}/scheduled_actions/{scheduled_action_id}")
+  @PUT("spaces/{space}/scheduled_actions/{scheduled_action_id}")
   Flowable<CMAScheduledAction> update(
+          @Header("X-Contentful-Version") Integer version,
           @Path("space") String spaceId,
           @Path("scheduled_action_id") String scheduledActionId,
           @Body CMAScheduledAction scheduledAction

@@ -5,6 +5,7 @@ import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMALink
 import com.contentful.java.cma.model.CMAScheduledAction
 import com.contentful.java.cma.model.CMAScheduledFor
+import com.contentful.java.cma.model.CMAType
 import com.google.gson.Gson
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -50,7 +51,7 @@ class ScheduledActionsTests {
         val responseBody = TestUtils.fileToString("scheduled_action_create_response.json")
         server.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
-        val scheduledAction = CMAScheduledAction().apply {
+        val scheduledAction = CMAScheduledAction(CMAType.ScheduledAction).apply {
             entity = CMALink().setId("entitiyId")
             action = "publish"
             environment = CMALink().setId("enivronmentId")
@@ -98,7 +99,7 @@ class ScheduledActionsTests {
         val responseBody = TestUtils.fileToString("scheduled_action_update_response.json")
         server.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
-        val scheduledAction = CMAScheduledAction().apply {
+        val scheduledAction = CMAScheduledAction(CMAType.ScheduledAction).apply {
             entity = CMALink().setId("entitiyId")
             action = "publish"
             environment = CMALink().setId("enivronmentId")
@@ -106,6 +107,7 @@ class ScheduledActionsTests {
                 datetime = "2022-01-01T12:00:00.000Z"
                 timezone = "Europe/Berlin"
             }
+            system.version = 1
         }
 
         val result = assertTestCallback(client.scheduledActions().async()
@@ -117,7 +119,7 @@ class ScheduledActionsTests {
 
         // Check request details
         val recordedRequest = server.takeRequest()
-        assertEquals("POST", recordedRequest.method)
+        assertEquals("PUT", recordedRequest.method)
         assertEquals("/spaces/configuredSpaceId/scheduled_actions/3A13SXSDwO8c46NrjigFYT", recordedRequest.path)
     }
 

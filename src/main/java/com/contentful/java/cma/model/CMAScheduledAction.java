@@ -27,6 +27,10 @@ public class CMAScheduledAction extends CMAResource {
 
   String action;
 
+  public CMAScheduledAction(CMAType type) {
+    super(type);
+  }
+
   public CMALink getEntity() {
     return entity;
   }
@@ -51,9 +55,6 @@ public class CMAScheduledAction extends CMAResource {
     this.scheduledFor = scheduledFor;
   }
 
-  public CMAScheduledAction() {
-    super(CMAType.ScheduledAction);
-  }
 
   public String getAction() {
     return action;

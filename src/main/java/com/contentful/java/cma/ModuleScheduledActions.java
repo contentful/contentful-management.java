@@ -19,9 +19,9 @@ package com.contentful.java.cma;
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAScheduledAction;
 
-import java.util.Map;
 import java.util.concurrent.Executor;
 
+import com.contentful.java.cma.model.CMASystem;
 import retrofit2.Retrofit;
 
 /**
@@ -56,41 +56,28 @@ public class ModuleScheduledActions extends AbsModule<ServiceScheduledActions> {
   /**
    * Fetch all scheduled actions.
    *
-   * @param entityId    Entity ID
-   * @param query       Query parameters.
    * @return {@link CMAArray} result instance
    * @throws IllegalArgumentException if spaceId or environmentId is null.
    */
-  public CMAArray<CMAScheduledAction> fetchAll(
-          String entityId,
-          Map<String, String> query) {
-    return fetchAll(spaceId, entityId, environmentId, query);
+  public CMAArray<CMAScheduledAction> fetchAll() {
+    return fetchAll(spaceId, environmentId);
   }
 
   /**
    * Fetch all scheduled actions in the given space and environment.
    *
    * @param spaceId       Space ID
-   * @param entityId      Entity ID
    * @param environmentId Environment ID
-   * @param query         Query parameters.
    * @return {@link CMAArray} of scheduled actions matching the query.
    * @throws IllegalArgumentException if spaceId, entityId, or environmentId is null.
    */
   public CMAArray<CMAScheduledAction> fetchAll(
           String spaceId,
-          String entityId,
-          String environmentId,
-          Map<String, String> query) {
+          String environmentId) {
     assertNotNull(spaceId, "spaceId");
-    assertNotNull(entityId, "entityId");
     assertNotNull(environmentId, "environmentId");
 
-    // Adding entityId and environmentId to the query parameters
-    query.put("entity.sys.id", entityId);
-    query.put("environment.sys.id", environmentId);
-
-    return service.fetchAll(spaceId, entityId, environmentId).blockingFirst();
+    return service.fetchAll(spaceId, environmentId).blockingFirst();
   }
 
   /**
@@ -137,8 +124,14 @@ public class ModuleScheduledActions extends AbsModule<ServiceScheduledActions> {
    */
   public CMAScheduledAction create(CMAScheduledAction scheduledAction) {
     assertNotNull(scheduledAction, "scheduledAction");
-
-    return service.create(spaceId, scheduledAction).blockingFirst();
+    scheduledAction.setSystem(null);
+    final CMASystem system = scheduledAction.getSystem();
+    scheduledAction.setSystem(null);
+    try {
+      return service.create(spaceId, scheduledAction).blockingFirst();
+    } finally {
+      scheduledAction.setSystem(system);
+    }
   }
 
   /**
@@ -150,8 +143,14 @@ public class ModuleScheduledActions extends AbsModule<ServiceScheduledActions> {
   public CMAScheduledAction update(String scheduledActionId, CMAScheduledAction scheduledAction) {
     assertNotNull(scheduledActionId, "scheduledActionId");
     assertNotNull(scheduledAction, "scheduledAction");
-
-    return service.update(spaceId, scheduledActionId, scheduledAction).blockingFirst();
+    final Integer version = getVersionOrThrow(scheduledAction, "publish");
+    final CMASystem system = scheduledAction.getSystem();
+    scheduledAction.setSystem(null);
+    try {
+      return service.update(version, spaceId, scheduledActionId, scheduledAction).blockingFirst();
+    } finally {
+      scheduledAction.setSystem(system);
+    }
   }
 
   /**
@@ -180,19 +179,15 @@ public class ModuleScheduledActions extends AbsModule<ServiceScheduledActions> {
     /**
      * Fetch all scheduled actions asynchronously.
      *
-     * @param entityId Entity ID
-     * @param query    Query parameters.
      * @param callback Callback
      * @return the given CMACallback instance
      * @throws IllegalArgumentException if spaceId or environmentId is null.
      */
     public CMACallback<CMAArray<CMAScheduledAction>> fetchAll(
-            final String entityId,
-            final Map<String, String> query,
             CMACallback<CMAArray<CMAScheduledAction>> callback) {
       return defer(new RxExtensions.DefFunc<CMAArray<CMAScheduledAction>>() {
         @Override CMAArray<CMAScheduledAction> method() {
-          return ModuleScheduledActions.this.fetchAll(entityId, query);
+          return ModuleScheduledActions.this.fetchAll();
         }
       }, callback);
     }
