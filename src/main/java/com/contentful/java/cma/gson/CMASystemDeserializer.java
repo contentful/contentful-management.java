@@ -2,6 +2,7 @@ package com.contentful.java.cma.gson;
 
 import com.contentful.java.cma.model.CMABulkStatus;
 import com.contentful.java.cma.model.CMALink;
+import com.contentful.java.cma.model.CMAScheduledActionStatus;
 import com.contentful.java.cma.model.CMASystem;
 import com.contentful.java.cma.model.CMAType;
 import com.contentful.java.cma.model.CMAVisibility;
@@ -87,13 +88,24 @@ public class CMASystemDeserializer implements JsonDeserializer<CMASystem> {
         }
         if (sysObject.has("status")) {
             JsonElement statusElement = sysObject.get("status");
+
             if (statusElement.isJsonObject()) {
-                system.setEnvironmentalStatus(context.deserialize(sysObject.get("status"),
-                        CMALink.class));
+                system.setEnvironmentalStatus(context.deserialize(
+                        sysObject.get("status"), CMALink.class));
             } else if (statusElement.isJsonPrimitive()) {
                 String statusStr = statusElement.getAsString();
-                CMABulkStatus bulkStatus = CMABulkStatus.from(statusStr);
-                system.setBulkActionStatus(bulkStatus);
+                CMAScheduledActionStatus scheduledActionStatus = CMAScheduledActionStatus.from(
+                        statusStr);
+                if (scheduledActionStatus != null) {
+                    system.setScheduledActionStatus(scheduledActionStatus);
+                } else {
+                    CMABulkStatus bulkStatus = CMABulkStatus.from(statusStr);
+                    if (bulkStatus != null) {
+                        system.setBulkActionStatus(bulkStatus);
+                    } else {
+                        throw new IllegalArgumentException("Unknown status: " + statusStr);
+                    }
+                }
             }
         }
 

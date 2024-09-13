@@ -38,6 +38,8 @@ public class CMAArray<T extends CMAResource> extends CMAResource {
   // Limit
   int limit;
 
+  CMAPages pages;
+
   /**
    * Create a new Asset, setting type and create a system.
    */
@@ -80,6 +82,14 @@ public class CMAArray<T extends CMAResource> extends CMAResource {
     return includes;
   }
 
+  public CMAPages getPages() {
+    return pages;
+  }
+
+  public void setPages(CMAPages pages) {
+    this.pages = pages;
+  }
+
   /**
    * @return a human readable string, representing the object.
    */
@@ -92,4 +102,6 @@ public class CMAArray<T extends CMAResource> extends CMAResource {
         + "total = " + getTotal() + " "
         + "}";
   }
+
+
 }

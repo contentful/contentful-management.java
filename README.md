@@ -69,6 +69,7 @@ Core Features
   * [PersonalAccessTokens](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/personal-access-tokens)
   * [PreviewApiKeys](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/api-keys/preview-api-keys-collection)
   * [Roles](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/roles)
+  * [Scheduled actions](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/scheduled-actions)
   * [SpaceMemberships](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/space-memberships)
   * [Spaces](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/spaces)
   * [UiExtensions](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/ui-extensions)

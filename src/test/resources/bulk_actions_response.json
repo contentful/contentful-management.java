@@ -2,7 +2,7 @@
   "sys": {
     "id": "<bulk_action_id>",
     "type": "BulkAction",
-    "status": "<status>",
+    "status": "inProgress",
     "createdBy": {
       "sys": {
         "type": "Link",
