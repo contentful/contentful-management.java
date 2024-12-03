@@ -24,7 +24,7 @@ import com.contentful.java.cma.model.CMAAssetFile
 import com.contentful.java.cma.model.CMALink
 import com.contentful.java.cma.model.CMAType
 import com.google.gson.Gson
-import okhttp3.HttpUrl
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
@@ -235,7 +235,7 @@ class AssetTests {
 
         // Request
         val request = server!!.takeRequest()
-        val url = HttpUrl.parse(server!!.url(request.path).toString())!!
+        val url = server!!.url(request.path!!).toString().toHttpUrlOrNull()!!
         assertEquals("1", url.queryParameter("skip"))
         assertEquals("2", url.queryParameter("limit"))
         assertEquals("foo", url.queryParameter("content_type"))
@@ -253,7 +253,7 @@ class AssetTests {
 
         // Request
         val request = server!!.takeRequest()
-        val url = HttpUrl.parse(server!!.url(request.path).toString())!!
+        val url = server!!.url(request.path!!).toString().toHttpUrlOrNull()!!
         assertEquals("1", url.queryParameter("skip"))
         assertEquals("2", url.queryParameter("limit"))
         assertEquals("foo", url.queryParameter("content_type"))
@@ -435,7 +435,7 @@ class AssetTests {
     fun testRetainsSysOnNetworkError() {
         val badClient = CMAClient.Builder()
                 .setAccessToken("accesstoken")
-                .setCoreCallFactory { throw IOException(it.url().toString(), IOException()) }
+                .setCoreCallFactory { throw IOException(it.url.toString(), IOException()) }
                 .build()
 
         val asset = CMAAsset().setVersion(31337)
