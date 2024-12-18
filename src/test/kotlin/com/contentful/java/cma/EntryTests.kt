@@ -536,6 +536,37 @@ class EntryTests {
     }
 
     @test
+    fun testFetchAllSnapshotsWithQuery() {
+        val responseBody = TestUtils.fileToString("entry_snapshots_get_all_with_query.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val entry = CMAEntry()
+            .setId("entryId")
+            .setSpaceId("spaceId")
+            .setEnvironmentId("master")
+
+        val query = hashMapOf(
+            Pair("limit", "100"),
+            Pair("skip", "0")
+        )
+
+        val result = assertTestCallback(client!!.entries().async().fetchAllSnapshotsWithQuery(
+            entry, query, TestCallback()) as TestCallback)!!
+
+        val items = result.items
+        assertEquals(2, items.size)
+
+        val first = items[0]
+        assertEquals(CMAType.Snapshot, first.system.type)
+        assertTrue(first.snapshot is CMAEntry)
+
+        val recordedRequest = server!!.takeRequest()
+        val url = HttpUrl.parse(server!!.url(recordedRequest.path).toString())!!
+        assertEquals("100", url.queryParameter("limit"))
+        assertEquals("0", url.queryParameter("skip"))
+    }
+
+    @test
     fun testFetchOneSnapshot() {
         val responseBody = TestUtils.fileToString("entry_snapshots_get_one.json")
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
