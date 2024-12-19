@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Version [3.4.16] - [2024-12-16]
+- Changed: added fetchAllSnapshotsWithQuery method with query support
+
 ## Version [3.4.15] - [2024-09-16]
 - Changed: added scheduled actions API support
   
@@ -214,6 +217,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 Initial release.
 
 [unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-3.3.3...HEAD
+[3.4.16]: https://github.com/contentful/contentful-management.java/compare/v3.4.15...v3.4.16
 [3.4.15]: https://github.com/contentful/contentful-management.java/compare/v3.4.14...v3.4.15
 [3.4.14]: https://github.com/contentful/contentful-management.java/compare/v3.4.13...v3.4.14
 [3.4.13]: https://github.com/contentful/contentful-management.java/compare/v3.5.12...v3.4.13

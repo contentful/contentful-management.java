@@ -93,7 +93,14 @@ interface ServiceEntries {
   Flowable<CMAArray<CMASnapshot>> fetchAllSnapshots(
       @Path("space") String spaceId,
       @Path("environment") String environmentId,
-      @Path("entry") String entryId);
+      @Path("entry") String entryId,
+      @QueryMap Map<String, String> query);
+
+  @GET("spaces/{space}/environments/{environment}/entries/{entry}/snapshots")
+  Flowable<CMAArray<CMASnapshot>> fetchAllSnapshots(
+          @Path("space") String spaceId,
+          @Path("environment") String environmentId,
+          @Path("entry") String entryId);
 
   @PUT("spaces/{space}/environments/{environment}/entries/{entry}/published")
   Flowable<CMAEntry> publish(
