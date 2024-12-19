@@ -159,7 +159,7 @@ class ModelTests {
                 .build()
 
         assertEquals("FAILED \n"
-                + "\tRequest{method=GET, url=https://example.com/, tags={}}\n"
+                + "\tRequest{method=GET, url=https://example.com/}\n"
                 + "\t↳ Header{}\n"
                 + "\tResponse{"
                 + "protocol=http/1.1, code=200, message=, url=https://example.com/}\n"

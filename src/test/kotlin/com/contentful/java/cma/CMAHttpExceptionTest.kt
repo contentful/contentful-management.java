@@ -4,6 +4,8 @@ import com.contentful.java.cma.lib.TestUtils
 import com.contentful.java.cma.model.CMAHttpException
 import com.google.gson.Gson
 import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.ResponseBody.Companion.toResponseBody
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
 import org.junit.Before
@@ -253,7 +255,7 @@ class CMAHttpExceptionTest {
         return Response.Builder()
                 .request(request)
                 .body(
-                        ResponseBody.create(MediaType.parse("application/json"), body)
+                    body.toResponseBody("application/json".toMediaTypeOrNull())
                 )
                 .header(HEADER_RATE_LIMIT_HOUR_LIMIT, "1")
                 .header(HEADER_RATE_LIMIT_HOUR_REMAINING, "2")

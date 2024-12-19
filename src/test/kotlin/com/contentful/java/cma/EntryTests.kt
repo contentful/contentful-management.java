@@ -25,7 +25,7 @@ import com.contentful.java.cma.model.CMAMetadata
 import com.contentful.java.cma.model.CMATag
 import com.contentful.java.cma.model.CMAType
 import com.google.gson.Gson
-import okhttp3.HttpUrl
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
@@ -298,7 +298,7 @@ class EntryTests {
 
         // Request
         val request = server!!.takeRequest()
-        val url = HttpUrl.parse(server!!.url(request.path).toString())!!
+        val url = server!!.url(request.path!!).toString().toHttpUrlOrNull()!!
         assertEquals("1", url.queryParameter("skip"))
         assertEquals("2", url.queryParameter("limit"))
         assertEquals("foo", url.queryParameter("content_type"))
@@ -452,7 +452,7 @@ class EntryTests {
     fun testRetainsSysOnNetworkError() {
         val badClient = CMAClient.Builder()
                 .setAccessToken("accesstoken")
-                .setCoreCallFactory { throw RuntimeException(it.url().toString(), IOException()) }
+                .setCoreCallFactory { throw RuntimeException(it.url.toString(), IOException()) }
                 .build()
 
         val entry = CMAEntry().setVersion(31337)
