@@ -25,6 +25,6 @@ import retrofit2.http.GET;
  * Users Service.
  */
 interface ServiceUsers {
-  @GET("/users/me")
+  @GET("users/me")
   Flowable<CMAUser> fetchMe();
 }

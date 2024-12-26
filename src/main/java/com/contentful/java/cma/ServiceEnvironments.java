@@ -32,48 +32,48 @@ import retrofit2.http.Path;
  * Environments Service.
  */
 interface ServiceEnvironments {
-  @POST("/spaces/{spaceId}/environments")
+  @POST("spaces/{spaceId}/environments")
   Flowable<CMAEnvironment> create(
       @Path("spaceId") String spaceId,
       @Body CMAEnvironment environment);
 
-  @POST("/spaces/{spaceId}/environments")
+  @POST("spaces/{spaceId}/environments")
   Flowable<CMAEnvironment> clone(
       @Path("spaceId") String spaceId,
       @Header("X-Contentful-Source-Environment") String sourceEnvironmentId,
       @Body CMAEnvironment environment);
 
-  @PUT("/spaces/{spaceId}/environments/{environmentId}")
+  @PUT("spaces/{spaceId}/environments/{environmentId}")
   Flowable<CMAEnvironment> create(
       @Path("spaceId") String spaceId,
       @Path("environmentId") String environmentId,
       @Body CMAEnvironment environment);
 
-  @PUT("/spaces/{spaceId}/environments/{environmentId}")
+  @PUT("spaces/{spaceId}/environments/{environmentId}")
   Flowable<CMAEnvironment> clone(
       @Path("spaceId") String spaceId,
       @Header("X-Contentful-Source-Environment") String sourceEnvironmentId,
       @Path("environmentId") String environmentId,
       @Body CMAEnvironment environment);
 
-  @DELETE("/spaces/{spaceId}/environments/{environmentId}")
+  @DELETE("spaces/{spaceId}/environments/{environmentId}")
   Flowable<Response<Void>> delete(
       @Header("X-Contentful-Version") Integer version,
       @Path("spaceId") String spaceId,
       @Path("environmentId") String environmentId);
 
-  @GET("/spaces/{spaceId}/environments")
+  @GET("spaces/{spaceId}/environments")
   Flowable<CMAArray<CMAEnvironment>> fetchAll(
       @Path("spaceId") String spaceId
   );
 
-  @GET("/spaces/{spaceId}/environments/{environmentId}")
+  @GET("spaces/{spaceId}/environments/{environmentId}")
   Flowable<CMAEnvironment> fetchOne(
       @Path("spaceId") String spaceId,
       @Path("environmentId") String environmentId
   );
 
-  @PUT("/spaces/{spaceId}/environments/{environmentId}")
+  @PUT("spaces/{spaceId}/environments/{environmentId}")
   Flowable<CMAEnvironment> update(
       @Header("X-Contentful-Version") Integer version,
       @Path("spaceId") String spaceId,

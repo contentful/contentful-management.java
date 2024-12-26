@@ -23,6 +23,8 @@ import com.contentful.java.cma.model.CMAEntry
 import com.contentful.java.cma.model.CMAEntryPatch
 import com.contentful.java.cma.model.CMAHttpException
 import com.contentful.java.cma.model.CMALink
+import com.contentful.java.cma.model.CMAMetadata
+import com.contentful.java.cma.model.CMATag
 import com.contentful.java.cma.model.CMAType
 import com.contentful.java.cma.model.rich.CMARichDocument
 import com.contentful.java.cma.model.rich.CMARichEmbeddedLink
@@ -195,6 +197,46 @@ class EntryTests {
     }
 
     @test
+    fun testCreateWithMetadata() {
+        val requestBody = TestUtils.fileToString("entry_create_metadata_request.json")
+        val responseBody = TestUtils.fileToString("entry_create_metadata_response.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val entry = CMAEntry()
+            .setField("fid1", "en-US", "value1")
+            .setField("fid2", "en-US", "value2")
+        val metadata = CMAMetadata()
+        val tag = CMATag()
+        tag.system.setType(CMAType.Link).setLinkType(CMAType.Tag).setId("tag1")
+        metadata.tags = mutableListOf(tag)
+        entry.metadata = metadata
+
+        val result = assertTestCallback(client!!.entries()
+            .async()
+            .create("spaceid", "master", "ctid", entry, TestCallback()) as TestCallback)!!
+        assertEquals(2, result.fields.size)
+
+        val entries = result.fields.entries.toList()
+        assertEquals("fid1", entries[0].key)
+        assertEquals("fid2", entries[1].key)
+
+        assertEquals("value1", entries[0].value["en-US"])
+        assertEquals("value2", entries[1].value["en-US"])
+
+        val tags = result.metadata.tags.toList()
+        assertEquals(CMAType.Link, tags[0].system.type)
+        assertEquals(CMAType.Tag, tags[0].system.linkType)
+        assertEquals("tag1", tags[0].system.id)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("POST", recordedRequest.method)
+        assertEquals("/spaces/spaceid/environments/master/entries", recordedRequest.path)
+        assertEqualJsons(requestBody, recordedRequest.body.readUtf8(), false)
+        assertEquals("ctid", recordedRequest.getHeader("X-Contentful-Content-Type"))
+    }
+
+    @test
     fun testDelete() {
         val requestBody = ""
         server!!.enqueue(MockResponse().setResponseCode(204).setBody(requestBody))
@@ -282,7 +324,7 @@ class EntryTests {
         val request = server!!.takeRequest()
         assertEquals("GET", request.method)
         assertEquals("/spaces/configuredSpaceId/environments/configuredEnvironmentId/entries"
-                + "?limit=2&content_type=foo&skip=1",
+                + "?limit=2&skip=1&content_type=foo",
                 request.path)
     }
 
@@ -622,6 +664,37 @@ class EntryTests {
         val recordedRequest = server!!.takeRequest()
         assertEquals("GET", recordedRequest.method)
         assertEquals("/spaces/spaceId/environments/master/entries/entryId/snapshots", recordedRequest.path)
+    }
+
+    @test
+    fun testFetchAllSnapshotsWithQuery() {
+        val responseBody = TestUtils.fileToString("entry_snapshots_get_all_with_query.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
+
+        val entry = CMAEntry()
+            .setId("entryId")
+            .setSpaceId("spaceId")
+            .setEnvironmentId("master")
+
+        val query = hashMapOf(
+            Pair("limit", "100"),
+            Pair("skip", "0")
+        )
+
+        val result = assertTestCallback(client!!.entries().async().fetchAllSnapshotsWithQuery(
+            entry, query, TestCallback()) as TestCallback)!!
+
+        val items = result.items
+        assertEquals(2, items.size)
+
+        val first = items[0]
+        assertEquals(CMAType.Snapshot, first.system.type)
+        assertTrue(first.snapshot is CMAEntry)
+
+        val recordedRequest = server!!.takeRequest()
+        val url = HttpUrl.parse(server!!.url(recordedRequest.path).toString())!!
+        assertEquals("100", url.queryParameter("limit"))
+        assertEquals("0", url.queryParameter("skip"))
     }
 
     @test

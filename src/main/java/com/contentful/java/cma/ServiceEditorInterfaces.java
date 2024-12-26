@@ -29,14 +29,14 @@ import retrofit2.http.Path;
  * Editor Interfaces Service.
  */
 interface ServiceEditorInterfaces {
-  @GET("/spaces/{space}/environments/{environment}/content_types/{contentType}/editor_interface")
+  @GET("spaces/{space}/environments/{environment}/content_types/{contentType}/editor_interface")
   Flowable<CMAEditorInterface> fetchOne(
       @Path("space") String spaceId,
       @Path("environment") String environmentId,
       @Path("contentType") String contentTypeId
   );
 
-  @PUT("/spaces/{space}/environments/{environment}/content_types/{contentType}/editor_interface")
+  @PUT("spaces/{space}/environments/{environment}/content_types/{contentType}/editor_interface")
   Flowable<CMAEditorInterface> update(
       @Path("space") String spaceId,
       @Path("environment") String environmentId,

@@ -42,6 +42,12 @@ public class CMAField {
   // Validations
   List<Map<String, Object>> validations;
 
+  // Default value
+  protected Map<String, Object> defaultValue;
+
+  // Allowed resources
+  List<Map<String, Object>> allowedResources;
+
   // Array Items
   @SerializedName("items")
   HashMap<String, Object> arrayItems;
@@ -97,6 +103,22 @@ public class CMAField {
    */
   public CMAField setId(String id) {
     this.id = id;
+    return this;
+  }
+  /**
+   * @return the {@code defaultValue} attribute value as a {@code Map}.
+   */
+  public Map<String, Object> getDefaultValue() {
+    return defaultValue;
+  }
+  /**
+   * Sets the default value.
+   *
+   * @param defaultValue the defaultValue to be set
+   * @return this {@code CMAField} instance
+   */
+  public CMAField setDefaultValue(Map<String, Object> defaultValue) {
+    this.defaultValue = defaultValue;
     return this;
   }
 
@@ -172,6 +194,27 @@ public class CMAField {
     this.validations = validations;
     return this;
   }
+
+  /**
+   * @return a {@code List} of allowed resources.
+   */
+  public List<Map<String, Object>> getAllowedResources() {
+    return allowedResources;
+  }
+
+  /**
+   * Sets a {@code List} of allowed resources for this field.
+   *
+   * @param allowedResources allowed resources list
+   *                    Returns this {@code CMAField} instance
+   * @return this {@code CMAField} instance
+   */
+
+  public CMAField setAllowedResources(List<Map<String, Object>> allowedResources) {
+    this.allowedResources = allowedResources;
+    return this;
+  }
+
 
   /**
    * @return the {@code items} attribute value as a {@code Map}.

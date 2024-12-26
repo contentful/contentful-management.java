@@ -10,9 +10,11 @@ public enum CMAType {
   ApiKey,
   Array,
   Asset,
+  BulkAction,
   ContentType,
   EditorInterface,
   Entry,
+  Error,
   Environment,
   Link,
   Locale,
@@ -22,6 +24,7 @@ public enum CMAType {
   PersonalAccessToken,
   PreviewApiKey,
   Role,
+  ScheduledAction,
   Snapshot,
   Space,
   SpaceMembership,
@@ -32,5 +35,5 @@ public enum CMAType {
   Webhook,
   WebhookCallOverview,
   WebhookDefinition,
-  PreviewEnvironment
+  PreviewEnvironment;
 }

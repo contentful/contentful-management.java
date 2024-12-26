@@ -69,15 +69,19 @@ class ModelTests {
     @test
     fun testCMAAssetToString() {
         val asset = CMAAsset()
+        val metadata = CMAMetadata()
+        metadata.tags = listOf(CMATag().setName("tag"))
         asset
+                .setMetadata(metadata)
                 .fields
                 .localize("en-US")
                 .setDescription("description")
                 .setTitle("title")
 
         assertEquals("CMAAsset {CMAResource { system = CMASystem { type = Asset } }"
-                + "fields = CMAAsset.Fields {description = description, file = null, "
-                + "title = title}}",
+                + " fields = CMAAsset.Fields {description = description, file = null, "
+                + "title = title}"
+                + " metadata = CMAMetadata { tags = [CMATag { CMAResource { system = CMASystem { type = Tag } } name = tag }]}}",
                 asset.toString())
     }
 
@@ -132,7 +136,7 @@ class ModelTests {
         entry.id = "myid";
 
         assertEquals("CMAEntry { CMAResource { system = CMASystem { type = Entry, id = myid } } "
-                + "fields = {foo={en-US=bar}} }",
+                + "fields = {foo={en-US=bar}} metadata = null }",
                 entry.toString())
     }
 

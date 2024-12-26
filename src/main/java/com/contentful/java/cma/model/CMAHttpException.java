@@ -250,6 +250,7 @@ public class CMAHttpException extends RuntimeException {
    * @param response the response from the server to this faulty request.
    */
   public CMAHttpException(Request request, Response response) {
+    super(response.message());
     this.request = request;
     this.response = response;
 

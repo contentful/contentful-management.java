@@ -18,17 +18,72 @@ public class CMASystem {
   String id;
   CMAType linkType;
   String publishedAt;
+
+  public void setCreatedBy(CMALink createdBy) {
+    this.createdBy = createdBy;
+  }
+
+  public void setFirstPublishedAt(String firstPublishedAt) {
+    this.firstPublishedAt = firstPublishedAt;
+  }
+
+  public void setPublishedAt(String publishedAt) {
+    this.publishedAt = publishedAt;
+  }
+
+  public void setPublishedBy(CMALink publishedBy) {
+    this.publishedBy = publishedBy;
+  }
+
+  public void setPublishedCounter(Integer publishedCounter) {
+    this.publishedCounter = publishedCounter;
+  }
+
+  public void setPublishedVersion(Integer publishedVersion) {
+    this.publishedVersion = publishedVersion;
+  }
+
+  public void setUpdatedBy(CMALink updatedBy) {
+    this.updatedBy = updatedBy;
+  }
+
+  public void setOrganization(CMALink organization) {
+    this.organization = organization;
+  }
+
+  public void setArchivedVersion(Integer archivedVersion) {
+    this.archivedVersion = archivedVersion;
+  }
+
+
   CMALink publishedBy;
   Integer publishedCounter;
   Integer publishedVersion;
   CMALink space;
   CMALink environment;
+
+  public void setEnvironment(CMALink environment) {
+    this.environment = environment;
+  }
+
   CMAType type;
   String updatedAt;
   CMALink updatedBy;
   Integer version;
   CMAVisibility visibility;
   CMALink organization;
+  String urn;
+
+  private CMABulkStatus bulkActionStatus;
+  private CMAScheduledActionStatus scheduledActionStatus;
+
+  public CMAScheduledActionStatus getScheduledActionStatus() {
+    return scheduledActionStatus;
+  }
+
+  public void setScheduledActionStatus(CMAScheduledActionStatus scheduledActionStatus) {
+    this.scheduledActionStatus = scheduledActionStatus;
+  }
 
   public CMAVisibility getVisibility() {
     return visibility;
@@ -44,6 +99,15 @@ public class CMASystem {
 
   @SerializedName("status")
   CMALink environmentStatus;
+
+
+  public CMABulkStatus getBulkActionStatus() {
+    return bulkActionStatus;
+  }
+
+  public void setBulkActionStatus(CMABulkStatus bulkActionStatus) {
+    this.bulkActionStatus = bulkActionStatus;
+  }
 
   /**
    * @return the content type if this resource can have one.
@@ -182,6 +246,20 @@ public class CMASystem {
   }
 
   /**
+   * @return The identifier of the resource.
+   */
+  public String getUrn() {
+    return urn;
+  }
+
+  /**
+   * Updates the identifier of the resource.
+   */
+  public void setUrn(String urn) {
+    this.urn = urn;
+  }
+
+  /**
    * Update this type.
    * <p>
    * This method is especially usefull for creating new resources before uploading them.
@@ -259,6 +337,11 @@ public class CMASystem {
     return environmentStatus;
   }
 
+  public CMASystem setEnvironmentalStatus(CMALink status) {
+    this.environmentStatus = status;
+    return this;
+  }
+
   /**
    * @return a human readable string, representing the object.
    */
@@ -285,6 +368,7 @@ public class CMASystem {
     map.put("version", getVersion());
     map.put("status", getEnvironmentalStatus());
     map.put("visibility", getVisibility());
+    map.put("urn", getUrn());
 
     final StringBuilder builder = new StringBuilder("CMASystem { ");
     String separator = "";
@@ -303,4 +387,15 @@ public class CMASystem {
     builder.append(" }");
     return builder.toString();
   }
+
+  public void setCreatedAt(String createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  public void setUpdatedAt(String updatedAt) {
+    this.updatedAt = updatedAt;
+  }
+
+
+
 }

@@ -29,10 +29,10 @@ import retrofit2.http.QueryMap;
  * Organizations Service.
  */
 interface ServiceOrganizations {
-  @GET("/organizations")
+  @GET("organizations")
   Flowable<CMAArray<CMAOrganization>> fetchAll();
 
-  @GET("/organizations")
+  @GET("organizations")
   Flowable<CMAArray<CMAOrganization>> fetchAll(@QueryMap Map<String, String> query);
 }
 

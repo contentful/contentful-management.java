@@ -58,6 +58,7 @@ Core Features
 - Supported Endpoints
   * [ApiKeys](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/api-keys)
   * [Assets](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/assets)
+  * [Bulk actions](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/bulk-actions)
   * [ContentTypes](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/content-types)
   * [ContentTags](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/content-tags)
   * [EditorInterface](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/editor-interface)
@@ -68,6 +69,7 @@ Core Features
   * [PersonalAccessTokens](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/personal-access-tokens)
   * [PreviewApiKeys](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/api-keys/preview-api-keys-collection)
   * [Roles](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/roles)
+  * [Scheduled actions](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/scheduled-actions)
   * [SpaceMemberships](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/space-memberships)
   * [Spaces](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/spaces)
   * [UiExtensions](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/ui-extensions)
@@ -88,13 +90,13 @@ Install the Contentful dependency:
 <dependency>
   <groupId>com.contentful.java</groupId>
   <artifactId>cma-sdk</artifactId>
-  <version>3.4.2</version>
+  <version>3.4.16</version>
 </dependency>
 ```
 
 * _Gradle_
 ```groovy
-compile 'com.contentful.java:cma-sdk:3.4.2'
+compile 'com.contentful.java:cma-sdk:3.4.16'
 ```
 
 This SDK requires Java 8 (or higher version).

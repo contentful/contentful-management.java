@@ -24,6 +24,7 @@ import java.util.LinkedHashMap;
 public class CMAAsset extends CMAResource {
   // Map of fields
   Fields fields = new Fields();
+  public CMAMetadata metadata;
 
   /**
    * Create a new asset, setting the system's type field.
@@ -59,6 +60,24 @@ public class CMAAsset extends CMAResource {
   @SuppressWarnings("unchecked")
   @Override public CMAAsset setSystem(CMASystem system) {
     this.system = system;
+    return this;
+  }
+
+  /* Gets the metadata for this asset.
+   *
+   * @return The {@link CMAMetadata} instance containing metadata like tag.
+   */
+  public CMAMetadata getMetadata() {
+    return metadata;
+  }
+  /**
+   * Sets the metadata for this asset.
+   *
+   * @param metadata The {@link CMAMetadata} instance to associate with this asset.
+   * @return This {@code CMAAsset} instance for method chaining.
+   */
+  public CMAAsset setMetadata(CMAMetadata metadata) {
+    this.metadata = metadata;
     return this;
   }
 
@@ -120,7 +139,8 @@ public class CMAAsset extends CMAResource {
    */
   @Override public String toString() {
     return "CMAAsset {" + super.toString()
-        + "fields = " + getFields()
+        + " fields = " + getFields()
+        + " metadata = " + getMetadata()
         + "}";
   }
 

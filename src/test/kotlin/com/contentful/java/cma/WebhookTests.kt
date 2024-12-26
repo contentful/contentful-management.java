@@ -308,12 +308,13 @@ class WebhookTests {
 
         assertTestCallback(client!!.webhooks().async().calls(
                 CMAWebhook().setSpaceId("spaceid").setId("webhookid"),
-                TestCallback(true)) as TestCallback)
+                hashMapOf("limit" to "30"),
+                TestCallback()) as TestCallback)
 
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("GET", recordedRequest.method)
-        assertEquals("/spaces/spaceid/webhooks/webhookid/calls", recordedRequest.path)
+        assertEquals("/spaces/spaceid/webhooks/webhookid/calls?limit=30", recordedRequest.path)
     }
 
     @test
@@ -375,9 +376,9 @@ class WebhookTests {
                 .setIncludeContentLength(true)
                 .setBody("{ /payload/test }: { /payload/test }")
 
-        assertEquals("PUT", webhookTransformation.getMethod())
-		assertEquals("application/json; charset=utf-8", webhookTransformation.getContentType())
-		assertEquals(true, webhookTransformation.getIncludeContentLength())
-		assertEquals("{ /payload/test }: { /payload/test }", webhookTransformation.getBody())
+        assertEquals("PUT", webhookTransformation.method)
+		assertEquals("application/json; charset=utf-8", webhookTransformation.contentType)
+		assertEquals(true, webhookTransformation.includeContentLength)
+		assertEquals("{ /payload/test }: { /payload/test }", webhookTransformation.body)
     }
 }

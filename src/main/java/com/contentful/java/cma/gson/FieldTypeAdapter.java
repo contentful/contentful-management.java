@@ -41,6 +41,8 @@ public class FieldTypeAdapter implements JsonSerializer<CMAField> {
   private static final String ATTR_LOCALIZED = "localized";
   private static final String ATTR_VALIDATIONS = "validations";
   private static final String ATTR_ARRAY_ITEMS = "items";
+  private static final String ATTR_DEFAULT_VALUE = "defaultValue";
+
 
   private static <T> void add(JsonObject json, String property, T value) {
     if (value != null) {
@@ -80,9 +82,14 @@ public class FieldTypeAdapter implements JsonSerializer<CMAField> {
     List<Map<String, Object>> validations = field.getValidations();
     if (validations != null) {
       json.add(ATTR_VALIDATIONS, context.serialize(validations,
-          new TypeToken<List<Map<String, Object>>>() {
-          }
-          .getType()));
+              new TypeToken<List<Map<String, Object>>>() {
+
+      }.getType()));
+    }
+
+    Map<String, Object> defaultValue = field.getDefaultValue();
+    if (defaultValue != null) {
+      json.add(ATTR_DEFAULT_VALUE, context.serialize(defaultValue, Map.class));
     }
 
     Map<String, Object> arrayItems = field.getArrayItems();

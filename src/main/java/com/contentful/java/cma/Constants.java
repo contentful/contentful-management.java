@@ -44,6 +44,7 @@ public final class Constants {
     Date,
     Integer,
     Link,
+    ResourceLink,
     Location,
     Number,
     Object,

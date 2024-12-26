@@ -39,7 +39,7 @@ import static okhttp3.MediaType.parse;
  * Upload Module.
  * <p>
  * This module will take care of all `upload.contentful.com` related issues, as in directly
- * uploading a file to Contentful, receiving it's id.
+ * uploading a file to Contentful, receiving its id.
  */
 public class ModuleUploads extends AbsModule<ServiceUploads> {
   final Async async;
@@ -54,11 +54,11 @@ public class ModuleUploads extends AbsModule<ServiceUploads> {
    * @param environmentIdConfigured internal helper to see if environment was set.
    */
   public ModuleUploads(
-      Retrofit retrofit,
-      Executor callbackExecutor,
-      String spaceId,
-      String environmentId,
-      boolean environmentIdConfigured) {
+          Retrofit retrofit,
+          Executor callbackExecutor,
+          String spaceId,
+          String environmentId,
+          boolean environmentIdConfigured) {
     super(retrofit, callbackExecutor, spaceId, environmentId, environmentIdConfigured);
     this.async = new Async();
   }
@@ -67,14 +67,15 @@ public class ModuleUploads extends AbsModule<ServiceUploads> {
    * Tries to read all content from a give stream.
    *
    * @param stream stream to be read.
+   * @param chunkSize chunk size for storing in byte array.
    * @return bytes of the stream
    * @throws IOException if the stream is not accessible
    * @throws IOException if the stream did not contain data.
    */
-  static byte[] readAllBytes(InputStream stream) throws IOException {
+  static byte[] readAllBytes(InputStream stream, int chunkSize) throws IOException {
     int bytesRead = 0;
-    byte[] currentChunk = new byte[255];
-    final List<byte[]> chunks = new ArrayList<byte[]>();
+    byte[] currentChunk = new byte[chunkSize];
+    final List<byte[]> chunks = new ArrayList<>();
     while ((bytesRead = stream.read(currentChunk)) != -1) {
       chunks.add(copyOf(currentChunk, bytesRead));
     }
@@ -119,8 +120,19 @@ public class ModuleUploads extends AbsModule<ServiceUploads> {
   public CMAUpload create(InputStream stream) throws IOException {
     throwIfEnvironmentIdIsSet();
 
-    return create(spaceId, stream);
+    return create(spaceId, environmentId, stream, 1024);
   }
+
+  public CMAUpload create(InputStream stream, int chunkSize) throws IOException {
+    throwIfEnvironmentIdIsSet();
+    return create(spaceId, environmentId, stream, chunkSize);
+  }
+
+  public CMAUpload create(String spaceId, String environmentId, InputStream stream)
+          throws IOException {
+    return create(spaceId, environmentId, stream, 1024);
+  }
+
 
   /**
    * Create a new upload.
@@ -139,14 +151,15 @@ public class ModuleUploads extends AbsModule<ServiceUploads> {
    * @throws IllegalArgumentException if stream is null.
    * @throws java.io.IOException      if the stream could not be read.
    */
-  public CMAUpload create(String spaceId, InputStream stream) throws IOException {
+  public CMAUpload create(String spaceId, String environmentId, InputStream stream, int chunkSize)
+          throws IOException {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(stream, "stream");
 
-    final byte[] content = readAllBytes(stream);
+    final byte[] content = readAllBytes(stream, chunkSize);
 
     final RequestBody payload = RequestBody.create(parse(OCTET_STREAM_CONTENT_TYPE), content);
-    return service.create(spaceId, payload).blockingFirst();
+    return service.create(spaceId, environmentId, payload).blockingFirst();
   }
 
   /**
@@ -160,10 +173,10 @@ public class ModuleUploads extends AbsModule<ServiceUploads> {
    *                                         {@link CMAClient.Builder#setEnvironmentId(String)}.
    * @see CMAClient.Builder#setSpaceId(String)
    */
-  public CMAUpload fetchOne(String uploadId) {
+  public CMAUpload fetchOne(String uploadId, String environmentId) {
     throwIfEnvironmentIdIsSet();
 
-    return fetchOne(spaceId, uploadId);
+    return fetchOne(spaceId, environmentId, uploadId);
   }
 
   /**
@@ -179,11 +192,11 @@ public class ModuleUploads extends AbsModule<ServiceUploads> {
    * @throws IllegalArgumentException if spaceId is null.
    * @throws IllegalArgumentException if uploadId is null.
    */
-  public CMAUpload fetchOne(String spaceId, String uploadId) {
+  public CMAUpload fetchOne(String spaceId, String environmentId, String uploadId) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(uploadId, "uploadId");
 
-    return service.fetchOne(spaceId, uploadId).blockingFirst();
+    return service.fetchOne(spaceId, environmentId, uploadId).blockingFirst();
   }
 
   /**
@@ -194,11 +207,12 @@ public class ModuleUploads extends AbsModule<ServiceUploads> {
    * @throws IllegalArgumentException if spaceId is null.
    * @throws IllegalArgumentException if uploadId is null.
    */
-  public int delete(CMAUpload upload) {
+  public int delete(CMAUpload upload, String environmentId) {
     final String uploadId = getResourceIdOrThrow(upload, "upload");
     final String spaceId = getSpaceIdOrThrow(upload, "upload");
 
-    final Response<Void> response = service.delete(spaceId, uploadId).blockingFirst();
+    final Response<Void> response = service.delete(
+            spaceId, environmentId, uploadId).blockingFirst();
     return response.code();
   }
 
@@ -230,17 +244,32 @@ public class ModuleUploads extends AbsModule<ServiceUploads> {
      * @see CMAClient.Builder#setSpaceId(String)
      */
     public CMACallback<CMAUpload> create(
-        final InputStream stream,
-        CMACallback<CMAUpload> callback) {
+            final InputStream stream,
+            final int chunkSize,
+            CMACallback<CMAUpload> callback) {
       return defer(new DefFunc<CMAUpload>() {
         @Override CMAUpload method() {
           try {
-            return ModuleUploads.this.create(stream);
+            return ModuleUploads.this.create(stream, chunkSize);
           } catch (IOException e) {
             throw new IllegalStateException("IO exception while creating asset.", e);
           }
         }
       }, callback);
+    }
+
+    public CMACallback<CMAUpload> create(
+            final InputStream stream,
+            CMACallback<CMAUpload> callback) {
+      return create(stream, 1024, callback);
+    }
+
+    public CMACallback<CMAUpload> create(
+            final String spaceId,
+            final String environmentId,
+            final InputStream stream,
+            CMACallback<CMAUpload> callback) {
+      return create(spaceId, environmentId, stream, 1024, callback);
     }
 
     /**
@@ -262,13 +291,15 @@ public class ModuleUploads extends AbsModule<ServiceUploads> {
      * @throws IllegalStateException    if something in the transmittal went wrong.
      */
     public CMACallback<CMAUpload> create(
-        final String spaceId,
-        final InputStream stream,
-        CMACallback<CMAUpload> callback) {
+            final String spaceId,
+            final String environmentId,
+            final InputStream stream,
+            final int chunkSize,
+            CMACallback<CMAUpload> callback) {
       return defer(new DefFunc<CMAUpload>() {
         @Override CMAUpload method() {
           try {
-            return ModuleUploads.this.create(spaceId, stream);
+            return ModuleUploads.this.create(spaceId, environmentId, stream, chunkSize);
           } catch (IOException e) {
             throw new IllegalStateException("IO exception while creating asset.", e);
           }
@@ -289,11 +320,12 @@ public class ModuleUploads extends AbsModule<ServiceUploads> {
      * @see CMAClient.Builder#setSpaceId(String)
      */
     public CMACallback<CMAUpload> fetchOne(
-        final String uploadId,
-        CMACallback<CMAUpload> callback) {
+            final String uploadId,
+            final String environmentId,
+            CMACallback<CMAUpload> callback) {
       return defer(new DefFunc<CMAUpload>() {
         @Override CMAUpload method() {
-          return ModuleUploads.this.fetchOne(uploadId);
+          return ModuleUploads.this.fetchOne(uploadId, environmentId);
         }
       }, callback);
     }
@@ -313,12 +345,13 @@ public class ModuleUploads extends AbsModule<ServiceUploads> {
      * @throws IllegalArgumentException if uploadId is null.
      */
     public CMACallback<CMAUpload> fetchOne(
-        final String spaceId,
-        final String uploadId,
-        CMACallback<CMAUpload> callback) {
+            final String spaceId,
+            final String environmentId,
+            final String uploadId,
+            CMACallback<CMAUpload> callback) {
       return defer(new DefFunc<CMAUpload>() {
         @Override CMAUpload method() {
-          return ModuleUploads.this.fetchOne(spaceId, uploadId);
+          return ModuleUploads.this.fetchOne(spaceId, environmentId, uploadId);
         }
       }, callback);
     }
@@ -333,11 +366,12 @@ public class ModuleUploads extends AbsModule<ServiceUploads> {
      * @throws IllegalArgumentException if uploadId is null.
      */
     public CMACallback<Integer> delete(
-        final CMAUpload upload,
-        CMACallback<Integer> callback) {
+            final CMAUpload upload,
+            final String environmentId,
+            CMACallback<Integer> callback) {
       return defer(new DefFunc<Integer>() {
         @Override Integer method() {
-          return ModuleUploads.this.delete(upload);
+          return ModuleUploads.this.delete(upload, environmentId);
         }
       }, callback);
     }

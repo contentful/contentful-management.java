@@ -19,20 +19,24 @@ package com.contentful.java.cma;
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAEntry;
 import com.contentful.java.cma.model.CMAEntryReferences;
+import com.contentful.java.cma.model.CMAEntryReferences;
 import com.contentful.java.cma.model.CMASnapshot;
-import com.contentful.java.cma.model.patch.CMAEntryJsonPatchItem;
 import io.reactivex.Flowable;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
-import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
+
+import java.util.Map;
+import com.contentful.java.cma.model.patch.CMAEntryJsonPatchItem;
+import retrofit2.http.PATCH;
+import retrofit2.http.Query;
 
 import java.util.List;
 import java.util.Map;
@@ -41,26 +45,26 @@ import java.util.Map;
  * Entries Service.
  */
 interface ServiceEntries {
-  @PUT("/spaces/{space}/environments/{environment}/entries/{entry}/archived")
+  @PUT("spaces/{space}/environments/{environment}/entries/{entry}/archived")
   Flowable<CMAEntry> archive(
       @Path("space") String spaceId,
       @Path("environment") String environmentId,
       @Path("entry") String entryId);
 
-  @DELETE("/spaces/{space}/environments/{environment}/entries/{entry}/archived")
+  @DELETE("spaces/{space}/environments/{environment}/entries/{entry}/archived")
   Flowable<CMAEntry> unArchive(
       @Path("space") String spaceId,
       @Path("environment") String environmentId,
       @Path("entry") String entryId);
 
-  @POST("/spaces/{space}/environments/{environment}/entries")
+  @POST("spaces/{space}/environments/{environment}/entries")
   Flowable<CMAEntry> create(
       @Path("space") String spaceId,
       @Path("environment") String environmentId,
       @Header("X-Contentful-Content-Type") String contentType,
       @Body CMAEntry entry);
 
-  @PUT("/spaces/{space}/environments/{environment}/entries/{entry}")
+  @PUT("spaces/{space}/environments/{environment}/entries/{entry}")
   Flowable<CMAEntry> create(
       @Path("space") String spaceId,
       @Path("environment") String environmentId,
@@ -68,58 +72,65 @@ interface ServiceEntries {
       @Path("entry") String entryId,
       @Body CMAEntry entry);
 
-  @DELETE("/spaces/{space}/environments/{environment}/entries/{entry}")
+  @DELETE("spaces/{space}/environments/{environment}/entries/{entry}")
   Flowable<Response<Void>> delete(
       @Path("space") String spaceId,
       @Path("environment") String environmentId,
       @Path("entry") String entryId);
 
-  @GET("/spaces/{space}/environments/{environment}/entries/{entry}")
+  @GET("spaces/{space}/environments/{environment}/entries/{entry}")
   Flowable<CMAEntry> fetchOne(
       @Path("space") String spaceId,
       @Path("environment") String environmentId,
       @Path("entry") String entryId);
 
-  @GET("/spaces/{space}/environments/{environment}/entries/{entry}/references")
-  Flowable<CMAEntryReferences> fetchReferences(
-          @Path("space") String spaceId,
-          @Path("environment") String environmentId,
-          @Path("entry") String entryId,
-          @Query("include") Integer maxDepth);
-
-  @GET("/spaces/{space}/environments/{environment}/entries/{entry}/snapshots/{snapshot}")
+  @GET("spaces/{space}/environments/{environment}/entries/{entry}/snapshots/{snapshot}")
   Flowable<CMASnapshot> fetchOneSnapshot(
       @Path("space") String spaceId,
       @Path("environment") String environmentId,
       @Path("entry") String entryId,
       @Path("snapshot") String snapshotId);
 
-  @GET("/spaces/{space}/environments/{environment}/entries")
+  @GET("spaces/{space}/environments/{environment}/entries/{entry}/references")
+  Flowable<CMAEntryReferences> fetchReferences(
+       @Path("space") String spaceId,
+       @Path("environment") String environmentId,
+       @Path("entry") String entryId,
+       @Query("include") Integer maxDepth);
+
+  @GET("spaces/{space}/environments/{environment}/entries")
   Flowable<CMAArray<CMAEntry>> fetchAll(
       @Path("space") String spaceId,
       @Path("environment") String environmentId,
       @QueryMap Map<String, String> query);
 
-  @GET("/spaces/{space}/environments/{environment}/entries/{entry}/snapshots")
+  @GET("spaces/{space}/environments/{environment}/entries/{entry}/snapshots")
   Flowable<CMAArray<CMASnapshot>> fetchAllSnapshots(
       @Path("space") String spaceId,
       @Path("environment") String environmentId,
-      @Path("entry") String entryId);
+      @Path("entry") String entryId,
+      @QueryMap Map<String, String> query);
 
-  @PUT("/spaces/{space}/environments/{environment}/entries/{entry}/published")
+  @GET("spaces/{space}/environments/{environment}/entries/{entry}/snapshots")
+  Flowable<CMAArray<CMASnapshot>> fetchAllSnapshots(
+          @Path("space") String spaceId,
+          @Path("environment") String environmentId,
+          @Path("entry") String entryId);
+
+  @PUT("spaces/{space}/environments/{environment}/entries/{entry}/published")
   Flowable<CMAEntry> publish(
       @Header("X-Contentful-Version") Integer version,
       @Path("space") String spaceId,
       @Path("environment") String environmentId,
       @Path("entry") String entryId);
 
-  @DELETE("/spaces/{space}/environments/{environment}/entries/{entry}/published")
+  @DELETE("spaces/{space}/environments/{environment}/entries/{entry}/published")
   Flowable<CMAEntry> unPublish(
       @Path("space") String spaceId,
       @Path("environment") String environmentId,
       @Path("entry") String entryId);
 
-  @PUT("/spaces/{space}/environments/{environment}/entries/{entry}")
+  @PUT("spaces/{space}/environments/{environment}/entries/{entry}")
   Flowable<CMAEntry> update(
       @Header("X-Contentful-Version") Integer version,
       @Path("space") String spaceId,

@@ -18,11 +18,14 @@ package com.contentful.java.cma;
 
 //BEGIN TO LONG CODE LINES
 
+import com.contentful.java.cma.gson.CMASystemDeserializer;
 import com.contentful.java.cma.gson.EntrySerializer;
 import com.contentful.java.cma.gson.FieldTypeAdapter;
 import com.contentful.java.cma.gson.CMAEntryJsonPatchItemSerializer;
 import com.contentful.java.cma.gson.LocaleSerializer;
+import com.contentful.java.cma.gson.MetadataSerializer;
 import com.contentful.java.cma.gson.SnapshotDeserializer;
+import com.contentful.java.cma.gson.WebHookBodyDeserializer;
 import com.contentful.java.cma.interceptor.AuthorizationHeaderInterceptor;
 import com.contentful.java.cma.interceptor.ContentTypeInterceptor;
 import com.contentful.java.cma.interceptor.ContentfulUserAgentHeaderInterceptor;
@@ -37,19 +40,22 @@ import com.contentful.java.cma.interceptor.UserAgentHeaderInterceptor;
 import com.contentful.java.cma.model.CMAEntry;
 import com.contentful.java.cma.model.CMAField;
 import com.contentful.java.cma.model.CMALocale;
+import com.contentful.java.cma.model.CMAMetadata;
 import com.contentful.java.cma.model.CMASnapshot;
 import com.contentful.java.cma.model.patch.CMAEntryJsonPatchItem;
+import com.contentful.java.cma.model.CMASystem;
+import com.contentful.java.cma.model.CMAWebhookTransformation;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.util.Properties;
+import java.util.concurrent.Executor;
+
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-import java.util.Properties;
-import java.util.concurrent.Executor;
-
 import static com.contentful.java.cma.Constants.DEFAULT_CONTENT_TYPE;
 import static com.contentful.java.cma.Constants.OCTET_STREAM_CONTENT_TYPE;
 import static com.contentful.java.cma.Constants.PATCH_CONTENT_TYPE;
@@ -72,6 +78,8 @@ public class CMAClient {
   // Modules
   private final ModuleApiKeys moduleApiKeys;
   private final ModuleAssets moduleAssets;
+
+  private final ModuleBulkActions moduleBulkActions;
   private final ModuleContentTypes moduleContentTypes;
   private final ModuleEditorInterfaces moduleEditorInterfaces;
   private final ModuleEntries moduleEntries;
@@ -91,6 +99,7 @@ public class CMAClient {
   private final ModuleUsers moduleUsers;
   private final ModuleWebhooks moduleWebhooks;
   private final ModulePreviewEnvironments modulePreviewEnvironments;
+  private final ModuleScheduledActions moduleScheduledActions;
 
   // Executors
   Executor callbackExecutor;
@@ -136,6 +145,8 @@ public class CMAClient {
         configured);
     this.moduleAssets = new ModuleAssets(retrofit, callbackExecutor, spaceId, environmentId,
         configured);
+    this.moduleBulkActions = new ModuleBulkActions(retrofit, callbackExecutor,
+        spaceId, environmentId, configured);
     this.moduleContentTypes = new ModuleContentTypes(retrofit, callbackExecutor, spaceId,
         environmentId, configured);
     this.moduleEditorInterfaces = new ModuleEditorInterfaces(retrofit, callbackExecutor, spaceId,
@@ -171,6 +182,9 @@ public class CMAClient {
         configured);
     this.modulePreviewEnvironments = new ModulePreviewEnvironments(retrofit, callbackExecutor,
         spaceId, configured);
+    this.moduleScheduledActions = new ModuleScheduledActions(retrofit, callbackExecutor,
+        spaceId, environmentId, configured);
+
   }
 
   /**
@@ -183,7 +197,10 @@ public class CMAClient {
           .registerTypeAdapter(CMAEntry.class, new EntrySerializer())
           .registerTypeAdapter(CMAEntryJsonPatchItem.class, new CMAEntryJsonPatchItemSerializer())
           .registerTypeAdapter(CMASnapshot.class, new SnapshotDeserializer())
+          .registerTypeAdapter(CMAWebhookTransformation.class, new WebHookBodyDeserializer())
           .registerTypeAdapter(CMALocale.class, new LocaleSerializer())
+          .registerTypeAdapter(CMAMetadata.class, new MetadataSerializer())
+          .registerTypeAdapter(CMASystem.class, new CMASystemDeserializer())
           .create();
     }
 
@@ -357,6 +374,20 @@ public class CMAClient {
   public ModulePreviewEnvironments previewEnvironments() {
     return modulePreviewEnvironments;
   }
+  /**
+   * @return the Bulk Actions module.
+   */
+  public ModuleBulkActions bulkActions() {
+    return moduleBulkActions;
+  }
+
+  /**
+   * @return the Scheduled Actions module.
+   */
+  public ModuleScheduledActions scheduledActions() {
+    return moduleScheduledActions;
+  }
+
 
   /**
    * Builder.

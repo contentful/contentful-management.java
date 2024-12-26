@@ -1,0 +1,19 @@
+{
+  "sys": {
+    "id": "3A13SXSDwO8c46NrjigFYT",
+    "type": "ScheduledAction",
+    "status": "scheduled"
+  },
+  "action": "publish",
+  "entity": {
+    "sys": {
+      "id": "5KsDBWseXY6QegucYAoacS",
+      "type": "Link",
+      "linkType": "Entry"
+    }
+  },
+  "scheduledFor": {
+    "datetime": "2022-01-01T12:00:00.000Z",
+    "timezone": "Europe/Berlin"
+  }
+}

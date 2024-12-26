@@ -27,10 +27,10 @@ import retrofit2.http.Path;
  * Preview Api Token Service.
  */
 interface ServicePreviewApiKeys {
-  @GET("/spaces/{spaceId}/preview_api_keys")
+  @GET("spaces/{spaceId}/preview_api_keys")
   Flowable<CMAArray<CMAPreviewApiKey>> fetchAll(@Path("spaceId") String spaceId);
 
-  @GET("/spaces/{spaceId}/preview_api_keys/{keyId}")
+  @GET("spaces/{spaceId}/preview_api_keys/{keyId}")
   Flowable<CMAPreviewApiKey> fetchOne(
       @Path("spaceId") String spaceId,
       @Path("keyId") String keyId);

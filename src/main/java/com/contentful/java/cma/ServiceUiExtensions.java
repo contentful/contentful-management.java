@@ -36,34 +36,34 @@ import retrofit2.http.QueryMap;
  * Ui Extensions Service.
  */
 interface ServiceUiExtensions {
-  @GET("/spaces/{spaceId}/environments/{environmentId}/extensions")
+  @GET("spaces/{spaceId}/environments/{environmentId}/extensions")
   Flowable<CMAArray<CMAUiExtension>> fetchAll(
       @Path("spaceId") String spaceId,
       @Path("environmentId") String environmentId
   );
 
-  @GET("/spaces/{spaceId}/environments/{environmentId}/extensions")
+  @GET("spaces/{spaceId}/environments/{environmentId}/extensions")
   Flowable<CMAArray<CMAUiExtension>> fetchAll(
       @Path("spaceId") String spaceId,
       @Path("environmentId") String environmentId,
       @QueryMap Map<String, String> query
   );
 
-  @GET("/spaces/{spaceId}/environments/{environmentId}/extensions/{extensionId}")
+  @GET("spaces/{spaceId}/environments/{environmentId}/extensions/{extensionId}")
   Flowable<CMAUiExtension> fetchOne(
       @Path("spaceId") String spaceId,
       @Path("environmentId") String environmentId,
       @Path("extensionId") String extensionId
   );
 
-  @POST("/spaces/{spaceId}/environments/{environmentId}/extensions")
+  @POST("spaces/{spaceId}/environments/{environmentId}/extensions")
   Flowable<CMAUiExtension> create(
       @Path("spaceId") String spaceId,
       @Path("environmentId") String environmentId,
       @Body CMAUiExtension extension
   );
 
-  @PUT("/spaces/{spaceId}/environments/{environmentId}/extensions/{extensionId}")
+  @PUT("spaces/{spaceId}/environments/{environmentId}/extensions/{extensionId}")
   Flowable<CMAUiExtension> create(
       @Path("spaceId") String spaceId,
       @Path("environmentId") String environmentId,
@@ -71,7 +71,7 @@ interface ServiceUiExtensions {
       @Body CMAUiExtension extension
   );
 
-  @PUT("/spaces/{spaceId}/environments/{environmentId}/extensions/{extensionId}")
+  @PUT("spaces/{spaceId}/environments/{environmentId}/extensions/{extensionId}")
   Flowable<CMAUiExtension> update(
       @Path("spaceId") String spaceId,
       @Path("environmentId") String environmentId,
@@ -80,7 +80,7 @@ interface ServiceUiExtensions {
       @Header("X-Contentful-Version") Integer version
   );
 
-  @DELETE("/spaces/{spaceId}/environments/{environmentId}/extensions/{extensionId}")
+  @DELETE("spaces/{spaceId}/environments/{environmentId}/extensions/{extensionId}")
   Flowable<Response<Void>> delete(
       @Path("spaceId") String spaceId,
       @Path("environmentId") String environmentId,

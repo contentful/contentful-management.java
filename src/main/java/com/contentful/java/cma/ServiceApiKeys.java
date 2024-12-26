@@ -36,37 +36,39 @@ import retrofit2.http.QueryMap;
  * Api Token Service.
  */
 interface ServiceApiKeys {
-  @GET("/spaces/{spaceId}/api_keys")
+  @GET("spaces/{spaceId}/api_keys")
   Flowable<CMAArray<CMAApiKey>> fetchAll(@Path("spaceId") String spaceId);
 
-  @GET("/spaces/{spaceId}/api_keys")
+  @GET("spaces/{spaceId}/api_keys")
   Flowable<CMAArray<CMAApiKey>> fetchAll(
       @Path("spaceId") String spaceId,
       @QueryMap Map<String, String> query
   );
 
-  @GET("/spaces/{spaceId}/api_keys/{keyId}")
+  @GET("spaces/{spaceId}/api_keys/{keyId}")
   Flowable<CMAApiKey> fetchOne(
       @Path("spaceId") String spaceId,
       @Path("keyId") String keyId);
 
-  @GET("/spaces/{spaceId}/preview_api_keys/{keyId}")
-  Flowable<CMAApiKey> fetchOnePreview(@Path("spaceId") String spaceId,
-                                      @Path("keyId") String keyId);
+  @GET("spaces/{spaceId}/preview_api_keys/{keyId}")
+  Flowable<CMAApiKey> fetchOnePreview(
+          @Path("spaceId") String spaceId,
+          @Path("keyId") String keyId);
 
-  @POST("/spaces/{spaceId}/api_keys")
+
+    @POST("spaces/{spaceId}/api_keys")
   Flowable<CMAApiKey> create(
       @Path("spaceId") String spaceId,
       @Body CMAApiKey key);
 
-  @PUT("/spaces/{spaceId}/api_keys/{keyId}")
+  @PUT("spaces/{spaceId}/api_keys/{keyId}")
   Flowable<CMAApiKey> update(
       @Header("X-Contentful-Version") Integer version,
       @Path("spaceId") String spaceId,
       @Path("keyId") String keyId,
       @Body CMAApiKey key);
 
-  @DELETE("/spaces/{spaceId}/api_keys/{keyId}")
+  @DELETE("spaces/{spaceId}/api_keys/{keyId}")
   Flowable<Response<Void>> delete(
       @Path("spaceId") String spaceId,
       @Path("keyId") String keyId);

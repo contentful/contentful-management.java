@@ -20,28 +20,28 @@ import retrofit2.http.QueryMap;
  * Service class to define the REST interface to Contentful.
  */
 public interface ServiceSpaceMemberships {
-  @GET("/spaces/{spaceId}/space_memberships")
+  @GET("spaces/{spaceId}/space_memberships")
   Flowable<CMAArray<CMASpaceMembership>> fetchAll(@Path("spaceId") String spaceId);
 
-  @GET("/spaces/{spaceId}/space_memberships")
+  @GET("spaces/{spaceId}/space_memberships")
   Flowable<CMAArray<CMASpaceMembership>> fetchAll(
       @Path("spaceId") String spaceId,
       @QueryMap Map<String, String> query
   );
 
-  @GET("/spaces/{spaceId}/space_memberships/{membershipId}")
+  @GET("spaces/{spaceId}/space_memberships/{membershipId}")
   Flowable<CMASpaceMembership> fetchOne(
       @Path("spaceId") String spaceId,
       @Path("membershipId") String membershipId
   );
 
-  @POST("/spaces/{spaceId}/space_memberships")
+  @POST("spaces/{spaceId}/space_memberships")
   Flowable<CMASpaceMembership> create(
       @Path("spaceId") String spaceId,
       @Body CMASpaceMembership membership
   );
 
-  @PUT("/spaces/{spaceId}/space_memberships/{membershipId}")
+  @PUT("spaces/{spaceId}/space_memberships/{membershipId}")
   Flowable<CMASpaceMembership> update(
       @Path("spaceId") String spaceId,
       @Path("membershipId") String membershipId,
@@ -49,7 +49,7 @@ public interface ServiceSpaceMemberships {
       @Header("X-Contentful-Version") Integer version
   );
 
-  @DELETE("/spaces/{spaceId}/space_memberships/{membershipId}")
+  @DELETE("spaces/{spaceId}/space_memberships/{membershipId}")
   Flowable<Response<Void>> delete(
       @Path("spaceId") String spaceId,
       @Path("membershipId") String membershipId

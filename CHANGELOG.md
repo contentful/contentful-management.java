@@ -2,6 +2,44 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Version [3.4.16] - [2024-12-16]
+- Changed: added fetchAllSnapshotsWithQuery method with query support
+
+## Version [3.4.15] - [2024-09-16]
+- Changed: added scheduled actions API support
+  
+## Version [3.4.14] - [2024-07-12]
+- Changed: added configurable chunk size when uploading files
+  
+## Version [3.4.13] - [2024-07-11]
+- Changed: increased chunk size when uploading files
+
+## Version [3.4.12] - [2024-04-19]
+- Changed: added support for rich text tables
+
+## Version [3.4.11] - [2024-03-19]
+- Changed: feat: https://github.com/contentful/contentful-management.java/issues/173
+
+## Version [3.4.10] - [2024-03-12]
+- Changed: feat: https://github.com/contentful/contentful-management.java/issues/155
+
+## Version [3.4.9] - [2024-02-22]
+- Changed: Fixes: https://github.com/contentful/contentful-management.java/issues/164
+- Changed: Fixes: https://github.com/contentful/contentful-management.java/issues/168
+- Changed: Fixes: https://github.com/contentful/contentful-management.java/issues/169
+
+## Version [3.4.8] - [2023-11-15]
+- Changed: Fixes: https://github.com/contentful/contentful-management.java/issues/166
+
+## Version [3.4.6] - [2022-09-22]
+- Changed: Fixes: https://github.com/contentful/contentful-management.java/issues/154
+
+## Version [3.4.5] - [2022-09-20]
+- Changed: Added support for cross-space referencing.
+
+## Version [3.4.4] - [2022-07-24]
+- Changed: Custom deserialiser for webhooks endpoint
+
 ## Version [3.4.0] - [2020-04-16]
 - Changed: Removed final keyword from the model classes
 - Add: Support for Space and Organizations usage API
@@ -179,6 +217,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 Initial release.
 
 [unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-3.3.3...HEAD
+[3.4.16]: https://github.com/contentful/contentful-management.java/compare/v3.4.15...v3.4.16
+[3.4.15]: https://github.com/contentful/contentful-management.java/compare/v3.4.14...v3.4.15
+[3.4.14]: https://github.com/contentful/contentful-management.java/compare/v3.4.13...v3.4.14
+[3.4.13]: https://github.com/contentful/contentful-management.java/compare/v3.5.12...v3.4.13
+[3.4.12]: https://github.com/contentful/contentful-management.java/compare/v3.5.11...v3.4.12
+[3.4.11]: https://github.com/contentful/contentful-management.java/compare/v3.4.10...v3.4.11
+[3.4.10]: https://github.com/contentful/contentful-management.java/compare/v3.4.9...v3.4.10
+[3.4.9]: https://github.com/contentful/contentful-management.java/compare/v3.4.8...v3.4.9
+[3.4.8]: https://github.com/contentful/contentful-management.java/compare/v3.3.1...v3.4.8
 [3.3.3]: https://github.com/contentful/contentful-management.java/compare/v3.3.1...v3.3.3
 [3.3.2]: https://github.com/contentful/contentful-management.java/compare/v3.3.1...v3.3.2
 [3.3.1]: https://github.com/contentful/contentful-management.java/compare/v3.3.0...v3.3.1

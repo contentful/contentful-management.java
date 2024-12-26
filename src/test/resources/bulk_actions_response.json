@@ -1,0 +1,51 @@
+{
+  "sys": {
+    "id": "<bulk_action_id>",
+    "type": "BulkAction",
+    "status": "inProgress",
+    "createdBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "7BslKh9TdKGOK41VmLDjFZ"
+      }
+    },
+    "createdAt `2020-01-01T13:00:00.000Z`": "",
+    "updatedAt `2020-01-01T13:00:00.000Z`": "",
+    "space": {
+      "sys": {
+        "type": "Link",
+        "linkType": "Space",
+        "id": "yadj1kx9rmg0"
+      }
+    },
+    "environment": {
+      "sys": {
+        "type": "Link",
+        "linkType": "Environment",
+        "id": "staging"
+      }
+    }
+  },
+  "action": "bulk_action",
+  "payload": {
+    "entities": {
+      "items": [
+        {
+          "sys": {
+            "id": "<entity_id>",
+            "type": "Link",
+            "linkType": "<Entry|Asset>",
+            "version": 0
+          }
+        }
+      ]
+    }
+  },
+  "error": {
+    "sys": {
+      "id": "<error_type>",
+      "type": "Error"
+    }
+  }
+}

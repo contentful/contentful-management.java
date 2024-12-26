@@ -1,7 +1,7 @@
 package com.contentful.java.cma.model.rich;
 
 /**
- * A node representing a table
+ * Rich Text table.
  */
 public class CMARichTable extends CMARichBlock {
   /**

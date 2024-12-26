@@ -20,28 +20,28 @@ import retrofit2.http.QueryMap;
  * Service class to define the REST interface to Contentful.
  */
 public interface ServiceRoles {
-  @GET("/spaces/{spaceId}/roles")
+  @GET("spaces/{spaceId}/roles")
   Flowable<CMAArray<CMARole>> fetchAll(@Path("spaceId") String spaceId);
 
-  @GET("/spaces/{spaceId}/roles")
+  @GET("spaces/{spaceId}/roles")
   Flowable<CMAArray<CMARole>> fetchAll(
       @Path("spaceId") String spaceId,
       @QueryMap Map<String, String> query
   );
 
-  @GET("/spaces/{spaceId}/roles/{roleId}")
+  @GET("spaces/{spaceId}/roles/{roleId}")
   Flowable<CMARole> fetchOne(
       @Path("spaceId") String spaceId,
       @Path("roleId") String roleId
   );
 
-  @POST("/spaces/{spaceId}/roles/")
+  @POST("spaces/{spaceId}/roles/")
   Flowable<CMARole> create(
       @Path("spaceId") String spaceId,
       @Body CMARole role
   );
 
-  @PUT("/spaces/{spaceId}/roles/{roleId}")
+  @PUT("spaces/{spaceId}/roles/{roleId}")
   Flowable<CMARole> update(
       @Path("spaceId") String spaceId,
       @Path("roleId") String roleId,
@@ -49,7 +49,7 @@ public interface ServiceRoles {
       @Header("X-Contentful-Version") Integer version
   );
 
-  @DELETE("/spaces/{spaceId}/roles/{roleId}")
+  @DELETE("spaces/{spaceId}/roles/{roleId}")
   Flowable<Response<Void>> delete(
       @Path("spaceId") String spaceId,
       @Path("roleId") String roleId

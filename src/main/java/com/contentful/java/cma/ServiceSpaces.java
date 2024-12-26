@@ -36,29 +36,29 @@ import retrofit2.http.QueryMap;
  * Spaces Service.
  */
 interface ServiceSpaces {
-  @POST("/spaces")
+  @POST("spaces")
   Flowable<CMASpace> create(
       @Body CMASpace space);
 
-  @POST("/spaces")
+  @POST("spaces")
   Flowable<CMASpace> create(
       @Header("X-Contentful-Organization") String organization,
       @Body CMASpace space);
 
-  @DELETE("/spaces/{space}")
+  @DELETE("spaces/{space}")
   Flowable<Response<Void>> delete(
       @Path("space") String spaceId);
 
-  @GET("/spaces")
+  @GET("spaces")
   Flowable<CMAArray<CMASpace>> fetchAll(
       @QueryMap Map<String, String> query
   );
 
-  @GET("/spaces/{space}")
+  @GET("spaces/{space}")
   Flowable<CMASpace> fetchOne(
       @Path("space") String spaceId);
 
-  @PUT("/spaces/{space}")
+  @PUT("spaces/{space}")
   Flowable<CMASpace> update(
       @Header("X-Contentful-Version") Integer version,
       @Path("space") String spaceId,

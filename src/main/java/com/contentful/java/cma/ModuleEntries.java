@@ -460,6 +460,30 @@ public class ModuleEntries extends AbsModule<ServiceEntries> {
   }
 
   /**
+   * Fetch all snapshots of an entry with additional query parameters.
+   *
+   * @param entry the entry whose snapshots are to be returned.
+   * @param query additional query parameters to refine the results.
+   * @return an array of snapshots matching the query.
+   * @throws IllegalArgumentException if entry is null.
+   * @throws IllegalArgumentException if entry's id is null.
+   * @throws IllegalArgumentException if entry's space id is null.
+   */
+  public CMAArray<CMASnapshot> fetchAllSnapshotsWithQuery(
+          CMAEntry entry, Map<String, String> query) {
+    assertNotNull(entry, "entry");
+    final String entryId = getResourceIdOrThrow(entry, "entry");
+    final String spaceId = getSpaceIdOrThrow(entry, "entry");
+    final String environmentId = entry.getEnvironmentId();
+
+    Map<String, String> enhancedQuery = DefaultQueryParameter.putIfNotSet(
+            query, DefaultQueryParameter.FETCH);
+
+    return service.fetchAllSnapshots(
+            spaceId, environmentId, entryId, enhancedQuery).blockingFirst();
+  }
+
+  /**
    * Fetch a specific snapshot of an entry.
    *
    * @param entry      the entry whose snapshot to be returned.
@@ -868,6 +892,29 @@ public class ModuleEntries extends AbsModule<ServiceEntries> {
       return defer(new RxExtensions.DefFunc<CMAArray<CMASnapshot>>() {
         @Override CMAArray<CMASnapshot> method() {
           return ModuleEntries.this.fetchAllSnapshots(entry);
+        }
+      }, callback);
+    }
+
+    /**
+     * Fetch all snapshots of an entry asynchronously with query parameters.
+     *
+     * @param entry    the entry whose snapshots are to be returned.
+     * @param query    additional query parameters to refine the results.
+     * @param callback the callback to be informed about success or failure.
+     * @return a callback for an array of snapshots.
+     * @throws IllegalArgumentException if entry is null.
+     * @throws IllegalArgumentException if entry's id is null.
+     * @throws IllegalArgumentException if entry's space id is null.
+     */
+    public CMACallback<CMAArray<CMASnapshot>> fetchAllSnapshotsWithQuery(
+            final CMAEntry entry,
+            final Map<String, String> query,
+            CMACallback<CMAArray<CMASnapshot>> callback) {
+      return defer(new RxExtensions.DefFunc<CMAArray<CMASnapshot>>() {
+        @Override
+        CMAArray<CMASnapshot> method() {
+          return ModuleEntries.this.fetchAllSnapshotsWithQuery(entry, query);
         }
       }, callback);
     }
