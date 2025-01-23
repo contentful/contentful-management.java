@@ -1,0 +1,74 @@
+{
+  "sys": {
+    "id": "6mGQ3L1vSc9Ejh93vdgjiv",
+    "type": "TaxonomyConcept",
+    "createdAt": "2025-01-22T14:15:58.326Z",
+    "updatedAt": "2025-01-22T14:15:58.326Z",
+    "organization": {
+      "sys": {
+        "id": "0ar3TVMKEKfNfi1zRoENff",
+        "type": "Link",
+        "linkType": "Organization"
+      }
+    },
+    "createdBy": {
+      "sys": {
+        "id": "0aq1aR1pMpgsM7j6LLjRRP",
+        "type": "Link",
+        "linkType": "User"
+      }
+    },
+    "updatedBy": {
+      "sys": {
+        "id": "0aq1aR1pMpgsM7j6LLjRRP",
+        "type": "Link",
+        "linkType": "User"
+      }
+    },
+    "version": 1
+  },
+  "uri": null,
+  "prefLabel": {
+    "en-US": "example concept 2"
+  },
+  "altLabels": {
+    "en-US": [
+      "ddede"
+    ]
+  },
+  "hiddenLabels": {
+    "en-US": [
+      "dede"
+    ]
+  },
+  "note": {
+    "en-US": "eddede"
+  },
+  "changeNote": null,
+  "definition": {
+    "en-US": "this is an example concept 2"
+  },
+  "editorialNote": {
+    "en-US": "deed"
+  },
+  "example": {
+    "en-US": "dedede"
+  },
+  "historyNote": {
+    "en-US": "edde"
+  },
+  "scopeNote": {
+    "en-US": "deedde"
+  },
+  "notations": [],
+  "broader": [
+    {
+      "sys": {
+        "id": "5yddoLMAMMPcsFqEQAqvd3",
+        "type": "Link",
+        "linkType": "TaxonomyConcept"
+      }
+    }
+  ],
+  "related": []
+}

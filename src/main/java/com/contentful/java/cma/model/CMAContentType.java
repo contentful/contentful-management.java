@@ -35,6 +35,16 @@ public class CMAContentType extends CMAResource {
   // List of fields
   List<CMAField> fields;
 
+  public CMAMetadata getMetadata() {
+    return metadata;
+  }
+
+  public void setMetadata(CMAMetadata metadata) {
+    this.metadata = metadata;
+  }
+
+  CMAMetadata metadata;
+
   /**
    * Create a CMAContentType, filling it's {@link CMASystem} field.
    */

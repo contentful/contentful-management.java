@@ -1,0 +1,86 @@
+{
+  "sys": {
+    "id": "6BGzvRdljNJ58FN1uPtfQW",
+    "type": "TaxonomyConcept",
+    "createdAt": "2025-01-23T08:57:33.468Z",
+    "updatedAt": "2025-01-23T08:57:33.468Z",
+    "organization": {
+      "sys": {
+        "id": "0ar3TVMKEKfNfi1zRoENff",
+        "type": "Link",
+        "linkType": "Organization"
+      }
+    },
+    "createdBy": {
+      "sys": {
+        "id": "0aq1aR1pMpgsM7j6LLjRRP",
+        "type": "Link",
+        "linkType": "User"
+      }
+    },
+    "updatedBy": {
+      "sys": {
+        "id": "0aq1aR1pMpgsM7j6LLjRRP",
+        "type": "Link",
+        "linkType": "User"
+      }
+    },
+    "version": 1
+  },
+  "uri": null,
+  "prefLabel": {
+    "en-US": "cddcdc"
+  },
+  "altLabels": {
+    "en-US": [
+      "cddcdc",
+      "cddc"
+    ]
+  },
+  "hiddenLabels": {
+    "en-US": [
+      "dcdc",
+      "cdcd"
+    ]
+  },
+  "note": {
+    "en-US": "cdcd"
+  },
+  "changeNote": null,
+  "definition": {
+    "en-US": "dccdcddc"
+  },
+  "editorialNote": {
+    "en-US": "cdcd"
+  },
+  "example": {
+    "en-US": "dcdc"
+  },
+  "historyNote": {
+    "en-US": "dccd"
+  },
+  "scopeNote": {
+    "en-US": "cdcd"
+  },
+  "notations": [
+    "dcdc"
+  ],
+  "broader": [
+    {
+      "sys": {
+        "id": "6mGQ3L1vSc9Ejh93vdgjiv",
+        "type": "Link",
+        "linkType": "TaxonomyConcept"
+      }
+    }
+  ],
+  "related": [
+    {
+      "sys": {
+        "id": "uTpwzHqhWHva3Cv8MtJtf",
+        "type": "Link",
+        "linkType": "TaxonomyConcept"
+      }
+    }
+  ]
+}

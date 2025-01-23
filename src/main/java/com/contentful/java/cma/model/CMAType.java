@@ -29,6 +29,8 @@ public enum CMAType {
   Space,
   SpaceMembership,
   Tag,
+  TaxonomyConcept,
+  TaxonomyConceptScheme,
   Upload,
   User,
   @SerializedName("Extension") UiExtension,
