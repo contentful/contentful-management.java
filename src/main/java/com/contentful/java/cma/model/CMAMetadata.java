@@ -5,6 +5,26 @@ import java.util.List;
 public class CMAMetadata {
     List<CMATag> tags;
 
+    List<CMALink> taxonomy;
+
+    public List<CMALink> getConcepts() {
+        return concepts;
+    }
+
+    public void setConcepts(List<CMALink> concepts) {
+        this.concepts = concepts;
+    }
+
+    List<CMALink> concepts;
+
+    public List<CMALink> getTaxonomy() {
+        return taxonomy;
+    }
+
+    public void setTaxonomy(List<CMALink> taxonomy) {
+        this.taxonomy = taxonomy;
+    }
+
     /**
      * Gets the list of tags associated with this resource.
      *

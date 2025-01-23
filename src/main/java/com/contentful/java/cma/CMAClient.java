@@ -97,6 +97,8 @@ public class CMAClient {
   private final ModuleWebhooks moduleWebhooks;
   private final ModuleScheduledActions moduleScheduledActions;
 
+  private final ModuleTaxonomy moduleTaxonomy;
+
   // Executors
   Executor callbackExecutor;
 
@@ -178,6 +180,8 @@ public class CMAClient {
         configured);
     this.moduleScheduledActions = new ModuleScheduledActions(retrofit, callbackExecutor,
         spaceId, environmentId, configured);
+    this.moduleTaxonomy = new ModuleTaxonomy(retrofit,
+            callbackExecutor, spaceId, environmentId, configured);
 
   }
 
@@ -373,6 +377,10 @@ public class CMAClient {
    */
   public ModuleScheduledActions scheduledActions() {
     return moduleScheduledActions;
+  }
+
+  public ModuleTaxonomy taxonomy() {
+    return moduleTaxonomy;
   }
 
 

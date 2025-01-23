@@ -1,0 +1,142 @@
+{
+  "sys": {
+    "type": "Array"
+  },
+  "limit": 40,
+  "items": [
+    {
+      "sys": {
+        "id": "3S9wFqkGUtAOCr6IUjpI3F",
+        "type": "TaxonomyConceptScheme",
+        "createdAt": "2025-01-22T14:14:14.264Z",
+        "updatedAt": "2025-01-22T14:18:05.997Z",
+        "organization": {
+          "sys": {
+            "id": "0ar3TVMKEKfNfi1zRoENff",
+            "type": "Link",
+            "linkType": "Organization"
+          }
+        },
+        "createdBy": {
+          "sys": {
+            "id": "0aq1aR1pMpgsM7j6LLjRRP",
+            "type": "Link",
+            "linkType": "User"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "id": "0aq1aR1pMpgsM7j6LLjRRP",
+            "type": "Link",
+            "linkType": "User"
+          }
+        },
+        "version": 2
+      },
+      "uri": null,
+      "prefLabel": {
+        "en-US": "ExampleSchema"
+      },
+      "definition": {
+        "en-US": "This is an example schema"
+      },
+      "topConcepts": [
+        {
+          "sys": {
+            "id": "5yddoLMAMMPcsFqEQAqvd3",
+            "type": "Link",
+            "linkType": "TaxonomyConcept"
+          }
+        }
+      ],
+      "concepts": [
+        {
+          "sys": {
+            "id": "6mGQ3L1vSc9Ejh93vdgjiv",
+            "type": "Link",
+            "linkType": "TaxonomyConcept"
+          }
+        },
+        {
+          "sys": {
+            "id": "5yddoLMAMMPcsFqEQAqvd3",
+            "type": "Link",
+            "linkType": "TaxonomyConcept"
+          }
+        }
+      ],
+      "totalConcepts": 2
+    },
+    {
+      "sys": {
+        "id": "3ObFCyQRmzXGNrTNf7ejn7",
+        "type": "TaxonomyConceptScheme",
+        "createdAt": "2025-01-22T14:14:33.149Z",
+        "updatedAt": "2025-01-22T14:19:19.508Z",
+        "organization": {
+          "sys": {
+            "id": "0ar3TVMKEKfNfi1zRoENff",
+            "type": "Link",
+            "linkType": "Organization"
+          }
+        },
+        "createdBy": {
+          "sys": {
+            "id": "0aq1aR1pMpgsM7j6LLjRRP",
+            "type": "Link",
+            "linkType": "User"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "id": "0aq1aR1pMpgsM7j6LLjRRP",
+            "type": "Link",
+            "linkType": "User"
+          }
+        },
+        "version": 4
+      },
+      "uri": null,
+      "prefLabel": {
+        "en-US": "ExampleSchema2"
+      },
+      "definition": {
+        "en-US": "This is example schema 2"
+      },
+      "topConcepts": [
+        {
+          "sys": {
+            "id": "6mGQ3L1vSc9Ejh93vdgjiv",
+            "type": "Link",
+            "linkType": "TaxonomyConcept"
+          }
+        }
+      ],
+      "concepts": [
+        {
+          "sys": {
+            "id": "6mGQ3L1vSc9Ejh93vdgjiv",
+            "type": "Link",
+            "linkType": "TaxonomyConcept"
+          }
+        },
+        {
+          "sys": {
+            "id": "5EzTDFmXoH774nO5uVDkRR",
+            "type": "Link",
+            "linkType": "TaxonomyConcept"
+          }
+        },
+        {
+          "sys": {
+            "id": "uTpwzHqhWHva3Cv8MtJtf",
+            "type": "Link",
+            "linkType": "TaxonomyConcept"
+          }
+        }
+      ],
+      "totalConcepts": 3
+    }
+  ],
+  "pages": {}
+}

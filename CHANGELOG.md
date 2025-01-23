@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Version [3.4.17] - [2025-01-23]
+- Changed: added support for Taxonomy API
+
 ## Version [3.4.16] - [2024-12-16]
 - Changed: added fetchAllSnapshotsWithQuery method with query support
 
@@ -217,6 +220,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 Initial release.
 
 [unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-3.3.3...HEAD
+[3.4.17]: https://github.com/contentful/contentful-management.java/compare/v3.4.16...v3.4.17
 [3.4.16]: https://github.com/contentful/contentful-management.java/compare/v3.4.15...v3.4.16
 [3.4.15]: https://github.com/contentful/contentful-management.java/compare/v3.4.14...v3.4.15
 [3.4.14]: https://github.com/contentful/contentful-management.java/compare/v3.4.13...v3.4.14
