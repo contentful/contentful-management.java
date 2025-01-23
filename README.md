@@ -72,6 +72,7 @@ Core Features
   * [Scheduled actions](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/scheduled-actions)
   * [SpaceMemberships](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/space-memberships)
   * [Spaces](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/spaces)
+  * [Taxonomy](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/taxonomy)
   * [UiExtensions](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/ui-extensions)
   * [Uploads](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/uploads)
   * [Users](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/users)
@@ -90,13 +91,13 @@ Install the Contentful dependency:
 <dependency>
   <groupId>com.contentful.java</groupId>
   <artifactId>cma-sdk</artifactId>
-  <version>3.4.16</version>
+  <version>3.4.17</version>
 </dependency>
 ```
 
 * _Gradle_
 ```groovy
-compile 'com.contentful.java:cma-sdk:3.4.16'
+compile 'com.contentful.java:cma-sdk:3.4.17'
 ```
 
 This SDK requires Java 8 (or higher version).
