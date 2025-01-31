@@ -103,7 +103,7 @@ open class Base {
                     .addInterceptor(AuthorizationHeaderInterceptor(ACCESS_TOKEN))
                     .addInterceptor(UserAgentHeaderInterceptor("E2EUserAgent"))
                     .addInterceptor(ContentTypeInterceptor(Constants.DEFAULT_CONTENT_TYPE))
-                    .addInterceptor(ErrorInterceptor())
+                    .addInterceptor(ErrorInterceptor(true))
                     .connectTimeout(2, TimeUnit.MINUTES)
                     .readTimeout(2, TimeUnit.MINUTES)
                     .writeTimeout(2, TimeUnit.MINUTES)

@@ -158,12 +158,12 @@ class ModelTests {
                 .message("")
                 .build()
 
-        assertEquals("FAILED \n"
+        assertEquals("FAILED (sensitive headers omitted)\n"
                 + "\tRequest{method=GET, url=https://example.com/, tags={}}\n"
-                + "\t↳ Header{}\n"
+                + "\t↳ Header{<headers omitted>}\n"
                 + "\tResponse{"
                 + "protocol=http/1.1, code=200, message=, url=https://example.com/}\n"
-                + "\t↳ Header{}",
+                + "\t↳ Header{<headers omitted>}",
                 CMAHttpException(request, response).toString())
     }
 

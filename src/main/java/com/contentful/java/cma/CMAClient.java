@@ -102,10 +102,15 @@ public class CMAClient {
   // Executors
   Executor callbackExecutor;
 
+  final boolean logSensitiveData;
+
   private CMAClient(Builder cmaBuilder) {
     if (cmaBuilder.accessToken == null) {
       throw new IllegalArgumentException("No access token was set.");
     }
+
+    this.logSensitiveData = cmaBuilder.logSensitiveData;
+
 
     // Retrofit Retrofit
     Retrofit.Builder retrofitBuilder =
@@ -403,6 +408,9 @@ public class CMAClient {
     private Executor callbackExecutor;
     private RateLimitsListener rateLimitListener;
 
+    boolean logSensitiveData = false;
+
+
     /**
      * Overrides the default remote URL for core modules.
      *
@@ -415,6 +423,11 @@ public class CMAClient {
         throw new IllegalArgumentException("Cannot call setCoreEndpoint() with null.");
       }
       this.coreEndpoint = remoteUrl;
+      return this;
+    }
+
+    public Builder setLogSensitiveData(boolean logSensitiveData) {
+      this.logSensitiveData = logSensitiveData;
       return this;
     }
 
@@ -608,7 +621,7 @@ public class CMAClient {
               createCustomHeaderSections(application, integration))
           )
           .addInterceptor(new ContentTypeInterceptor(DEFAULT_CONTENT_TYPE))
-          .addInterceptor(new ErrorInterceptor());
+          .addInterceptor(new ErrorInterceptor(logSensitiveData));
 
       if (rateLimitListener != null) {
         okBuilder
@@ -631,7 +644,7 @@ public class CMAClient {
               createCustomHeaderSections(application, integration))
           )
           .addInterceptor(new ContentTypeInterceptor(OCTET_STREAM_CONTENT_TYPE))
-          .addInterceptor(new ErrorInterceptor());
+          .addInterceptor(new ErrorInterceptor(logSensitiveData));
 
       return setLogger(okBuilder);
     }
