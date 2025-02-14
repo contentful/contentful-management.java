@@ -96,7 +96,7 @@ class ClientTests{
     fun testCoreCallbackRetrofitError() {
         val badClient = CMAClient.Builder()
                 .setAccessToken("accesstoken")
-                .setCoreCallFactory { throw RuntimeException(it.url().toString(), IOException()) }
+                .setCoreCallFactory { throw RuntimeException(it.url.toString(), IOException()) }
                 .build()
 
         val cb = TestCallback<CMAArray<CMASpace>>()
@@ -109,7 +109,7 @@ class ClientTests{
     fun testUploadCallbackRetrofitError() {
         val badClient = CMAClient.Builder()
                 .setAccessToken("accesstoken")
-                .setUploadCallFactory { throw RuntimeException(it.url().toString(), IOException()) }
+                .setUploadCallFactory { throw RuntimeException(it.url.toString(), IOException()) }
                 .build()
 
         val cb = TestCallback<CMAUpload>()
@@ -176,7 +176,7 @@ class ClientTests{
         // Request
         val recordedRequest = server!!.takeRequest()
 
-        assertTrue(recordedRequest.getHeader("User-Agent").contains(versionName))
+        assertTrue(recordedRequest.getHeader("User-Agent")!!.contains(versionName))
     }
 
     @test
@@ -188,7 +188,7 @@ class ClientTests{
         // Request
         val recordedRequest = server!!.takeRequest()
 
-        val actual = recordedRequest.getHeader("X-Contentful-User-Agent")
+        val actual = recordedRequest.getHeader("X-Contentful-User-Agent")!!
         assertTrue(actual.contains("sdk contentful-management.java/"))
         assertTrue(actual.contains("platform java/"))
         assertTrue(actual.contains("os"))
