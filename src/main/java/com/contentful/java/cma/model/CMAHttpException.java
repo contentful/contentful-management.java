@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import okhttp3.Headers;
 import okhttp3.Request;
@@ -15,13 +14,12 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okio.Buffer;
 
-import static java.lang.String.format;
-
 /**
  * This class will represent known Contentful exceptions
  */
 public class CMAHttpException extends RuntimeException {
   private static final long serialVersionUID = 6844124565767723268L;
+  private final boolean logSensitiveData;
 
   /**
    * Error body potentially delivered with an error request.
@@ -250,20 +248,37 @@ public class CMAHttpException extends RuntimeException {
    * @param response the response from the server to this faulty request.
    */
   public CMAHttpException(Request request, Response response) {
+
     super(response.message());
     this.request = request;
     this.response = response;
-
+    this.logSensitiveData = false;
     try {
       final String body = response.body() != null ? response.body().string() : null;
       this.errorBody = new GsonBuilder().create().fromJson(body, ErrorBody.class);
     } catch (IOException e) {
       this.errorBody = null;
     }
-
-    final Map<String, List<String>> headers = response.headers().toMultimap();
-    this.ratelimits = new DefaultParser().parse(headers);
+    this.ratelimits = new DefaultParser().parse(response.headers().toMultimap());
   }
+
+
+
+
+  public CMAHttpException(Request request, Response response, boolean logSensitiveData) {
+    super(response.message());
+    this.request = request;
+    this.response = response;
+    this.logSensitiveData = logSensitiveData;
+    try {
+      final String body = response.body() != null ? response.body().string() : null;
+      this.errorBody = new GsonBuilder().create().fromJson(body, ErrorBody.class);
+    } catch (IOException e) {
+      this.errorBody = null;
+    }
+    this.ratelimits = new DefaultParser().parse(response.headers().toMultimap());
+  }
+
 
   /**
    * Convert exception to human readable form.
@@ -272,26 +287,45 @@ public class CMAHttpException extends RuntimeException {
    */
   @Override
   public String toString() {
-    if (errorBody == null) {
-      return format(
-          Locale.getDefault(),
-          "FAILED \n\t%s\n\t↳ Header{%s}%s\n\t%s\n\t↳ Header{%s}",
-          request.toString(),
-          headersToString(request.headers()),
-          maybeBodyToString(request.body()),
-          response.toString(),
-          headersToString(response.headers()));
+    if (!logSensitiveData) {
+      return String.format(
+              Locale.getDefault(),
+              "FAILED (sensitive headers omitted)\n\t%s\n\t↳ Header{%s}%s\n\t%s\n\t↳ Header{%s}",
+              request,
+              "<headers omitted>",
+              maybeBodyToString(request.body()),
+              response,
+              "<headers omitted>"
+      );
     } else {
-      return format(
-          Locale.getDefault(),
-          "FAILED %s\n\t%s\n\t↳ Header{%s}%s\n\t%s\n\t↳ Header{%s}",
-          errorBody.toString(),
-          request.toString(),
-          headersToString(request.headers()),
-          maybeBodyToString(request.body()),
-          response.toString(),
-          headersToString(response.headers()));
+      if (errorBody == null) {
+        return String.format(
+                Locale.getDefault(),
+                "FAILED \n\t%s\n\t↳ Header{%s}%s\n\t%s\n\t↳ Header{%s}",
+                request,
+                headersToString(request.headers()),
+                maybeBodyToString(request.body()),
+                response,
+                headersToString(response.headers())
+        );
+      } else {
+        return String.format(
+                Locale.getDefault(),
+                "FAILED %s\n\t%s\n\t↳ Header{%s}%s\n\t%s\n\t↳ Header{%s}",
+                errorBody,
+                request,
+                headersToString(request.headers()),
+                maybeBodyToString(request.body()),
+                response,
+                headersToString(response.headers())
+        );
+      }
     }
+  }
+
+
+  public boolean shouldLogSensitiveData() {
+    return logSensitiveData;
   }
 
   private String maybeBodyToString(RequestBody body) {
