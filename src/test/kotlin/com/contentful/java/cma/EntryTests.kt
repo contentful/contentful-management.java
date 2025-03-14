@@ -51,12 +51,12 @@ class EntryTests {
 
         // Client
         client = CMAClient.Builder()
-                .setAccessToken("token")
-                .setCoreEndpoint(server!!.url("/").toString())
-                .setUploadEndpoint(server!!.url("/").toString())
-                .setSpaceId("configuredSpaceId")
-                .setEnvironmentId("configuredEnvironmentId")
-                .build()
+            .setAccessToken("token")
+            .setCoreEndpoint(server!!.url("/").toString())
+            .setUploadEndpoint(server!!.url("/").toString())
+            .setSpaceId("configuredSpaceId")
+            .setEnvironmentId("configuredEnvironmentId")
+            .build()
 
         gson = CMAClient.createGson()
     }
@@ -73,7 +73,7 @@ class EntryTests {
         val entry = CMAEntry().setId("entryid").setSpaceId("spaceid")
         assertFalse(entry.isArchived)
         val result = assertTestCallback(
-                client!!.entries().async().archive(entry, TestCallback()) as TestCallback)!!
+            client!!.entries().async().archive(entry, TestCallback()) as TestCallback)!!
         assertTrue(result.isArchived)
 
         // Request
@@ -89,12 +89,12 @@ class EntryTests {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val entry = CMAEntry()
-                .setField("fid1", "en-US", "value1")
-                .setField("fid2", "en-US", "value2")
+            .setField("fid1", "en-US", "value1")
+            .setField("fid2", "en-US", "value2")
 
         val result = assertTestCallback(client!!.entries()
-                .async()
-                .create("spaceid", "master", "ctid", entry, TestCallback()) as TestCallback)!!
+            .async()
+            .create("spaceid", "master", "ctid", entry, TestCallback()) as TestCallback)!!
 
         assertEquals(2, result.fields.size)
 
@@ -119,18 +119,18 @@ class EntryTests {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val entry = CMAEntry()
-                .setField("fid1", "en-US", "value1")
-                .setField("fid2", "en-US", "value2")
+            .setField("fid1", "en-US", "value1")
+            .setField("fid2", "en-US", "value2")
 
         assertTestCallback(client!!.entries()
-                .async()
-                .create("ctid", entry, TestCallback()) as TestCallback)!!
+            .async()
+            .create("ctid", entry, TestCallback()) as TestCallback)!!
 
         // Request
         val recordedRequest = server!!.takeRequest()
         assertEquals("POST", recordedRequest.method)
         assertEquals("/spaces/configuredSpaceId/environments/configuredEnvironmentId/entries",
-                recordedRequest.path)
+            recordedRequest.path)
     }
 
     @test
@@ -140,12 +140,12 @@ class EntryTests {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val entry = CMAEntry()
-                .setId("entryid")
-                .setField("fid1", "en-US", "value1")
-                .setField("fid2", "en-US", "value2")
+            .setId("entryid")
+            .setField("fid1", "en-US", "value1")
+            .setField("fid2", "en-US", "value2")
 
         assertTestCallback(client!!.entries().async().create(
-                "spaceid", "master", "ctid", entry, TestCallback()) as TestCallback)
+            "spaceid", "master", "ctid", entry, TestCallback()) as TestCallback)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -235,11 +235,11 @@ class EntryTests {
         val requestBody = ""
         server!!.enqueue(MockResponse().setResponseCode(204).setBody(requestBody))
         assertTestCallback(client!!.entries().async().delete(
-                CMAEntry().apply {
-                    spaceId = "spaceid"
-                    environmentId = "master"
-                    id = "entryid"
-                }, TestCallback()) as TestCallback)
+            CMAEntry().apply {
+                spaceId = "spaceid"
+                environmentId = "master"
+                id = "entryid"
+            }, TestCallback()) as TestCallback)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -253,7 +253,7 @@ class EntryTests {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val result = assertTestCallback(client!!.entries().async().fetchAll(
-                "spaceid", "environmentId", TestCallback()) as TestCallback)!!
+            "spaceid", "environmentId", TestCallback()) as TestCallback)!!
 
         assertEquals(CMAType.Array, result.system.type)
         assertEquals(1, result.total)
@@ -283,18 +283,18 @@ class EntryTests {
         assertEquals("GET", request.method)
         assertEquals("/spaces/configuredSpaceId/environments/configuredEnvironmentId/entries"
                 + "?limit=100",
-                request.path)
+            request.path)
     }
 
     @test
     fun testFetchAllWithQuery() {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(
-                TestUtils.fileToString("entry_fetch_all_response.json")))
+            TestUtils.fileToString("entry_fetch_all_response.json")))
 
         val query = hashMapOf(Pair("skip", "1"), Pair("limit", "2"), Pair("content_type", "foo"))
 
         assertTestCallback(client!!.entries().async().fetchAll(
-                "spaceid", "environmentId", query, TestCallback()) as TestCallback)
+            "spaceid", "environmentId", query, TestCallback()) as TestCallback)
 
         // Request
         val request = server!!.takeRequest()
@@ -307,7 +307,7 @@ class EntryTests {
     @test
     fun testFetchAllWithQueryWithConfiguredSpaceAndEnvironment() {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(
-                TestUtils.fileToString("entry_fetch_all_response.json")))
+            TestUtils.fileToString("entry_fetch_all_response.json")))
 
         val query = hashMapOf(Pair("skip", "1"), Pair("limit", "2"), Pair("content_type", "foo"))
 
@@ -319,7 +319,7 @@ class EntryTests {
         assertEquals("GET", request.method)
         assertEquals("/spaces/configuredSpaceId/environments/configuredEnvironmentId/entries"
                 + "?limit=2&skip=1&content_type=foo",
-                request.path)
+            request.path)
     }
 
     @test
@@ -328,7 +328,7 @@ class EntryTests {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val result = assertTestCallback(client!!.entries().async().fetchOne(
-                "space", "master", "entry", TestCallback()) as TestCallback)!!
+            "space", "master", "entry", TestCallback()) as TestCallback)!!
 
         val sys = result.system
         val fields = result.fields
@@ -357,14 +357,14 @@ class EntryTests {
         val request = server!!.takeRequest()
         assertEquals("GET", request.method)
         assertEquals("/spaces/configuredSpaceId/environments/configuredEnvironmentId/entries/entry",
-                request.path)
+            request.path)
     }
 
     @test
     fun testParseEntryWithList() {
         gson!!.fromJson(
-                TestUtils.fileToString("entry_with_list_object.json"),
-                CMAEntry::class.java)
+            TestUtils.fileToString("entry_with_list_object.json"),
+            CMAEntry::class.java)
     }
 
     @test
@@ -374,14 +374,14 @@ class EntryTests {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val entry = CMAEntry()
-                .setId("entryid")
-                .setSpaceId("spaceid")
-                .setVersion(1)
-                .setField("fid1", "en-US", "newvalue1")
-                .setField("fid2", "en-US", "newvalue2")
+            .setId("entryid")
+            .setSpaceId("spaceid")
+            .setVersion(1)
+            .setField("fid1", "en-US", "newvalue1")
+            .setField("fid2", "en-US", "newvalue2")
 
         val result = assertTestCallback(client!!.entries().async()
-                .update(entry, TestCallback()) as TestCallback)!!
+            .update(entry, TestCallback()) as TestCallback)!!
 
         assertEquals("entryid", result.id)
         assertEquals(CMAType.Entry, result.system.type)
@@ -407,9 +407,9 @@ class EntryTests {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(requestBody))
 
         assertTestCallback(client!!.entries().async().publish(CMAEntry()
-                .setId("entryid")
-                .setSpaceId("spaceid")
-                .setVersion(1), TestCallback(true)) as TestCallback)
+            .setId("entryid")
+            .setSpaceId("spaceid")
+            .setVersion(1), TestCallback(true)) as TestCallback)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -424,8 +424,8 @@ class EntryTests {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(requestBody))
 
         assertTestCallback(client!!.entries().async().unArchive(
-                CMAEntry().setId("entryid").setSpaceId("spaceid"),
-                TestCallback(true)) as TestCallback)
+            CMAEntry().setId("entryid").setSpaceId("spaceid"),
+            TestCallback(true)) as TestCallback)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -439,8 +439,8 @@ class EntryTests {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(requestBody))
 
         assertTestCallback(client!!.entries().async().unPublish(
-                CMAEntry().setId("entryid").setSpaceId("spaceid"),
-                TestCallback(true)) as TestCallback)
+            CMAEntry().setId("entryid").setSpaceId("spaceid"),
+            TestCallback(true)) as TestCallback)
 
         // Request
         val recordedRequest = server!!.takeRequest()
@@ -451,9 +451,9 @@ class EntryTests {
     @test(expected = RuntimeException::class)
     fun testRetainsSysOnNetworkError() {
         val badClient = CMAClient.Builder()
-                .setAccessToken("accesstoken")
-                .setCoreCallFactory { throw RuntimeException(it.url().toString(), IOException()) }
-                .build()
+            .setAccessToken("accesstoken")
+            .setCoreCallFactory { throw RuntimeException(it.url().toString(), IOException()) }
+            .build()
 
         val entry = CMAEntry().setVersion(31337)
         try {
@@ -477,16 +477,16 @@ class EntryTests {
         server!!.enqueue(MockResponse().setResponseCode(422).setBody(responseBody))
 
         val entry = CMAEntry()
-                .setId("entryId")
-                .setSpaceId("spaceId")
-                .setField("testField2", "en-US", Collections.singletonList(""))
+            .setId("entryId")
+            .setSpaceId("spaceId")
+            .setField("testField2", "en-US", Collections.singletonList(""))
 
         try {
             client!!.entries().create("spaceID", "envID", "contenttype", entry)
         } catch (e: CMAHttpException) {
             assertEquals(
-                    "The type of \"value\" is incorrect, expected type: Symbol",
-                    e.errorBody.details.errors[0].details)
+                "The type of \"value\" is incorrect, expected type: Symbol",
+                e.errorBody.details.errors[0].details)
             throw e
         }
     }
@@ -513,12 +513,12 @@ class EntryTests {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val entry = CMAEntry()
-                .setId("entryId")
-                .setSpaceId("spaceId")
-                .setEnvironmentId("master")
+            .setId("entryId")
+            .setSpaceId("spaceId")
+            .setEnvironmentId("master")
 
         val result = assertTestCallback(client!!.entries().async().fetchAllSnapshots(
-                entry, TestCallback()) as TestCallback)!!
+            entry, TestCallback()) as TestCallback)!!
 
         val items = result.items
         assertEquals(2, items.size)
@@ -572,12 +572,12 @@ class EntryTests {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val entry = CMAEntry()
-                .setId("entryId")
-                .setSpaceId("spaceId")
-                .setEnvironmentId("master")
+            .setId("entryId")
+            .setSpaceId("spaceId")
+            .setEnvironmentId("master")
 
         val result = assertTestCallback(client!!.entries().async().fetchOneSnapshot(
-                entry, "snapShotId", TestCallback()) as TestCallback)!!
+            entry, "snapShotId", TestCallback()) as TestCallback)!!
 
         assertEquals(CMAType.Snapshot, result.system.type)
         assertTrue(result.snapshot is CMAEntry)
@@ -587,7 +587,7 @@ class EntryTests {
         val recordedRequest = server!!.takeRequest()
         assertEquals("GET", recordedRequest.method)
         assertEquals("/spaces/spaceId/environments/master/entries/entryId/snapshots/snapShotId",
-                recordedRequest.path)
+            recordedRequest.path)
     }
 
     @test
@@ -596,7 +596,7 @@ class EntryTests {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val result = assertTestCallback(client!!.entries().async().fetchAll(
-                "spaceid", "staging", TestCallback()) as TestCallback)!!
+            "spaceid", "staging", TestCallback()) as TestCallback)!!
 
         assertEquals(CMAType.Array, result.system.type)
         assertEquals(23, result.total)
@@ -617,15 +617,15 @@ class EntryTests {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val result = assertTestCallback(
-                client!!
-                        .entries()
-                        .async()
-                        .fetchAll(
-                                "spaceid",
-                                "staging",
-                                hashMapOf(Pair("limit", "1")),
-                                TestCallback()
-                        ) as TestCallback)!!
+            client!!
+                .entries()
+                .async()
+                .fetchAll(
+                    "spaceid",
+                    "staging",
+                    hashMapOf(Pair("limit", "1")),
+                    TestCallback()
+                ) as TestCallback)!!
 
         assertEquals(CMAType.Array, result.system.type)
         assertEquals(23, result.total)
@@ -646,15 +646,15 @@ class EntryTests {
         server!!.enqueue(MockResponse().setResponseCode(200).setBody(responseBody))
 
         val result = assertTestCallback(
-                client!!
-                        .entries()
-                        .async()
-                        .fetchOne(
-                                "spaceid",
-                                "staging",
-                                "6MUKUSDqPCEcQUeeewAgAW",
-                                TestCallback()
-                        ) as TestCallback)!!
+            client!!
+                .entries()
+                .async()
+                .fetchOne(
+                    "spaceid",
+                    "staging",
+                    "6MUKUSDqPCEcQUeeewAgAW",
+                    TestCallback()
+                ) as TestCallback)!!
 
         assertEquals(CMAType.Entry, result.system.type)
         assertEquals(result.environmentId, "staging")
@@ -674,16 +674,16 @@ class EntryTests {
         val entry = CMAEntry().setField("name", "en-US", "Pete")
 
         val result = assertTestCallback(
-                client!!
-                        .entries()
-                        .async()
-                        .create(
-                                "spaceid",
-                                "environmentId",
-                                "contenttype",
-                                entry,
-                                TestCallback()
-                        ) as TestCallback)!!
+            client!!
+                .entries()
+                .async()
+                .create(
+                    "spaceid",
+                    "environmentId",
+                    "contenttype",
+                    entry,
+                    TestCallback()
+                ) as TestCallback)!!
 
         assertEquals(CMAType.Entry, result.system.type)
         assertEquals(result.environmentId, "staging")
@@ -701,16 +701,16 @@ class EntryTests {
         server!!.enqueue(MockResponse().setResponseCode(204))
 
         val result = assertTestCallback(
-                client!!
-                        .entries()
-                        .async()
-                        .delete(CMAEntry().apply {
-                            spaceId = "spaceid"
-                            environmentId = "environmentId"
-                            id = "entryId"
-                        },
-                                TestCallback()
-                        ) as TestCallback)!!
+            client!!
+                .entries()
+                .async()
+                .delete(CMAEntry().apply {
+                    spaceId = "spaceid"
+                    environmentId = "environmentId"
+                    id = "entryId"
+                },
+                    TestCallback()
+                ) as TestCallback)!!
 
         // Request
         assertEquals(204, result)
@@ -718,5 +718,62 @@ class EntryTests {
         val request = server!!.takeRequest()
         assertEquals("DELETE", request.method)
         assertEquals("/spaces/spaceid/environments/environmentId/entries/entryId", request.path)
+    }
+
+    @test
+    fun testPublishLocale() {
+        val requestBody = TestUtils.fileToString("entry_create_links_request.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(requestBody))
+
+        assertTestCallback(client!!.entries().async().publishLocale(
+            CMAEntry()
+                .setId("entryid")
+                .setSpaceId("spaceid")
+                .setVersion(1),
+            "en-US",
+            TestCallback(true)) as TestCallback)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("PUT", recordedRequest.method)
+        assertEquals("/spaces/spaceid/environments/master/entries/entryid/published/locales/en-US", recordedRequest.path)
+        assertNotNull(recordedRequest.getHeader("X-Contentful-Version"))
+    }
+
+    @test
+    fun testUnPublishLocale() {
+        val requestBody = TestUtils.fileToString("entry_create_links_request.json")
+        server!!.enqueue(MockResponse().setResponseCode(200).setBody(requestBody))
+
+        assertTestCallback(client!!.entries().async().unPublishLocale(
+            CMAEntry()
+                .setId("entryid")
+                .setSpaceId("spaceid"),
+            "en-US",
+            TestCallback(true)) as TestCallback)
+
+        // Request
+        val recordedRequest = server!!.takeRequest()
+        assertEquals("DELETE", recordedRequest.method)
+        assertEquals("/spaces/spaceid/environments/master/entries/entryid/published/locales/en-US", recordedRequest.path)
+    }
+
+    @test(expected = IllegalArgumentException::class)
+    fun testPublishLocaleWithNullLocale() {
+        client!!.entries().publishLocale(
+            CMAEntry()
+                .setId("entryid")
+                .setSpaceId("spaceid")
+                .setVersion(1),
+            null)
+    }
+
+    @test(expected = IllegalArgumentException::class)
+    fun testUnPublishLocaleWithNullLocale() {
+        client!!.entries().unPublishLocale(
+            CMAEntry()
+                .setId("entryid")
+                .setSpaceId("spaceid"),
+            null)
     }
 }
