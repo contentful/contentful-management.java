@@ -84,4 +84,34 @@ open class EntryE2E : Base() {
 
         assertEquals(initialEntryCount, client.entries().fetchAll().total)
     }
+
+    @Test
+    fun testLocaleBasedPublishing() {
+        val initialEntryCount = client.entries().fetchAll().total
+
+        var entry = CMAEntry()
+        entry.setField("title", "en-US", "Title in English")
+        entry.setField("title", "de-DE", "Titel auf Deutsch")
+
+        entry = client.entries().create("theOnlyContentModel", entry)
+        assertEquals("Title in English", entry.fields["title"]!!["en-US"])
+        assertEquals("Titel auf Deutsch", entry.fields["title"]!!["de-DE"])
+
+        // Publish only English locale
+        entry = client.entries().publishLocale(entry, "en-US")
+
+        // Verify that only English is published
+        entry = client.entries().fetchOne(entry.spaceId!!, entry.environmentId!!, entry.id!!)
+        assertTrue(entry.isPublished)
+
+        // Publish German locale
+        entry = client.entries().publishLocale(entry, "de-DE")
+
+        // Unpublish English locale
+        entry = client.entries().unPublishLocale(entry, "en-US")
+
+        // Clean up
+        assertEquals(204, client.entries().delete(entry))
+        assertEquals(initialEntryCount, client.entries().fetchAll().total)
+    }
 }

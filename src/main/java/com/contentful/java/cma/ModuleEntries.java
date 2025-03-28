@@ -43,11 +43,11 @@ public class ModuleEntries extends AbsModule<ServiceEntries> {
    * @param environmentIdConfigured internal helper to see if environment was set.
    */
   public ModuleEntries(
-      Retrofit retrofit,
-      Executor callbackExecutor,
-      String spaceId,
-      String environmentId,
-      boolean environmentIdConfigured) {
+          Retrofit retrofit,
+          Executor callbackExecutor,
+          String spaceId,
+          String environmentId,
+          boolean environmentIdConfigured) {
     super(retrofit, callbackExecutor, spaceId, environmentId, environmentIdConfigured);
     this.async = new Async();
   }
@@ -119,10 +119,10 @@ public class ModuleEntries extends AbsModule<ServiceEntries> {
    */
   @SuppressWarnings("unchecked")
   public CMAEntry create(
-      String spaceId,
-      String environmentId,
-      String contentTypeId,
-      CMAEntry entry) {
+          String spaceId,
+          String environmentId,
+          String contentTypeId,
+          CMAEntry entry) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(environmentId, "environmentId");
     assertNotNull(entry, "entry");
@@ -137,7 +137,7 @@ public class ModuleEntries extends AbsModule<ServiceEntries> {
         return service.create(spaceId, environmentId, contentTypeId, entry).blockingFirst();
       } else {
         return service.create(spaceId, environmentId, contentTypeId, entryId, entry)
-            .blockingFirst();
+                .blockingFirst();
       }
     } finally {
       entry.setSystem(sys);
@@ -160,9 +160,9 @@ public class ModuleEntries extends AbsModule<ServiceEntries> {
     assertNotNull(entry.getId(), "entryId");
 
     return service.delete(
-        entry.getSpaceId(),
-        entry.getEnvironmentId(),
-        entry.getId()
+            entry.getSpaceId(),
+            entry.getEnvironmentId(),
+            entry.getId()
     ).blockingFirst().code();
   }
 
@@ -227,14 +227,14 @@ public class ModuleEntries extends AbsModule<ServiceEntries> {
    * @throws IllegalArgumentException if environmentId is null.
    */
   public CMAArray<CMAEntry> fetchAll(
-      String spaceId,
-      String environmentId,
-      Map<String, String> query) {
+          String spaceId,
+          String environmentId,
+          Map<String, String> query) {
     assertNotNull(spaceId, "spaceId");
     assertNotNull(environmentId, "environmentId");
 
     Map<String, String> enhancedQuery =
-      DefaultQueryParameter.putIfNotSet(query, DefaultQueryParameter.FETCH);
+            DefaultQueryParameter.putIfNotSet(query, DefaultQueryParameter.FETCH);
     return service.fetchAll(spaceId, environmentId, enhancedQuery).blockingFirst();
   }
 
@@ -287,10 +287,10 @@ public class ModuleEntries extends AbsModule<ServiceEntries> {
     final String spaceId = getSpaceIdOrThrow(entry, "entry");
 
     return service.publish(
-        entry.getSystem().getVersion(),
-        spaceId,
-        environmentId,
-        entryId).blockingFirst();
+            entry.getSystem().getVersion(),
+            spaceId,
+            environmentId,
+            entryId).blockingFirst();
   }
 
   /**
@@ -421,6 +421,57 @@ public class ModuleEntries extends AbsModule<ServiceEntries> {
   }
 
   /**
+   * Publish an Entry for a specific locale.
+   *
+   * @param entry Entry
+   * @param locale Locale to publish
+   * @return {@link CMAEntry} result instance
+   * @throws IllegalArgumentException if entry is null.
+   * @throws IllegalArgumentException if entry's id is null.
+   * @throws IllegalArgumentException if entry's space id is null.
+   * @throws IllegalArgumentException if locale is null.
+   */
+  public CMAEntry publishLocale(CMAEntry entry, String locale) {
+    assertNotNull(entry, "entry");
+    assertNotNull(locale, "locale");
+    final String entryId = getResourceIdOrThrow(entry, "entry");
+    final String environmentId = entry.getEnvironmentId();
+    final String spaceId = getSpaceIdOrThrow(entry, "entry");
+
+    return service.publishLocale(
+            entry.getSystem().getVersion(),
+            spaceId,
+            environmentId,
+            entryId,
+            locale).blockingFirst();
+  }
+
+  /**
+   * Un-Publish an Entry for a specific locale.
+   *
+   * @param entry Entry
+   * @param locale Locale to unpublish
+   * @return {@link CMAEntry} result instance
+   * @throws IllegalArgumentException if entry is null.
+   * @throws IllegalArgumentException if entry's id is null.
+   * @throws IllegalArgumentException if entry's space id is null.
+   * @throws IllegalArgumentException if locale is null.
+   */
+  public CMAEntry unPublishLocale(CMAEntry entry, String locale) {
+    assertNotNull(entry, "entry");
+    assertNotNull(locale, "locale");
+    final String entryId = getResourceIdOrThrow(entry, "entry");
+    final String environmentId = entry.getEnvironmentId();
+    final String spaceId = getSpaceIdOrThrow(entry, "entry");
+
+    return service.unPublishLocale(
+            spaceId,
+            environmentId,
+            entryId,
+            locale).blockingFirst();
+  }
+
+  /**
    * @return a module with a set of asynchronous methods.
    */
   public Async async() {
@@ -467,9 +518,9 @@ public class ModuleEntries extends AbsModule<ServiceEntries> {
      * @see CMAClient.Builder#setEnvironmentId(String)
      */
     public CMACallback<CMAEntry> create(
-        final String contentTypeId,
-        final CMAEntry entry,
-        CMACallback<CMAEntry> callback) {
+            final String contentTypeId,
+            final CMAEntry entry,
+            CMACallback<CMAEntry> callback) {
       return defer(new RxExtensions.DefFunc<CMAEntry>() {
         @Override CMAEntry method() {
           return ModuleEntries.this.create(contentTypeId, entry);
@@ -500,11 +551,11 @@ public class ModuleEntries extends AbsModule<ServiceEntries> {
      * @throws IllegalArgumentException if entry is null.
      */
     public CMACallback<CMAEntry> create(
-        final String spaceId,
-        final String environmentId,
-        final String contentTypeId,
-        final CMAEntry entry,
-        CMACallback<CMAEntry> callback) {
+            final String spaceId,
+            final String environmentId,
+            final String contentTypeId,
+            final CMAEntry entry,
+            CMACallback<CMAEntry> callback) {
       return defer(new RxExtensions.DefFunc<CMAEntry>() {
         @Override CMAEntry method() {
           return ModuleEntries.this.create(spaceId, environmentId, contentTypeId, entry);
@@ -540,7 +591,7 @@ public class ModuleEntries extends AbsModule<ServiceEntries> {
      * @see CMAClient.Builder#setEnvironmentId(String)
      */
     public CMACallback<CMAArray<CMAEntry>> fetchAll(
-        CMACallback<CMAArray<CMAEntry>> callback) {
+            CMACallback<CMAArray<CMAEntry>> callback) {
       return defer(new RxExtensions.DefFunc<CMAArray<CMAEntry>>() {
         @Override CMAArray<CMAEntry> method() {
           return ModuleEntries.this.fetchAll();
@@ -560,8 +611,8 @@ public class ModuleEntries extends AbsModule<ServiceEntries> {
      * @see CMAClient.Builder#setEnvironmentId(String)
      */
     public CMACallback<CMAArray<CMAEntry>> fetchAll(
-        final Map<String, String> query,
-        CMACallback<CMAArray<CMAEntry>> callback) {
+            final Map<String, String> query,
+            CMACallback<CMAArray<CMAEntry>> callback) {
       return defer(new RxExtensions.DefFunc<CMAArray<CMAEntry>>() {
         @Override CMAArray<CMAEntry> method() {
           return ModuleEntries.this.fetchAll(query);
@@ -584,9 +635,9 @@ public class ModuleEntries extends AbsModule<ServiceEntries> {
      * @throws IllegalArgumentException if environmentId is null.
      */
     public CMACallback<CMAArray<CMAEntry>> fetchAll(
-        final String spaceId,
-        final String environmentId,
-        CMACallback<CMAArray<CMAEntry>> callback) {
+            final String spaceId,
+            final String environmentId,
+            CMACallback<CMAArray<CMAEntry>> callback) {
       return defer(new RxExtensions.DefFunc<CMAArray<CMAEntry>>() {
         @Override CMAArray<CMAEntry> method() {
           return ModuleEntries.this.fetchAll(spaceId, environmentId);
@@ -606,10 +657,10 @@ public class ModuleEntries extends AbsModule<ServiceEntries> {
      * @throws IllegalArgumentException if environmentId is null.
      */
     public CMACallback<CMAArray<CMAEntry>> fetchAll(
-        final String spaceId,
-        final String environmentId,
-        final Map<String, String> query,
-        CMACallback<CMAArray<CMAEntry>> callback) {
+            final String spaceId,
+            final String environmentId,
+            final Map<String, String> query,
+            CMACallback<CMAArray<CMAEntry>> callback) {
       return defer(new RxExtensions.DefFunc<CMAArray<CMAEntry>>() {
         @Override CMAArray<CMAEntry> method() {
           return ModuleEntries.this.fetchAll(spaceId, environmentId, query);
@@ -627,8 +678,8 @@ public class ModuleEntries extends AbsModule<ServiceEntries> {
      * @throws IllegalArgumentException if configured environmentId is null.
      */
     public CMACallback<CMAEntry> fetchOne(
-        final String entryId,
-        CMACallback<CMAEntry> callback) {
+            final String entryId,
+            CMACallback<CMAEntry> callback) {
       return defer(new RxExtensions.DefFunc<CMAEntry>() {
         @Override CMAEntry method() {
           return ModuleEntries.this.fetchOne(entryId);
@@ -646,10 +697,10 @@ public class ModuleEntries extends AbsModule<ServiceEntries> {
      * @return the given CMACallback instance
      */
     public CMACallback<CMAEntry> fetchOne(
-        final String spaceId,
-        final String environmentId,
-        final String entryId,
-        CMACallback<CMAEntry> callback) {
+            final String spaceId,
+            final String environmentId,
+            final String entryId,
+            CMACallback<CMAEntry> callback) {
       return defer(new RxExtensions.DefFunc<CMAEntry>() {
         @Override CMAEntry method() {
           return ModuleEntries.this.fetchOne(spaceId, environmentId, entryId);
@@ -737,8 +788,8 @@ public class ModuleEntries extends AbsModule<ServiceEntries> {
      * @throws IllegalArgumentException if entry's space id is null.
      */
     public CMACallback<CMAArray<CMASnapshot>> fetchAllSnapshots(
-        final CMAEntry entry,
-        CMACallback<CMAArray<CMASnapshot>> callback) {
+            final CMAEntry entry,
+            CMACallback<CMAArray<CMASnapshot>> callback) {
       return defer(new RxExtensions.DefFunc<CMAArray<CMASnapshot>>() {
         @Override CMAArray<CMASnapshot> method() {
           return ModuleEntries.this.fetchAllSnapshots(entry);
@@ -782,12 +833,54 @@ public class ModuleEntries extends AbsModule<ServiceEntries> {
      * @throws IllegalArgumentException if snapshotId is null.
      */
     public CMACallback<CMASnapshot> fetchOneSnapshot(
-        final CMAEntry entry,
-        final String snapshotId,
-        CMACallback<CMASnapshot> callback) {
+            final CMAEntry entry,
+            final String snapshotId,
+            CMACallback<CMASnapshot> callback) {
       return defer(new RxExtensions.DefFunc<CMASnapshot>() {
         @Override CMASnapshot method() {
           return ModuleEntries.this.fetchOneSnapshot(entry, snapshotId);
+        }
+      }, callback);
+    }
+
+    /**
+     * Publish an Entry for a specific locale.
+     *
+     * @param entry    Entry
+     * @param locale   Locale to publish
+     * @param callback Callback
+     * @return the given CMACallback instance
+     * @throws IllegalArgumentException if entry is null.
+     * @throws IllegalArgumentException if entry's id is null.
+     * @throws IllegalArgumentException if entry's space id is null.
+     * @throws IllegalArgumentException if locale is null.
+     */
+    public CMACallback<CMAEntry> publishLocale(final CMAEntry entry, final String locale,
+                                               CMACallback<CMAEntry> callback) {
+      return defer(new RxExtensions.DefFunc<CMAEntry>() {
+        @Override CMAEntry method() {
+          return ModuleEntries.this.publishLocale(entry, locale);
+        }
+      }, callback);
+    }
+
+    /**
+     * Un-Publish an Entry for a specific locale.
+     *
+     * @param entry    Entry
+     * @param locale   Locale to unpublish
+     * @param callback Callback
+     * @return the given CMACallback instance
+     * @throws IllegalArgumentException if entry is null.
+     * @throws IllegalArgumentException if entry's id is null.
+     * @throws IllegalArgumentException if entry's space id is null.
+     * @throws IllegalArgumentException if locale is null.
+     */
+    public CMACallback<CMAEntry> unPublishLocale(final CMAEntry entry, final String locale,
+                                                 CMACallback<CMAEntry> callback) {
+      return defer(new RxExtensions.DefFunc<CMAEntry>() {
+        @Override CMAEntry method() {
+          return ModuleEntries.this.unPublishLocale(entry, locale);
         }
       }, callback);
     }
