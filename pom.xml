@@ -215,11 +215,15 @@
             <id>simple-command</id>
             <phase>package</phase>
             <goals>
-              <goal>attached</goal>
+              <goal>single</goal> <!-- poprawione z "attached" na "single" -->
             </goals>
+            <configuration>
+              <attach>true</attach> <!-- to powoduje dołączenie JAR-a -->
+            </configuration>
           </execution>
         </executions>
       </plugin>
+
 
       <plugin>
         <artifactId>kotlin-maven-plugin</artifactId>
