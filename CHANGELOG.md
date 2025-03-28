@@ -3,9 +3,12 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## Version [3.4.19] - [2025-03-28]
+- Changed: fixed issue with taxonomy serializing
+  
 ## Version [3.4.18] - [2025-01-31]
 - Changed: added flag for logging sensitive data
-- 
+
 ## Version [3.4.17] - [2025-01-23]
 - Changed: added support for Taxonomy API
 
@@ -224,6 +227,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 Initial release.
 
 [unreleased]: https://github.com/contentful/contentful-management.java/compare/cma-sdk-3.3.3...HEAD
+[3.4.19]: https://github.com/contentful/contentful-management.java/compare/v3.4.18...v3.4.19
 [3.4.18]: https://github.com/contentful/contentful-management.java/compare/v3.4.17...v3.4.18
 [3.4.17]: https://github.com/contentful/contentful-management.java/compare/v3.4.16...v3.4.17
 [3.4.16]: https://github.com/contentful/contentful-management.java/compare/v3.4.15...v3.4.16
