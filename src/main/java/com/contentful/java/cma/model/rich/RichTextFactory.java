@@ -224,11 +224,12 @@ public class RichTextFactory {
         for (final String locale : field.getValue().keySet()) {
           final Object value = field.getValue().get(locale);
           if (value instanceof Map && ((Map) value).containsKey("nodeType")) {
+            String nodeType = (String) ((Map) value).get("nodeType");
             entry.setField(
                 fieldId,
                 locale,
                 RESOLVER_MAP
-                    .get("document")
+                    .getOrDefault(nodeType, RESOLVER_MAP.get("document"))
                     .resolve(
                         (Map<String, Object>) value
                     )
