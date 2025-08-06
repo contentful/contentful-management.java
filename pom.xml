@@ -57,7 +57,7 @@
     <commonsio.version>2.20.0</commonsio.version>
     <junit.version>4.13.1</junit.version>
     <kotlin.version>2.2.0</kotlin.version>
-    <okhttp.version>3.12.1</okhttp.version>
+    <okhttp.version>4.12.0</okhttp.version>
     <rxjava.version>2.2.5</rxjava.version>
     <android.version>4.1.1.4</android.version>
     <android.platform>16</android.platform>
@@ -107,6 +107,13 @@
 
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib</artifactId>
+      <version>${kotlin.version}</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
       <artifactId>kotlin-stdlib-jdk8</artifactId>
       <version>${kotlin.version}</version>
       <scope>test</scope>
@@ -144,6 +151,16 @@
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>okhttp</artifactId>
       <version>${okhttp.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.jetbrains.kotlin</groupId>
+          <artifactId>kotlin-stdlib-common</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.jetbrains.kotlin</groupId>
+          <artifactId>kotlin-stdlib</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
@@ -252,6 +269,12 @@
             <goals>
               <goal>test-compile</goal>
             </goals>
+            <configuration>
+              <sourceDirs>
+                <source>src/test/kotlin</source>
+              </sourceDirs>
+              <skip>${maven.test.skip}</skip>
+            </configuration>
           </execution>
         </executions>
       </plugin>

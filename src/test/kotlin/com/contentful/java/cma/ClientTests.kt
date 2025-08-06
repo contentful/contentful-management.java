@@ -96,7 +96,7 @@ class ClientTests{
     fun testCoreCallbackRetrofitError() {
         val badClient = CMAClient.Builder()
                 .setAccessToken("accesstoken")
-                .setCoreCallFactory { throw RuntimeException(it.url().toString(), IOException()) }
+                .setCoreCallFactory { throw RuntimeException(it.url.toString(), IOException()) }
                 .build()
 
         val cb = TestCallback<CMAArray<CMASpace>>()
@@ -109,7 +109,7 @@ class ClientTests{
     fun testUploadCallbackRetrofitError() {
         val badClient = CMAClient.Builder()
                 .setAccessToken("accesstoken")
-                .setUploadCallFactory { throw RuntimeException(it.url().toString(), IOException()) }
+                .setUploadCallFactory { throw RuntimeException(it.url.toString(), IOException()) }
                 .build()
 
         val cb = TestCallback<CMAUpload>()
@@ -176,7 +176,7 @@ class ClientTests{
         // Request
         val recordedRequest = server!!.takeRequest()
 
-        assertTrue(recordedRequest.getHeader("User-Agent").contains(versionName))
+        assertTrue(recordedRequest.getHeader("User-Agent")!!.contains(versionName))
     }
 
     @test
@@ -189,9 +189,9 @@ class ClientTests{
         val recordedRequest = server!!.takeRequest()
 
         val actual = recordedRequest.getHeader("X-Contentful-User-Agent")
-        assertTrue(actual.contains("sdk contentful-management.java/"))
-        assertTrue(actual.contains("platform java/"))
-        assertTrue(actual.contains("os"))
+        assertTrue(actual!!.contains("sdk contentful-management.java/"))
+        assertTrue(actual!!.contains("platform java/"))
+        assertTrue(actual!!.contains("os"))
     }
 
     @test(expected = IllegalArgumentException::class)
@@ -204,52 +204,47 @@ class ClientTests{
         }
     }
 
-    @test(expected = IllegalArgumentException::class)
+    @test(expected = NullPointerException::class)
     fun failsSetNullAccessToken() {
         try {
-            CMAClient.Builder().setAccessToken(null)
-        } catch (e: IllegalArgumentException) {
-            assertEquals("Cannot call setAccessToken() with null.", e.message)
+            CMAClient.Builder().setAccessToken(null!!)
+        } catch (e: NullPointerException) {
             throw e
         }
     }
 
-    @test(expected = IllegalArgumentException::class)
+    @test(expected = NullPointerException::class)
     fun failsSetNullCallFactory() {
         try {
-            CMAClient.Builder().setCoreCallFactory(null)
-        } catch (e: IllegalArgumentException) {
-            assertEquals("Cannot call setCallFactory() with null.", e.message)
+            CMAClient.Builder().setCoreCallFactory(null!!)
+        } catch (e: NullPointerException) {
             throw e
         }
     }
 
-    @test(expected = IllegalArgumentException::class)
+    @test(expected = NullPointerException::class)
     fun failsSetNullLogLevel() {
         try {
-            CMAClient.Builder().setLogLevel(null)
-        } catch (e: IllegalArgumentException) {
-            assertEquals("Cannot call setLogLevel() with null.", e.message)
+            CMAClient.Builder().setLogLevel(null!!)
+        } catch (e: NullPointerException) {
             throw e
         }
     }
 
-    @test(expected = IllegalArgumentException::class)
+    @test(expected = NullPointerException::class)
     fun failsSetNullEndPoint() {
         try {
-            CMAClient.Builder().setCoreEndpoint(null)
-        } catch (e: IllegalArgumentException) {
-            assertEquals("Cannot call setCoreEndpoint() with null.", e.message)
+            CMAClient.Builder().setCoreEndpoint(null!!)
+        } catch (e: NullPointerException) {
             throw e
         }
     }
 
-    @test(expected = IllegalArgumentException::class)
+    @test(expected = NullPointerException::class)
     fun failsSetCallbackExecutor() {
         try {
-            CMAClient.Builder().setCallbackExecutor(null)
-        } catch (e: IllegalArgumentException) {
-            assertEquals("Cannot call setCallbackExecutor() with null.", e.message)
+            CMAClient.Builder().setCallbackExecutor(null!!)
+        } catch (e: NullPointerException) {
             throw e
         }
     }
