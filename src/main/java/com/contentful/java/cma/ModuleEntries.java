@@ -894,7 +894,8 @@ public class ModuleEntries extends AbsModule<ServiceEntries> {
      * <p>
      * <b>Important Note:</b> JSON Patch cannot perform operations on non-existing fields.
      * If the field is defined on the Content Type but has not been set on the Entry yet,
-     * the API will return a validation error. Use the top-level field path with locale in the value instead.
+     * the API will return a validation error. Use the top-level field path with locale
+     * in the value instead.
      *
      * @param entry      Entry containing the entry ID, space ID, environment ID, and version
      * @param operations List of JSON Patch operations to apply
@@ -920,7 +921,8 @@ public class ModuleEntries extends AbsModule<ServiceEntries> {
      * <p>
      * <b>Important Note:</b> JSON Patch cannot perform operations on non-existing fields.
      * If the field is defined on the Content Type but has not been set on the Entry yet,
-     * the API will return a validation error. Use the top-level field path with locale in the value instead.
+     * the API will return a validation error. Use the top-level field path with locale
+     * in the value instead.
      *
      * @param spaceId       Space ID
      * @param environmentId Environment ID

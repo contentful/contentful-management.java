@@ -39,7 +39,6 @@ public class ContentTypeInterceptor implements Interceptor {
     final Request request = chain.request();
 
     final String existingContentType = request.header(HEADER_NAME);
-    
     final RequestBody requestBody = request.body();
     final MediaType bodyMediaType = requestBody != null ? requestBody.contentType() : null;
 
