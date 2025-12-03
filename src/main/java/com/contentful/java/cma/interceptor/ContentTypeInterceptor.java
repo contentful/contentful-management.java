@@ -43,7 +43,8 @@ public class ContentTypeInterceptor implements Interceptor {
     final RequestBody requestBody = request.body();
     final MediaType bodyMediaType = requestBody != null ? requestBody.contentType() : null;
 
-    if (existingContentType != null || (bodyMediaType != null && !bodyMediaType.toString().equals(contentType))) {
+    if (existingContentType != null || (bodyMediaType != null && !bodyMediaType.toString()
+            .equals(contentType))) {
       return chain.proceed(request);
     }
 

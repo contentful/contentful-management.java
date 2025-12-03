@@ -382,7 +382,8 @@ public class ModuleEntries extends AbsModule<ServiceEntries> {
    * // If 'description' field is not defined on Entry, but defined in the Content Type,
    * // make sure to provide the locale in the payload:
    * List<Map<String, Object>> operations = Arrays.asList(
-   *     Map.of("op", "add", "path", "/fields/description", "value", Map.of("en-US", "initial value"))
+   *     Map.of("op", "add", "path", "/fields/description", "value",
+   *     Map.of("en-US", "initial value"))
    * );
    * }</pre>
    *
@@ -395,7 +396,8 @@ public class ModuleEntries extends AbsModule<ServiceEntries> {
    * @throws IllegalArgumentException if entry's version is null.
    * @throws IllegalArgumentException if operations is null.
    * @see <a href="https://tools.ietf.org/html/rfc6902">JSON Patch RFC 6902</a>
-   * @see <a href="https://www.contentful.com/developers/docs/references/content-management-api/#/reference/entries/entry/update-an-entry">Contentful API Documentation</a>
+   * @see <a href="https://www.contentful.com/developers/docs/references/content-management-api/#/
+   * reference/entries/entry/update-an-entry">Contentful API Documentation</a>
    */
   public CMAEntry patch(CMAEntry entry, java.util.List<java.util.Map<String, Object>> operations) {
     assertNotNull(entry, "entry");
@@ -433,14 +435,16 @@ public class ModuleEntries extends AbsModule<ServiceEntries> {
    * // If 'description' field is not defined on Entry, but defined in the Content Type,
    * // make sure to provide the locale in the payload:
    * List<Map<String, Object>> operations = Arrays.asList(
-   *     Map.of("op", "add", "path", "/fields/description", "value", Map.of("en-US", "initial value"))
+   *     Map.of("op", "add", "path", "/fields/description",
+   *     "value", Map.of("en-US", "initial value"))
    * );
    * }</pre>
    *
    * @param spaceId Space ID
    * @param environmentId Environment ID
    * @param entryId Entry ID
-   * @param version Entry version (from entry.getSystem().getVersion()) - must match current entry version
+   * @param version Entry version (from entry.getSystem().getVersion()) -
+   *                must match current entry version
    * @param operations List of JSON Patch operations to apply
    * @return {@link CMAEntry} result instance with updated fields
    * @throws IllegalArgumentException if spaceId is null.
@@ -449,7 +453,8 @@ public class ModuleEntries extends AbsModule<ServiceEntries> {
    * @throws IllegalArgumentException if version is null.
    * @throws IllegalArgumentException if operations is null.
    * @see <a href="https://tools.ietf.org/html/rfc6902">JSON Patch RFC 6902</a>
-   * @see <a href="https://www.contentful.com/developers/docs/references/content-management-api/#/reference/entries/entry/update-an-entry">Contentful API Documentation</a>
+   * @see <a href="https://www.contentful.com/developers/docs/references/content-management-api/#/
+   * reference/entries/entry/update-an-entry">Contentful API Documentation</a>
    */
   public CMAEntry patch(String spaceId, String environmentId, String entryId, Integer version,
       java.util.List<java.util.Map<String, Object>> operations) {
