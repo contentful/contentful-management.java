@@ -20,6 +20,7 @@ import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAEntry;
 import com.contentful.java.cma.model.CMASnapshot;
 
+import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Flowable;
@@ -28,6 +29,8 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Headers;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -122,6 +125,15 @@ interface ServiceEntries {
           @Path("environment") String environmentId,
           @Path("entry") String entryId,
           @Body CMAEntry entry);
+
+  @PATCH("spaces/{space}/environments/{environment}/entries/{entry}")
+  @Headers("Content-Type: application/json-patch+json")
+  Flowable<CMAEntry> patch(
+          @Header("X-Contentful-Version") Integer version,
+          @Path("space") String spaceId,
+          @Path("environment") String environmentId,
+          @Path("entry") String entryId,
+          @Body List<Map<String, Object>> operations);
 
   @PUT("spaces/{space}/environments/{environment}/entries/{entry}/published/locales/{locale}")
   Flowable<CMAEntry> publishLocale(

@@ -38,10 +38,19 @@ public class ContentTypeInterceptor implements Interceptor {
   @Override public Response intercept(Chain chain) throws IOException {
     final Request request = chain.request();
 
+    final String existingContentType = request.header(HEADER_NAME);
+    
+    final RequestBody requestBody = request.body();
+    final MediaType bodyMediaType = requestBody != null ? requestBody.contentType() : null;
+
+    if (existingContentType != null || (bodyMediaType != null && !bodyMediaType.toString().equals(contentType))) {
+      return chain.proceed(request);
+    }
+
     final Request.Builder builder = request.newBuilder()
         .addHeader(HEADER_NAME, contentType);
 
-    if (request.body() != null) {
+    if (requestBody != null) {
       rewriteBodyWithCustomContentType(request, builder);
     }
 
@@ -57,10 +66,13 @@ public class ContentTypeInterceptor implements Interceptor {
     final byte[] content = sink.readByteArray();
     final RequestBody body = RequestBody.create(mediaType, content);
 
-    if ("POST".equals(request.method())) {
+    final String method = request.method();
+    if ("POST".equals(method)) {
       builder.post(body);
-    } else if ("PUT".equals(request.method())) {
+    } else if ("PUT".equals(method)) {
       builder.put(body);
+    } else if ("PATCH".equals(method)) {
+      builder.patch(body);
     }
   }
 }

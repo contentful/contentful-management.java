@@ -3,7 +3,7 @@
 
   <groupId>com.contentful.java</groupId>
   <artifactId>cma-sdk</artifactId>
-  <version>3.4.21</version>
+  <version>3.4.22</version>
   <packaging>jar</packaging>
 
   <name>cma-sdk</name>
