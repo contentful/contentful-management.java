@@ -265,7 +265,6 @@
               <sourceDirs>
                 <source>src/test/kotlin</source>
               </sourceDirs>
-              <skip>${maven.test.skip}</skip>
             </configuration>
           </execution>
         </executions>

@@ -396,8 +396,6 @@ public class ModuleEntries extends AbsModule<ServiceEntries> {
    * @throws IllegalArgumentException if entry's version is null.
    * @throws IllegalArgumentException if operations is null.
    * @see <a href="https://tools.ietf.org/html/rfc6902">JSON Patch RFC 6902</a>
-   * @see <a href="https://www.contentful.com/developers/docs/references/content-management-api/#/
-   * reference/entries/entry/update-an-entry">Contentful API Documentation</a>
    */
   public CMAEntry patch(CMAEntry entry, java.util.List<java.util.Map<String, Object>> operations) {
     assertNotNull(entry, "entry");
@@ -453,8 +451,6 @@ public class ModuleEntries extends AbsModule<ServiceEntries> {
    * @throws IllegalArgumentException if version is null.
    * @throws IllegalArgumentException if operations is null.
    * @see <a href="https://tools.ietf.org/html/rfc6902">JSON Patch RFC 6902</a>
-   * @see <a href="https://www.contentful.com/developers/docs/references/content-management-api/#/
-   * reference/entries/entry/update-an-entry">Contentful API Documentation</a>
    */
   public CMAEntry patch(String spaceId, String environmentId, String entryId, Integer version,
       java.util.List<java.util.Map<String, Object>> operations) {
