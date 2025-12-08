@@ -298,7 +298,7 @@ class EntryTests {
 
         // Request
         val request = server!!.takeRequest()
-        val url = HttpUrl.parse(server!!.url(request.path).toString())!!
+        val url = server!!.url(request.path!!).resolve(request.path!!)!!
         assertEquals("1", url.queryParameter("skip"))
         assertEquals("2", url.queryParameter("limit"))
         assertEquals("foo", url.queryParameter("content_type"))
@@ -452,7 +452,7 @@ class EntryTests {
     fun testRetainsSysOnNetworkError() {
         val badClient = CMAClient.Builder()
             .setAccessToken("accesstoken")
-            .setCoreCallFactory { throw RuntimeException(it.url().toString(), IOException()) }
+                            .setCoreCallFactory { throw RuntimeException(it.url.toString(), IOException()) }
             .build()
 
         val entry = CMAEntry().setVersion(31337)
@@ -561,7 +561,7 @@ class EntryTests {
         assertTrue(first.snapshot is CMAEntry)
 
         val recordedRequest = server!!.takeRequest()
-        val url = HttpUrl.parse(server!!.url(recordedRequest.path).toString())!!
+        val url = server!!.url(recordedRequest.path!!).resolve(recordedRequest.path!!)!!
         assertEquals("100", url.queryParameter("limit"))
         assertEquals("0", url.queryParameter("skip"))
     }

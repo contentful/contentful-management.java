@@ -235,7 +235,7 @@ class AssetTests {
 
         // Request
         val request = server!!.takeRequest()
-        val url = HttpUrl.parse(server!!.url(request.path).toString())!!
+        val url = server!!.url(request.path!!).resolve(request.path!!)!!
         assertEquals("1", url.queryParameter("skip"))
         assertEquals("2", url.queryParameter("limit"))
         assertEquals("foo", url.queryParameter("content_type"))
@@ -253,7 +253,7 @@ class AssetTests {
 
         // Request
         val request = server!!.takeRequest()
-        val url = HttpUrl.parse(server!!.url(request.path).toString())!!
+        val url = server!!.url(request.path!!).resolve(request.path!!)!!
         assertEquals("1", url.queryParameter("skip"))
         assertEquals("2", url.queryParameter("limit"))
         assertEquals("foo", url.queryParameter("content_type"))
@@ -435,7 +435,7 @@ class AssetTests {
     fun testRetainsSysOnNetworkError() {
         val badClient = CMAClient.Builder()
                 .setAccessToken("accesstoken")
-                .setCoreCallFactory { throw IOException(it.url().toString(), IOException()) }
+                .setCoreCallFactory { throw IOException(it.url.toString(), IOException()) }
                 .build()
 
         val asset = CMAAsset().setVersion(31337)

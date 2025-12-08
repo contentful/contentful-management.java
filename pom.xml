@@ -3,7 +3,7 @@
 
   <groupId>com.contentful.java</groupId>
   <artifactId>cma-sdk</artifactId>
-  <version>3.4.21</version>
+  <version>3.4.23</version>
   <packaging>jar</packaging>
 
   <name>cma-sdk</name>
@@ -34,14 +34,6 @@
     <url>http://contentful.com</url>
   </organization>
 
-  <developers>
-    <developer>
-      <id>rafal</id>
-      <name>Rafal Niski</name>
-      <email>rafal.niski@external.contentful.com</email>
-    </developer>
-  </developers>
-
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.sourceEncoding>UTF-8</project.reporting.sourceEncoding>
@@ -57,10 +49,10 @@
     <commonsio.version>2.20.0</commonsio.version>
     <junit.version>4.13.1</junit.version>
     <kotlin.version>2.2.0</kotlin.version>
-    <okhttp.version>3.12.1</okhttp.version>
+    <okhttp.version>4.12.0</okhttp.version>
     <rxjava.version>2.2.5</rxjava.version>
     <android.version>4.1.1.4</android.version>
-    <android.platform>16</android.platform>
+    <android.platform>21</android.platform>
     <robolectric.version>2.4</robolectric.version>
 
     <!-- Build Dependencies -->
@@ -107,6 +99,13 @@
 
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib</artifactId>
+      <version>${kotlin.version}</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
       <artifactId>kotlin-stdlib-jdk8</artifactId>
       <version>${kotlin.version}</version>
       <scope>test</scope>
@@ -144,6 +143,16 @@
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>okhttp</artifactId>
       <version>${okhttp.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.jetbrains.kotlin</groupId>
+          <artifactId>kotlin-stdlib-common</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.jetbrains.kotlin</groupId>
+          <artifactId>kotlin-stdlib</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
@@ -252,6 +261,11 @@
             <goals>
               <goal>test-compile</goal>
             </goals>
+            <configuration>
+              <sourceDirs>
+                <source>src/test/kotlin</source>
+              </sourceDirs>
+            </configuration>
           </execution>
         </executions>
       </plugin>

@@ -253,7 +253,7 @@ class CMAHttpExceptionTest {
         return Response.Builder()
                 .request(request)
                 .body(
-                        ResponseBody.create(MediaType.parse("application/json"), body)
+                        ResponseBody.create(null, body)
                 )
                 .header(HEADER_RATE_LIMIT_HOUR_LIMIT, "1")
                 .header(HEADER_RATE_LIMIT_HOUR_REMAINING, "2")

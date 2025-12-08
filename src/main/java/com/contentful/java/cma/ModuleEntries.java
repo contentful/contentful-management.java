@@ -356,6 +356,114 @@ public class ModuleEntries extends AbsModule<ServiceEntries> {
   }
 
   /**
+   * Patch an Entry using JSON Patch operations.
+   * <p>
+   * This method allows partial updates to an entry using JSON Patch format (RFC 6902).
+   * The operations parameter should contain a list of patch operations, each with:
+   * <ul>
+   *   <li>"op": the operation type (e.g., "add", "remove", "replace", "move", "copy", "test")</li>
+   *   <li>"path": the JSON pointer to the field to modify</li>
+   *   <li>"value": the new value (for add/replace operations)</li>
+   * </ul>
+   * <p>
+   * <b>Important Note:</b> JSON Patch cannot perform operations on non-existing fields.
+   * If the field is defined on the Content Type but has not been set on the Entry yet,
+   * the API will return a validation error when you try to perform an operation on this field.
+   * The accepted workaround is to pass the entire sub-object to the top-most existing field,
+   * including locale and initial value.
+   * <p>
+   * Example:
+   * <pre>{@code
+   * // This may result in a validation error if 'description' field is undefined:
+   * List<Map<String, Object>> operations = Arrays.asList(
+   *     Map.of("op", "add", "path", "/fields/description/en-US", "value", "initial value")
+   * );
+   *
+   * // If 'description' field is not defined on Entry, but defined in the Content Type,
+   * // make sure to provide the locale in the payload:
+   * List<Map<String, Object>> operations = Arrays.asList(
+   *     Map.of("op", "add", "path", "/fields/description", "value",
+   *     Map.of("en-US", "initial value"))
+   * );
+   * }</pre>
+   *
+   * @param entry Entry containing the entry ID, space ID, environment ID, and version
+   * @param operations List of JSON Patch operations to apply
+   * @return {@link CMAEntry} result instance with updated fields
+   * @throws IllegalArgumentException if entry is null.
+   * @throws IllegalArgumentException if entry's id is null.
+   * @throws IllegalArgumentException if entry's space id is null.
+   * @throws IllegalArgumentException if entry's version is null.
+   * @throws IllegalArgumentException if operations is null.
+   * @see <a href="https://tools.ietf.org/html/rfc6902">JSON Patch RFC 6902</a>
+   */
+  public CMAEntry patch(CMAEntry entry, java.util.List<java.util.Map<String, Object>> operations) {
+    assertNotNull(entry, "entry");
+    assertNotNull(operations, "operations");
+    final String entryId = getResourceIdOrThrow(entry, "entry");
+    final String spaceId = getSpaceIdOrThrow(entry, "entry");
+    final String environmentId = entry.getEnvironmentId();
+    final Integer version = getVersionOrThrow(entry, "patch");
+
+    return service.patch(version, spaceId, environmentId, entryId, operations).blockingFirst();
+  }
+
+  /**
+   * Patch an Entry using JSON Patch operations.
+   * <p>
+   * This method allows partial updates to an entry using JSON Patch format (RFC 6902).
+   * <p>
+   * This method will override the configuration specified through
+   * {@link CMAClient.Builder#setSpaceId(String)} and
+   * {@link CMAClient.Builder#setEnvironmentId(String)}.
+   * <p>
+   * <b>Important Note:</b> JSON Patch cannot perform operations on non-existing fields.
+   * If the field is defined on the Content Type but has not been set on the Entry yet,
+   * the API will return a validation error when you try to perform an operation on this field.
+   * The accepted workaround is to pass the entire sub-object to the top-most existing field,
+   * including locale and initial value.
+   * <p>
+   * Example:
+   * <pre>{@code
+   * // This may result in a validation error if 'description' field is undefined:
+   * List<Map<String, Object>> operations = Arrays.asList(
+   *     Map.of("op", "add", "path", "/fields/description/en-US", "value", "initial value")
+   * );
+   *
+   * // If 'description' field is not defined on Entry, but defined in the Content Type,
+   * // make sure to provide the locale in the payload:
+   * List<Map<String, Object>> operations = Arrays.asList(
+   *     Map.of("op", "add", "path", "/fields/description",
+   *     "value", Map.of("en-US", "initial value"))
+   * );
+   * }</pre>
+   *
+   * @param spaceId Space ID
+   * @param environmentId Environment ID
+   * @param entryId Entry ID
+   * @param version Entry version (from entry.getSystem().getVersion()) -
+   *                must match current entry version
+   * @param operations List of JSON Patch operations to apply
+   * @return {@link CMAEntry} result instance with updated fields
+   * @throws IllegalArgumentException if spaceId is null.
+   * @throws IllegalArgumentException if environmentId is null.
+   * @throws IllegalArgumentException if entryId is null.
+   * @throws IllegalArgumentException if version is null.
+   * @throws IllegalArgumentException if operations is null.
+   * @see <a href="https://tools.ietf.org/html/rfc6902">JSON Patch RFC 6902</a>
+   */
+  public CMAEntry patch(String spaceId, String environmentId, String entryId, Integer version,
+      java.util.List<java.util.Map<String, Object>> operations) {
+    assertNotNull(spaceId, "spaceId");
+    assertNotNull(environmentId, "environmentId");
+    assertNotNull(entryId, "entryId");
+    assertNotNull(version, "version");
+    assertNotNull(operations, "operations");
+
+    return service.patch(version, spaceId, environmentId, entryId, operations).blockingFirst();
+  }
+
+  /**
    * Fetch all snapshots of an entry.
    *
    * @param entry the entry whose snapshots to be returned.
@@ -773,6 +881,65 @@ public class ModuleEntries extends AbsModule<ServiceEntries> {
       return defer(new RxExtensions.DefFunc<CMAEntry>() {
         @Override CMAEntry method() {
           return ModuleEntries.this.update(entry);
+        }
+      }, callback);
+    }
+
+    /**
+     * Patch an Entry using JSON Patch operations.
+     * <p>
+     * <b>Important Note:</b> JSON Patch cannot perform operations on non-existing fields.
+     * If the field is defined on the Content Type but has not been set on the Entry yet,
+     * the API will return a validation error. Use the top-level field path with locale
+     * in the value instead.
+     *
+     * @param entry      Entry containing the entry ID, space ID, environment ID, and version
+     * @param operations List of JSON Patch operations to apply
+     * @param callback   Callback
+     * @return the given CMACallback instance
+     * @throws IllegalArgumentException if entry is null.
+     * @throws IllegalArgumentException if operations is null.
+     * @see ModuleEntries#patch(CMAEntry, java.util.List)
+     */
+    public CMACallback<CMAEntry> patch(
+        final CMAEntry entry,
+        final java.util.List<java.util.Map<String, Object>> operations,
+        CMACallback<CMAEntry> callback) {
+      return defer(new RxExtensions.DefFunc<CMAEntry>() {
+        @Override CMAEntry method() {
+          return ModuleEntries.this.patch(entry, operations);
+        }
+      }, callback);
+    }
+
+    /**
+     * Patch an Entry using JSON Patch operations.
+     * <p>
+     * <b>Important Note:</b> JSON Patch cannot perform operations on non-existing fields.
+     * If the field is defined on the Content Type but has not been set on the Entry yet,
+     * the API will return a validation error. Use the top-level field path with locale
+     * in the value instead.
+     *
+     * @param spaceId       Space ID
+     * @param environmentId Environment ID
+     * @param entryId       Entry ID
+     * @param version       Entry version (must match current entry version)
+     * @param operations    List of JSON Patch operations to apply
+     * @param callback      Callback
+     * @return the given CMACallback instance
+     * @throws IllegalArgumentException if any parameter is null.
+     * @see ModuleEntries#patch(String, String, String, Integer, java.util.List)
+     */
+    public CMACallback<CMAEntry> patch(
+        final String spaceId,
+        final String environmentId,
+        final String entryId,
+        final Integer version,
+        final java.util.List<java.util.Map<String, Object>> operations,
+        CMACallback<CMAEntry> callback) {
+      return defer(new RxExtensions.DefFunc<CMAEntry>() {
+        @Override CMAEntry method() {
+          return ModuleEntries.this.patch(spaceId, environmentId, entryId, version, operations);
         }
       }, callback);
     }

@@ -198,7 +198,7 @@ open class WebhookE2E : Base() {
     fun testRetainsSysOnNetworkErrorWebhook() {
         val badClient = CMAClient.Builder()
                 .setAccessToken("accesstoken")
-                .setCoreCallFactory { throw IOException(it.url().toString(), IOException()) }
+                .setCoreCallFactory { throw IOException(it.url.toString(), IOException()) }
                 .build()
 
         val webhook = CMAWebhook().setVersion(31337)
