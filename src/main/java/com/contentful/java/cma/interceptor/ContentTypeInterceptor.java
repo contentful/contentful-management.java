@@ -39,11 +39,17 @@ public class ContentTypeInterceptor implements Interceptor {
     final Request request = chain.request();
 
     final String existingContentType = request.header(HEADER_NAME);
+    if (existingContentType != null) {
+      return chain.proceed(request);
+    }
+
     final RequestBody requestBody = request.body();
     final MediaType bodyMediaType = requestBody != null ? requestBody.contentType() : null;
 
-    if (existingContentType != null || (bodyMediaType != null && !bodyMediaType.toString()
-            .equals(contentType))) {
+    // Skip if RequestBody has a custom MediaType (not the default application/json from Retrofit)
+    // This preserves custom MediaTypes like json-patch+json for PATCH requests
+    if (bodyMediaType != null 
+        && !("application".equals(bodyMediaType.type()) && "json".equals(bodyMediaType.subtype()))) {
       return chain.proceed(request);
     }
 
@@ -67,12 +73,18 @@ public class ContentTypeInterceptor implements Interceptor {
     final RequestBody body = RequestBody.create(mediaType, content);
 
     final String method = request.method();
-    if ("POST".equals(method)) {
-      builder.post(body);
-    } else if ("PUT".equals(method)) {
-      builder.put(body);
-    } else if ("PATCH".equals(method)) {
-      builder.patch(body);
-    }
+      switch (method) {
+          case "POST":
+              builder.post(body);
+              break;
+          case "PUT":
+              builder.put(body);
+              break;
+          case "PATCH":
+              builder.patch(body);
+              break;
+          default:
+              break;
+      }
   }
 }
