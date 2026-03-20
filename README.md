@@ -12,7 +12,7 @@
 contentful-management.java - Contentful Java Management SDK
 ===========================================================
 
-[![Build Status](https://travis-ci.org/contentful/contentful-management.java.svg)](https://travis-ci.org/contentful/contentful-management.java/builds#)
+[![CI](https://github.com/contentful/contentful-management.java/actions/workflows/ci.yml/badge.svg)](https://github.com/contentful/contentful-management.java/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/contentful/contentful-management.java/branch/master/graph/badge.svg)](https://codecov.io/gh/contentful/contentful-management.java)
 
 > Java SDK for [Content Management API](https://www.contentful.com/developers/docs/references/content-management-api/). It helps in editing and creating content stored in Contentful with Java applications.
@@ -314,6 +314,16 @@ Getting involved
 ----------------
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?maxAge=31557600)](http://makeapullrequest.com)
+
+For a reproducible local setup, open this repository in its included dev container. The container installs the project dependencies automatically when it is created.
+
+After the container is ready, run:
+
+```bash
+./mvnw -B test
+```
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the full contributor workflow.
 
 Code of Conduct
 ===============
