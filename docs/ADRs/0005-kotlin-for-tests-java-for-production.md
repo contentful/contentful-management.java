@@ -26,5 +26,5 @@ The decision was to bring Kotlin into tests (where its conciseness helps) withou
 
 - **Enables:** Concise, readable tests with Kotlin assertions; no Kotlin dependency burden on pure-Java SDK consumers.
 - **Requires:** `kotlin-stdlib` in compile scope — it is a transitive dependency for all SDK consumers, not just for internal build use. Android consumers should be aware of the additional jar size impact relative to Retrofit + Gson.
-- **Sharp edge:** Do not add Kotlin files under `src/main/java/`. The Maven build does not compile Kotlin there, and it would silently be excluded.
+- **Sharp edge:** Do not add Kotlin files under `src/main/java/`. Although `kotlin-maven-plugin`'s compile execution lists `src/main/java` in its `sourceDirs`, the directory contains only `.java` files and no `.kt` files should ever be added there. Doing so would silently introduce Kotlin into the production source set, contradicting this ADR.
 - **Note:** `kotlin-stdlib` in compile scope means it is resolved and placed on the classpath of any downstream project that depends on this SDK. This is a known trade-off; the footprint is small relative to other transitive deps.

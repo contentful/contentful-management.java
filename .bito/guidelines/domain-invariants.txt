@@ -1,6 +1,6 @@
 Critical domain invariants for contentful-management.java. Violations of these rules will cause runtime failures, silent data loss, or consumer-facing breakage.
 
-1. ENVIRONMENT SCOPING: The modules apiKeys, environments, roles, spaceMemberships, uiExtensions, uploads, and webhooks do NOT support non-master environments. If a module that extends AbsModule operates in a space-only context, it must call throwIfEnvironmentIdIsSet() in its constructor or before any operation. Failing to do this causes CMANotWithEnvironmentsException at runtime.
+1. ENVIRONMENT SCOPING: The modules apiKeys, previewApiKeys, roles, spaceMemberships, uploads, and webhooks do NOT support non-master environments. If a module that extends AbsModule operates in a space-only context, it must call throwIfEnvironmentIdIsSet() in its constructor or before any operation. Failing to do this causes CMANotWithEnvironmentsException at runtime.
 
 2. PUBLIC API STABILITY: All CMA* model classes, CMAClient builder methods, and Module* public methods are part of the published public API. Removing or renaming them is a breaking change. Adding required parameters to existing methods is a breaking change. Check the CHANGELOG and semver implications before modifying these.
 

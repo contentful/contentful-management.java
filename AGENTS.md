@@ -17,7 +17,7 @@ Read this file first. It tells you where to find context in this repo.
 
 ## Sharp Edges & Invariants
 
-- **Never call environment-scoped operations on the wrong modules.** The modules `apiKeys`, `environments`, `roles`, `spaceMemberships`, `uiExtensions`, `uploads`, and `webhooks` throw `CMANotWithEnvironmentsException` if the client is configured with a non-`master` `environmentId`. Always use a separate client (no `environmentId`) for those modules.
+- **Never call environment-scoped operations on the wrong modules.** The modules `apiKeys`, `previewApiKeys`, `roles`, `spaceMemberships`, `uploads`, and `webhooks` throw `CMANotWithEnvironmentsException` if the client is configured with a non-`master` `environmentId`. Always use a separate client (no `environmentId`) for those modules.
 - **Java 8 is the minimum target — do not use Java 9+ APIs in production code.** The Android dependency (`com.google.android:android`) is marked `optional` but must remain compilable on API 21+. Tests may use newer JVM features.
 - **Do not add new runtime dependencies without an ADR.** The dependency footprint is deliberately small to keep Android app size predictable.
 - **Every Module must extend `AbsModule<T>`.** The base class handles argument validation, executor injection, and space/environment ID pre-configuration. Never bypass it.
@@ -25,7 +25,9 @@ Read this file first. It tells you where to find context in this repo.
 - **RichText hierarchy rules are enforced by the API** — the SDK models them but does not validate at write time. Violating the hierarchy (Document in Document, Link outside Paragraph, etc.) will produce a 422 from the CMA. See `ARCHITECTURE.md` for the full rule set.
 - **The `CMACallback.onFailure()` default implementation is empty.** Code that needs to handle failures must override it explicitly. This is a common source of silently dropped errors.
 - **Test files are Kotlin; production code is Java.** Keep this split. Do not introduce Kotlin into `src/main/java/`.
-- **Checkstyle is enforced on every build (`./mvnw verify`).** Violations fail CI. The config is in `checkstyle.xml` at the repo root.
+- **Public API surface is stable — treat changes as breaking.** All `CMA*` model classes, `CMAClient` builder methods, and `Module*` public methods are part of the published API. Removing, renaming, or adding required parameters to any of these is a breaking change and requires a semver major bump. Review CHANGELOG implications before modifying them.
+- **Never log auth tokens unconditionally.** The `logSensitiveData` flag in `CMAClient` controls whether `Authorization` headers appear in logs. Its default is `false`. Do not change that default or add unconditional logging of auth/credentials anywhere in the SDK.
+- **Checkstyle runs during `./mvnw verify` (not `./mvnw test`).** CI only runs `./mvnw -B test`, so checkstyle is not enforced in CI — run `./mvnw -B verify` locally before pushing to catch violations. The config is in `checkstyle.xml` at the repo root.
 
 ## Key Conventions
 
