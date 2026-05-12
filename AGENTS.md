@@ -49,12 +49,9 @@ Read this file first. It tells you where to find context in this repo.
 ## Build & Quality
 
 ```bash
-# Full verification (tests + checkstyle) inside devcontainer
+# Run tests (does NOT include checkstyle)
 ./mvnw -B test
 
-# Run tests only (skip checkstyle)
-./mvnw -B -DskipTests=false test
-
-# Verify with checkstyle
+# Full verification (tests + checkstyle) inside devcontainer
 ./mvnw -B verify
 ```

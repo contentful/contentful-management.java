@@ -18,13 +18,13 @@ The decision was to bring Kotlin into tests (where its conciseness helps) withou
 
 ## Decision
 
-- All **production code** (`src/main/java/`) remains Java. Kotlin stdlib is included as a `compile` scope dependency (for internal use) but the public API surface exposes only Java types.
+- All **production code** (`src/main/java/`) remains Java. Kotlin stdlib is included as a `compile` scope dependency — meaning it is a **transitive runtime dependency for consumers**: any project that declares this SDK as a dependency will receive `kotlin-stdlib` on its classpath. This has an Android jar-size implication. The public API surface still exposes only Java types.
 - All **test code** (`src/test/kotlin/`) is written in Kotlin, using `kotlin-test-junit` and `kotlin-stdlib-jdk8` in `test` scope.
 - The Maven build uses `kotlin-maven-plugin` for test compilation alongside `maven-compiler-plugin` for Java.
 
 ## Consequences
 
 - **Enables:** Concise, readable tests with Kotlin assertions; no Kotlin dependency burden on pure-Java SDK consumers.
-- **Requires:** `kotlin-stdlib` in compile scope (minimal); `kotlin-maven-plugin` configured for test-compile phase.
+- **Requires:** `kotlin-stdlib` in compile scope — it is a transitive dependency for all SDK consumers, not just for internal build use. Android consumers should be aware of the additional jar size impact relative to Retrofit + Gson.
 - **Sharp edge:** Do not add Kotlin files under `src/main/java/`. The Maven build does not compile Kotlin there, and it would silently be excluded.
-- **Note:** `kotlin-stdlib` is listed as a compile-scope dependency in `pom.xml` — this technically means it ships with the jar. This is a known trade-off; the footprint is small relative to Retrofit + Gson.
+- **Note:** `kotlin-stdlib` in compile scope means it is resolved and placed on the classpath of any downstream project that depends on this SDK. This is a known trade-off; the footprint is small relative to other transitive deps.

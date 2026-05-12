@@ -50,7 +50,7 @@ Checkstyle is enforced on every `verify` run:
 ./mvnw -B verify
 ```
 
-The configuration lives in `checkstyle.xml` at the repo root. Violations will fail the build. Fix them before pushing — CI runs `./mvnw -B test` which includes the checkstyle phase.
+The configuration lives in `checkstyle.xml` at the repo root. Violations will fail the build. Fix them before pushing — CI runs `./mvnw -B verify` to include the checkstyle phase (not `./mvnw -B test`, which skips checkstyle).
 
 ## Commit Convention
 
