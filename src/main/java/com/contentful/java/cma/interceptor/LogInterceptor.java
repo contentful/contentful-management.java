@@ -62,7 +62,7 @@ public class LogInterceptor implements Interceptor {
     Headers.Builder redacted = new Headers.Builder();
     for (int i = 0; i < headers.size(); i++) {
       String name = headers.name(i);
-      if ("Authorization".equalsIgnoreCase(name)) {
+      if (AuthorizationHeaderInterceptor.HEADER_NAME.equalsIgnoreCase(name)) {
         redacted.add(name, "Bearer [REDACTED]");
       } else {
         redacted.add(name, headers.value(i));
