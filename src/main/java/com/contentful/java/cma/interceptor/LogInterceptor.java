@@ -4,6 +4,7 @@ import com.contentful.java.cma.Logger;
 
 import java.io.IOException;
 
+import okhttp3.Headers;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -46,7 +47,7 @@ public class LogInterceptor implements Interceptor {
 
     long t1 = System.nanoTime();
     logger.log(String.format("Sending request %s on %s%n%s",
-        request.url(), chain.connection(), request.headers()));
+        request.url(), chain.connection(), redactHeaders(request.headers())));
 
     Response response = chain.proceed(request);
 
@@ -55,5 +56,18 @@ public class LogInterceptor implements Interceptor {
         response.request().url(), (t2 - t1) / NANOS_PER_SECOND, response.headers()));
 
     return response;
+  }
+
+  private static Headers redactHeaders(Headers headers) {
+    Headers.Builder redacted = new Headers.Builder();
+    for (int i = 0; i < headers.size(); i++) {
+      String name = headers.name(i);
+      if ("Authorization".equalsIgnoreCase(name)) {
+        redacted.add(name, "Bearer [REDACTED]");
+      } else {
+        redacted.add(name, headers.value(i));
+      }
+    }
+    return redacted.build();
   }
 }
