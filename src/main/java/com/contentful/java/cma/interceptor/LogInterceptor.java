@@ -58,7 +58,11 @@ public class LogInterceptor implements Interceptor {
     return response;
   }
 
-  private static Headers redactHeaders(Headers headers) {
+  // Package-private for testing. Note: on okhttp >= 4.10, Headers.toString()
+  // already masks Authorization to "██", so this explicit redaction is
+  // defense-in-depth — it guarantees the token is stripped from the value
+  // regardless of okhttp's internal masking (e.g. if okhttp is pinned older).
+  static Headers redactHeaders(Headers headers) {
     Headers.Builder redacted = new Headers.Builder();
     for (int i = 0; i < headers.size(); i++) {
       String name = headers.name(i);
