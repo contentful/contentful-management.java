@@ -34,6 +34,16 @@
     <url>http://contentful.com</url>
   </organization>
 
+  <developers>
+    <developer>
+      <id>contentful-dx</id>
+      <name>Contentful Developer Experience</name>
+      <email>prd-ecosystem-dx@contentful.com</email>
+      <organization>Contentful</organization>
+      <organizationUrl>https://www.contentful.com</organizationUrl>
+    </developer>
+  </developers>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.sourceEncoding>UTF-8</project.reporting.sourceEncoding>
