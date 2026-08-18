@@ -60,7 +60,7 @@
     <junit.version>4.13.1</junit.version>
     <kotlin.version>2.2.0</kotlin.version>
     <okhttp.version>4.12.0</okhttp.version>
-    <rxjava.version>2.2.5</rxjava.version>
+    <rxjava.version>2.2.21</rxjava.version>
     <android.version>4.1.1.4</android.version>
     <android.platform>21</android.platform>
     <robolectric.version>2.4</robolectric.version>
