@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## Version [3.5.0] - [2026-08-18]
+- Changed: deprecated legacy periodic-usage endpoints
+- Changed: redact Authorization header value when logging requests
+
 ## Version [3.4.19] - [2025-03-28]
 - Changed: fixed issue with taxonomy serializing
   
