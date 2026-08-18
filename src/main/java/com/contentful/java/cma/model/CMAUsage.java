@@ -2,6 +2,13 @@ package com.contentful.java.cma.model;
 
 import java.util.LinkedHashMap;
 
+/**
+ * @deprecated The {@code GET /organizations/{organization_id}/organization_periodic_usages}
+ * and {@code GET /organizations/{organization_id}/space_periodic_usages} endpoints are
+ * deprecated in favor of the new Usage API. They will be removed on 2027-02-28, after
+ * which requests will return 410 Gone.
+ */
+@Deprecated
 public class CMAUsage extends CMAResource {
     private String unitOfMeasure;
     private UsageMetric metric;

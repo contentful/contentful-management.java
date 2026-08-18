@@ -37,7 +37,11 @@ public class ModuleOrganizationUsage extends AbsModule<ServiceOrganizationUsage>
      *
      * @param query the criteria to narrow down the search result.
      * @return {@link CMAUsage} result instance
+     * @deprecated The {@code GET /organizations/{organization_id}/organization_periodic_usages}
+     * endpoint is deprecated in favor of the new Usage API. It will be removed on
+     * 2027-02-28, after which requests will return 410 Gone.
      */
+    @Deprecated
     public CMAArray<CMAUsage> fetchAll(
             String organizationId,
             Map<String, String> query) {
@@ -66,7 +70,11 @@ public class ModuleOrganizationUsage extends AbsModule<ServiceOrganizationUsage>
 
 
          * @return {@link CMAUsage} result callback.
+         * @deprecated The {@code GET /organizations/{organization_id}/organization_periodic_usages}
+         * endpoint is deprecated in favor of the new Usage API. It will be removed on
+         * 2027-02-28, after which requests will return 410 Gone.
          */
+        @Deprecated
         public CMACallback<CMAArray<CMAUsage>> fetchAll(
                 String organizationId,
                 Map<String, String> query,

@@ -10,11 +10,23 @@ import retrofit2.http.QueryMap;
 import java.util.Map;
 
 public interface ServiceSpaceUsage {
+    /**
+     * @deprecated The {@code GET /organizations/{organization_id}/space_periodic_usages}
+     * endpoint is deprecated in favor of the new Usage API. It will be removed on
+     * 2027-02-28, after which requests will return 410 Gone.
+     */
+    @Deprecated
     @GET("organizations/{organization_id}/space_periodic_usages")
     Flowable<CMAArray<CMAUsage>> fetchAll(
             @Path("organization_id") String organizationId
     );
 
+    /**
+     * @deprecated The {@code GET /organizations/{organization_id}/space_periodic_usages}
+     * endpoint is deprecated in favor of the new Usage API. It will be removed on
+     * 2027-02-28, after which requests will return 410 Gone.
+     */
+    @Deprecated
     @GET("organizations/{organization_id}/space_periodic_usages")
     Flowable<CMAArray<CMAUsage>> fetchAll(
             @Path("organization_id") String organizationId,
