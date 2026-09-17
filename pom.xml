@@ -57,7 +57,7 @@
 
     <!-- Test Dependencies -->
     <commonsio.version>2.20.0</commonsio.version>
-    <junit.version>4.13.1</junit.version>
+    <junit.version>4.13.2</junit.version>
     <kotlin.version>2.2.0</kotlin.version>
     <okhttp.version>4.12.0</okhttp.version>
     <rxjava.version>2.2.5</rxjava.version>
