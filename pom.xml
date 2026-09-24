@@ -63,7 +63,6 @@
     <rxjava.version>2.2.21</rxjava.version>
     <android.version>4.1.1.4</android.version>
     <android.platform>21</android.platform>
-    <robolectric.version>2.4</robolectric.version>
 
     <!-- Build Dependencies -->
     <build-helper.version>3.6.2</build-helper.version>
@@ -172,12 +171,6 @@
       <scope>test</scope>
     </dependency>
 
-    <dependency>
-      <groupId>org.robolectric</groupId>
-      <artifactId>robolectric</artifactId>
-      <version>${robolectric.version}</version>
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
       <artifactId>kotlin-test</artifactId>

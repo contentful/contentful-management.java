@@ -28,3 +28,7 @@ Pre-release snapshots go to `https://oss.sonatype.org/content/repositories/snaps
 - **Requires:** GPG key available in the CI/release environment; Sonatype Central credentials configured as Maven server settings.
 - **Release branch pattern:** Releases use `release/X.Y.Z` branches with `[maven-release-plugin]` commits visible in git history.
 - **Jitpack fallback:** `jitpack.yml` at the repo root enables snapshot builds from any branch via jitpack.io.
+
+## Update (2026-09-24)
+
+`maven-release-plugin` is no longer used to release: `release:prepare` pushes commits to `master`, which the org rulesets only allow through a PR. The version is set in the release PR (`.buildscript/set-version.sh`), and the manual `Release` GitHub Actions workflow deploys with `-DautoPublish=true -DwaitUntil=PUBLISHED`, signing with the key from the `maven-central` environment, then tags `v.X.Y.Z` and creates the GitHub release. The Central Portal plugin and GPG signing described above are unchanged. See `RELEASING.md`.
