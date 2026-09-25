@@ -1,1 +1,3 @@
 * @contentful/group-applied-ai-solutions
+.mvn/wrapper/maven-wrapper.properties
+pom.xml
