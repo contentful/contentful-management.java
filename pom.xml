@@ -63,7 +63,6 @@
     <rxjava.version>2.2.21</rxjava.version>
     <android.version>4.1.1.4</android.version>
     <android.platform>21</android.platform>
-    <robolectric.version>4.17</robolectric.version>
 
     <!-- Build Dependencies -->
     <build-helper.version>3.6.2</build-helper.version>
@@ -165,17 +164,19 @@
       </exclusions>
     </dependency>
 
+    <!--
+      OkHttp 5: the "okhttp" POM carries no classes for plain Maven builds; the JVM classes are in
+      okhttp-jvm (Gradle picks the right artifact from module metadata, Maven doesn't).
+    -->
+    <dependency>
+      <groupId>com.squareup.okhttp3</groupId>
+      <artifactId>okhttp-jvm</artifactId>
+      <version>${okhttp.version}</version>
+    </dependency>
     <dependency>
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>okhttp-urlconnection</artifactId>
       <version>${okhttp.version}</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.robolectric</groupId>
-      <artifactId>robolectric</artifactId>
-      <version>${robolectric.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -286,7 +287,8 @@
         <version>3.6.0</version>
         <configuration>
           <includes>
-            <include>**/*Tests.class</include>
+            <!-- surefire 3 matches source names; the old **/*Tests.class pattern ran 0 tests. -->
+            <include>**/*Tests.java</include>
           </includes>
         </configuration>
       </plugin>
