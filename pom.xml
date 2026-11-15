@@ -63,7 +63,7 @@
     <rxjava.version>2.2.21</rxjava.version>
     <android.version>4.1.1.4</android.version>
     <android.platform>21</android.platform>
-    <robolectric.version>4.17</robolectric.version>
+    <robolectric.version>4.18</robolectric.version>
 
     <!-- Build Dependencies -->
     <build-helper.version>3.8.0</build-helper.version>
